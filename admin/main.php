@@ -249,6 +249,9 @@ function delete_tad_cal_cate($cate_sn=""){
 	global $xoopsDB;
 	$sql = "delete from ".$xoopsDB->prefix("tad_cal_cate")." where cate_sn='$cate_sn'";
 	$xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+	
+	$sql = "delete from ".$xoopsDB->prefix("tad_cal_event")." where cate_sn='$cate_sn'";
+	$xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
 }
 
 
