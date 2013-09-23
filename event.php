@@ -243,6 +243,7 @@ function tad_cal_event_form($sn="",$mode='',$stamp=""){
   $xoopsTpl->assign("formValidator_code" , $formValidator_code);
   $xoopsTpl->assign("cate_col" , $cate_col);
   $xoopsTpl->assign("op" , 'tad_cal_event_form');
+  $xoopsTpl->assign("sn" , $sn);
   
   
 }
