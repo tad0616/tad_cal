@@ -12,12 +12,12 @@ include_once XOOPS_ROOT_PATH."/header.php";
 
 function tad_cal_download(){
   global $xoopsUser,$xoopsModuleConfig,$isAdmin,$xoopsTpl;
-  
+
   //先抓分類下拉選單
   $get_tad_cal_cate_menu_options=get_tad_cal_cate_menu_options();
-  
+
   $xoopsTpl->assign('get_tad_cal_cate_menu_options' , $get_tad_cal_cate_menu_options);
- 
+
 }
 
 
@@ -29,10 +29,10 @@ $sn=(empty($_REQUEST['sn']))?"":intval($_REQUEST['sn']);
 
 switch($op){
 
-  
-	default:
-	tad_cal_download();
-	break;
+
+  default:
+  tad_cal_download();
+  break;
 }
 
 /*-----------秀出結果區--------------*/

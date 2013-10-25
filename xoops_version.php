@@ -87,42 +87,42 @@ $modversion['blocks'][2]['options'] = "7";
 
 
 
-$modversion['config'][0]['name']	= 'eventShowMode';
-$modversion['config'][0]['title']	= '_MI_TADCAL_EVENTSHOWMODE';
-$modversion['config'][0]['description']	= '_MI_TADCAL_EVENTSHOWMODE_DESC';
-$modversion['config'][0]['formtype']	= 'select';
-$modversion['config'][0]['valuetype']	= 'text';
-$modversion['config'][0]['default']	= 'eventClick';
-$modversion['config'][0]['options']	= array(_MI_TADCAL_CONF0_OPT1 => 'eventClick',_MI_TADCAL_CONF0_OPT2 => 'eventMouseover');
+$modversion['config'][0]['name']  = 'eventShowMode';
+$modversion['config'][0]['title'] = '_MI_TADCAL_EVENTSHOWMODE';
+$modversion['config'][0]['description'] = '_MI_TADCAL_EVENTSHOWMODE_DESC';
+$modversion['config'][0]['formtype']  = 'select';
+$modversion['config'][0]['valuetype'] = 'text';
+$modversion['config'][0]['default'] = 'eventClick';
+$modversion['config'][0]['options'] = array(_MI_TADCAL_CONF0_OPT1 => 'eventClick',_MI_TADCAL_CONF0_OPT2 => 'eventMouseover');
 
-$modversion['config'][1]['name']	= 'eventTheme';
-$modversion['config'][1]['title']	= '_MI_TADCAL_EVENTTHEME';
-$modversion['config'][1]['description']	= '_MI_TADCAL_EVENTTHEME_DESC';
-$modversion['config'][1]['formtype']	= 'select';
-$modversion['config'][1]['valuetype']	= 'text';
-$modversion['config'][1]['default']	= 'ui-tooltip-blue';
-$modversion['config'][1]['options']	= array(_MI_TADCAL_CONF1_OPT1 => 'ui-tooltip',_MI_TADCAL_CONF1_OPT2 => 'ui-tooltip-light',_MI_TADCAL_CONF1_OPT3 => 'ui-tooltip-dark',_MI_TADCAL_CONF1_OPT4 => 'ui-tooltip-red',_MI_TADCAL_CONF1_OPT5 => 'ui-tooltip-blue',_MI_TADCAL_CONF1_OPT6 => 'ui-tooltip-green');
+$modversion['config'][1]['name']  = 'eventTheme';
+$modversion['config'][1]['title'] = '_MI_TADCAL_EVENTTHEME';
+$modversion['config'][1]['description'] = '_MI_TADCAL_EVENTTHEME_DESC';
+$modversion['config'][1]['formtype']  = 'select';
+$modversion['config'][1]['valuetype'] = 'text';
+$modversion['config'][1]['default'] = 'ui-tooltip-blue';
+$modversion['config'][1]['options'] = array(_MI_TADCAL_CONF1_OPT1 => 'ui-tooltip',_MI_TADCAL_CONF1_OPT2 => 'ui-tooltip-light',_MI_TADCAL_CONF1_OPT3 => 'ui-tooltip-dark',_MI_TADCAL_CONF1_OPT4 => 'ui-tooltip-red',_MI_TADCAL_CONF1_OPT5 => 'ui-tooltip-blue',_MI_TADCAL_CONF1_OPT6 => 'ui-tooltip-green');
 
-$modversion['config'][2]['name']	= 'title_num';
-$modversion['config'][2]['title']	= '_MI_TADCAL_TITLE_NUM';
-$modversion['config'][2]['description']	= '_MI_TADCAL_TITLE_NUM_DESC';
-$modversion['config'][2]['formtype']	= 'textbox';
-$modversion['config'][2]['valuetype']	= 'int';
-$modversion['config'][2]['default']	= '7';
+$modversion['config'][2]['name']  = 'title_num';
+$modversion['config'][2]['title'] = '_MI_TADCAL_TITLE_NUM';
+$modversion['config'][2]['description'] = '_MI_TADCAL_TITLE_NUM_DESC';
+$modversion['config'][2]['formtype']  = 'textbox';
+$modversion['config'][2]['valuetype'] = 'int';
+$modversion['config'][2]['default'] = '7';
 
-$modversion['config'][3]['name']	= 'quick_add';
-$modversion['config'][3]['title']	= '_MI_TADCAL_QUICK_ADD';
-$modversion['config'][3]['description']	= '_MI_TADCAL_QUICK_ADD_DESC';
-$modversion['config'][3]['formtype']	= 'yesno';
-$modversion['config'][3]['valuetype']	= 'int';
-$modversion['config'][3]['default']	= '1';
+$modversion['config'][3]['name']  = 'quick_add';
+$modversion['config'][3]['title'] = '_MI_TADCAL_QUICK_ADD';
+$modversion['config'][3]['description'] = '_MI_TADCAL_QUICK_ADD_DESC';
+$modversion['config'][3]['formtype']  = 'yesno';
+$modversion['config'][3]['valuetype'] = 'int';
+$modversion['config'][3]['default'] = '1';
 
-$modversion['config'][4]['name']	= 'sync_conut';
-$modversion['config'][4]['title']	= '_MI_TADCAL_SYNC_CONUT';
-$modversion['config'][4]['description']	= '_MI_TADCAL_SYNC_CONUT_DESC';
-$modversion['config'][4]['formtype']	= 'textbox';
-$modversion['config'][4]['valuetype']	= 'int';
-$modversion['config'][4]['default']	= '100';
+$modversion['config'][4]['name']  = 'sync_conut';
+$modversion['config'][4]['title'] = '_MI_TADCAL_SYNC_CONUT';
+$modversion['config'][4]['description'] = '_MI_TADCAL_SYNC_CONUT_DESC';
+$modversion['config'][4]['formtype']  = 'textbox';
+$modversion['config'][4]['valuetype'] = 'int';
+$modversion['config'][4]['default'] = '100';
 
 
 $modversion['config'][5]['name'] = 'facebook_comments_width';

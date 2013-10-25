@@ -15,11 +15,11 @@ function tad_cal_calendar($options){
   include_once XOOPS_ROOT_PATH."/modules/tadtools/tad_function.php";
 
   $jquery_path = get_jquery(true); //一般只要此行即可
-  
+
   $block['jquery_path']=$jquery_path;
-  
-  
-	return $block;
+
+
+  return $block;
 }
 
 

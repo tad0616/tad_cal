@@ -16,44 +16,44 @@ include_once XOOPS_ROOT_PATH."/modules/tadtools/tad_function.php";
 function create_cate($title='',$sort='',$handle='',$enable_group='',$enable_upload_group='1',$google_id='',$google_pass=''){
   global $xoopsDB;
 
-	$myts =& MyTextSanitizer::getInstance();
-	$title=$myts->addSlashes($title);
+  $myts =& MyTextSanitizer::getInstance();
+  $title=$myts->addSlashes($title);
   if(empty($sort))$sort=tad_cal_cate_max_sort();
-    
-  $sql = "insert into ".$xoopsDB->prefix("tad_cal_cate")."
-	(`cate_title` , `cate_sort` , `cate_enable` , `cate_handle` , `enable_group` , `enable_upload_group` , `google_id` , `google_pass`, `cate_color`)
-	values('{$title}' , '{$sort}' , '1' , '{$handle}' , '{$enable_group}' , '{$enable_upload_group}' , '{$google_id}' , '{$google_pass}','rgb(0,0,0)')";
-	$xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
-	//取得最後新增資料的流水編號
-	$cate_sn=$xoopsDB->getInsertId();
 
-	//自動給顏色碼
-	$color=num2color($cate_sn);
-	$sql="update ".$xoopsDB->prefix("tad_cal_cate")." set `cate_bgcolor`='{$color}' where `cate_sn`='$cate_sn'";
-	$xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
-	return $cate_sn;
+  $sql = "insert into ".$xoopsDB->prefix("tad_cal_cate")."
+  (`cate_title` , `cate_sort` , `cate_enable` , `cate_handle` , `enable_group` , `enable_upload_group` , `google_id` , `google_pass`, `cate_color`)
+  values('{$title}' , '{$sort}' , '1' , '{$handle}' , '{$enable_group}' , '{$enable_upload_group}' , '{$google_id}' , '{$google_pass}','rgb(0,0,0)')";
+  $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+  //取得最後新增資料的流水編號
+  $cate_sn=$xoopsDB->getInsertId();
+
+  //自動給顏色碼
+  $color=num2color($cate_sn);
+  $sql="update ".$xoopsDB->prefix("tad_cal_cate")." set `cate_bgcolor`='{$color}' where `cate_sn`='$cate_sn'";
+  $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+  return $cate_sn;
 }
 
 
 //自動取得tad_cal_cate的最新排序
 function tad_cal_cate_max_sort(){
-	global $xoopsDB;
-	$sql = "select max(`cate_sort`) from ".$xoopsDB->prefix("tad_cal_cate");
-	$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
-	list($sort)=$xoopsDB->fetchRow($result);
-	return ++$sort;
+  global $xoopsDB;
+  $sql = "select max(`cate_sort`) from ".$xoopsDB->prefix("tad_cal_cate");
+  $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+  list($sort)=$xoopsDB->fetchRow($result);
+  return ++$sort;
 }
 
 
 
 //以流水號取得某筆tad_cal_cate資料
 function get_tad_cal_cate($cate_sn=""){
-	global $xoopsDB;
-	if(empty($cate_sn))return;
-	$sql = "select * from ".$xoopsDB->prefix("tad_cal_cate")." where cate_sn='$cate_sn'";
-	$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
-	$data=$xoopsDB->fetchArray($result);
-	return $data;
+  global $xoopsDB;
+  if(empty($cate_sn))return;
+  $sql = "select * from ".$xoopsDB->prefix("tad_cal_cate")." where cate_sn='$cate_sn'";
+  $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+  $data=$xoopsDB->fetchArray($result);
+  return $data;
 }
 
 
@@ -74,7 +74,7 @@ function num2color($cate_sn=''){
 //存入重複日期
 //$start='20111104T190000',$rule='RRULE:FREQ=WEEKLY;UNTIL=20111230;INTERVAL=2;BYDAY=FR'
 function rrule($sn='',$recurrence='',$allDay=null){
-	global $xoopsDB,$xoopsUser;
+  global $xoopsDB,$xoopsUser;
   include_once XOOPS_ROOT_PATH."/modules/tad_cal/class/rrule.php";
   include_once XOOPS_ROOT_PATH."/modules/tad_cal/class/ical.php";
 
@@ -108,12 +108,12 @@ function rrule($sn='',$recurrence='',$allDay=null){
 
   $sql = "delete from ".$xoopsDB->prefix("tad_cal_repeat")." where `sn`='{$sn}'";
 
-	$xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+  $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
 
   $sql = "insert into ".$xoopsDB->prefix("tad_cal_repeat")."
-	(`sn` , `start` , `end` , `allday`)
-	values{$sql_data}";
-	$xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+  (`sn` , `start` , `end` , `allday`)
+  values{$sql_data}";
+  $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
 }
 
 
@@ -130,26 +130,26 @@ function isAllDay($start="",$end=""){
 
 //取得tad_cal_cate行事曆選單的選項（單層選單）
 function get_tad_cal_cate_menu_options($default_cate_sn="0"){
-	global $xoopsDB,$xoopsModule;
+  global $xoopsDB,$xoopsModule;
 
   //取得目前使用者可編輯的行事曆
-	$edit_cate_arr=chk_cate_power('enable_upload_group');
+  $edit_cate_arr=chk_cate_power('enable_upload_group');
   $all_ok_cate=implode(",",$edit_cate_arr);
   $and_ok_cate=empty($all_ok_cate)?"cate_sn='0'":"cate_sn in($all_ok_cate)";
 
 
-	$sql = "select cate_sn,cate_title from ".$xoopsDB->prefix("tad_cal_cate")." where $and_ok_cate order by `cate_sort`";
-	$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
-	$total=$xoopsDB->getRowsNum($result);
+  $sql = "select cate_sn,cate_title from ".$xoopsDB->prefix("tad_cal_cate")." where $and_ok_cate order by `cate_sort`";
+  $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+  $total=$xoopsDB->getRowsNum($result);
   if(empty($total))return;
 
-	$option="";
-	while(list($cate_sn,$cate_title)=$xoopsDB->fetchRow($result)){
- 		$selected=($cate_sn==$default_cate_sn)?"selected=selected":"";
-		$option.="<option value=$cate_sn $selected>{$cate_title}</option>";
+  $option="";
+  while(list($cate_sn,$cate_title)=$xoopsDB->fetchRow($result)){
+    $selected=($cate_sn==$default_cate_sn)?"selected=selected":"";
+    $option.="<option value=$cate_sn $selected>{$cate_title}</option>";
 
-	}
-	return $option;
+  }
+  return $option;
 }
 
 function setTimezoneByOffset($offset){
@@ -210,60 +210,60 @@ function get_all_groups(){
 
 //判斷某人在哪些類別中有觀看或發表(enable_upload_group)的權利
 function chk_cate_power($kind="enable_group"){
-	global $xoopsDB,$xoopsUser,$xoopsModule,$isAdmin;
-	if(!empty($xoopsUser)){
-		if($isAdmin){
-	    $ok_cat[]="0";
-		}
-		$user_array=$xoopsUser->getGroups();
-	}else{
+  global $xoopsDB,$xoopsUser,$xoopsModule,$isAdmin;
+  if(!empty($xoopsUser)){
+    if($isAdmin){
+      $ok_cat[]="0";
+    }
+    $user_array=$xoopsUser->getGroups();
+  }else{
     $user_array=array(3);
     $isAdmin=0;
-	}
+  }
 
-	$sql = "select `cate_sn`,`{$kind}`,`cate_enable` from ".$xoopsDB->prefix("tad_cal_cate")."";
-	$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+  $sql = "select `cate_sn`,`{$kind}`,`cate_enable` from ".$xoopsDB->prefix("tad_cal_cate")."";
+  $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
 
-	while(list($cate_sn,$power,$cate_enable)=$xoopsDB->fetchRow($result)){
+  while(list($cate_sn,$power,$cate_enable)=$xoopsDB->fetchRow($result)){
     if(empty($cate_enable))continue;
-	  if($isAdmin or empty($power)){
+    if($isAdmin or empty($power)){
       $ok_cat[]=$cate_sn;
-		}else{
-			$power_array=explode(",",$power);
-			foreach($power_array as $gid){
-				if(in_array($gid,$user_array)){
-					$ok_cat[]=$cate_sn;
-					break;
-				}
-			}
-		}
-	}
+    }else{
+      $power_array=explode(",",$power);
+      foreach($power_array as $gid){
+        if(in_array($gid,$user_array)){
+          $ok_cat[]=$cate_sn;
+          break;
+        }
+      }
+    }
+  }
 
-	return $ok_cat;
+  return $ok_cat;
 }
 
 
 //取得tad_cal_cate所有資料陣列
 function get_tad_cal_cate_all(){
-	global $xoopsDB;
-	$sql = "select * from ".$xoopsDB->prefix("tad_cal_cate");
-	$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
-	while($data=$xoopsDB->fetchArray($result)){
-		$cate_sn=$data['cate_sn'];
-		$data_arr[$cate_sn]=$data;
-	}
-	return $data_arr;
+  global $xoopsDB;
+  $sql = "select * from ".$xoopsDB->prefix("tad_cal_cate");
+  $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+  while($data=$xoopsDB->fetchArray($result)){
+    $cate_sn=$data['cate_sn'];
+    $data_arr[$cate_sn]=$data;
+  }
+  return $data_arr;
 }
 
 
 //全部同步
 function tad_cal_all_sync(){
-	global $xoopsDB,$xoopsModule;
+  global $xoopsDB,$xoopsModule;
 
-	$sql = "select cate_sn from ".$xoopsDB->prefix("tad_cal_cate")." where `cate_handle`!=''";
-	$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+  $sql = "select cate_sn from ".$xoopsDB->prefix("tad_cal_cate")." where `cate_handle`!=''";
+  $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
 
-	while(list($cate_sn)=$xoopsDB->fetchRow($result)){
+  while(list($cate_sn)=$xoopsDB->fetchRow($result)){
     import_google($cate_sn);
   }
 }
@@ -271,17 +271,17 @@ function tad_cal_all_sync(){
 
 //匯入事件
 function import_google($cate_sn=""){
-	global $xoopsDB,$xoopsUser;
+  global $xoopsDB,$xoopsUser;
   if( !ini_get('safe_mode') ){
     set_time_limit(0);
   }
 
-	//取得使用者編號
-	$uid=($xoopsUser)?$xoopsUser->getVar('uid'):"";
+  //取得使用者編號
+  $uid=($xoopsUser)?$xoopsUser->getVar('uid'):"";
 
-	$sql = "select * from ".$xoopsDB->prefix("tad_cal_cate")." where cate_sn='$cate_sn'";
-	$result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
-	$all=$xoopsDB->fetchArray($result);
+  $sql = "select * from ".$xoopsDB->prefix("tad_cal_cate")." where cate_sn='$cate_sn'";
+  $result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+  $all=$xoopsDB->fetchArray($result);
 
   //以下會產生這些變數： $cate_sn , $cate_title , $cate_sort , $cate_enable , $cate_handle , $enable_group , $enable_upload_group , $google_id , $google_pass
   foreach($all as $k=>$v){
@@ -303,7 +303,7 @@ function import_google($cate_sn=""){
   }
   //echo "<h3>{$cal['title']} ({$cal['handle']}) 共 {$Events['data']['totalResults']} 筆資料</h3>";
 
-	$myts =& MyTextSanitizer::getInstance();
+  $myts =& MyTextSanitizer::getInstance();
   $now=date('Y-m-d H:i:s',time());
 
   foreach($Events['data']['items'] as $k1=>$v1){
@@ -326,33 +326,33 @@ function import_google($cate_sn=""){
     $allday=isAllDay($v1['when'][0]['start'],$v1['when'][0]['end']);
 
 
-  	$sql = "insert into ".$xoopsDB->prefix("tad_cal_event")."
-  	(`title` , `start` , `end` , `recurrence` , `location` , `kind` , `details` , `etag` , `id` , `sequence` , `uid` , `cate_sn` , `allday` , `tag` , `last_update`)
-  	values('{$title}' , '{$v1['when'][0]['start']}' , '{$v1['when'][0]['end']}' , '{$recurrence}' , '{$location}' , '{$kind}' , '{$details}' , '{$etag}' , '{$id}' , '{$sequence}' , '{$uid}' , '{$cate_sn}' , '{$allday}' , '{$tag}' , '{$now}') ON DUPLICATE KEY UPDATE `title`='{$title}' , `start`='{$v1['when'][0]['start']}' , `end`='{$v1['when'][0]['end']}' , `recurrence`='{$recurrence}' , `location`='{$location}' , `kind`='{$kind}' , `details`='{$details}' , `etag`='{$etag}' , `id`='{$id}' , `sequence`='{$sequence}' , `uid`= '{$uid}' , `cate_sn`='{$cate_sn}' , `allday`='{$allday}' , `tag`='{$tag}' , `last_update`='{$now}'";
-  	$xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+    $sql = "insert into ".$xoopsDB->prefix("tad_cal_event")."
+    (`title` , `start` , `end` , `recurrence` , `location` , `kind` , `details` , `etag` , `id` , `sequence` , `uid` , `cate_sn` , `allday` , `tag` , `last_update`)
+    values('{$title}' , '{$v1['when'][0]['start']}' , '{$v1['when'][0]['end']}' , '{$recurrence}' , '{$location}' , '{$kind}' , '{$details}' , '{$etag}' , '{$id}' , '{$sequence}' , '{$uid}' , '{$cate_sn}' , '{$allday}' , '{$tag}' , '{$now}') ON DUPLICATE KEY UPDATE `title`='{$title}' , `start`='{$v1['when'][0]['start']}' , `end`='{$v1['when'][0]['end']}' , `recurrence`='{$recurrence}' , `location`='{$location}' , `kind`='{$kind}' , `details`='{$details}' , `etag`='{$etag}' , `id`='{$id}' , `sequence`='{$sequence}' , `uid`= '{$uid}' , `cate_sn`='{$cate_sn}' , `allday`='{$allday}' , `tag`='{$tag}' , `last_update`='{$now}'";
+    $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
 
-   	//取得最後新增資料的流水編號
-  	$sn=$xoopsDB->getInsertId();
+    //取得最後新增資料的流水編號
+    $sn=$xoopsDB->getInsertId();
 
-  	//重複事件
-  	rrule($sn,$recurrence,$allday);
+    //重複事件
+    rrule($sn,$recurrence,$allday);
   }
 
 }
 /********************* 預設函數 *********************/
 //圓角文字框
 function div_3d($title="",$main="",$kind="raised",$style="",$other=""){
-	$main="<table style='width:auto;{$style}'><tr><td>
-	<div class='{$kind}'>
-	<h1>$title</h1>
-	$other
-	<b class='b1'></b><b class='b2'></b><b class='b3'></b><b class='b4'></b>
-	<div class='boxcontent'>
- 	$main
-	</div>
-	<b class='b4b'></b><b class='b3b'></b><b class='b2b'></b><b class='b1b'></b>
-	</div>
-	</td></tr></table>";
-	return $main;
+  $main="<table style='width:auto;{$style}'><tr><td>
+  <div class='{$kind}'>
+  <h1>$title</h1>
+  $other
+  <b class='b1'></b><b class='b2'></b><b class='b3'></b><b class='b4'></b>
+  <div class='boxcontent'>
+  $main
+  </div>
+  <b class='b4b'></b><b class='b3b'></b><b class='b2b'></b><b class='b1b'></b>
+  </div>
+  </td></tr></table>";
+  return $main;
 }
 ?>

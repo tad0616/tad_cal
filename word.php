@@ -1,7 +1,7 @@
 <?php
 include_once "header.php";
 
-  
+
 $page_title="{$_POST['start']}~{$_POST['end']}"._MD_TADCAL_SIMPLE_CAL;
 require_once XOOPS_ROOT_PATH."/modules/tadtools/PHPWord.php";
 $PHPWord = new PHPWord();
@@ -11,7 +11,7 @@ $sectionStyle = array('orientation' => 'portrait');
 $section = $PHPWord->createSection($sectionStyle);
 
 $fontStyle = array('color'=>'000000', 'size'=>20, 'bold'=>true);
-$PHPWord->addTitleStyle( 1, $fontStyle ); 
+$PHPWord->addTitleStyle( 1, $fontStyle );
 $section->addTitle( $page_title, 1);
 
 $styleTable = array('borderColor'=>'000000', 'borderSize'=>6, 'cellMargin'=>50);
@@ -32,7 +32,7 @@ $ok_cate_arr=chk_cate_power('enable_group');
 if(!empty($_POST['cate_sn'])){
   foreach($_POST['cate_sn'] as $cate_sn){
     $ok_arr[]=in_array($cate_sn , $ok_cate_arr);
-  }  
+  }
 }else{
   $ok_arr[]=$ok_cate_arr;
 }
@@ -87,8 +87,8 @@ foreach($all_event as $start=>$arr){
   $content=implode("\n",$cell);
   $table->addCell(11000, $cellStyle)->addText($content); //新增一格
 }
-    
-  
+
+
 header('Content-Type: application/vnd.ms-word');
 header("Content-Disposition: attachment;filename={$page_title}.docx");
 header('Cache-Control: max-age=0');

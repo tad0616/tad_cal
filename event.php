@@ -12,82 +12,82 @@ include_once XOOPS_ROOT_PATH."/header.php";
 
 //tad_cal_event編輯表單 $mode=ajax
 function tad_cal_event_form($sn="",$mode='',$stamp=""){
-	global $xoopsDB,$xoopsUser,$xoopsTpl;
+  global $xoopsDB,$xoopsUser,$xoopsTpl;
   include_once XOOPS_ROOT_PATH."/modules/tad_cal/class/ical.php";
-	//include_once(XOOPS_ROOT_PATH."/class/xoopsformloader.php");
-	//include_once(XOOPS_ROOT_PATH."/class/xoopseditor/xoopseditor.php");
-	if(!$xoopsUser){
+  //include_once(XOOPS_ROOT_PATH."/class/xoopsformloader.php");
+  //include_once(XOOPS_ROOT_PATH."/class/xoopseditor/xoopseditor.php");
+  if(!$xoopsUser){
     redirect_header("index.php",3, _MD_TADCAL_NEED_LOGIN);
     exit;
   }
-  
-	//抓取預設值
-	if(!empty($sn)){
-		$DBV=get_tad_cal_event($sn);
-	}else{
-		$DBV=array();
-	}
 
-	//預設值設定
+  //抓取預設值
+  if(!empty($sn)){
+    $DBV=get_tad_cal_event($sn);
+  }else{
+    $DBV=array();
+  }
+
+  //預設值設定
 
 
-	//設定「sn」欄位預設值
-	$sn=(!isset($DBV['sn']))?$sn:$DBV['sn'];
+  //設定「sn」欄位預設值
+  $sn=(!isset($DBV['sn']))?$sn:$DBV['sn'];
 
-	//設定「title」欄位預設值
-	$title=(!isset($DBV['title']))?"":$DBV['title'];
+  //設定「title」欄位預設值
+  $title=(!isset($DBV['title']))?"":$DBV['title'];
 
-	//設定「start」欄位預設值
-	$start=(!isset($DBV['start']))?date("Y-m-d H:00"):substr($DBV['start'],0,16);
+  //設定「start」欄位預設值
+  $start=(!isset($DBV['start']))?date("Y-m-d H:00"):substr($DBV['start'],0,16);
 
-	//設定「end」欄位預設值
-	$end=(!isset($DBV['end']))?date("Y-m-d H:00"):substr($DBV['end'],0,16);
+  //設定「end」欄位預設值
+  $end=(!isset($DBV['end']))?date("Y-m-d H:00"):substr($DBV['end'],0,16);
 
-	//設定「recurrence」欄位預設值
-	$recurrence=(!isset($DBV['recurrence']))?"":$DBV['recurrence'];
-	$repeat=empty($recurrence)?0:1;
+  //設定「recurrence」欄位預設值
+  $recurrence=(!isset($DBV['recurrence']))?"":$DBV['recurrence'];
+  $repeat=empty($recurrence)?0:1;
 
-	//設定「location」欄位預設值
-	$location=(!isset($DBV['location']))?"":$DBV['location'];
+  //設定「location」欄位預設值
+  $location=(!isset($DBV['location']))?"":$DBV['location'];
 
-	//設定「kind」欄位預設值
-	$kind=(!isset($DBV['kind']))?"event":$DBV['kind'];
+  //設定「kind」欄位預設值
+  $kind=(!isset($DBV['kind']))?"event":$DBV['kind'];
 
-	//設定「details」欄位預設值
-	$details=(!isset($DBV['details']))?"":$DBV['details'];
+  //設定「details」欄位預設值
+  $details=(!isset($DBV['details']))?"":$DBV['details'];
 
-	//設定「etag」欄位預設值
-	$etag=(!isset($DBV['etag']))?"":$DBV['etag'];
+  //設定「etag」欄位預設值
+  $etag=(!isset($DBV['etag']))?"":$DBV['etag'];
 
-	//設定「id」欄位預設值
-	$id=(!isset($DBV['id']))?"":$DBV['id'];
+  //設定「id」欄位預設值
+  $id=(!isset($DBV['id']))?"":$DBV['id'];
 
-	//設定「sequence」欄位預設值
-	$sequence=(!isset($DBV['sequence']))?tad_cal_event_max_sort():$DBV['sequence'];
+  //設定「sequence」欄位預設值
+  $sequence=(!isset($DBV['sequence']))?tad_cal_event_max_sort():$DBV['sequence'];
 
-	//設定「uid」欄位預設值
-	$user_uid=($xoopsUser)?$xoopsUser->uid():"";
-	$uid=(!isset($DBV['uid']))?$user_uid:$DBV['uid'];
+  //設定「uid」欄位預設值
+  $user_uid=($xoopsUser)?$xoopsUser->uid():"";
+  $uid=(!isset($DBV['uid']))?$user_uid:$DBV['uid'];
 
-	//設定「cate_sn」欄位預設值
-	$cate_sn=(!isset($DBV['cate_sn']))?"":$DBV['cate_sn'];
-	
-	//設定「allday」欄位預設值
-	$allday=(!isset($DBV['allday']))?"1":$DBV['allday'];
-	
-	//設定「tag」欄位預設值
-	$tag=(!isset($DBV['tag']))?"":$DBV['tag'];
-	
+  //設定「cate_sn」欄位預設值
+  $cate_sn=(!isset($DBV['cate_sn']))?"":$DBV['cate_sn'];
 
-	$op=(empty($sn))?"insert_tad_cal_event":"update_tad_cal_event";
-	//$op="replace_tad_cal_event";
-	
-	$get_tad_cal_cate_menu_options=get_tad_cal_cate_menu_options($cate_sn);
-	if(empty($get_tad_cal_cate_menu_options)){
+  //設定「allday」欄位預設值
+  $allday=(!isset($DBV['allday']))?"1":$DBV['allday'];
+
+  //設定「tag」欄位預設值
+  $tag=(!isset($DBV['tag']))?"":$DBV['tag'];
+
+
+  $op=(empty($sn))?"insert_tad_cal_event":"update_tad_cal_event";
+  //$op="replace_tad_cal_event";
+
+  $get_tad_cal_cate_menu_options=get_tad_cal_cate_menu_options($cate_sn);
+  if(empty($get_tad_cal_cate_menu_options)){
     if($isAdmin){
       $of_cate_title=_MD_TADCAL_NEW_CATE;
       $cate_col="<input name='new_cate_title' id='new_cate_title' value='"._MD_TADCAL_NEW_CALENDAR."' class='span4'>";
-  	}else{
+    }else{
       redirect_header("index.php",3, _MD_TADCAL_NO_POWER);
       exit;
     }
@@ -95,18 +95,18 @@ function tad_cal_event_form($sn="",$mode='',$stamp=""){
       $of_cate_title=_MD_TADCAL_CATE_SN;
       $cate_col="
       <select name='cate_sn' size=1 class='span4'>
-  		{$get_tad_cal_cate_menu_options}
+      {$get_tad_cal_cate_menu_options}
       </select>";
   }
-  
-  
+
+
   $xoopsTpl->assign("of_cate_title" , $of_cate_title);
   $xoopsTpl->assign("cate_col" , $cate_col);
-	
-	//紀錄目前結束-開始的時間差
-	$long=strtotime($end)-strtotime($start);
 
-	$rrule_array="";
+  //紀錄目前結束-開始的時間差
+  $long=strtotime($end)-strtotime($start);
+
+  $rrule_array="";
   $rrule_arr=array();
   if(!empty($recurrence)){
     $ical=new ical();
@@ -134,9 +134,9 @@ function tad_cal_event_form($sn="",$mode='',$stamp=""){
     $rrule_arr['RRULE']['INTERVAL']='';
     $rrule_arr['RRULE']['BYDAY']='';
     $rrule_arr['RRULE']['UNTIL']='';
-    
+
   }
-  
+
   if($repeat){
     $format=($allday)?"Y-m-d":"Y-m-d H:i";
     $start=date($format,$rrule_arr['DTSTART']['unixtime']);
@@ -161,7 +161,7 @@ function tad_cal_event_form($sn="",$mode='',$stamp=""){
       <input type='checkbox' name='BYDAY[]' value='{$en}' id='{$en}' $checked> {$ch}
     </label> ";
   }
-  
+
   //$rrule_arr['RRULE']['BYDAY']
 
   if(!empty($rrule_arr['RRULE']['UNTIL'])){
@@ -171,7 +171,7 @@ function tad_cal_event_form($sn="",$mode='',$stamp=""){
   }else{
     $ENDType='none';
   }
-  
+
   if(isset($rrule_arr['RRULE']['FREQ']) and $rrule_arr['RRULE']['FREQ']=='YEARLY'){
     $repeat_unit=_MD_TADCAL_Y;
   }elseif(isset($rrule_arr['RRULE']['FREQ']) and $rrule_arr['RRULE']['FREQ']=='MONTHLY'){
@@ -183,7 +183,7 @@ function tad_cal_event_form($sn="",$mode='',$stamp=""){
   }else{
     $repeat_unit=_MD_TADCAL_D;
   }
-  
+
   $UNTIL=($allday)?$rrule_arr['RRULE']['UNTIL']:date("Y-m-d",strtotime($rrule_arr['RRULE']['UNTIL']));
 
   $xoopsTpl->assign("chk_DAILY" , chk($rrule_arr["RRULE"]["FREQ"],"DAILY",1,"selected"));
@@ -202,7 +202,7 @@ function tad_cal_event_form($sn="",$mode='',$stamp=""){
   $xoopsTpl->assign("UNTIL" , $UNTIL);
 
 
-	if(!file_exists(TADTOOLS_PATH."/formValidator.php")){
+  if(!file_exists(TADTOOLS_PATH."/formValidator.php")){
    redirect_header("index.php",3, _MD_NEED_TADTOOLS);
   }
   include_once TADTOOLS_PATH."/formValidator.php";
@@ -220,8 +220,8 @@ function tad_cal_event_form($sn="",$mode='',$stamp=""){
   $show_week_repeat=($rrule_arr['RRULE']['FREQ']=='WEEKLY')?"$('#week_repeat').show();":"$('#week_repeat').hide();";
   $show_month_repeat=($rrule_arr['RRULE']['FREQ']=='MONTHLY')?"$('#month_repeat').show();":"$('#month_repeat').hide();";
   $show_allday_date=($allday)?"$('#start').hide().attr('disabled','disabled');\n$('#end').hide().attr('disabled','disabled');":"$('#start_allday').hide().attr('disabled','disabled');\n$('#end_allday').hide().attr('disabled','disabled');";
-  
-	
+
+
   $xoopsTpl->assign("next_op" , $op);
   $xoopsTpl->assign("sequence" , $sequence);
   $xoopsTpl->assign("id" , $id);
@@ -244,44 +244,44 @@ function tad_cal_event_form($sn="",$mode='',$stamp=""){
   $xoopsTpl->assign("cate_col" , $cate_col);
   $xoopsTpl->assign("op" , 'tad_cal_event_form');
   $xoopsTpl->assign("sn" , $sn);
-  
-  
+
+
 }
 
 
 //自動取得tad_cal_event的最新排序
 function tad_cal_event_max_sort(){
-	global $xoopsDB;
-	$sql = "select max(`sequence`) from ".$xoopsDB->prefix("tad_cal_event");
-	$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
-	list($sort)=$xoopsDB->fetchRow($result);
-	return ++$sort;
+  global $xoopsDB;
+  $sql = "select max(`sequence`) from ".$xoopsDB->prefix("tad_cal_event");
+  $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+  list($sort)=$xoopsDB->fetchRow($result);
+  return ++$sort;
 }
 
 
 //新增資料到tad_cal_event中
 function insert_tad_cal_event(){
-	global $xoopsDB,$xoopsUser;
+  global $xoopsDB,$xoopsUser;
 
   $cate_sn=intval($_POST['cate_sn']);
 
-	//取得使用者編號
-	$uid=($xoopsUser)?$xoopsUser->getVar('uid'):"";
+  //取得使用者編號
+  $uid=($xoopsUser)?$xoopsUser->getVar('uid'):"";
 
-	$myts =& MyTextSanitizer::getInstance();
-	$_POST['title']=$myts->addSlashes($_POST['title']);
-	$_POST['location']=$myts->addSlashes($_POST['location']);
-	$_POST['details']=$myts->addSlashes($_POST['details']);
-	$_POST['new_cate_title']=$myts->addSlashes($_POST['new_cate_title']);
+  $myts =& MyTextSanitizer::getInstance();
+  $_POST['title']=$myts->addSlashes($_POST['title']);
+  $_POST['location']=$myts->addSlashes($_POST['location']);
+  $_POST['details']=$myts->addSlashes($_POST['details']);
+  $_POST['new_cate_title']=$myts->addSlashes($_POST['new_cate_title']);
 
   //若無分類編號，那就是要新增行事曆
   if(empty($cate_sn)){
     if(empty($_POST['new_cate_title']))$_POST['new_cate_title']=_MD_TADCAL_NEW_CALENDAR;
     $cate_sn=create_cate($_POST['new_cate_title']);
   }
-  
+
   $allDay=!empty($_POST['fc_start'])?1:$_POST['allday'];
-  
+
   //fc_start 和 fc_end 是從 js 的 ajax 來的，如搬移、點擊新增
   if($allDay=='1'){
     $start=!empty($_POST['fc_start'])?date("Y-m-d",$_POST['fc_start']/1000):date("Y-m-d",strtotime($_POST['start']));
@@ -299,7 +299,7 @@ function insert_tad_cal_event(){
     $TZ=date('e'); //Asia/Taipei
     $DTSTART="DTSTART;TZID={$TZ}:{$rrule_start}\nDTEND;TZID={$TZ}:{$rrule_end}\n";
   }
-  
+
   $recurrence="";
   if($_POST['repeat']=='1'){
   //FREQ=(YEARLY|MONTHLY|WEEKLY|DAILY) UNTIL= COUNT= INTERVAL= BYDAY= BYMONTHDAY= BYSETPOS= WKST= BYYEARDAY= BYWEEKNO= BYMONTH=
@@ -317,7 +317,7 @@ function insert_tad_cal_event(){
         $BYDAY="BYDAY=".getWeekOfTheMonth($startTime).strtoupper(substr(date("D",$startTime),0,2)).";";
       }
     }
-    
+
     $COUNT=$UNTIL="";
     if($_POST['END']=='count'){
       $counter=empty($_POST['COUNT'])?1:intval($_POST['COUNT']);
@@ -332,43 +332,43 @@ function insert_tad_cal_event(){
       }
       $UNTIL="UNTIL={$untilday};";
     }
-    
+
     $recurrence=substr("{$DTSTART}RRULE:FREQ={$_POST['FREQ']};{$COUNT}{$UNTIL}{$INTERVAL}{$BYDAY}{$BYMONTHDAY}",0,-1);
     $start=$end="0000-00-00 00:00:00";
   }
-  
 
-	$sql = "insert into ".$xoopsDB->prefix("tad_cal_event")."
-	(`title` , `start` , `end` , `recurrence` , `location` , `kind` , `details` , `etag` , `id` , `sequence` , `uid` , `cate_sn` , `allday`)
-	values('{$_POST['title']}' , '{$start}' , '{$end}' , '{$recurrence}' , '{$_POST['location']}' , '{$_POST['kind']}' , '{$_POST['details']}' , '{$_POST['etag']}' , '{$_POST['id']}' , '{$_POST['sequence']}' , '{$uid}' , '{$cate_sn}' , '{$allDay}')";
-	//die($sql);
-	$xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
 
-	//取得最後新增資料的流水編號
-	$sn=$xoopsDB->getInsertId();
-	
-	//更新 id
-	$sql = "update ".$xoopsDB->prefix("tad_cal_event")." set `id` = '{$sn}' where sn='$sn'";
-	$xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
-	
+  $sql = "insert into ".$xoopsDB->prefix("tad_cal_event")."
+  (`title` , `start` , `end` , `recurrence` , `location` , `kind` , `details` , `etag` , `id` , `sequence` , `uid` , `cate_sn` , `allday`)
+  values('{$_POST['title']}' , '{$start}' , '{$end}' , '{$recurrence}' , '{$_POST['location']}' , '{$_POST['kind']}' , '{$_POST['details']}' , '{$_POST['etag']}' , '{$_POST['id']}' , '{$_POST['sequence']}' , '{$uid}' , '{$cate_sn}' , '{$allDay}')";
+  //die($sql);
+  $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
 
-	//重複事件
-	rrule($sn,$recurrence,$allDay);
-	
-	return $sn;
+  //取得最後新增資料的流水編號
+  $sn=$xoopsDB->getInsertId();
+
+  //更新 id
+  $sql = "update ".$xoopsDB->prefix("tad_cal_event")." set `id` = '{$sn}' where sn='$sn'";
+  $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+
+
+  //重複事件
+  rrule($sn,$recurrence,$allDay);
+
+  return $sn;
 }
 
 //更新tad_cal_event某一筆資料
 function update_tad_cal_event($sn=""){
-	global $xoopsDB,$xoopsUser;
+  global $xoopsDB,$xoopsUser;
 //die(var_export($_POST));
-	//取得使用者編號
-	$uid=($xoopsUser)?$xoopsUser->getVar('uid'):"";
+  //取得使用者編號
+  $uid=($xoopsUser)?$xoopsUser->getVar('uid'):"";
 
-	$myts =& MyTextSanitizer::getInstance();
-	$_POST['title']=$myts->addSlashes($_POST['title']);
-	$_POST['location']=$myts->addSlashes($_POST['location']);
-	$_POST['details']=$myts->addSlashes($_POST['details']);
+  $myts =& MyTextSanitizer::getInstance();
+  $_POST['title']=$myts->addSlashes($_POST['title']);
+  $_POST['location']=$myts->addSlashes($_POST['location']);
+  $_POST['details']=$myts->addSlashes($_POST['details']);
 
 
   $allDay=!empty($_POST['fc_start'])?1:$_POST['allday'];
@@ -427,65 +427,65 @@ function update_tad_cal_event($sn=""){
     $start=$end="0000-00-00 00:00:00";
   }
 
-	$sql = "update ".$xoopsDB->prefix("tad_cal_event")." set
-	 `title` = '{$_POST['title']}' ,
-	 `start` = '{$start}' ,
-	 `end` = '{$end}' ,
-	 `recurrence` = '{$recurrence}' ,
-	 `location` = '{$_POST['location']}' ,
-	 `kind` = '{$_POST['kind']}' ,
-	 `details` = '{$_POST['details']}' ,
-	 `etag` = '{$_POST['etag']}' ,
-	 `id` = '{$_POST['id']}' ,
-	 `sequence` = '{$_POST['sequence']}' ,
-	 `uid` = '{$uid}' ,
-	 `cate_sn` = '{$_POST['cate_sn']}',
-	 `allday` = '{$allDay}' ,
+  $sql = "update ".$xoopsDB->prefix("tad_cal_event")." set
+   `title` = '{$_POST['title']}' ,
+   `start` = '{$start}' ,
+   `end` = '{$end}' ,
+   `recurrence` = '{$recurrence}' ,
+   `location` = '{$_POST['location']}' ,
+   `kind` = '{$_POST['kind']}' ,
+   `details` = '{$_POST['details']}' ,
+   `etag` = '{$_POST['etag']}' ,
+   `id` = '{$_POST['id']}' ,
+   `sequence` = '{$_POST['sequence']}' ,
+   `uid` = '{$uid}' ,
+   `cate_sn` = '{$_POST['cate_sn']}',
+   `allday` = '{$allDay}' ,
    `tag` = '{$_POST['tag']}'
-	where sn='$sn'";
-	$xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+  where sn='$sn'";
+  $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
 
-	//重複事件
-	rrule($sn,$recurrence,$allDay);
-	return $sn;
+  //重複事件
+  rrule($sn,$recurrence,$allDay);
+  return $sn;
 }
 
 //列出所有tad_cal_event資料
 function list_tad_cal_event(){
-	global $xoopsDB,$xoopsModule,$xoopsUser,$isAdmin,$xoopsTpl;
+  global $xoopsDB,$xoopsModule,$xoopsUser,$isAdmin,$xoopsTpl;
 
-	$cate=get_tad_cal_cate_all();
-	
-	$now_uid=($xoopsUser)?$xoopsUser->uid():0;
+  $cate=get_tad_cal_cate_all();
+
+  $now_uid=($xoopsUser)?$xoopsUser->uid():0;
 
   //取得目前使用者可讀的群組
-	$ok_cate_arr=chk_cate_power('enable_group');
+  $ok_cate_arr=chk_cate_power('enable_group');
   $all_ok_cate=implode(",",$ok_cate_arr);
   $and_ok_cate=empty($all_ok_cate)?"cate_sn='0'":"a.cate_sn in($all_ok_cate)";
-	
-	//可編輯的行事曆
-	$edit_cate_arr=chk_cate_power('enable_upload_group');
 
-	$show_function=sizeof($edit_cate_arr)?1:0;
+  //可編輯的行事曆
+  $edit_cate_arr=chk_cate_power('enable_upload_group');
 
-	
-	//$sql = "select * from ".$xoopsDB->prefix("tad_cal_event")."  where $and_ok_cate order by start desc , sequence";
-    
+  $show_function=sizeof($edit_cate_arr)?1:0;
+
+
+  //$sql = "select * from ".$xoopsDB->prefix("tad_cal_event")."  where $and_ok_cate order by start desc , sequence";
+
     $now=date("Y-m-d H:i:s" , xoops_getUserTimestamp(time()));
-	$sql = "select a.*,b.start as re_start,b.end as re_end from ".$xoopsDB->prefix("tad_cal_event")." as a left join ".$xoopsDB->prefix("tad_cal_repeat")." as b on a.sn=b.sn and b.start < '{$now}'  where $and_ok_cate order by b.start desc,a.start desc , a.sequence";
-	//getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
+  $sql = "select a.*,b.start as re_start,b.end as re_end from ".$xoopsDB->prefix("tad_cal_event")." as a left join ".$xoopsDB->prefix("tad_cal_repeat")." as b on a.sn=b.sn and b.start < '{$now}'  where $and_ok_cate order by b.start desc,a.start desc , a.sequence";
+  //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
   $PageBar=getPageBar($sql,20,10);
   $bar=$PageBar['bar'];
   $sql=$PageBar['sql'];
   $total=$PageBar['total'];
 
-	$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'] ,3, mysql_error());
+  $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'] ,3, mysql_error());
 
 
-	$all_content="";
+  $all_content="";
 
-	while($all=$xoopsDB->fetchArray($result)){
-	  //以下會產生這些變數： $sn , $title , $start , $end , $recurrence , $location , $kind , $details , $etag , $id , $sequence , $uid , $cate_sn
+  while($all=$xoopsDB->fetchArray($result)){
+    //以下會產生這些變數： $sn , $title , $start , $end , $recurrence , $location , $kind , $details , $etag , $id , $sequence , $uid , $cate_sn
     foreach($all as $k=>$v){
       $$k=$v;
     }
@@ -498,16 +498,16 @@ function list_tad_cal_event(){
     //避免截掉半個中文字
     $details=xoops_substr(strip_tags($details), 0, 60);
 
-		$fun=($show_function and ($isAdmin or $now_uid==$uid))?"
-		<td>
-		<a href='{$_SERVER['PHP_SELF']}?op=tad_cal_event_form&sn=$sn' class='btn btn-mini btn-warning'>"._TAD_EDIT."</a>
-		<a href=\"javascript:delete_tad_cal_event_func($sn);\" class='btn btn-mini btn-danger'>"._TAD_DEL."</a>
-		</td>":"";
+    $fun=($show_function and ($isAdmin or $now_uid==$uid))?"
+    <td>
+    <a href='{$_SERVER['PHP_SELF']}?op=tad_cal_event_form&sn=$sn' class='btn btn-mini btn-warning'>"._TAD_EDIT."</a>
+    <a href=\"javascript:delete_tad_cal_event_func($sn);\" class='btn btn-mini btn-danger'>"._TAD_DEL."</a>
+    </td>":"";
 
-		$re=($start=="0000-00-00 00:00:00")?"*":"";
-		$start=($start=="0000-00-00 00:00:00")?$re_start:$start;
-		$end=($end=="0000-00-00 00:00:00")?$re_end:$end;
-		
+    $re=($start=="0000-00-00 00:00:00")?"*":"";
+    $start=($start=="0000-00-00 00:00:00")?$re_start:$start;
+    $end=($end=="0000-00-00 00:00:00")?$re_end:$end;
+
     $date=show_date($start,$end,$allday);
 
     $all_content[$i]['date']=$date;
@@ -518,69 +518,69 @@ function list_tad_cal_event(){
     $all_content[$i]['location']=$location;
     $all_content[$i]['cate_title']=$cate[$cate_sn]['cate_title'];
     $i++;
-	}
+  }
 
 
 
-	$xoopsTpl->assign('op' , 'list_tad_cal_event');
-	$xoopsTpl->assign('bar' , $bar);
-	$xoopsTpl->assign('add' , $add);
-	$xoopsTpl->assign('all_content' , $all_content);
+  $xoopsTpl->assign('op' , 'list_tad_cal_event');
+  $xoopsTpl->assign('bar' , $bar);
+  $xoopsTpl->assign('add' , $add);
+  $xoopsTpl->assign('all_content' , $all_content);
 }
 
 
 //以流水號取得某筆tad_cal_event資料
 function get_tad_cal_event($sn=""){
-	global $xoopsDB;
-	if(empty($sn))return;
-	$sql = "select * from ".$xoopsDB->prefix("tad_cal_event")." where sn='$sn'";
-	$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
-	$data=$xoopsDB->fetchArray($result);
-	return $data;
+  global $xoopsDB;
+  if(empty($sn))return;
+  $sql = "select * from ".$xoopsDB->prefix("tad_cal_event")." where sn='$sn'";
+  $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+  $data=$xoopsDB->fetchArray($result);
+  return $data;
 }
 
 //刪除tad_cal_event某筆資料資料
 function delete_tad_cal_event($sn=""){
-	global $xoopsDB,$xoopsUser,$isAdmin;
-	$uid=$xoopsUser->uid();
-	$andUID=($isAdmin)?"":"and uid='$uid'";
-	$sql = "delete from ".$xoopsDB->prefix("tad_cal_event")." where sn='$sn' $andUID";
-	if($xoopsDB->queryF($sql)){
-  	$sql = "delete from ".$xoopsDB->prefix("tad_cal_repeat")." where sn='$sn'";
-  	$xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
-	}else{
+  global $xoopsDB,$xoopsUser,$isAdmin;
+  $uid=$xoopsUser->uid();
+  $andUID=($isAdmin)?"":"and uid='$uid'";
+  $sql = "delete from ".$xoopsDB->prefix("tad_cal_event")." where sn='$sn' $andUID";
+  if($xoopsDB->queryF($sql)){
+    $sql = "delete from ".$xoopsDB->prefix("tad_cal_repeat")." where sn='$sn'";
+    $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+  }else{
     redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
   }
 }
 
 //以流水號秀出某筆tad_cal_event資料內容
 function show_one_tad_cal_event($sn="",$stamp=""){
-	global $xoopsDB,$xoopsModule,$xoopsUser,$isAdmin,$xoopsModuleConfig,$xoopsTpl;
+  global $xoopsDB,$xoopsModule,$xoopsUser,$isAdmin,$xoopsModuleConfig,$xoopsTpl;
 
-  $xoopsTpl->assign('op','show_one_tad_cal_event');  
-  
-	if(empty($sn)){
-		return;
-	}else{
-		$sn=intval($sn);
-	}
+  $xoopsTpl->assign('op','show_one_tad_cal_event');
 
-	$now_uid=($xoopsUser)?$xoopsUser->uid():0;
-	
-	$cate=get_tad_cal_cate_all();
-	if(!empty($stamp)){
+  if(empty($sn)){
+    return;
+  }else{
+    $sn=intval($sn);
+  }
+
+  $now_uid=($xoopsUser)?$xoopsUser->uid():0;
+
+  $cate=get_tad_cal_cate_all();
+  if(!empty($stamp)){
     $date=date("Y-m-d H:i",$stamp);
     $sql = "select a.*, b.`title`, b.`recurrence`, b.`location`, b.`kind`, b.`details`, b.`etag`, b.`id`, b.`sequence`, b.`uid`, b.`cate_sn`, b.`tag`, b.`last_update` from ".$xoopsDB->prefix("tad_cal_repeat")." as a join ".$xoopsDB->prefix("tad_cal_event")." as b on a.`sn`=b.`sn` where a.`sn`='{$sn}' and a.`start`='{$date}'";
-	}else{
-	 $sql = "select * from ".$xoopsDB->prefix("tad_cal_event")." where sn='{$sn}'";
+  }else{
+   $sql = "select * from ".$xoopsDB->prefix("tad_cal_event")." where sn='{$sn}'";
   }
-	$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
-	$all=$xoopsDB->fetchArray($result);
+  $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+  $all=$xoopsDB->fetchArray($result);
 
-	//以下會產生這些變數： $sn , $title , $start , $end , $recurrence , $location , $kind , $details , $etag , $id , $sequence , $uid , $cate_sn
-	foreach($all as $k=>$v){
-		$$k=$v;
-	}
+  //以下會產生這些變數： $sn , $title , $start , $end , $recurrence , $location , $kind , $details , $etag , $id , $sequence , $uid , $cate_sn
+  foreach($all as $k=>$v){
+    $$k=$v;
+  }
 
   $date=show_date($start,$end,$allday,"~");
 
@@ -589,70 +589,70 @@ function show_one_tad_cal_event($sn="",$stamp=""){
   if(empty($uid_name))$uid_name=XoopsUser::getUnameFromId($uid,0);
 
   $details=nl2br($details);
-  
+
   $location_img=empty($location)?"":"<img src='images/location.png' alt='"._MD_TADCAL_LOCATION."'>";
-  
+
   $details=empty($details)?$title:$details;
-  
 
-	//可編輯的行事曆
-	$edit_cate_arr=chk_cate_power('enable_upload_group');
-	$show_function=sizeof($edit_cate_arr)?1:0;
-	$fun=($show_function and ($isAdmin or $now_uid==$uid))?"
-	<div style='text-align:right;margin-top:10px;'>
-	<a href='{$_SERVER['PHP_SELF']}?op=tad_cal_event_form&sn=$sn' class='link_button_r' style='padding:4px;font-size:12px;'><img src='images/edit.png' style='margin-right:4px;' align='absmiddle'>"._TAD_EDIT."</a>
-	<a href=\"javascript:delete_tad_cal_event_func($sn);\" class='link_button_r' style='padding:4px;font-size:12px;'><img src='images/delete.png' style='margin-right:4px;' align='absmiddle'>"._TAD_DEL."</a>
-	</div>":"";
-  
-	
-	$facebook_comments=facebook_comments($xoopsModuleConfig['facebook_comments_width'],'tad_cal','event.php','sn',$sn);
-	$push_url=push_url($xoopsModuleConfig['use_social_tools']);
-	
 
-	$xoopsTpl->assign('date',$date);
-	$xoopsTpl->assign('location_img',$location_img);
-	$xoopsTpl->assign('location',$location);
-	$xoopsTpl->assign('details',$details);
-	$xoopsTpl->assign('cate_title',$cate[$cate_sn]['cate_title']);
-	$xoopsTpl->assign('uid_name',$uid_name);
+  //可編輯的行事曆
+  $edit_cate_arr=chk_cate_power('enable_upload_group');
+  $show_function=sizeof($edit_cate_arr)?1:0;
+  $fun=($show_function and ($isAdmin or $now_uid==$uid))?"
+  <div style='text-align:right;margin-top:10px;'>
+  <a href='{$_SERVER['PHP_SELF']}?op=tad_cal_event_form&sn=$sn' class='link_button_r' style='padding:4px;font-size:12px;'><img src='images/edit.png' style='margin-right:4px;' align='absmiddle'>"._TAD_EDIT."</a>
+  <a href=\"javascript:delete_tad_cal_event_func($sn);\" class='link_button_r' style='padding:4px;font-size:12px;'><img src='images/delete.png' style='margin-right:4px;' align='absmiddle'>"._TAD_DEL."</a>
+  </div>":"";
 
-	$xoopsTpl->assign('title',$title);
-	$xoopsTpl->assign('push_url',$push_url);
-	$xoopsTpl->assign('facebook_comments',$facebook_comments);
-	$xoopsTpl->assign('fun',$fun);
+
+  $facebook_comments=facebook_comments($xoopsModuleConfig['facebook_comments_width'],'tad_cal','event.php','sn',$sn);
+  $push_url=push_url($xoopsModuleConfig['use_social_tools']);
+
+
+  $xoopsTpl->assign('date',$date);
+  $xoopsTpl->assign('location_img',$location_img);
+  $xoopsTpl->assign('location',$location);
+  $xoopsTpl->assign('details',$details);
+  $xoopsTpl->assign('cate_title',$cate[$cate_sn]['cate_title']);
+  $xoopsTpl->assign('uid_name',$uid_name);
+
+  $xoopsTpl->assign('title',$title);
+  $xoopsTpl->assign('push_url',$push_url);
+  $xoopsTpl->assign('facebook_comments',$facebook_comments);
+  $xoopsTpl->assign('fun',$fun);
 }
 
 
 
 //以流水號秀出某筆tad_cal_event資料內容
 function show_simple_event($sn="",$stamp=""){
-	global $xoopsDB,$xoopsModule,$xoopsUser,$isAdmin;
+  global $xoopsDB,$xoopsModule,$xoopsUser,$isAdmin;
 
-	if(empty($sn)){
-		return;
-	}else{
-		$sn=intval($sn);
-	}
+  if(empty($sn)){
+    return;
+  }else{
+    $sn=intval($sn);
+  }
 
-	$now_uid=($xoopsUser)?$xoopsUser->uid():0;
+  $now_uid=($xoopsUser)?$xoopsUser->uid():0;
 
-	$cate=get_tad_cal_cate_all();
+  $cate=get_tad_cal_cate_all();
 
   if(!empty($stamp)){
     $date=date("Y-m-d H:i",$stamp);
     $sql = "select a.*, b.`title`, b.`recurrence`, b.`location`, b.`kind`, b.`details`, b.`etag`, b.`id`, b.`sequence`, b.`uid`, b.`cate_sn`, b.`tag`, b.`last_update` from ".$xoopsDB->prefix("tad_cal_repeat")." as a join ".$xoopsDB->prefix("tad_cal_event")." as b on a.`sn`=b.`sn` where a.`sn`='{$sn}' and a.`start`='{$date}'";
-	}else{
-	 $sql = "select * from ".$xoopsDB->prefix("tad_cal_event")." where sn='{$sn}'";
+  }else{
+   $sql = "select * from ".$xoopsDB->prefix("tad_cal_event")." where sn='{$sn}'";
   }
   //die($sql);
-  
-	$result = $xoopsDB->queryF($sql) or die(mysql_error());
-	$all=$xoopsDB->fetchArray($result);
 
-	//以下會產生這些變數： $sn , $title , $start , $end , $recurrence , $location , $kind , $details , $etag , $id , $sequence , $uid , $cate_sn
-	foreach($all as $k=>$v){
-		$$k=$v;
-	}
+  $result = $xoopsDB->queryF($sql) or die(mysql_error());
+  $all=$xoopsDB->fetchArray($result);
+
+  //以下會產生這些變數： $sn , $title , $start , $end , $recurrence , $location , $kind , $details , $etag , $id , $sequence , $uid , $cate_sn
+  foreach($all as $k=>$v){
+    $$k=$v;
+  }
 
   $date=show_date($start,$end,$allday,"~");
   //以uid取得使用者名稱
@@ -662,50 +662,50 @@ function show_simple_event($sn="",$stamp=""){
   $details=nl2br($details);
 
   $show_location=empty($location)?"":"<tr>
-	<td nowrap style='font-size:13px;'><img src='images/location.png' alt='"._MD_TADCAL_LOCATION."' style='margin-right:4px;' align='absmiddle'>{$location}</td>
+  <td nowrap style='font-size:13px;'><img src='images/location.png' alt='"._MD_TADCAL_LOCATION."' style='margin-right:4px;' align='absmiddle'>{$location}</td>
   </tr>";
 
   $details=empty($details)?$title:$details;
 
 
-	//可編輯的行事曆
-	$edit_cate_arr=chk_cate_power('enable_upload_group');
-	$show_function=sizeof($edit_cate_arr)?1:0;
-	
-	$stamp=strtotime($start);
+  //可編輯的行事曆
+  $edit_cate_arr=chk_cate_power('enable_upload_group');
+  $show_function=sizeof($edit_cate_arr)?1:0;
+
+  $stamp=strtotime($start);
   $andStamp=!empty($recurrence)?"&stamp={$stamp}":"";
 
-	$page="<a href='event.php?sn={$sn}{$andStamp}' class='link_button_r' style='padding:4px;font-size:12px;'><img src='images/event.png' style='margin-right:4px;' align='absmiddle'>"._MD_TADCAL_EVENT_PAGE."</a>";
-	
-	$fun=($show_function and ($isAdmin or $now_uid==$uid))?"
-	<div style='margin-top:5px;'>
+  $page="<a href='event.php?sn={$sn}{$andStamp}' class='link_button_r' style='padding:4px;font-size:12px;'><img src='images/event.png' style='margin-right:4px;' align='absmiddle'>"._MD_TADCAL_EVENT_PAGE."</a>";
+
+  $fun=($show_function and ($isAdmin or $now_uid==$uid))?"
+  <div style='margin-top:5px;'>
  <a href='{$_SERVER['PHP_SELF']}?op=tad_cal_event_form&sn=$sn' class='link_button_r' style='padding:4px;font-size:12px;'><img src='images/edit.png' style='margin-right:4px;' align='absmiddle'>"._TAD_EDIT."</a>
  $page
  <a href=\"javascript:delete_tad_cal_event_func($sn);\" style='padding:4px;font-size:12px;'><img src='images/delete.png' style='margin-right:4px;' align='absmiddle'></a>
-	</div>":"<div style='margin-top:5px;'>$page</div>";
+  </div>":"<div style='margin-top:5px;'>$page</div>";
 
-	$data="
-	<script>
-	function delete_tad_cal_event_func(sn){
-		var sure = window.confirm('"._TAD_DEL_CONFIRM."');
-		if (!sure)	return;
-		location.href=\"{$_SERVER['PHP_SELF']}?op=delete_tad_cal_event&sn=\" + sn;
-	}
-	</script>
-	<table id='tbl' summary='list_table'>
-	<tr>
+  $data="
+  <script>
+  function delete_tad_cal_event_func(sn){
+    var sure = window.confirm('"._TAD_DEL_CONFIRM."');
+    if (!sure)  return;
+    location.href=\"{$_SERVER['PHP_SELF']}?op=delete_tad_cal_event&sn=\" + sn;
+  }
+  </script>
+  <table id='tbl' summary='list_table'>
+  <tr>
   <td nowrap style='font-family:Arial;font-size:13px;'><img src='images/date.png' alt='"._MD_TADCAL_TIME."' style='margin-right:4px;' align='absmiddle'> {$date}</td>
   </tr>
-  
+
   {$show_location}
 
   <tr><td style='background-color:#FFFFEE;'><div style='margin:15px;font-size:12px;line-height:1.5;color:#202020;'>{$details}</div></td></tr>
-	<tr><td><div style='text-align:right;font-size:12px;color:gray;'>{$cate[$cate_sn]['cate_title']} / Posted by {$uid_name}</div></td></tr>
-	<tr><td style='background-color:transparent;border-bottom:none;'>$fun</td></tr>
-	</table>
+  <tr><td><div style='text-align:right;font-size:12px;color:gray;'>{$cate[$cate_sn]['cate_title']} / Posted by {$uid_name}</div></td></tr>
+  <tr><td style='background-color:transparent;border-bottom:none;'>$fun</td></tr>
+  </table>
   ";
 
-	die($data);
+  die($data);
 }
 
 //算一下該日是該月的第幾週
@@ -739,25 +739,25 @@ function show_date($start=null,$end=null,$allday='0',$mark='<br>'){
 
 //搬移時，更新日期
 function ajax_update_date($sn=''){
-	global $xoopsDB,$xoopsUser;
-	//新增或減少的日數
-	$dayDelta=$_POST['dayDelta'];
-	//新增或減少的分鐘數
+  global $xoopsDB,$xoopsUser;
+  //新增或減少的日數
+  $dayDelta=$_POST['dayDelta'];
+  //新增或減少的分鐘數
   $minuteDelta=$_POST['minuteDelta'];
-  
+
   //抓出事件原有資料
   $sql = "select * from ".$xoopsDB->prefix("tad_cal_event")." where sn='$sn'";
-	$result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
-	if(!$result){
+  $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+  if(!$result){
     sprintf(_MD_TADCAL_MOVE_ERROR,mysql_error());
   }
-	$i=0;
-	$all=$xoopsDB->fetchArray($result);
-	//以下會產生這些變數： $sn , $title , $start , $end , $recurrence , $location , $kind , $details , $etag , $id , $sequence , $uid , $cate_sn
+  $i=0;
+  $all=$xoopsDB->fetchArray($result);
+  //以下會產生這些變數： $sn , $title , $start , $end , $recurrence , $location , $kind , $details , $etag , $id , $sequence , $uid , $cate_sn
   foreach($all as $k=>$v){
     $$k=$v;
   }
-  
+
   if(!empty($recurrence)){
     die(_MD_TADCAL_REPEAT_CANT_MOVE);
   }
@@ -779,7 +779,7 @@ function ajax_update_date($sn=''){
   $new_start=strtotime($start) + $dayDelta * 86400 + $minuteDelta * 60;
   //計算新的結束日期
   $new_end=strtotime($end) + $dayDelta * 86400 + $minuteDelta * 60;
-  
+
 
   if($allday){
     $start=date("Y-m-d",$new_start);
@@ -803,18 +803,18 @@ function ajax_update_date($sn=''){
   }
 
 
-	$sql = "update ".$xoopsDB->prefix("tad_cal_event")." set
-	 `start` = '{$start}' ,
-	 `end` = '{$end}' ,
-	 recurrence='{$recurrence}'
-	where sn='$sn'";
-	if(!$xoopsDB->queryF($sql)){
+  $sql = "update ".$xoopsDB->prefix("tad_cal_event")." set
+   `start` = '{$start}' ,
+   `end` = '{$end}' ,
+   recurrence='{$recurrence}'
+  where sn='$sn'";
+  if(!$xoopsDB->queryF($sql)){
     sprintf(_MD_TADCAL_MOVE_ERROR,mysql_error());
   }
-  
-	//重複事件
-	//rrule($sn,$recurrence);
-	return _MD_TADCAL_MOVE_OK;
+
+  //重複事件
+  //rrule($sn,$recurrence);
+  return _MD_TADCAL_MOVE_OK;
 }
 
 /*-----------執行動作判斷區----------*/
@@ -831,7 +831,7 @@ switch($op){
   case "ajax_update_date":
   die(ajax_update_date($sn));
   break;
-  
+
 
   //替換資料
   case "replace_tad_cal_event":
@@ -860,11 +860,11 @@ switch($op){
   delete_tad_cal_event($sn);
   header("location: index.php");
   break;
-  
+
   case "view":
   show_simple_event($sn,$stamp);
   break;
-  
+
   case "list":
   list_tad_cal_event();
   break;
@@ -874,7 +874,7 @@ switch($op){
   if(empty($sn)){
     tad_cal_event_form();
   }else{
-  	show_one_tad_cal_event($sn,$stamp);
+    show_one_tad_cal_event($sn,$stamp);
   }
   break;
 
