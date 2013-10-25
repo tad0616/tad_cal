@@ -2,7 +2,6 @@
 <{$jquery}>
 <{$toolbar}>
 
-
 <script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/My97DatePicker/WdatePicker.js"></script>
 
 <form action="word.php" method="post" id="myForm">
@@ -10,7 +9,7 @@
   <!--事件起始時間-->
   <div class="controls controls-row">
     <div class="span2"><{$smarty.const._MD_TADCAL_TIME}></div>
-    
+
     <!--開始時間-->
     <input type="text" name="start" value="" id="start_allday" class="validate[required] span2" onClick="WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d'})">
 
@@ -18,15 +17,15 @@
     <!--結束時間-->
     <input type="text" name="end" value="" id="end_allday" onClick="WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d'})"  class="span2">
   </div>
-    
+
   <div class="controls controls-row">
     <div class="span2"><{$smarty.const._MD_TADCAL_CATE_SN}></div>
     <select name='cate_sn[]' id='cate_sn' size=3 class="span4" multiple>
       <{$get_tad_cal_cate_menu_options}>
     </select>
-    
+
     <input type="hidden" name="op" value="download_now">
-    
+
     <div class="span3">
       <button type="submit" class="btn btn-primary"><{$smarty.const._MD_TADCAL_SMNAME3}></button>
     </div>

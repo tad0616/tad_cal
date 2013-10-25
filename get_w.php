@@ -2,7 +2,6 @@
 include_once "../../mainfile.php";
 
 $start=$_POST['day'];
-
 $week=getWeekOfTheMonth(strtotime($start));
 $wk=date("w",strtotime($start));
 echo sprintf(_MD_TADCAL_MONTH_REPEATDAY,$week,$wk);
