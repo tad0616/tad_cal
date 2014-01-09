@@ -1,1 +1,12 @@
-<{$block}>
+<ul style="margin:0px;padding:0px;">
+<{foreach from=$block item=cal}>
+  <dt><{$cal.start}></dt>
+  <{foreach from=$cal.event item=event}>
+    <li>
+      <a href="<{$xoops_url}>/modules/tad_cal/event.php?sn=<{$event.sn}>">
+        <{$event.title}>
+      </a>
+    </li>
+  <{/foreach}>
+<{/foreach}>
+</ul>

@@ -7,7 +7,7 @@
 
 //區塊主函式 (待辦事項(tad_cal_list))
 function tad_cal_list($options){
-  global $xoopsDB,$xoopsUser;
+  global $xoopsDB,$xoopsUser,$xoopsTpl;
 
   //取得目前使用者可讀的群組
   $ok_cate_arr=chk_cate_power_block('enable_group');
@@ -47,17 +47,24 @@ function tad_cal_list($options){
 
     $start=substr($start,0,10);
     $all_event[$start][$sn]=$title;
+       
   }
 
-  $block="<ul style='margin:0px;padding:0px;'>";
+  $block="";
+  $i=0;
   foreach($all_event as $start=>$arr){
-    $block.="<dt>{$start}</dt>";
+    $j=0;
     foreach($arr as $sn=>$title){
-      $block.="<li><a href='".XOOPS_URL."/modules/tad_cal/event.php?sn={$sn}'>$title</a></li>";
+      $event[$j]['sn']=$sn;
+      $event[$j]['title']=$title;
+      $j++;
     }
+    $block[$i]['start']=$start;
+    $block[$i]['event']=$event;
+    $i++;
   }
-  $block.="</ul>";
 
+  
   return $block;
 }
 
