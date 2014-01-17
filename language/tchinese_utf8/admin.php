@@ -2,14 +2,9 @@
 include_once "../../tadtools/language/{$xoopsConfig['language']}/admin_common.php";
 define("_TAD_NEED_TADTOOLS"," 需要 tadtools 模組，可至<a href='http://www.tad0616.net/modules/tad_uploader/index.php?of_cat_sn=50' target='_blank'>Tad教材網</a>下載。");
 
-define("_MI_TADCAL_ADMENU1", "行事曆管理");
-
-//index.php
-define("_MA_TADCAL_CATE_SN","行事曆編號");
 define("_MA_TADCAL_CATE_TITLE","行事曆標題");
 define("_MA_TADCAL_CATE_SORT","行事曆排序");
 define("_MA_TADCAL_CATE_ENABLE","是否啟用");
-define("_MA_TADCAL_CATE_HANDLE","遠端行事曆");
 define("_MA_TADCAL_ENABLE_GROUP","可讀群組");
 define("_MA_TADCAL_ENABLE_UPLOAD_GROUP","可寫群組");
 define("_MA_TADCAL_GOOGLE_ID","登入Google帳號");
@@ -25,7 +20,6 @@ define("_TAD_ADD_CAL","新增行事曆");
 define("_MA_TADCAL_NEW_CALENDAR","本站行事曆");
 define("_TAD_ADD_GOOGLE","匯入Google行事曆");
 define("_MA_TADCAL_GOOGLE_IMPORT","事件同步");
-define("_MA_TADCAL_GOOGLE_EMPTY_EVENT","無事件可匯入");
 define("_MA_TADCAL_CATE_EVENTS_AMOUNT","事件數");
 define("_MA_TADCAL_GOOGLE_IMPORT_OK","事件同步完畢！");
 define("_MA_TADCAL_GOOGLE_EXIST","已存在");
