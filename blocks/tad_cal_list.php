@@ -1,9 +1,4 @@
 <?php
-//  ------------------------------------------------------------------------ //
-// 本模組由 tad 製作
-// 製作日期：2011-11-03
-// $Id:$
-// ------------------------------------------------------------------------- //
 
 //區塊主函式 (待辦事項(tad_cal_list))
 function tad_cal_list($options){
@@ -24,6 +19,7 @@ function tad_cal_list($options){
 
   $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
   $i=0;
+  $all_event="";
   while($all=$xoopsDB->fetchArray($result)){
   //以下會產生這些變數： $sn , $title , $start , $end , $recurrence , $location , $kind , $details , $etag , $id , $sequence , $uid , $cate_sn
     foreach($all as $k=>$v){
@@ -47,24 +43,25 @@ function tad_cal_list($options){
 
     $start=substr($start,0,10);
     $all_event[$start][$sn]=$title;
-       
+
   }
 
-  $block="";
+  $block=$event="";
   $i=0;
-  foreach($all_event as $start=>$arr){
-    $j=0;
-    foreach($arr as $sn=>$title){
-      $event[$j]['sn']=$sn;
-      $event[$j]['title']=$title;
-      $j++;
+  if(is_array($all_event)){
+    foreach($all_event as $start=>$arr){
+      $j=0;
+      foreach($arr as $sn=>$title){
+        $event[$j]['sn']=$sn;
+        $event[$j]['title']=$title;
+        $j++;
+      }
+      $block[$i]['start']=$start;
+      $block[$i]['event']=$event;
+      $i++;
     }
-    $block[$i]['start']=$start;
-    $block[$i]['event']=$event;
-    $i++;
   }
 
-  
   return $block;
 }
 
