@@ -26,6 +26,7 @@ define("_MD_TADCAL_Y","年");
 define("_MD_TADCAL_D","天");
 define("_MD_TADCAL_M","月");
 define("_MD_TADCAL_W","週");
+define("_MD_TADCAL_WEEK","星期");
 
 define("_MD_TADCAL_REPEAT","重複");
 define("_MD_TADCAL_REPEAT_DAILY","每日重複");
@@ -59,5 +60,11 @@ define("_MD_TADCAL_GOOGLE_EMPTY_EVENT","無事件可匯入");
 define("_MD_TADCAL_SIMPLE_CAL","簡曆");
 define("_MD_TADCAL_SIMPLE_DATE","日期");
 define("_MD_TADCAL_SIMPLE_EVENT","事件項目");
+define("_MD_TADCAL_DL_TYPE","下載內容");
+define("_MD_TADCAL_ONLY_EVENT","僅下載有事件的日期");
+define("_MD_TADCAL_ALL_DATE","下載所有日期");
+define("_MD_TADCAL_SHOW_TYPE","呈現方式");
+define("_MD_TADCAL_SEPARATE","分開呈現");
+define("_MD_TADCAL_MERGE","合併呈現");
 
 ?>

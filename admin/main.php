@@ -124,18 +124,21 @@ function insert_tad_cal_cate(){
     $enable_upload_group=implode(",",$_POST['enable_upload_group']);
   }
 
+  if(empty($_POST['cate_bgcolor'])){
+    $_POST['cate_bgcolor']="#78b1ff";
+  }
+  if(empty($_POST['cate_color'])){
+    $_POST['cate_color']="#ffffff";
+  }
+
   $sql = "insert into ".$xoopsDB->prefix("tad_cal_cate")."
-  (`cate_title` , `cate_sort` , `cate_enable` , `cate_handle` , `enable_group` , `enable_upload_group` , `google_id` , `google_pass`,`cate_color`)
-  values('{$_POST['cate_title']}' , '{$_POST['cate_sort']}' , '{$_POST['cate_enable']}' , '{$_POST['cate_handle']}' , '{$enable_group}' , '{$enable_upload_group}' , '{$_POST['google_id']}' , '{$_POST['google_pass']}','rgb(0,0,0)')";
+  (`cate_title` , `cate_sort` , `cate_enable` , `cate_handle` , `enable_group` , `enable_upload_group` , `google_id` , `google_pass`,`cate_bgcolor`,`cate_color`)
+  values('{$_POST['cate_title']}' , '{$_POST['cate_sort']}' , '{$_POST['cate_enable']}' , '{$_POST['cate_handle']}' , '{$enable_group}' , '{$enable_upload_group}' , '{$_POST['google_id']}' , '{$_POST['google_pass']}', '{$_POST['cate_bgcolor']}', '{$_POST['cate_color']}')";
   $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
 
   //取得最後新增資料的流水編號
   $cate_sn=$xoopsDB->getInsertId();
 
-  //自動給顏色碼
-  $color=num2color($cate_sn);
-  $sql="update ".$xoopsDB->prefix("tad_cal_cate")." set `cate_bgcolor`='{$color}' where `cate_sn`='$cate_sn'";
-  $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
 
   return $cate_sn;
 }
@@ -199,6 +202,7 @@ function list_tad_cal_cate($show_function=1){
 
   $all_content="";
   $i=0;
+  $last="";
   while($all=$xoopsDB->fetchArray($result)){
     //以下會產生這些變數： $cate_sn , $cate_title , $cate_sort , $cate_enable , $cate_handle , $enable_group , $enable_upload_group , $google_id , $google_pass, $cate_bgcolor, $cate_color
     foreach($all as $k=>$v){
@@ -212,18 +216,20 @@ function list_tad_cal_cate($show_function=1){
     $enable=($cate_enable=='1')?_YES:_NO;
 
     if(empty($counter[$cate_sn]))$counter[$cate_sn]=0;
-    if($last[$cate_sn]=='0000-00-00 00:00:00')$last[$cate_sn]='';
 
+    //if($last[$cate_sn]=='0000-00-00 00:00:00'){
+    //  $last[$cate_sn]='';
+    //}
 
     $all_content[$i]['cate_sn']=$cate_sn;
-    $all_content[$i]['goo_tool']=$goo_tool;
-    $all_content[$i]['last']=$last[$cate_sn];
+    //$all_content[$i]['goo_tool']=$goo_tool;
+    //$all_content[$i]['last']=$last[$cate_sn];
     $all_content[$i]['gu_txt']=$gu_txt;
     $all_content[$i]['g_txt']=$g_txt;
     $all_content[$i]['enable']=$enable;
     $all_content[$i]['counter']=$counter[$cate_sn];
     $all_content[$i]['cate_title']=$cate_title;
-    $all_content[$i]['google']=$google;
+    //$all_content[$i]['google']=$google;
     $all_content[$i]['cate_color']=$cate_color;
     $all_content[$i]['cate_bgcolor']=$cate_bgcolor;
     $all_content[$i]['cate_handle']=$cate_handle;
@@ -231,7 +237,6 @@ function list_tad_cal_cate($show_function=1){
   }
 
 
-  $xoopsTpl->assign('bar',$bar);
   $xoopsTpl->assign('all_content',$all_content);
   $xoopsTpl->assign('jquery',get_jquery(true));
 }
@@ -253,6 +258,8 @@ function delete_tad_cal_cate($cate_sn=""){
 //連到Google行事曆
 function link_to_google($id="",$pass=""){
   global $xoopsDB,$xoopsTpl;
+
+  $cate_title_arr="";
   //抓出現有google行事曆
   $sql = "select `cate_title`,`cate_handle` from ".$xoopsDB->prefix("tad_cal_cate")." where `cate_handle`!=''";
   $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
@@ -261,12 +268,14 @@ function link_to_google($id="",$pass=""){
     $cate_title_arr[$cate_handle]=$cate_title;
   }
 
-
   require "../class/gcalendar.class.php";
   $gmail=new GCalendar($id,$pass);
   $gmail->authenticate();
 
   $Calendars=$gmail->getOwnCalendars();
+  if(empty($Calendars)){
+    redirect_header($_SERVER['PHP_SELF'],3, _MA_TADCAL_NO_GOOGLE_CAL);
+  }
   $i=0;
   $all="";
   foreach($Calendars as $j=>$cal){
@@ -278,7 +287,7 @@ function link_to_google($id="",$pass=""){
     $all[$i]['totalResults']=$Events['data']['totalResults'];
     $all[$i]['cal_title']=$cal['title'];
     $all[$i]['handle']=$cal['handle'];
-    $all[$i]['in_array']=in_array($cal['handle'],$all_handle);
+    $all[$i]['in_array']=!is_array($all_handle)?false:in_array($cal['handle'],$all_handle);
     $all[$i]['j']=$j;
     $i++;
   }

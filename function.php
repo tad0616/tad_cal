@@ -178,34 +178,6 @@ foreach ($abbrarray as $abbr)
 return false;
 }
 
-//把字串換成群組
-function txt_to_group_name($enable_group="",$default_txt="",$syb="<br />"){
-  $groups_array=get_all_groups();
-  if(empty($enable_group)){
-    $g_txt=$default_txt;
-  }else{
-    $gs=explode(",",$enable_group);
-    $g_txt="";
-    foreach($gs as $gid){
-      $g_txt.=$groups_array[$gid]."{$syb}";
-    }
-  }
-  return $g_txt;
-}
-
-
-
-//取得所有群組
-function get_all_groups(){
-  global $xoopsDB;
-  $sql = "select groupid,name from ".$xoopsDB->prefix("groups")."";
-  $result = $xoopsDB->query($sql);
-  while(list($groupid,$name)=$xoopsDB->fetchRow($result)){
-    $data[$groupid]=$name;
-  }
-  return $data;
-}
-
 
 
 //判斷某人在哪些類別中有觀看或發表(enable_upload_group)的權利
@@ -213,7 +185,7 @@ function chk_cate_power($kind="enable_group"){
   global $xoopsDB,$xoopsUser,$xoopsModule,$isAdmin;
   if(!empty($xoopsUser)){
     if($isAdmin){
-      $ok_cat[]="0";
+      //$ok_cat[]="0";
     }
     $user_array=$xoopsUser->getGroups();
   }else{
@@ -225,7 +197,9 @@ function chk_cate_power($kind="enable_group"){
   $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
 
   while(list($cate_sn,$power,$cate_enable)=$xoopsDB->fetchRow($result)){
+    if(empty($cate_sn))continue;
     if(empty($cate_enable))continue;
+
     if($isAdmin or empty($power)){
       $ok_cat[]=$cate_sn;
     }else{
@@ -266,6 +240,17 @@ function tad_cal_all_sync(){
   while(list($cate_sn)=$xoopsDB->fetchRow($result)){
     import_google($cate_sn);
   }
+}
+
+//取得行事曆名稱陣列
+function get_cal_array(){
+  global $xoopsDB;
+  $sql = "select cate_sn,cate_title from ".$xoopsDB->prefix("tad_cal_cate")."";
+  $result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+  while(list($cate_sn , $cate_title)=$xoopsDB->fetchRow($result)){
+    $arr[$cate_sn]=$cate_title;
+  }
+  return $arr;
 }
 
 
@@ -339,20 +324,5 @@ function import_google($cate_sn=""){
   }
 
 }
-/********************* 預設函數 *********************/
-//圓角文字框
-function div_3d($title="",$main="",$kind="raised",$style="",$other=""){
-  $main="<table style='width:auto;{$style}'><tr><td>
-  <div class='{$kind}'>
-  <h1>$title</h1>
-  $other
-  <b class='b1'></b><b class='b2'></b><b class='b3'></b><b class='b4'></b>
-  <div class='boxcontent'>
-  $main
-  </div>
-  <b class='b4b'></b><b class='b3b'></b><b class='b2b'></b><b class='b1b'></b>
-  </div>
-  </td></tr></table>";
-  return $main;
-}
+
 ?>

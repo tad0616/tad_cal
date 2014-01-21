@@ -7,27 +7,66 @@
 <form action="word.php" method="post" id="myForm">
 
   <!--事件起始時間-->
-  <div class="controls controls-row">
-    <div class="span2"><{$smarty.const._MD_TADCAL_TIME}></div>
+  <div class="row-fluid">
+    <label class="span2">
+      <{$smarty.const._MD_TADCAL_TIME}>
+    </label>
 
     <!--開始時間-->
-    <input type="text" name="start" value="" id="start_allday" class="validate[required] span2" onClick="WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d'})">
-
+    <div class="span2">
+      <input type="text" name="start" value="<{$start}>" id="start_allday" class="validate[required] span12" onClick="WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d'})">
+    </div>
 
     <!--結束時間-->
-    <input type="text" name="end" value="" id="end_allday" onClick="WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d'})"  class="span2">
+    <div class="span2">
+      <input type="text" name="end" value="<{$end}>" id="end_allday" onClick="WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d'})"  class="span12">
+    </div>
+
+    <!--列出類型-->
+    <label class="span2">
+      <{$smarty.const._MD_TADCAL_DL_TYPE}>
+    </label>
+
+    <div class="span4">
+      <label class="radio">
+        <input type="radio" name="dl_type" value="only_event" id="only_event" checked><{$smarty.const._MD_TADCAL_ONLY_EVENT}>
+      </label>
+      <label class="radio">
+        <input type="radio" name="dl_type" value="all_date" id="only_event"><{$smarty.const._MD_TADCAL_ALL_DATE}>
+      </label>
+    </div>
   </div>
 
-  <div class="controls controls-row">
-    <div class="span2"><{$smarty.const._MD_TADCAL_CATE_SN}></div>
-    <select name='cate_sn[]' id='cate_sn' size=3 class="span4" multiple>
-      <{$get_tad_cal_cate_menu_options}>
-    </select>
-
-    <input type="hidden" name="op" value="download_now">
-
-    <div class="span3">
-      <button type="submit" class="btn btn-primary"><{$smarty.const._MD_TADCAL_SMNAME3}></button>
+  <div class="row-fluid">
+    <div class="span2">
+      <{$smarty.const._MD_TADCAL_CATE_SN}>
     </div>
+
+    <div class="span4">
+      <select name='cate_sn[]' id='cate_sn' size=5 class="span12" multiple>
+        <{$get_tad_cal_cate_menu_options}>
+      </select>
+    </div>
+
+
+    <!--列出類型-->
+    <label class="span2">
+      <{$smarty.const._MD_TADCAL_SHOW_TYPE}>
+    </label>
+
+    <div class="span4">
+      <label class="radio">
+        <input type="radio" name="show_type" value="separate" id="separate" ><{$smarty.const._MD_TADCAL_SEPARATE}>
+      </label>
+      <label class="radio">
+        <input type="radio" name="show_type" value="merge" id="merge" checked><{$smarty.const._MD_TADCAL_MERGE}>
+      </label>
+
+      <div>
+        <input type="hidden" name="op" value="download_now">
+        <button type="submit" class="btn btn-primary"><{$smarty.const._MD_TADCAL_SMNAME3}></button>
+      </div>
+    </div>
+
   </div>
 </form>

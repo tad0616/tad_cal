@@ -1,9 +1,4 @@
 <?php
-//  ------------------------------------------------------------------------ //
-// 本模組由 tad 製作
-// 製作日期：2011-11-03
-// $Id:$
-// ------------------------------------------------------------------------- //
 /*-----------引入檔案區--------------*/
 include_once "header.php";
 $xoopsOption['template_main'] = "tad_cal_download_tpl.html";
@@ -17,7 +12,10 @@ function tad_cal_download(){
   $get_tad_cal_cate_menu_options=get_tad_cal_cate_menu_options();
 
   $xoopsTpl->assign('get_tad_cal_cate_menu_options' , $get_tad_cal_cate_menu_options);
-
+  $ym=date("Y-m");
+  $d=date("t");
+  $xoopsTpl->assign('start' , "{$ym}-01");
+  $xoopsTpl->assign('end' , "{$ym}-{$d}");
 }
 
 
@@ -28,7 +26,6 @@ $sn=(empty($_REQUEST['sn']))?"":intval($_REQUEST['sn']);
 
 
 switch($op){
-
 
   default:
   tad_cal_download();
