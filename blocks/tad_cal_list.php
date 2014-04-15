@@ -3,9 +3,10 @@
 //區塊主函式 (待辦事項(tad_cal_list))
 function tad_cal_list($options){
   global $xoopsDB,$xoopsUser,$xoopsTpl;
+  include_once XOOPS_ROOT_PATH."/modules/tad_cal/function_block.php";
 
   //取得目前使用者可讀的群組
-  $ok_cate_arr=chk_cate_power_block('enable_group');
+  $ok_cate_arr=chk_tad_cal_cate_power('enable_group');
   $all_ok_cate=implode(",",$ok_cate_arr);
   $and_ok_cate=empty($all_ok_cate)?"and cate_sn='0'":"and cate_sn in($all_ok_cate)";
   $and_ok_cate2=empty($all_ok_cate)?"and a.sn='0'":"and b.cate_sn in($all_ok_cate)";
@@ -58,10 +59,10 @@ function tad_cal_list($options){
       }
       $block[$i]['start']=$start;
       $block[$i]['event']=$event;
+      $event="";
       $i++;
     }
   }
-
   return $block;
 }
 
@@ -77,41 +78,4 @@ function tad_cal_list_edit($options){
 
 
 
-if(!function_exists('chk_cate_power_block')){
-  //判斷某人在哪些類別中有觀看或發表(enable_upload_group)的權利
-  function chk_cate_power_block($kind="enable_group"){
-    global $xoopsDB,$xoopsUser,$isAdmin;
-
-    if(!empty($xoopsUser)){
-      if($isAdmin){
-        $ok_cat[]="0";
-      }
-      $user_array=$xoopsUser->getGroups();
-    }else{
-      $user_array=array(3);
-      $isAdmin=0;
-    }
-
-    $sql = "select `cate_sn`,`{$kind}`,`cate_enable` from ".$xoopsDB->prefix("tad_cal_cate")."";
-    $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
-
-    while(list($cate_sn,$power,$cate_enable)=$xoopsDB->fetchRow($result)){
-      if(empty($cate_enable))continue;
-      if($isAdmin or empty($power)){
-        $ok_cat[]=$cate_sn;
-      }else{
-        $power_array=explode(",",$power);
-        foreach($power_array as $gid){
-          if(in_array($gid,$user_array)){
-            $ok_cat[]=$cate_sn;
-            break;
-          }
-        }
-      }
-    }
-
-    return $ok_cat;
-  }
-
-}
 ?>

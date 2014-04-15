@@ -32,7 +32,7 @@ $paraStyle = array('align' => 'center');
 $headStyle = array('bold' => true);
 
 //取得目前使用者可讀的群組
-$ok_cate_arr=chk_cate_power('enable_group');
+$ok_cate_arr=chk_tad_cal_cate_power('enable_group');
 
 if(!empty($_POST['cate_sn'])){
   foreach($_POST['cate_sn'] as $cate_sn){

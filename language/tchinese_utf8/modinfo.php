@@ -10,6 +10,8 @@ define("_MI_TADCAL_BNAME1","小行事曆");
 define("_MI_TADCAL_BDESC1","小行事曆(tad_cal_calendar)");
 define("_MI_TADCAL_BNAME2","近期事項");
 define("_MI_TADCAL_BDESC2","近期事項(tad_cal_list)");
+define("_MI_TADCAL_BNAME3","大行事曆");
+define("_MI_TADCAL_BDESC3","大行事曆(tad_cal_full_calendar)");
 
 define("_MI_TADCAL_EVENTSHOWMODE","事件顯示模式");
 define("_MI_TADCAL_EVENTSHOWMODE_DESC","設定行事曆的事件什麼時後下要顯示");

@@ -14,7 +14,7 @@ function get_event_num(){
   global $xoopsDB,$xoopsUser;
 
   //取得目前使用者可讀的群組
-  $ok_cate_arr=chk_cate_power('enable_group');
+  $ok_cate_arr=chk_tad_cal_cate_power('enable_group');
   $all_ok_cate=implode(",",$ok_cate_arr);
   $and_ok_cate=empty($all_ok_cate)?"and cate_sn='0'":"and cate_sn in($all_ok_cate)";
   $and_ok_cate2=empty($all_ok_cate)?"and a.sn='0'":"and b.cate_sn in($all_ok_cate)";
@@ -78,7 +78,7 @@ function get_event_title($start=""){
   global $xoopsDB,$xoopsUser,$xoopsConfig;
 
   //取得目前使用者可讀的群組
-  $ok_cate_arr=chk_cate_power('enable_group');
+  $ok_cate_arr=chk_tad_cal_cate_power('enable_group');
   $all_ok_cate=implode(",",$ok_cate_arr);
   $and_ok_cate=empty($all_ok_cate)?"and cate_sn='0'":"and cate_sn in($all_ok_cate)";
   $and_ok_cate2=empty($all_ok_cate)?"and a.sn='0'":"and b.cate_sn in($all_ok_cate)";

@@ -1,9 +1,4 @@
 <?php
-//  ------------------------------------------------------------------------ //
-// 本模組由 tad 製作
-// 製作日期：2011-11-03
-// $Id:$
-// ------------------------------------------------------------------------- //
 /*-----------引入檔案區--------------*/
 include_once "header.php";
 $xoopsOption['template_main'] = "tad_cal_event_tpl.html";
@@ -14,10 +9,8 @@ include_once XOOPS_ROOT_PATH."/header.php";
 function tad_cal_event_form($sn="",$mode='',$stamp=""){
   global $xoopsDB,$xoopsUser,$xoopsTpl;
   include_once XOOPS_ROOT_PATH."/modules/tad_cal/class/ical.php";
-  //include_once(XOOPS_ROOT_PATH."/class/xoopsformloader.php");
-  //include_once(XOOPS_ROOT_PATH."/class/xoopseditor/xoopseditor.php");
   if(!$xoopsUser){
-    redirect_header("index.php",3, _MD_TADCAL_NEED_LOGIN);
+    redirect_header(XOOPS_URL."/modules/tad_cal/index.php",3, _MD_TADCAL_NEED_LOGIN);
     exit;
   }
 
@@ -88,7 +81,7 @@ function tad_cal_event_form($sn="",$mode='',$stamp=""){
       $of_cate_title=_MD_TADCAL_NEW_CATE;
       $cate_col="<input name='new_cate_title' id='new_cate_title' value='"._MD_TADCAL_NEW_CALENDAR."' class='span4'>";
     }else{
-      redirect_header("index.php",3, _MD_TADCAL_NO_POWER);
+      redirect_header(XOOPS_URL."/modules/tad_cal/index.php",3, _MD_TADCAL_NO_POWER);
       exit;
     }
   }else{
@@ -203,7 +196,7 @@ function tad_cal_event_form($sn="",$mode='',$stamp=""){
 
 
   if(!file_exists(TADTOOLS_PATH."/formValidator.php")){
-   redirect_header("index.php",3, _MD_NEED_TADTOOLS);
+   redirect_header(XOOPS_URL."/modules/tad_cal/index.php",3, _MD_NEED_TADTOOLS);
   }
   include_once TADTOOLS_PATH."/formValidator.php";
   $formValidator= new formValidator("#myForm",true);
@@ -459,12 +452,12 @@ function list_tad_cal_event(){
   $now_uid=($xoopsUser)?$xoopsUser->uid():0;
 
   //取得目前使用者可讀的群組
-  $ok_cate_arr=chk_cate_power('enable_group');
+  $ok_cate_arr=chk_tad_cal_cate_power('enable_group');
   $all_ok_cate=implode(",",$ok_cate_arr);
   $and_ok_cate=empty($all_ok_cate)?"cate_sn='0'":"a.cate_sn in($all_ok_cate)";
 
   //可編輯的行事曆
-  $edit_cate_arr=chk_cate_power('enable_upload_group');
+  $edit_cate_arr=chk_tad_cal_cate_power('enable_upload_group');
 
   $show_function=sizeof($edit_cate_arr)?1:0;
 
@@ -590,22 +583,22 @@ function show_one_tad_cal_event($sn="",$stamp=""){
 
   $details=nl2br($details);
 
-  $location_img=empty($location)?"":"<img src='images/location.png' alt='"._MD_TADCAL_LOCATION."'>";
+  $location_img=empty($location)?"":"<img src='".XOOPS_URL."/modules/tad_cal/images/location.png' alt='"._MD_TADCAL_LOCATION."'>";
 
   $details=empty($details)?$title:$details;
 
 
   //可編輯的行事曆
-  $edit_cate_arr=chk_cate_power('enable_upload_group');
+  $edit_cate_arr=chk_tad_cal_cate_power('enable_upload_group');
   $show_function=sizeof($edit_cate_arr)?1:0;
   $fun=($show_function and ($isAdmin or $now_uid==$uid))?"
   <div style='text-align:right;margin-top:10px;'>
-  <a href='{$_SERVER['PHP_SELF']}?op=tad_cal_event_form&sn=$sn' class='link_button_r' style='padding:4px;font-size:12px;'><img src='images/edit.png' style='margin-right:4px;' align='absmiddle'>"._TAD_EDIT."</a>
-  <a href=\"javascript:delete_tad_cal_event_func($sn);\" class='link_button_r' style='padding:4px;font-size:12px;'><img src='images/delete.png' style='margin-right:4px;' align='absmiddle'>"._TAD_DEL."</a>
+  <a href='{$_SERVER['PHP_SELF']}?op=tad_cal_event_form&sn=$sn' class='link_button_r' style='padding:4px;font-size:12px;'><img src='".XOOPS_URL."/modules/tad_cal/images/edit.png' style='margin-right:4px;' align='absmiddle'>"._TAD_EDIT."</a>
+  <a href=\"javascript:delete_tad_cal_event_func($sn);\" class='link_button_r' style='padding:4px;font-size:12px;'><img src='".XOOPS_URL."/modules/tad_cal/images/delete.png' style='margin-right:4px;' align='absmiddle'>"._TAD_DEL."</a>
   </div>":"";
 
 
-  $facebook_comments=facebook_comments($xoopsModuleConfig['facebook_comments_width'],'tad_cal','event.php','sn',$sn);
+  $facebook_comments=facebook_comments($xoopsModuleConfig['facebook_comments_width'],'tad_cal',XOOPS_URL.'/modules/tad_cal/event.php','sn',$sn);
   $push_url=push_url($xoopsModuleConfig['use_social_tools']);
 
 
@@ -662,26 +655,26 @@ function show_simple_event($sn="",$stamp=""){
   $details=nl2br($details);
 
   $show_location=empty($location)?"":"<tr>
-  <td nowrap style='font-size:13px;'><img src='images/location.png' alt='"._MD_TADCAL_LOCATION."' style='margin-right:4px;' align='absmiddle'>{$location}</td>
+  <td nowrap style='font-size:13px;'><img src='".XOOPS_URL."/modules/tad_cal/images/location.png' alt='"._MD_TADCAL_LOCATION."' style='margin-right:4px;' align='absmiddle'>{$location}</td>
   </tr>";
 
   $details=empty($details)?$title:$details;
 
 
   //可編輯的行事曆
-  $edit_cate_arr=chk_cate_power('enable_upload_group');
+  $edit_cate_arr=chk_tad_cal_cate_power('enable_upload_group');
   $show_function=sizeof($edit_cate_arr)?1:0;
 
   $stamp=strtotime($start);
   $andStamp=!empty($recurrence)?"&stamp={$stamp}":"";
 
-  $page="<a href='event.php?sn={$sn}{$andStamp}' class='link_button_r' style='padding:4px;font-size:12px;'><img src='images/event.png' style='margin-right:4px;' align='absmiddle'>"._MD_TADCAL_EVENT_PAGE."</a>";
+  $page="<a href='".XOOPS_URL."/modules/tad_cal/event.php?sn={$sn}{$andStamp}' class='link_button_r' style='padding:4px;font-size:12px;'><img src='".XOOPS_URL."/modules/tad_cal/images/event.png' style='margin-right:4px;' align='absmiddle'>"._MD_TADCAL_EVENT_PAGE."</a>";
 
   $fun=($show_function and ($isAdmin or $now_uid==$uid))?"
   <div style='margin-top:5px;'>
- <a href='{$_SERVER['PHP_SELF']}?op=tad_cal_event_form&sn=$sn' class='link_button_r' style='padding:4px;font-size:12px;'><img src='images/edit.png' style='margin-right:4px;' align='absmiddle'>"._TAD_EDIT."</a>
+ <a href='{$_SERVER['PHP_SELF']}?op=tad_cal_event_form&sn=$sn' class='link_button_r' style='padding:4px;font-size:12px;'><img src='".XOOPS_URL."/modules/tad_cal/images/edit.png' style='margin-right:4px;' align='absmiddle'>"._TAD_EDIT."</a>
  $page
- <a href=\"javascript:delete_tad_cal_event_func($sn);\" style='padding:4px;font-size:12px;'><img src='images/delete.png' style='margin-right:4px;' align='absmiddle'></a>
+ <a href=\"javascript:delete_tad_cal_event_func($sn);\" style='padding:4px;font-size:12px;'><img src='".XOOPS_URL."/modules/tad_cal/images/delete.png' style='margin-right:4px;' align='absmiddle'></a>
   </div>":"<div style='margin-top:5px;'>$page</div>";
 
   $data="
@@ -694,7 +687,7 @@ function show_simple_event($sn="",$stamp=""){
   </script>
   <table id='tbl' summary='list_table'>
   <tr>
-  <td nowrap style='font-family:Arial;font-size:13px;'><img src='images/date.png' alt='"._MD_TADCAL_TIME."' style='margin-right:4px;' align='absmiddle'> {$date}</td>
+  <td nowrap style='font-family:Arial;font-size:13px;'><img src='".XOOPS_URL."/modules/tad_cal/images/date.png' alt='"._MD_TADCAL_TIME."' style='margin-right:4px;' align='absmiddle'> {$date}</td>
   </tr>
 
   {$show_location}
@@ -836,19 +829,19 @@ switch($op){
   //替換資料
   case "replace_tad_cal_event":
   replace_tad_cal_event();
-  header("location: index.php");
+  header("location: ".XOOPS_URL."/modules/tad_cal/index.php");
   break;
 
   //新增資料
   case "insert_tad_cal_event":
   $sn=insert_tad_cal_event();
-  header("location: index.php");
+  header("location: ".XOOPS_URL."/modules/tad_cal/index.php");
   break;
 
   //更新資料
   case "update_tad_cal_event":
   update_tad_cal_event($sn);
-  header("location: index.php");
+  header("location: ".XOOPS_URL."/modules/tad_cal/index.php");
   break;
   //輸入表格
   case "tad_cal_event_form":
@@ -858,7 +851,7 @@ switch($op){
   //刪除資料
   case "delete_tad_cal_event":
   delete_tad_cal_event($sn);
-  header("location: index.php");
+  header("location: ".XOOPS_URL."/modules/tad_cal/index.php");
   break;
 
   case "view":

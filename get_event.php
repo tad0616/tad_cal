@@ -11,7 +11,7 @@ function get_event(){
   $cate_sn = intval($_REQUEST['cate_sn']);
 
   //取得目前使用者可讀的群組
-  $ok_cate_arr=chk_cate_power('enable_group');
+  $ok_cate_arr=chk_tad_cal_cate_power('enable_group');
   $all_ok_cate=implode(",",$ok_cate_arr);
   $and_ok_cate=empty($all_ok_cate)?"and cate_sn='0'":"and cate_sn in($all_ok_cate)";
   $and_ok_cate2=empty($all_ok_cate)?"and a.sn='0'":"and b.cate_sn in($all_ok_cate)";
@@ -61,7 +61,7 @@ function get_event(){
     $myEvents[$i]['id']=$sn;
     $myEvents[$i]['title']="{$event_title}";
     //$myEvents[$i]['url']="event.php?sn=$sn";
-    $myEvents[$i]['rel']="event.php?op=view&sn=$sn";
+    $myEvents[$i]['rel']=XOOPS_URL."/modules/tad_cal/event.php?op=view&sn=$sn";
     $myEvents[$i]['start']=$startTime;
     if(!empty($end))$myEvents[$i]['end']=$endTime;
     $myEvents[$i]['allDay']=$allDay;
@@ -111,7 +111,7 @@ function get_event(){
     $myEvents[$i]['id']=$sn;
     $myEvents[$i]['title']="* {$event_title}";
     //$myEvents[$i]['url']="event.php?sn=$sn&stamp=$startTime";
-    $myEvents[$i]['rel']="event.php?op=view&sn=$sn&stamp=$DBstartTime";
+    $myEvents[$i]['rel']=XOOPS_URL."/modules/tad_cal/event.php?op=view&sn=$sn&stamp=$DBstartTime";
     $myEvents[$i]['start']=$startTime;
     if(!empty($end))$myEvents[$i]['end']=$endTime;
     $myEvents[$i]['allDay']=$allDay;

@@ -39,6 +39,7 @@ function fullcalendar($cate_sn=0){
 
         function mycallbackform(v,m,f){
           if(v != undefined){
+
             calendar.fullCalendar('renderEvent',
               {
                 title: f.eventTitle,
@@ -46,11 +47,12 @@ function fullcalendar($cate_sn=0){
                 end: end,
                 allDay: allDay
               },
-              true // make the event 'stick'
+              false // make the event 'stick'
             );
 
+
             $.post('event.php', {op: 'insert_tad_cal_event', fc_start: start.getTime(), fc_end: end.getTime(), title: f.eventTitle, cate_sn: f.cate_sn, new_cate_title: f.new_cate_title},function(){
-              location.href='index.php';
+              calendar.fullCalendar('refetchEvents');
             });
           }
         }
@@ -109,80 +111,7 @@ function fullcalendar($cate_sn=0){
 
 }
 
-function make_style(){
-  global $xoopsDB;
 
-  //取得目前使用者可讀的群組
-  $ok_cate_arr=chk_cate_power('enable_group');
-  $all_ok_cate=implode(",",$ok_cate_arr);
-  $and_ok_cate=empty($all_ok_cate)?"cate_sn='0'":"cate_sn in($all_ok_cate)";
-
-
-  //抓出現有google行事曆
-  $sql = "select `cate_sn`,`cate_title`,`cate_bgcolor`,`cate_color` from ".$xoopsDB->prefix("tad_cal_cate")." where $and_ok_cate order by `cate_sort`";
-  $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
-  $main['css']=$main['mark']="";
-  while(list($cate_sn,$cate_title,$cate_bgcolor,$cate_color)=$xoopsDB->fetchRow($result)){
-    //$color=num2color($cate_sn);
-    $main['css'].="
-      /* {$cate_sn} */
-      .my{$cate_sn},
-      .fc-agenda .my{$cate_sn} .fc-event-time,
-      .my{$cate_sn} a {
-          background-color: {$cate_bgcolor}; /* background color */
-          color: {$cate_color};           /* text color */
-      }
-
-      .fc-event{$cate_sn},
-      .fc-agenda .fc-event{$cate_sn} .fc-event-time,
-      .fc-event{$cate_sn} a {
-        background-color: {$cate_bgcolor}; /* default BACKGROUND color */
-        color: {$cate_color};           /* default TEXT color */
-      }
-    ";
-
-    $main['mark'].="
-    <span class='cate_mark' style='border:1px solid {$cate_bgcolor}; border-left:16px solid {$cate_bgcolor};'><a href='index.php?cate_sn={$cate_sn}'>$cate_title</a></span>";
-  }
-
-
-  return $main;
-}
-
-
-//自動更新
-function my_counter(){
-  global $xoopsModuleConfig,$isAdmin;
-  if($xoopsModuleConfig['sync_conut']=='0'){
-    return;
-  }elseif(is_null(($xoopsModuleConfig['sync_conut'])) or $xoopsModuleConfig['sync_conut']==''){
-    $sync_conut=100;
-  }else{
-    $sync_conut=intval($xoopsModuleConfig['sync_conut']);
-  }
-
-  $data=XOOPS_ROOT_PATH."/uploads/tad_cal_count.txt";
-  if(file_exists($data)){
-    $fp=fopen($data,"r");
-    $old_count=fread($fp,filesize($data));
-    $new_count=$old_count+1;
-    fclose($fp);
-  }else{
-    $new_count=1;
-  }
-
-  $times=$new_count % $sync_conut;
-  if($times==0) tad_cal_all_sync();
-  $show_times=$sync_conut-$times;
-
-  $fp=fopen($data,"w");
-  fwrite($fp,$new_count);
-  fclose($fp);
-
-  $main=($isAdmin)?"<div class='sync_text'>".sprintf(_MD_TADCAL_SYNC_COUNT,$show_times)."</div>":"";
-
-  return $main;
-}
 
 /*-----------執行動作判斷區----------*/
 $op=(empty($_REQUEST['op']))?"":$_REQUEST['op'];

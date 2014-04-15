@@ -3,7 +3,7 @@ $modversion = array();
 
 //---模組基本資訊---//
 $modversion['name'] = _MI_TADCAL_NAME;
-$modversion['version'] = 2.1;
+$modversion['version'] = 2.3;
 $modversion['description'] = _MI_TADCAL_DESC;
 $modversion['author'] = _MI_TADCAL_AUTHOR;
 $modversion['credits'] = _MI_TADCAL_CREDITS;
@@ -14,7 +14,7 @@ $modversion['image'] = "images/logo_{$xoopsConfig['language']}.png";
 $modversion['dirname'] = basename(dirname(__FILE__));
 
 //---模組狀態資訊---//
-$modversion['release_date'] = '2014/01/18';
+$modversion['release_date'] = '2014/04/15';
 $modversion['module_website_url'] = 'http://tad0616.net/';
 $modversion['module_website_name'] = _MI_TAD_WEB;
 $modversion['module_status'] = 'release';
@@ -78,6 +78,12 @@ $modversion['blocks'][2]['show_func'] = "tad_cal_list";
 $modversion['blocks'][2]['template'] = "tad_cal_list.html";
 $modversion['blocks'][2]['edit_func'] = "tad_cal_list_edit";
 $modversion['blocks'][2]['options'] = "7";
+
+$modversion['blocks'][3]['file'] = "tad_cal_full_calendar.php";
+$modversion['blocks'][3]['name'] = _MI_TADCAL_BNAME3;
+$modversion['blocks'][3]['description'] = _MI_TADCAL_BDESC3;
+$modversion['blocks'][3]['show_func'] = "tad_cal_full_calendar";
+$modversion['blocks'][3]['template'] = "tad_cal_full_calendar.html";
 
 
 

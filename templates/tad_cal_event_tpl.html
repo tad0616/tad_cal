@@ -7,14 +7,14 @@
   function delete_tad_cal_event_func(sn){
     var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
     if (!sure)  return;
-    location.href="event.php?op=delete_tad_cal_event&sn=" + sn;
+    location.href="<{$xoops_url}>/modules/tad_cal/event.php?op=delete_tad_cal_event&sn=" + sn;
   }
   </script>
 
   <h1><{$title}></h1>
   <div class="row-fluid">
     <div class="span6">
-    <img src='images/date.png' alt='<{$smarty.const._MD_TADCAL_TIME}>'>
+    <img src='<{$xoops_url}>/modules/tad_cal/images/date.png' alt='<{$smarty.const._MD_TADCAL_TIME}>'>
     <{$date}>
     </div>
 
@@ -40,7 +40,7 @@
   function delete_tad_cal_event_func(sn){
     var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
     if (!sure)  return;
-    location.href="event.php?op=delete_tad_cal_event&sn=" + sn;
+    location.href="<{$xoops_url}>/modules/tad_cal/event.php?op=delete_tad_cal_event&sn=" + sn;
   }
   </script>
 
@@ -56,7 +56,7 @@
   <{foreach from=$all_content item=cal}>
     <tr>
         <td style='font-size:12px;font-family:arial;'><{$cal.date}></td>
-        <td><a href='event.php?sn=<{$cal.sn}>'><{$cal.re}><{$cal.title}></a><div style='color:gray;font-size:12px;'><{$cal.details}></div></td>
+        <td><a href='<{$xoops_url}>/modules/tad_cal/event.php?sn=<{$cal.sn}>'><{$cal.re}><{$cal.title}></a><div style='color:gray;font-size:12px;'><{$cal.details}></div></td>
         <td><{$cal.location}></td>
         <td><{$cal.cate_title}></td>
         <{$cal.fun}>
@@ -64,7 +64,7 @@
   <{/foreach}>
   </tbody>
   </table>
-  <a href='event.php?op=tad_cal_event_form'  class='btn btn-info'><{$smarty.const._TAD_ADD_EVENT}></a>
+  <a href='<{$xoops_url}>/modules/tad_cal/event.php?op=tad_cal_event_form'  class='btn btn-info'><{$smarty.const._TAD_ADD_EVENT}></a>
   <{$bar}>
 
 
@@ -161,7 +161,7 @@
   //更新月重複選項
   function month_repeat_chk(){
     var theday=$("#start_allday").val();
-    $.post("get_w.php", { day: theday} , function(data) {
+    $.post("<{$xoops_url}>/modules/tad_cal/get_w.php", { day: theday} , function(data) {
        $("#get_w").text(data);
     });
     $("#bymonthday").text($("#start_allday").val().substr(8,2));
@@ -180,9 +180,9 @@
   }
   </script>
   <script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/My97DatePicker/WdatePicker.js"></script>
-  <script type="text/javascript" src="class/date.js"></script>
-  <script type="text/javascript" src="class/strtotime.js"></script>
-  <form action="event.php" method="post" id="myForm" enctype="multipart/form-data">
+  <script type="text/javascript" src="<{$xoops_url}>/modules/tad_cal/class/date.js"></script>
+  <script type="text/javascript" src="<{$xoops_url}>/modules/tad_cal/class/strtotime.js"></script>
+  <form action="<{$xoops_url}>/modules/tad_cal/event.php" method="post" id="myForm" enctype="multipart/form-data">
 
     <!--事件標題-->
     <div class="controls controls-row">
