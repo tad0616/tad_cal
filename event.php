@@ -598,7 +598,7 @@ function show_one_tad_cal_event($sn="",$stamp=""){
   </div>":"";
 
 
-  $facebook_comments=facebook_comments($xoopsModuleConfig['facebook_comments_width'],'tad_cal',XOOPS_URL.'/modules/tad_cal/event.php','sn',$sn);
+  $facebook_comments=facebook_comments($xoopsModuleConfig['facebook_comments_width'],'tad_cal','event.php','sn',$sn);
   $push_url=push_url($xoopsModuleConfig['use_social_tools']);
 
 

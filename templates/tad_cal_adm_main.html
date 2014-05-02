@@ -6,10 +6,10 @@
   <h1><{$smarty.const._MA_TADCAL_CATE_FORM}></h1>
   <{$formValidator_code}>
 
-  <script type="text/javascript" src="<{$xoops_url}>/modules/tad_cal/class/mColorPicker/javascripts/mColorPicker.js" charset="UTF-8"></script>
+  <script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/mColorPicker/javascripts/mColorPicker.js" charset="UTF-8"></script>
   <script type="text/javascript">
     $("#color").mColorPicker({
-    imageFolder: "../class/mColorPicker/images/"
+      imageFolder: "<{$xoops_url}>/modules/tadtools/mColorPicker/images/"
     });
   </script>
 
@@ -44,7 +44,7 @@
         <{$smarty.const._MA_TADCAL_CATE_BGCOLOR}>
       </label>
       <div class="span4">
-        <input type="color" name="cate_bgcolor" id="cate_bgcolor" value="<{$cate_bgcolor}>"  data-hex="true">
+        <input type="text" name="cate_bgcolor" id="cate_bgcolor" value="<{$cate_bgcolor}>"  data-hex="true">
       </div>
 
       <!--文字色-->
@@ -52,7 +52,7 @@
         <{$smarty.const._MA_TADCAL_CATE_COLOR}>
       </label>
       <div class="span4">
-        <input type="color" name="cate_color" id="cate_color" value="<{$cate_color}>" data-hex="true">
+        <input type="text" name="cate_color" id="cate_color" value="<{$cate_color}>" data-hex="true">
       </div>
     </div>
 
