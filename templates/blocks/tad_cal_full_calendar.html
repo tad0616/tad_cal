@@ -19,6 +19,7 @@ $(document).ready(function(){
 
   var calendar = $("#full_calendar_block").fullCalendar({
     theme: true,
+    firstDay:<{$block.firstDay}>,
     buttonText:{today:"<{$smarty.const._MB_TADCAL_TODAY}>"},
     header: {
       left: "prev,today,next",

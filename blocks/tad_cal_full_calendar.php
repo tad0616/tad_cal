@@ -118,7 +118,7 @@ function tad_cal_full_calendar($options){
   $block['eventTheme']=$xoopsModuleConfig['eventTheme'];
   $block['style_mark']=$style['mark'];
   $block['my_counter']=my_counter();
-
+  $block['firstDay']=$xoopsModuleConfig['cal_start'];
 
   return $block;
 }

@@ -25,7 +25,7 @@ CREATE TABLE `tad_cal_event` (
   `etag` varchar(255) NOT NULL COMMENT '事件etag',
   `id` varchar(255) NOT NULL COMMENT '事件id',
   `sequence` tinyint(3) unsigned NOT NULL COMMENT '事件排序',
-  `uid` smallint(6) unsigned NOT NULL COMMENT '發布者',
+  `uid` mediumint(8) unsigned NOT NULL COMMENT '發布者',
   `cate_sn` smallint(6) unsigned NOT NULL COMMENT '所屬行事曆',
   `allday` ENUM( '0', '1' ) NOT NULL COMMENT '整天事件',
   `tag` varchar( 255 ) NOT NULL COMMENT '標籤',

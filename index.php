@@ -108,6 +108,7 @@ function fullcalendar($cate_sn=0){
   $xoopsTpl->assign('style_mark' , $style['mark']);
   $xoopsTpl->assign('my_counter' , my_counter());
 
+  $xoopsTpl->assign('firstDay' , $xoopsModuleConfig['cal_start']);
 
 }
 

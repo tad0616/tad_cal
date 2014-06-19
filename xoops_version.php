@@ -3,7 +3,7 @@ $modversion = array();
 
 //---模組基本資訊---//
 $modversion['name'] = _MI_TADCAL_NAME;
-$modversion['version'] = 2.4;
+$modversion['version'] = 2.5;
 $modversion['description'] = _MI_TADCAL_DESC;
 $modversion['author'] = _MI_TADCAL_AUTHOR;
 $modversion['credits'] = _MI_TADCAL_CREDITS;
@@ -14,7 +14,7 @@ $modversion['image'] = "images/logo_{$xoopsConfig['language']}.png";
 $modversion['dirname'] = basename(dirname(__FILE__));
 
 //---模組狀態資訊---//
-$modversion['release_date'] = '2014/04/15';
+$modversion['release_date'] = '2014/06/16';
 $modversion['module_website_url'] = 'http://tad0616.net/';
 $modversion['module_website_name'] = _MI_TAD_WEB;
 $modversion['module_status'] = 'release';
@@ -37,6 +37,12 @@ $modversion['sqlfile']['mysql'] = "sql/mysql.sql";
 $modversion['tables'][1] = "tad_cal_cate";
 $modversion['tables'][2] = "tad_cal_event";
 $modversion['tables'][3] = "tad_cal_repeat";
+
+//---安裝設定---//
+$modversion['onInstall'] = "include/onInstall.php";
+$modversion['onUpdate'] = "include/onUpdate.php";
+$modversion['onUninstall'] = "include/onUninstall.php";
+
 
 //---管理介面設定---//
 $modversion['hasAdmin'] = 1;
@@ -139,5 +145,14 @@ $modversion['config'][6]['description'] = '_MI_SOCIALTOOLS_TITLE_DESC';
 $modversion['config'][6]['formtype'] = 'yesno';
 $modversion['config'][6]['valuetype'] = 'int';
 $modversion['config'][6]['default'] = '1';
+
+
+$modversion['config'][7]['name'] = 'cal_start';
+$modversion['config'][7]['title'] = '_MI_CAL_START';
+$modversion['config'][7]['description'] = '_MI_CAL_START_DESC';
+$modversion['config'][7]['formtype'] = 'select';
+$modversion['config'][7]['valuetype'] = 'int';
+$modversion['config'][7]['default'] = '1';
+$modversion['config'][7]['options'] = array(_MI_TADCAL_SU => '0',_MI_TADCAL_MO => '1');
 
 ?>
