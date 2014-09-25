@@ -330,12 +330,13 @@ function insert_tad_cal_event(){
     $start=$end="0000-00-00 00:00:00";
   }
 
+  $last_update=date("Y-m-d H:i:s");
 
   $sql = "insert into ".$xoopsDB->prefix("tad_cal_event")."
-  (`title` , `start` , `end` , `recurrence` , `location` , `kind` , `details` , `etag` , `id` , `sequence` , `uid` , `cate_sn` , `allday`)
-  values('{$_POST['title']}' , '{$start}' , '{$end}' , '{$recurrence}' , '{$_POST['location']}' , '{$_POST['kind']}' , '{$_POST['details']}' , '{$_POST['etag']}' , '{$_POST['id']}' , '{$_POST['sequence']}' , '{$uid}' , '{$cate_sn}' , '{$allDay}')";
-  //die($sql);
-  $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+  (`title` , `start` , `end` , `recurrence` , `location` , `kind` , `details` , `etag` , `id` , `sequence` , `uid` , `cate_sn` , `allday` , `tag` ,`last_update`)
+  values('{$_POST['title']}' , '{$start}' , '{$end}' , '{$recurrence}' , '{$_POST['location']}' , '{$_POST['kind']}' , '{$_POST['details']}' , '{$_POST['etag']}' , '{$_POST['id']}' , '{$_POST['sequence']}' , '{$uid}' , '{$cate_sn}' , '{$allDay}', '' , '{$last_update}')";
+
+  $xoopsDB->queryF($sql) or die(mysql_error());
 
   //取得最後新增資料的流水編號
   $sn=$xoopsDB->getInsertId();
@@ -420,6 +421,7 @@ function update_tad_cal_event($sn=""){
     $start=$end="0000-00-00 00:00:00";
   }
 
+  $last_update=date("Y-m-d H:i:s");
   $sql = "update ".$xoopsDB->prefix("tad_cal_event")." set
    `title` = '{$_POST['title']}' ,
    `start` = '{$start}' ,
@@ -434,7 +436,8 @@ function update_tad_cal_event($sn=""){
    `uid` = '{$uid}' ,
    `cate_sn` = '{$_POST['cate_sn']}',
    `allday` = '{$allDay}' ,
-   `tag` = '{$_POST['tag']}'
+   `tag` = '{$_POST['tag']}' ,
+   `last_update` = '{$last_update}'
   where sn='$sn'";
   $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
 
@@ -635,7 +638,7 @@ function show_simple_event($sn="",$stamp=""){
     $date=date("Y-m-d H:i",$stamp);
     $sql = "select a.*, b.`title`, b.`recurrence`, b.`location`, b.`kind`, b.`details`, b.`etag`, b.`id`, b.`sequence`, b.`uid`, b.`cate_sn`, b.`tag`, b.`last_update` from ".$xoopsDB->prefix("tad_cal_repeat")." as a join ".$xoopsDB->prefix("tad_cal_event")." as b on a.`sn`=b.`sn` where a.`sn`='{$sn}' and a.`start`='{$date}'";
   }else{
-   $sql = "select * from ".$xoopsDB->prefix("tad_cal_event")." where sn='{$sn}'";
+    $sql = "select * from ".$xoopsDB->prefix("tad_cal_event")." where sn='{$sn}'";
   }
   //die($sql);
 
