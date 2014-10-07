@@ -48,7 +48,7 @@ $(document).ready(function(){
         var event_month= event.start.getMonth()*1 + 1;
         $(this).qtip({
          content: {
-          text: "<img class=\"throbber\" src=\"<{$xoops_url}>/modules/tad_cal/images/loading.gif\" alt=\"Loading...\" />",
+          text: "<img class='throbber' src='<{$xoops_url}>/modules/tad_cal/images/loading.gif' alt='Loading...' />",
           ajax: {
             url: "<{$xoops_url}>/modules/tad_cal/get_block_event.php?op=title&start=" + event.start.getTime()
           },
