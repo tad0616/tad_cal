@@ -206,7 +206,7 @@
     <{foreach item=cal from=$all_content}>
       <tr id="tr_<{$cal.cate_sn}>">
         <td style="background-color:<{$cal.cate_bgcolor}>;color:<{$cal.cate_color}>;">
-        <{if $cate_handle==""}>
+        <{if $cal.cate_handle==""}>
           <img src="../images/date.png" title="<{$cal.cate_title}>" alt="<{$cal.cate_title}>" style="margin-right:4px;" align="absmiddle">
         <{else}>
           <img src="../images/google.png" title="<{$cal.cate_handle}>" alt="<{$cal.cate_handle}>" style="margin-right:4px;" align="absmiddle">
@@ -223,8 +223,8 @@
 
         <a href="main.php?op=tad_cal_cate_form&cate_sn=<{$cal.cate_sn}>" class="btn btn-mini btn-warning"><img src="../images/edit.png" title="<{$smarty.const._TAD_EDIT}>" alt="<{$smarty.const._TAD_EDIT}>" align="absmiddle" style="margin-right:4px;"><{$smarty.const._TAD_EDIT}></a>
 
-        <{if $cate_handle!=""}>
-          <a href="main.php?op=import_google&cate_sn=<{$cal.cate_sn}>" class="btn btn-mini btn-info"><img src="../images/sync.png" title="<{$smarty.const._MA_TADCAL_GOOGLE_IMPORT}>" alt="<{$smarty.const._MA_TADCAL_GOOGLE_IMPORT}>" align="absmiddle" style="margin-right:4px;"><{$smarty.const._MA_TADCAL_GOOGLE_IMPORT}></a>
+        <{if $cal.cate_handle!=""}>
+          <a href="import.php?cate_sn=<{$cal.cate_sn}>" class="btn btn-mini btn-info"><img src="../images/sync.png" title="<{$smarty.const._MA_TADCAL_GOOGLE_IMPORT}>" alt="<{$smarty.const._MA_TADCAL_GOOGLE_IMPORT}>" align="absmiddle" style="margin-right:4px;"><{$smarty.const._MA_TADCAL_GOOGLE_IMPORT}></a>
         <{/if}>
 
         </td>

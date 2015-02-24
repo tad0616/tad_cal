@@ -338,9 +338,30 @@ function save_google(){
 }
 
 
+
+
+
+
+//全部同步
+function tad_cal_all_sync(){
+  global $xoopsDB,$xoopsModule;
+
+  $sql = "select cate_sn from ".$xoopsDB->prefix("tad_cal_cate")." where `cate_handle`!=''";
+  $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+
+  while(list($cate_sn)=$xoopsDB->fetchRow($result)){
+    import_google($cate_sn);
+  }
+}
 /*-----------執行動作判斷區----------*/
 $op = (!isset($_REQUEST['op']))? "":$_REQUEST['op'];
 $cate_sn = (!isset($_REQUEST['cate_sn']))? "":intval($_REQUEST['cate_sn']);
+
+// if(isset($_SESSION['import_google']) or $op=="import_google"){
+//   $cate_sn=isset($_SESSION['import_google'])?$_SESSION['import_google']:$cate_sn;
+//   import_google($cate_sn);
+//   redirect_header($_SERVER['PHP_SELF'],3, _MA_TADCAL_GOOGLE_IMPORT_OK);
+// }
 
 switch($op){
   /*---判斷動作請貼在下方---*/
@@ -388,10 +409,10 @@ switch($op){
   header("location: {$_SERVER['PHP_SELF']}");
   break;
 
-  case "import_google":
-  import_google($cate_sn);
-  redirect_header($_SERVER['PHP_SELF'],3, _MA_TADCAL_GOOGLE_IMPORT_OK);
-  break;
+  // case "import_google":
+  // import_google($cate_sn);
+  // redirect_header($_SERVER['PHP_SELF'],3, _MA_TADCAL_GOOGLE_IMPORT_OK);
+  // break;
 
   case "tad_cal_all_sync":
   tad_cal_all_sync();
