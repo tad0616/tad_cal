@@ -1,40 +1,70 @@
 <?php
-//  ------------------------------------------------------------------------ //
-// 本模組由 tad 製作
-// 製作日期：2008-03-25
-// $Id:$
-// ------------------------------------------------------------------------- //
+//需加入模組語系
+define("_TAD_NEED_TADTOOLS"," 需要 tadtools 模組，可至<a href='http://www.tad0616.net/modules/tad_uploader/index.php?of_cat_sn=50' target='_blank'>Tad教材網</a>下載。");
+define("_MD_TADCAL_SMNAME2", "新增事件");
+define("_MD_TADCAL_SMNAME3", "下載簡曆");
+define("_MD_TADCAL_TITLE","事件標題");
+define("_MD_TADCAL_START","事件起始時間");
+define("_MD_TADCAL_RECURRENCE","重複事件");
+define("_MD_TADCAL_LOCATION","事件地點");
+define("_MD_TADCAL_DETAILS","事件內容");
+define("_MD_TADCAL_CATE_SN","所屬行事曆");
+define("_MD_TADCAL_EVENT_FORM","設定事件");
+define("_MD_TADCAL_TIME","時間起訖");
+define("_MD_TADCAL_TODAY","今天");
+define("_TAD_ADD_EVENT","新增事件");
+define("_MD_TADCAL_ALLDAY","全日事件");
+define("_MD_TADCAL_SU","日");
+define("_MD_TADCAL_MO","一");
+define("_MD_TADCAL_TU","二");
+define("_MD_TADCAL_WE","三");
+define("_MD_TADCAL_TH","四");
+define("_MD_TADCAL_FR","五");
+define("_MD_TADCAL_SA","六");
 
-define("_TO_ADMIN_PAGE","管理介面");
-//分頁物件用的語系
-define("_MD_HOMEPAGE","回首頁");
-define("_BP_BACK_PAGE","上一頁");
-define("_BP_NEXT_PAGE","下一頁");
-define("_BP_FIRST_PAGE","第一頁");
-define("_BP_LAST_PAGE","最後頁");
-define("_BP_GO_BACK_PAGE","前 %s 頁");
-define("_BP_GO_NEXT_PAGE","後 %s 頁");
-define("_BP_TOOLBAR","共 %s 頁，目前在第 %s 頁：");
-define("_BP_DEL_CHK","確定要刪除此資料？");
-define("_BP_FUNCTION","功能");
-define("_BP_EDIT","編輯");
-define("_BP_DEL","刪除");
-define("_BP_ADD","新增資料");
+define("_MD_TADCAL_Y","年");
+define("_MD_TADCAL_D","天");
+define("_MD_TADCAL_M","月");
+define("_MD_TADCAL_W","週");
+define("_MD_TADCAL_WEEK","星期");
 
-define("_MA_SAVE","留言");
-define("_MA_TADCBOX_SN","序號");
-define("_MA_TADCBOX_PUBLISHER","發佈者");
-define("_MA_TADCBOX_MSG","留言");
-define("_MA_TADCBOX_ONLY_ROOT","私密");
-define("_MA_TADCBOX_ROOT_MSG","管理員回覆");
-define("_MA_TADCBOX_DEFAULT_PUBLISHER","訪客");
-define("_MA_TADCBOX_LOCK_MSG","這是私密留言喔～");
-define("_MA_TADCBOX_RE_MSG","回覆 %s 號留言");
-define("_MD_TADCBOX_NEED_LOGIN","需要登入才能留言");
-define("_MA_TADCBOX_MSG_MIN","最少要有 %s 個字，你少輸入了'+(minChr -nowChr)+'個字。");
-define("_MA_TADCBOX_MSG_MAX","最多只能 %s 個字，你多輸入了'+(nowChr-maxChr)+'個字。");
-define("_MA_TADCBOX_INPUT_CODE","左圖數字為：");
-define("_MD_TADCBOX_SECURITY_CODE_ERROR","認證碼不正確喔！");
-define("_MA_TADCBOX_ADD_MSG","「%s」的留言：");
-define("_MA_TADCBOX_RELOAD","重整");
+define("_MD_TADCAL_REPEAT","重複");
+define("_MD_TADCAL_REPEAT_DAILY","每日重複");
+define("_MD_TADCAL_REPEAT_WEEKLY","每週重複");
+define("_MD_TADCAL_REPEAT_MONTHLY","每月重複");
+define("_MD_TADCAL_REPEAT_YEARLY","每年重複");
+
+define("_MD_TADCAL_INTERVAL","頻率");
+define("_MD_TADCAL_WEEK_REPEAT","重複日");
+define("_MD_TADCAL_MONTH_REPEAT","重複間隔");
+define("_MD_TADCAL_BYMONTHDAY","每月的 %s 日");
+define("_MD_TADCAL_MONTH_REPEATDAY","第 %s 週的星期 %s ");
+define("_MD_TADCAL_END","結束時間");
+define("_MD_TADCAL_NEVER_END","永不結束");
+define("_MD_TADCAL_END_COUNT1","重複");
+define("_MD_TADCAL_END_COUNT2","次之後");
+define("_MD_TADCAL_END_UNTIL1","至");
+define("_MD_TADCAL_END_UNTIL2","為止");
+define("_MD_TADCAL_MOVE_OK","搬移完成！");
+define("_MD_TADCAL_MOVE_ERROR","搬移失敗：%s");
+define("_MD_TADCAL_EVENT_PAGE","詳細");
+define("_MD_TADCAL_NEW_CATE","建立新行事曆");
+define("_MD_TADCAL_NEW_CALENDAR","本站行事曆");
+define("_MD_TADCAL_REPEAT_CANT_MOVE","重複事件無法直接搬移，請編輯之以改變重複事件之設定。");
+define("_MD_TADCAL_NEED_LOGIN","登入後才能使用此功能。");
+define("_MD_TADCAL_NO_POWER","您沒有任何發布權限喔！");
+define("_MD_TADCAL_SYNC_COUNT","再 %s 次會進行下一次同步！");
+define("_MD_TADCAL_GOOGLE_EMPTY_EVENT","無事件可匯入");
+
+//download.php,word.php
+define("_MD_TADCAL_SIMPLE_CAL","簡曆");
+define("_MD_TADCAL_SIMPLE_DATE","日期");
+define("_MD_TADCAL_SIMPLE_EVENT","事件項目");
+define("_MD_TADCAL_DL_TYPE","下載內容");
+define("_MD_TADCAL_ONLY_EVENT","僅下載有事件的日期");
+define("_MD_TADCAL_ALL_DATE","下載所有日期");
+define("_MD_TADCAL_SHOW_TYPE","呈現方式");
+define("_MD_TADCAL_SEPARATE","分開呈現");
+define("_MD_TADCAL_MERGE","合併呈現");
+
 ?>

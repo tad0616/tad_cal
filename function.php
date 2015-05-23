@@ -1,78 +1,126 @@
 <?php
-//  ------------------------------------------------------------------------ //
-// 本模組由 tad 製作
-// 製作日期：2008-03-25
-// $Id: function.php,v 1.1 2008/04/04 07:10:34 tad Exp $
-// ------------------------------------------------------------------------- //
-
 //引入TadTools的函式庫
 if(!file_exists(XOOPS_ROOT_PATH."/modules/tadtools/tad_function.php")){
  redirect_header("http://www.tad0616.net/modules/tad_uploader/index.php?of_cat_sn=50",3, _TAD_NEED_TADTOOLS);
 }
 include_once XOOPS_ROOT_PATH."/modules/tadtools/tad_function.php";
+include_once XOOPS_ROOT_PATH."/modules/tad_cal/function_block.php";
 
-//刪除tad_cbox某筆資料資料
-function delete_tad_cbox($sn=""){
-	global $xoopsDB,$xoopsUser,$xoopsModule;
-	//判斷是否對該模組有管理權限，  若空白
-  if ($xoopsUser) {
-    $module_id = $xoopsModule->getVar('mid');
-    $isAdmin=$xoopsUser->isAdmin($module_id);
-  }else{
-    $isAdmin=false;
 
-	}
-	if($isAdmin){
-		$sql = "delete from ".$xoopsDB->prefix("tad_cbox")." where sn='$sn'";
-		$xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
-	}
+/********************* 自訂函數 *********************/
+//自動新增分類
+function create_cate($title='',$sort='',$handle='',$enable_group='',$enable_upload_group='1',$google_id='',$google_pass=''){
+  global $xoopsDB;
+
+  $myts =& MyTextSanitizer::getInstance();
+  $title=$myts->addSlashes($title);
+  if(empty($sort))$sort=tad_cal_cate_max_sort();
+
+  $sql = "insert into ".$xoopsDB->prefix("tad_cal_cate")."
+  (`cate_title` , `cate_sort` , `cate_enable` , `cate_handle` , `enable_group` , `enable_upload_group` , `google_id` , `google_pass`, `cate_color`)
+  values('{$title}' , '{$sort}' , '1' , '{$handle}' , '{$enable_group}' , '{$enable_upload_group}' , '{$google_id}' , '{$google_pass}','rgb(0,0,0)')";
+  $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+  //取得最後新增資料的流水編號
+  $cate_sn=$xoopsDB->getInsertId();
+
+  //自動給顏色碼
+  $color=num2color($cate_sn);
+  $sql="update ".$xoopsDB->prefix("tad_cal_cate")." set `cate_bgcolor`='{$color}' where `cate_sn`='$cate_sn'";
+  $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+  return $cate_sn;
+}
+
+
+//自動取得tad_cal_cate的最新排序
+function tad_cal_cate_max_sort(){
+  global $xoopsDB;
+  $sql = "select max(`cate_sort`) from ".$xoopsDB->prefix("tad_cal_cate");
+  $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+  list($sort)=$xoopsDB->fetchRow($result);
+  return ++$sort;
 }
 
 
 
-/********************* 預設函數 *********************/
-//圓角文字框
-function div_3d($title="",$main="",$kind="raised",$style=""){
-	$main="<table style='width:auto;{$style}'><tr><td>
-	<div class='{$kind}'>
-	<h1>$title</h1>
-	<b class='b1'></b><b class='b2'></b><b class='b3'></b><b class='b4'></b>
-	<div class='boxcontent'>
- 	$main
-	</div>
-	<b class='b4b'></b><b class='b3b'></b><b class='b2b'></b><b class='b1b'></b>
-	</div>
-	</td></tr></table>";
-	return $main;
+//以流水號取得某筆tad_cal_cate資料
+function get_tad_cal_cate($cate_sn=""){
+  global $xoopsDB;
+  if(empty($cate_sn))return;
+  $sql = "select * from ".$xoopsDB->prefix("tad_cal_cate")." where cate_sn='$cate_sn'";
+  $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+  $data=$xoopsDB->fetchArray($result);
+  return $data;
 }
 
-if(!function_exists("is_utf8")){
-	//判斷字串是否為utf8
-	function  is_utf8($str)  {
-	    $i=0;
-	    $len  =  strlen($str);
 
-	    for($i=0;$i<$len;$i++)  {
-	        $sbit  =  ord(substr($str,$i,1));
-	        if($sbit  <  128)  {
-	            //本字節為英文字符，不與理會
-	        }elseif($sbit  >  191  &&  $sbit  <  224)  {
-	            //第一字節為落於192~223的utf8的中文字(表示該中文為由2個字節所組成utf8中文字)，找下一個中文字
-	            $i++;
-	        }elseif($sbit  >  223  &&  $sbit  <  240)  {
-	            //第一字節為落於223~239的utf8的中文字(表示該中文為由3個字節所組成的utf8中文字)，找下一個中文字
-	            $i+=2;
-	        }elseif($sbit  >  239  &&  $sbit  <  248)  {
-	            //第一字節為落於240~247的utf8的中文字(表示該中文為由4個字節所組成的utf8中文字)，找下一個中文字
-	            $i+=3;
-	        }else{
-	            //第一字節為非的utf8的中文字
-	            return  0;
-	        }
-	    }
-	    //檢查完整個字串都沒問體，代表這個字串是utf8中文字
-	    return  1;
-	}
+//自動取得顏色
+function num2color($cate_sn=''){
+  $R=$G=$B=255;
+  $m=ceil($cate_sn/3);
+  $n=$cate_sn % 3;
+  $degree=intval($cate_sn)*10*$m;
+
+  $cor=array("R","G","B");
+  ${$cor[$n]}-=$degree;
+
+  return "rgb({$R},{$G},{$B})";
 }
+
+
+
+
+function setTimezoneByOffset($offset){
+  $testTimestamp = time();
+    date_default_timezone_set('UTC');
+    $testLocaltime = localtime($testTimestamp,true);
+    $testHour = $testLocaltime['tm_hour'];
+
+
+$abbrarray = timezone_abbreviations_list();
+foreach ($abbrarray as $abbr)
+{
+    //echo $abbr."<br>";
+  foreach ($abbr as $city)
+  {
+    date_default_timezone_set($city['timezone_id']);
+    $testLocaltime     = localtime($testTimestamp,true);
+    $hour                     = $testLocaltime['tm_hour'];
+    $testOffset =  $hour - $testHour;
+    if($testOffset == $offset)
+    {
+        return true;
+    }
+  }
+}
+return false;
+}
+
+
+
+//取得tad_cal_cate所有資料陣列
+function get_tad_cal_cate_all(){
+  global $xoopsDB;
+  $sql = "select * from ".$xoopsDB->prefix("tad_cal_cate");
+  $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+  while($data=$xoopsDB->fetchArray($result)){
+    $cate_sn=$data['cate_sn'];
+    $data_arr[$cate_sn]=$data;
+  }
+  return $data_arr;
+}
+
+
+
+//取得行事曆名稱陣列
+function get_cal_array(){
+  global $xoopsDB;
+  $sql = "select cate_sn,cate_title from ".$xoopsDB->prefix("tad_cal_cate")."";
+  $result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'],3, mysql_error());
+  while(list($cate_sn , $cate_title)=$xoopsDB->fetchRow($result)){
+    $arr[$cate_sn]=$cate_title;
+  }
+  return $arr;
+}
+
 
 ?>

@@ -1,451 +1,68 @@
-
-.triangle-border {
-	position:relative;
-	padding:15px;
-	margin:1em 0 3em;
-	/*border:5px solid #5a8f00;*/
-	color:#333;
-	background:#fff;
-	/* css3 */
-	-webkit-border-radius:10px;
-	-moz-border-radius:10px;
-	border-radius:10px;
+#list_table , #list_table th , #list_table td{
+  background:none;
+  border:none;
 }
 
-
-.triangle-border:before {
-	content:"";
-	position:absolute;
-	bottom:-20px; /* value = - border-top-width - border-bottom-width */
-	left:40px; /* controls horizontal position */
-  border-width:20px 20px 0;
-	border-style:solid;
-  /*border-color:#5a8f00 transparent;*/
-  /* reduce the damage in FF3.0 */
-  display:block;
-  width:0;
+/*同步提示文字*/
+.sync_text{
+  text-align:right;
+  border-top:1px solid #99CCCC;
+  color:#99CCCC;
+  font-size:11px;
+  padding:8px;
 }
 
-/* creates the smaller  triangle */
-.triangle-border:after {
-	content:"";
-	position:absolute;
-	bottom:-13px; /* value = - border-top-width - border-bottom-width */
-	left:47px; /* value = (:before left) + (:before border-left) - (:after border-left) */
-	border-width:13px 13px 0;
-	border-style:solid;
-	border-color:#fff transparent;
-    /* reduce the damage in FF3.0 */
-    display:block;
-    width:0;
+/*下方行事曆主題標籤*/
+.cate_mark{
+  margin:4px;
+  background-color:white;
+  height:16px;
+  padding:3px;
+  font-size:11px;
+  color:#663366;
 }
 
-
-/************************** 表單表格樣式 **************************/
-div.cbox {
-	background-color: #FFFFFF;
-}
-/* 留言簿表格樣式 */
-table#cbox_show_tbl {
-	width: 100%;
-	padding: 8px;
-	border-collapse: collapse;
-	background-color: #FFFFFF;
-}
-/* 留言簿留言基本樣式  */
-table#cbox_show_tbl td {
-	padding: 4px;
-	border-bottom: 1px solid rgb(255,255,255);
-	font-size: 12px;
+.c {
+  text-align:center;
 }
 
-/* 留言簿「日期」樣式 */
-.cbox_date {
-	font-size: 10px;
-	color: rgb(102,204,255);
-	text-align: right;
-	font-family: Arial;
-	margin-bottom: 2px;
-}
-/* 留言簿「IP」樣式 */
-.cbox_ip {
-	font-size: 10px;
-	color: rgb(204,102,0);
-	font-family: Arial;
-	margin-bottom: 2px;
-}
-/* 留言簿「發佈者」樣式 */
-.cbox_publisher {
-	color: rgb(80,80,80);
-	font-weight: bold;
-	display: inline;
-}
-/* 留言簿「私密留言」樣式 */
-.lock_msg {
-	color: red;
-}
-/* 留言簿「回覆留言」樣式 */
-div.remsg {
-	color: rgb(102,153,0);
-	display: inline;
-}
-/* 留言簿表格樣式 */
-table.cbox_tbl {
-	width: 100%;
-	padding: 0px;
-	border-collapse: collapse;
-	background-color: #FFFFFF;
-}
-/* 有表單的儲存格樣式 */
-table.cbox_tbl td {
-	padding: 1px;
-	font-size: 12px;
-}
-/* 有表單的「標題」儲存格樣式 */
-table.cbox_tbl td.title {
-	background-color: transparent;
-	color: rgb(0,0,0);
-	text-align: right;
-	vertical-align: middle;
-}
-/* 有表單的「輸入欄位」儲存格樣式 */
-table.cbox_tbl td.col {
-	background-color: transparent;
-}
-/* 有表單的「工具列」儲存格樣式 */
-table#cbox_show_tbl td.bar {
-	text-align: center;
-	color: rgb(0,0,153);
-	background-color: #f8f8ff;
-}
-/* 有表單的「工具列」儲存格樣式 */
-table.cbox_tbl input.name {
-	font-size: 12px;
-	background-color: rgb(237,243,247);
-	border: 1px solid rgb(217,223,227);
-	color: rgb(80,80,80);
-	padding: 1px 3px 1px 3px;
-}
-textarea#msg , textarea#root_msg {
-	width: 100%;
-	height: 60px;
-	font-size: 12px;
-	background-color: rgb(237,243,247);
-	border: 1px solid rgb(217,223,227);
-	color: rgb(80,80,80);
-	padding: 1px 3px 1px 3px;
-}
-/* 需登入才能留言的訊息框 */
-.need_login {
-	font-size: 11pt;
-	color: rgb(51,102,0);
-	border: 1px dotted #dfdfdf;
-	width: 90%;
-	height: 80%;
-	margin: 10px auto 10px auto;
-	vertical-align: middle;
-	text-align: center;
-}
-/* #jCarouselLiteDemo */
-.carousel {
-	padding: 1px 0 0 0;
-	margin: 0 0 2px 2px;
-	position: relative;
-}
-.carousel button {
-/*Don't remove this. we still use this for individual demos. only the front pages use images as of now*/
-	float: left;
-}
-.carousel a.prev, .carousel a.next {
-	display: block;
-	float: left;
-	width: 19px;
-	height: 19px;
-	text-decoration: none;
-	background: url("images/imageNavLeft.gif") left 0px no-repeat;
-}
-.carousel a.next {
-	background: url("images/imageNavRight.gif") right 0px no-repeat;
-}
-.carousel a.next:hover {
-	background-image: url("images/imageNavRightHover.gif");
-}
-.carousel a.prev:hover {
-	background-image: url("images/imageNavLeftHover.gif");
-}
-.carousel a:hover, .carousel a:active {
-	border: none;
-	outline: none;
-}
-.carousel .jCarouselLite {
-	margin-left: auto;
-	margin-right: auto;
-	border: 0px solid black;
-	float: left;
-	background-color: transparent;
-/* Needed for rendering without flicker */
-	position: relative;
-	visibility: hidden;
-	left: -5000px;
-}
-.carousel ul {
-	margin: 0;
-}
-.carousel li img, .carousel li p {
-	background-color: transparent;
-	width: 19px;
-	height: 19px;
-	margin: 1px;
-}
-td#smile {
-	background-color: rgb(240,240,240);
-}
-/************************** 3D圓角樣式 **************************/
-/*  立體圓角框  */
-.raised {
-	background: transparent;
-	width: auto;
-	margin: 20px;
-}
-.raised h1, .raised p {
-	margin: 0 10px;
-}
-.raised h1 {
-	color: rgb(51,102,255);
-	margin-bottom: 5px;
-	font-size: 2em;
-}
-.raised p {
-	padding-bottom: 0.5em;
-}
-.raised .b1, .raised .b2, .raised .b3, .raised .b4, .raised .b1b, .raised .b2b, .raised .b3b, .raised .b4b {
-	display: block;
-	overflow: hidden;
-	font-size: 1px;
-}
-.raised .b1, .raised .b2, .raised .b3, .raised .b1b, .raised .b2b, .raised .b3b {
-	height: 1px;
-}
-.raised .b2 {
-	background: #ccc;
-	border-left: 1px solid #fff;
-	border-right: 1px solid #eee;
-}
-.raised .b3 {
-	background: #ccc;
-	border-left: 1px solid #fff;
-	border-right: 1px solid #ddd;
-}
-.raised .b4 {
-	background: #ccc;
-	border-left: 1px solid #fff;
-	border-right: 1px solid #aaa;
-}
-.raised .b4b {
-	background: #fff;
-	border-left: 1px solid #eee;
-	border-right: 1px solid #999;
-}
-.raised .b3b {
-	background: #fff;
-	border-left: 1px solid #ddd;
-	border-right: 1px solid #999;
-}
-.raised .b2b {
-	background: #fff;
-	border-left: 1px solid #aaa;
-	border-right: 1px solid #999;
-}
-.raised .b1 {
-	margin: 0 5px;
-	background: #fff;
-}
-.raised .b2, .raised .b2b {
-	margin: 0 3px;
-	border-width: 0 2px;
-}
-.raised .b3, .raised .b3b {
-	margin: 0 2px;
-}
-.raised .b4, .raised .b4b {
-	height: 2px;
-	margin: 0 1px;
-}
-.raised .b1b {
-	margin: 0 5px;
-	background: #999;
-}
-.raised .boxcontent {
-	display: block;
-	background: #fff;
-	border-left: 1px solid #fff;
-	border-right: 1px solid #999;
-	background-image: url(images/panel.jpg);
-	background-repeat: repeat-x;
-	padding: 10px 25px 10px 25px;
-}
-/*  內嵌圓角框  */
-.inset {
-	background: transparent;
-	width: auto;
-	margin: 20px;
-}
-.inset h1, .inset p {
-	margin: 0 10px;
-}
-.inset h1 {
-	color: rgb(51,102,255);
-	margin-bottom: 5px;
-	font-size: 2em;
-}
-.inset p {
-	padding-bottom: 0.5em;
-}
-.inset .b1, .inset .b2, .inset .b3, .inset .b4, .inset .b1b, .inset .b2b, .inset .b3b, .inset .b4b {
-	display: block;
-	overflow: hidden;
-	font-size: 1px;
-}
-.inset .b1, .inset .b2, .inset .b3, .inset .b1b, .inset .b2b, .inset .b3b {
-	height: 1px;
-}
-.inset .b2 {
-	background: #ccc;
-	border-left: 1px solid #999;
-	border-right: 1px solid #aaa;
-}
-.inset .b3 {
-	background: #ccc;
-	border-left: 1px solid #999;
-	border-right: 1px solid #ddd;
-}
-.inset .b4 {
-	background: #ccc;
-	border-left: 1px solid #999;
-	border-right: 1px solid #eee;
-}
-.inset .b4b {
-	background: #fff;
-	border-left: 1px solid #aaa;
-	border-right: 1px solid #fff;
-}
-.inset .b3b {
-	background: #fff;
-	border-left: 1px solid #ddd;
-	border-right: 1px solid #fff;
-}
-.inset .b2b {
-	background: #fff;
-	border-left: 1px solid #eee;
-	border-right: 1px solid #fff;
-}
-.inset .b1 {
-	margin: 0 5px;
-	background: #999;
-}
-.inset .b2, .inset .b2b {
-	margin: 0 3px;
-	border-width: 0 2px;
-}
-.inset .b3, .inset .b3b {
-	margin: 0 2px;
-}
-.inset .b4, .inset .b4b {
-	height: 2px;
-	margin: 0 1px;
-}
-.inset .b1b {
-	margin: 0 5px;
-	background: #fff;
-}
-.inset .boxcontent {
-	display: block;
-	background: #fff;
-	border-left: 1px solid #999;
-	border-right: 1px solid #fff;
-	background-image: url(images/panel.jpg);
-	background-repeat: repeat-x;
-	padding: 10px 25px 10px 25px;
-}
-/*  白底灰圓角框  */
-.corners {
-	background: transparent;
-	width: auto;
-	margin: 20px;
-}
-.corners h1, .inset p {
-	margin: 0 10px;
-}
-.corners h1 {
-	color: rgb(51,102,255);
-	margin-bottom: 5px;
-	font-size: 2em;
-}
-.corners p {
-	padding-bottom: 0.5em;
-}
-.corners .b1, .corners .b2, .corners .b3, .corners .b4, .corners .b1b, .corners .b2b, .corners .b3b, .corners .b4b {
-	display: block;
-	overflow: hidden;
-	font-size: 1px;
-}
-.corners .b1, .corners .b2, .corners .b3, .corners .b1b, .corners .b2b, .corners .b3b {
-	height: 1px;
-}
-.corners .b2 {
-	background: #fff;
-	border-left: 1px solid #999;
-	border-right: 1px solid #999;
-}
-.corners .b3 {
-	background: #fff;
-	border-left: 1px solid #999;
-	border-right: 1px solid #999;
-}
-.corners .b4 {
-	background: #fff;
-	border-left: 1px solid #999;
-	border-right: 1px solid #999;
-}
-.corners .b4b {
-	background: #fff;
-	border-left: 1px solid #999;
-	border-right: 1px solid #999;
-}
-.corners .b3b {
-	background: #fff;
-	border-left: 1px solid #999;
-	border-right: 1px solid #999;
-}
-.corners .b2b {
-	background: #fff;
-	border-left: 1px solid #999;
-	border-right: 1px solid #999;
-}
-.corners .b1 {
-	margin: 0 5px;
-	background: #999;
-}
-.corners .b2, .corners .b2b {
-	margin: 0 3px;
-	border-width: 0 2px;
-}
-.corners .b3, .corners .b3b {
-	margin: 0 2px;
-}
-.corners .b4, .corners .b4b {
-	height: 2px;
-	margin: 0 1px;
-}
-.corners .b1b {
-	margin: 0 5px;
-	background: #999;
-}
-.corners .boxcontent {
-	display: block;
-	background: #fff;
-	border-left: 1px solid #999;
-	border-right: 1px solid #999;
-	background-repeat: repeat-x;
-	padding: 5px 10px 5px 10px;
-}
+.even_div{
+  padding:10px;
+  border:1px solid rgb(192,192,192);
+
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  border-radius: 8px;
+  -webkit-box-shadow: #666 0px 2px 3px;
+  -moz-box-shadow: #666 0px 2px 3px;
+  box-shadow: #666 0px 2px 3px;
+  background: #F6F6F6;
+  background: -webkit-gradient(linear, 0 0, 0 bottom, from(#E3E3E3), to(#FFFFFF));
+  background: -webkit-linear-gradient(#E3E3E3, #FFFFFF);
+  background: -moz-linear-gradient(#E3E3E3, #FFFFFF);
+  background: -ms-linear-gradient(#E3E3E3, #FFFFFF);
+  background: -o-linear-gradient(#E3E3E3, #FFFFFF);
+  background: linear-gradient(#E3E3E3, #FFFFFF);
+  -pie-background: linear-gradient(#E3E3E3, #FFFFFF);
+  behavior: url(PIE.htc);
+}
+
+/*-------------impromptu---------- */
+			.jqifade{ position: absolute; background-color: #aaaaaa; }
+			div.jqi{ width: 400px; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; position: absolute; background-color: #ffffff; font-size: 11px; text-align: left; border: solid 1px #eeeeee; -moz-border-radius: 10px; -webkit-border-radius: 10px; padding: 7px; }
+			div.jqi .jqicontainer{ font-weight: bold; }
+			div.jqi .jqiclose{ position: absolute; top: 4px; right: -2px; width: 18px; cursor: default; color: #bbbbbb; font-weight: bold; }
+			div.jqi .jqimessage{ padding: 10px; line-height: 20px; color: #444444; }
+			div.jqi .jqibuttons{ text-align: right; padding: 5px 0 5px 0; border: solid 1px #eeeeee; background-color: #f4f4f4; }
+			div.jqi button{ padding: 3px 10px; margin: 0 10px; background-color: #2F6073; border: solid 1px #f4f4f4; color: #ffffff; font-weight: bold; font-size: 12px; }
+			div.jqi button:hover{ background-color: #728A8C; }
+			div.jqi button.jqidefaultbutton{ background-color: #BF5E26; }
+			.jqiwarning .jqi .jqibuttons{ background-color: #BF5E26; }
+
+            div.jqi .jqimessage .field{ padding: 5px 0; }
+			div.jqi .jqimessage .field label{ display: block; clear: left; float: left; width: 100px; }
+			div.jqi .jqimessage .field input{ width: 150px; border: solid 1px #777777; }
+			div.jqi .jqimessage .field input.error{ width: 150px; border: solid 1px #ff0000; }
+			/*-------------------------------- */
+			
+			
