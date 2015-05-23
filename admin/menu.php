@@ -1,28 +1,12 @@
 <?php
 //  ------------------------------------------------------------------------ //
-// æœ¬æ¨¡çµ„ç”± tad è£½ä½œ
-// è£½ä½œæ—¥æœŸï¼š2011-11-03
-// $Id:$
+// ¥»¼Ò²Õ¥Ñ tad »s§@
+// »s§@¤é´Á¡G2008-03-25
+// $Id: menu.php,v 1.1 2008/05/14 01:25:12 tad Exp $
 // ------------------------------------------------------------------------- //
 
-$adminmenu = array();
-$icon_dir=substr(XOOPS_VERSION,6,3)=='2.6'?"":"images/";
+$adminmenu[0]['title'] = _MI_TADCBOX_ADMENU1;
+$adminmenu[0]['link'] = "admin/index.php";
+$adminmenu[0]['icon'] = "images/comment.png";
 
-$i = 1;
-$adminmenu[$i]['title'] = _MI_TAD_ADMIN_HOME ;
-$adminmenu[$i]['link'] = 'admin/index.php' ;
-$adminmenu[$i]['desc'] = _MI_TAD_ADMIN_HOME_DESC ;
-$adminmenu[$i]['icon'] = 'images/admin/home.png' ;
-
-$i++;
-$adminmenu[$i]['title'] = _MI_TADCAL_ADMENU1;
-$adminmenu[$i]['link'] = "admin/main.php";
-$adminmenu[$i]['desc'] = _MI_TADCAL_ADMENU1 ;
-$adminmenu[$i]['icon'] = "images/admin/calendar_week.png";
-
-$i++;
-$adminmenu[$i]['title'] = _MI_TAD_ADMIN_ABOUT;
-$adminmenu[$i]['link'] = 'admin/about.php';
-$adminmenu[$i]['desc'] = _MI_TAD_ADMIN_ABOUT_DESC;
-$adminmenu[$i]['icon'] = 'images/admin/about.png';
 ?>
