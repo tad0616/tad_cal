@@ -1,0 +1,78 @@
+Tad Cal 2.5 official version of the amended project (2014-06-16 release)
+===============================================
+ 1. Add optional weekly Preferences option from the start of Monday or Sunday
+ 2. Fixed uid field is mediumint (8) Format
+
+
+Tad Cal 2.4 official version of the amended project (2014-05-02 release)
+===============================================
+ 1. To solve the new version of FireFox or chrome if transparency color selection, will be showing a black problem.
+ 2. Fix the error message at the bottom of the message FB
+
+
+Tad Cal 2.3 official version of the amended project (2014-04-15 release)
+===============================================
+ 1. Amend large block calendar can not sync bug
+ 2. fine-tuning the program to avoid duplication of functions
+
+
+Tad Cal 2.2 official version of the amended project (2014-04-14 release)
+===============================================
+ 1. streamlining common functions (need tadtools 2.06 above)
+ 2. Amendments to the list of recent items will have recurring bug
+ 3. Add a large block calendar
+ 4. improve quickly add events, no need to refresh the entire page.
+
+
+Tad Cal 2.1 official version of the amended project (2014-01-18 release)
+===============================================
+  1. Adjust the calendar setting screen
+  2. Adjust the color can not be set when the new issue calendar
+  3. Block added link to link modules
+  4. streamline language and correct debug notifications
+  5. fixed the problem can not be edited
+  6. Fixed resume downloading without content problem
+  7. Increase resume download various setting items
+
+Tad Cal 2.0 official version of the amended project (2013-07-29 release)
+===============================================
+ 1. Fixed calendar button layout problems (lack of year and month).
+ 2. Add facebook message box switch
+ 3. Color Correction Event
+ 4. Add resume download
+ 5. Modify the XOOPS 2.5 architecture
+
+
+Tad Cal 1.1 official version of the amended project (release 2012-11-01)
+===============================================
+ 1. Update fullcalendar to version 1.5.4 to support jquery 1.8 or later
+ 2. Add facebook message switch
+ 3. Click below to view a single calendar content Calendar
+
+
+Tad Cal 1.0 official version of the amended project (forget there is no release)
+===============================================
+ Permissions 1. Fixed release event is evaluated not the right questions.
+ 2. Add the distal automatic synchronization calendar function.
+ 3. Modify the recent events Block presentation to make it more clear.
+ 4. Fixed few small month calendar month block problem.
+
+
+Tad Cal Version 1.0 RC1 amend item (2011-11-11 release)
+===============================================
+ 1. Fixed issue permission judgment is incorrect.
+ 2. redefinition of the term, the abolition of "classification" of the term, to avoid confusion.
+ 3. Fix Google Calendar will not connect problem after editing.
+ 4. Add Calendar classified color customization.
+ 5. Import Google Calendar, automatic import event.
+ 6. Records finally into time
+ 7. Adjust the calendar backend interface, separate general classification and Google Calendar calendar setting interface.
+ 8. automatically determine whether to join Google Calendar
+ 9. calendar directly stimulate the sort order.
+10. Fixed host zone and time zone differences problem users have support across time zones host.
+11. The judge added all-day event
+12. Fixed layout, adding a week day other display mode.
+13. Join an event just click to see without feed.
+14. Join two blocks
+15. Date added directly click (or select multiple days date) New event function
+16. Join a drag event directly change the date function.
