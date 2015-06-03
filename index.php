@@ -1,41 +1,44 @@
 <?php
-//  ------------------------------------------------------------------------ //
-// 本模組由 tad 製作
-// 製作日期：2011-11-03
-// $Id:$
-// ------------------------------------------------------------------------- //
 /*-----------引入檔案區--------------*/
 include_once "header.php";
 $xoopsOption['template_main'] = "tad_cal_index_tpl.html";
-include_once XOOPS_ROOT_PATH."/header.php";
+include_once XOOPS_ROOT_PATH . "/header.php";
 /*-----------function區--------------*/
 
-function fullcalendar($cate_sn=0){
-  global $xoopsUser,$xoopsModuleConfig,$isAdmin,$xoopsTpl;
+function fullcalendar($cate_sn = 0)
+{
+    global $xoopsUser, $xoopsModuleConfig, $isAdmin, $xoopsTpl;
 
-  if(empty($xoopsModuleConfig['eventShowMode']))$xoopsModuleConfig['eventShowMode']='eventClick';
-  if(empty($xoopsModuleConfig['eventTheme']))$xoopsModuleConfig['eventTheme']='ui-tooltip-blue';
+    if (empty($xoopsModuleConfig['eventShowMode'])) {
+        $xoopsModuleConfig['eventShowMode'] = 'eventClick';
+    }
 
-  $style=make_style();
+    if (empty($xoopsModuleConfig['eventTheme'])) {
+        $xoopsModuleConfig['eventTheme'] = 'ui-tooltip-blue';
+    }
 
-  if(empty($cate_sn))$cate_sn=0;
+    $style = make_style();
 
-  $eventDrop=$del_js=$eventAdd="";
-  if($xoopsUser){
-    //先抓分類下拉選單
-    $get_tad_cal_cate_menu_options=get_tad_cal_cate_menu_options($cate_sn);
-    if($isAdmin){
-      if(empty($get_tad_cal_cate_menu_options)){
-        $cate=_MD_TADCAL_NEW_CATE._TAD_FOR."<input name='new_cate_title' id='new_cate_title' value='"._MD_TADCAL_NEW_CALENDAR."'>";
-      }else{
-        $cate=_MD_TADCAL_CATE_SN._TAD_FOR."<select name='cate_sn' id='cate_sn' size=1 >{$get_tad_cal_cate_menu_options}</select>";
-      }
+    if (empty($cate_sn)) {
+        $cate_sn = 0;
+    }
 
-      //快速新增功能
-      $eventAdd="selectable: true,
+    $eventDrop = $del_js = $eventAdd = "";
+    if ($xoopsUser) {
+        //先抓分類下拉選單
+        $get_tad_cal_cate_menu_options = get_tad_cal_cate_menu_options($cate_sn);
+        if ($isAdmin) {
+            if (empty($get_tad_cal_cate_menu_options)) {
+                $cate = _MD_TADCAL_NEW_CATE . _TAD_FOR . "<input name='new_cate_title' id='new_cate_title' value='" . _MD_TADCAL_NEW_CALENDAR . "'>";
+            } else {
+                $cate = _MD_TADCAL_CATE_SN . _TAD_FOR . "<select name='cate_sn' id='cate_sn' size=1 >{$get_tad_cal_cate_menu_options}</select>";
+            }
+
+            //快速新增功能
+            $eventAdd = "selectable: true,
       selectHelper: true,
       select: function(start, end, allDay) {
-        var promptBox = \""._MD_TADCAL_TITLE._TAD_FOR."<input type='text' id='eventTitle' name='eventTitle' value='' /><br>$cate\";
+        var promptBox = \"" . _MD_TADCAL_TITLE . _TAD_FOR . "<input type='text' id='eventTitle' name='eventTitle' value='' /><br>$cate\";
 
         function mycallbackform(v,m,f){
           if(v != undefined){
@@ -84,8 +87,8 @@ function fullcalendar($cate_sn=0){
       },
       ";
 
-      //拖曳搬移功能
-      $eventDrop="editable:true,
+            //拖曳搬移功能
+            $eventDrop = "editable:true,
       eventDrop: function(event,dayDelta,minuteDelta,allDay,revertFunc) {
         var startTime=event.start.getTime();
         $.post('event.php', {op: 'ajax_update_date', dayDelta: dayDelta , minuteDelta: minuteDelta  , sn: event.id },function(data){
@@ -93,45 +96,39 @@ function fullcalendar($cate_sn=0){
         });
       },
       ";
+        }
+
     }
 
-  }
+    $xoopsTpl->assign('eventDrop', $eventDrop);
+    $xoopsTpl->assign('eventAdd', $eventAdd);
+    $xoopsTpl->assign('style_css', $style['css']);
+    $xoopsTpl->assign('cate_sn', $cate_sn);
+    $xoopsTpl->assign('eventShowMode', $xoopsModuleConfig['eventShowMode']);
+    $xoopsTpl->assign('eventTheme', $xoopsModuleConfig['eventTheme']);
+    $xoopsTpl->assign('style_mark', $style['mark']);
+    $xoopsTpl->assign('my_counter', my_counter());
 
-
-
-  $xoopsTpl->assign('eventDrop' , $eventDrop);
-  $xoopsTpl->assign('eventAdd' , $eventAdd);
-  $xoopsTpl->assign('style_css' , $style['css']);
-  $xoopsTpl->assign('cate_sn' , $cate_sn);
-  $xoopsTpl->assign('eventShowMode' , $xoopsModuleConfig['eventShowMode']);
-  $xoopsTpl->assign('eventTheme' , $xoopsModuleConfig['eventTheme']);
-  $xoopsTpl->assign('style_mark' , $style['mark']);
-  $xoopsTpl->assign('my_counter' , my_counter());
-
-  $xoopsTpl->assign('firstDay' , $xoopsModuleConfig['cal_start']);
+    $xoopsTpl->assign('firstDay', $xoopsModuleConfig['cal_start']);
 
 }
 
-
-
 /*-----------執行動作判斷區----------*/
-$op=(empty($_REQUEST['op']))?"":$_REQUEST['op'];
-$cate_sn=(empty($_REQUEST['cate_sn']))?"":intval($_REQUEST['cate_sn']);
-$sn=(empty($_REQUEST['sn']))?"":intval($_REQUEST['sn']);
+$op      = (empty($_REQUEST['op'])) ? "" : $_REQUEST['op'];
+$cate_sn = (empty($_REQUEST['cate_sn'])) ? "" : intval($_REQUEST['cate_sn']);
+$sn      = (empty($_REQUEST['sn'])) ? "" : intval($_REQUEST['sn']);
 
+switch ($op) {
 
-switch($op){
-
-  default:
-  fullcalendar($cate_sn);
-  break;
+    default:
+        fullcalendar($cate_sn);
+        break;
 }
 
 /*-----------秀出結果區--------------*/
-$xoopsTpl->assign( "toolbar" , toolbar_bootstrap($interface_menu)) ;
-$xoopsTpl->assign( "bootstrap" , get_bootstrap()) ;
-$xoopsTpl->assign( "jquery" , get_jquery(true)) ;
-$xoopsTpl->assign( "isAdmin" , $isAdmin) ;
+$xoopsTpl->assign("toolbar", toolbar_bootstrap($interface_menu));
+$xoopsTpl->assign("bootstrap", get_bootstrap());
+$xoopsTpl->assign("jquery", get_jquery(true));
+$xoopsTpl->assign("isAdmin", $isAdmin);
 
-include_once XOOPS_ROOT_PATH.'/footer.php';
-?>
+include_once XOOPS_ROOT_PATH . '/footer.php';
