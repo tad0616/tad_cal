@@ -17,24 +17,24 @@ if (!function_exists("make_style")) {
         while (list($cate_sn, $cate_title, $cate_bgcolor, $cate_color) = $xoopsDB->fetchRow($result)) {
             //$color=num2color($cate_sn);
             $main['css'] .= "
-        /* {$cate_sn} */
-        .my{$cate_sn},
-        .fc-agenda .my{$cate_sn} .fc-event-time,
-        .my{$cate_sn} a {
-            background-color: {$cate_bgcolor}; /* background color */
-            color: {$cate_color};           /* text color */
-        }
+                /* {$cate_sn} */
+                .my{$cate_sn},
+                .fc-agenda .my{$cate_sn} .fc-event-time,
+                .my{$cate_sn} a {
+                    background-color: {$cate_bgcolor}; /* background color */
+                    color: {$cate_color};           /* text color */
+                }
 
-        .fc-event{$cate_sn},
-        .fc-agenda .fc-event{$cate_sn} .fc-event-time,
-        .fc-event{$cate_sn} a {
-          background-color: {$cate_bgcolor}; /* default BACKGROUND color */
-          color: {$cate_color};           /* default TEXT color */
-        }
-      ";
+                .fc-event{$cate_sn},
+                .fc-agenda .fc-event{$cate_sn} .fc-event-time,
+                .fc-event{$cate_sn} a {
+                  background-color: {$cate_bgcolor}; /* default BACKGROUND color */
+                  color: {$cate_color};           /* default TEXT color */
+                }
+              ";
 
             $main['mark'] .= "
-      <span class='cate_mark' style='border:1px solid {$cate_bgcolor}; border-left:16px solid {$cate_bgcolor};'><a href='index.php?cate_sn={$cate_sn}'>$cate_title</a></span>";
+            <span class='cate_mark' style='border:1px solid {$cate_bgcolor}; border-left:16px solid {$cate_bgcolor};'><a href='" . XOOPS_URL . "/modules/tad_cal/index.php?cate_sn={$cate_sn}'>$cate_title</a></span>";
         }
 
         return $main;
@@ -220,8 +220,8 @@ if (!function_exists("rrule")) {
         $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
 
         $sql = "insert into " . $xoopsDB->prefix("tad_cal_repeat") . "
-    (`sn` , `start` , `end` , `allday`)
-    values{$sql_data}";
+        (`sn` , `start` , `end` , `allday`)
+        values{$sql_data}";
         $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
     }
 }
