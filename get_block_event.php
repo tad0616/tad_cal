@@ -2,7 +2,9 @@
 include_once "header.php";
 
 /* 連資料庫檢查 */
-$op = (!isset($_REQUEST['op'])) ? "" : $_REQUEST['op'];
+include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+$op = system_CleanVars($_REQUEST, 'op', '', 'string');
+
 if ($op == 'title') {
     echo get_event_title($_REQUEST['start']);
 } else {

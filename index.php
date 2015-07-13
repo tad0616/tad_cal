@@ -1,7 +1,7 @@
 <?php
 /*-----------引入檔案區--------------*/
 include_once "header.php";
-$xoopsOption['template_main'] = "tad_cal_index_tpl.html";
+$xoopsOption['template_main'] = set_bootstrap("tad_cal_index.html");
 include_once XOOPS_ROOT_PATH . "/header.php";
 /*-----------function區--------------*/
 
@@ -114,9 +114,10 @@ function fullcalendar($cate_sn = 0)
 }
 
 /*-----------執行動作判斷區----------*/
-$op      = (empty($_REQUEST['op'])) ? "" : $_REQUEST['op'];
-$cate_sn = (empty($_REQUEST['cate_sn'])) ? "" : intval($_REQUEST['cate_sn']);
-$sn      = (empty($_REQUEST['sn'])) ? "" : intval($_REQUEST['sn']);
+include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+$op      = system_CleanVars($_REQUEST, 'op', '', 'string');
+$cate_sn = system_CleanVars($_REQUEST, 'cate_sn', 0, 'int');
+$sn      = system_CleanVars($_REQUEST, 'sn', 0, 'int');
 
 switch ($op) {
 
@@ -127,8 +128,6 @@ switch ($op) {
 
 /*-----------秀出結果區--------------*/
 $xoopsTpl->assign("toolbar", toolbar_bootstrap($interface_menu));
-$xoopsTpl->assign("bootstrap", get_bootstrap());
-$xoopsTpl->assign("jquery", get_jquery(true));
 $xoopsTpl->assign("isAdmin", $isAdmin);
 
 include_once XOOPS_ROOT_PATH . '/footer.php';

@@ -60,10 +60,12 @@ function tad_cal_cate_form($cate_sn = "")
     //可見群組
     $SelectGroup_name = new XoopsFormSelectGroup("", "enable_group", false, $enable_group, 3, true);
     $SelectGroup_name->addOption("", _MA_TADCAL_ALL_OK, false);
+    $SelectGroup_name->setExtra('class="span12 form-control"');
     $enable_group = $SelectGroup_name->render();
 
     //可上傳群組
-    $SelectGroup_name    = new XoopsFormSelectGroup("", "enable_upload_group", false, $enable_upload_group, 3, true);
+    $SelectGroup_name = new XoopsFormSelectGroup("", "enable_upload_group", false, $enable_upload_group, 3, true);
+    $SelectGroup_name->setExtra('class="span12 form-control"');
     $enable_upload_group = $SelectGroup_name->render();
 
     if (!file_exists(TADTOOLS_PATH . "/formValidator.php")) {
@@ -172,7 +174,7 @@ function update_tad_cal_cate($cate_sn = "")
    `google_pass` = '{$_POST['google_pass']}',
    `cate_bgcolor` = '{$_POST['cate_bgcolor']}',
    `cate_color` = '{$_POST['cate_color']}'
-  where cate_sn='$cate_sn'";
+    where cate_sn='$cate_sn'";
     $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
     return $cate_sn;
 }
@@ -344,14 +346,9 @@ function tad_cal_all_sync()
     }
 }
 /*-----------執行動作判斷區----------*/
-$op      = (!isset($_REQUEST['op'])) ? "" : $_REQUEST['op'];
-$cate_sn = (!isset($_REQUEST['cate_sn'])) ? "" : intval($_REQUEST['cate_sn']);
-
-// if(isset($_SESSION['import_google']) or $op=="import_google"){
-//   $cate_sn=isset($_SESSION['import_google'])?$_SESSION['import_google']:$cate_sn;
-//   import_google($cate_sn);
-//   redirect_header($_SERVER['PHP_SELF'],3, _MA_TADCAL_GOOGLE_IMPORT_OK);
-// }
+include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+$op      = system_CleanVars($_REQUEST, 'op', '', 'string');
+$cate_sn = system_CleanVars($_REQUEST, 'cate_sn', 0, 'int');
 
 switch ($op) {
     /*---判斷動作請貼在下方---*/
@@ -364,18 +361,21 @@ switch ($op) {
     case "replace_tad_cal_cate":
         replace_tad_cal_cate();
         header("location: {$_SERVER['PHP_SELF']}");
+        exit;
         break;
 
     //新增資料
     case "insert_tad_cal_cate":
         $cate_sn = insert_tad_cal_cate();
         header("location: {$_SERVER['PHP_SELF']}");
+        exit;
         break;
 
     //更新資料
     case "update_tad_cal_cate":
         update_tad_cal_cate($cate_sn);
         header("location: {$_SERVER['PHP_SELF']}");
+        exit;
         break;
     //輸入表格
     case "tad_cal_cate_form":
@@ -386,6 +386,7 @@ switch ($op) {
     case "delete_tad_cal_cate":
         delete_tad_cal_cate($cate_sn);
         header("location: {$_SERVER['PHP_SELF']}");
+        exit;
         break;
 
     //連到Google
@@ -397,6 +398,7 @@ switch ($op) {
     case "save_google":
         save_google();
         header("location: {$_SERVER['PHP_SELF']}");
+        exit;
         break;
 
     // case "import_google":

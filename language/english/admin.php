@@ -30,3 +30,4 @@ define('_MA_TADCAL_LAST_UPDATE', 'Last updated');
 define('_MA_TADCAL_ALL_SYNC', 'Full sync');
 define('_MA_TADCAL_NEXT', 'Next');
 define('_MA_TADCAL_NO_GOOGLE_CAL', 'No Google Calendar');
+define('_MA_TADCAL_FUNCTION_CLOSED', 'This feature is temporarily closed');

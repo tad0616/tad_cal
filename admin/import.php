@@ -124,6 +124,6 @@ function import_google($cate_sn = "")
     }
 }
 /*-----------執行動作判斷區----------*/
-$cate_sn = (!isset($_REQUEST['cate_sn'])) ? "" : intval($_REQUEST['cate_sn']);
-
+include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+$cate_sn = system_CleanVars($_REQUEST, 'cate_sn', 0, 'int');
 import_google($cate_sn);

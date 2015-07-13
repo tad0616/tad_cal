@@ -1,7 +1,7 @@
 <?php
 /*-----------引入檔案區--------------*/
 include_once "header.php";
-$xoopsOption['template_main'] = "tad_cal_event_tpl.html";
+$xoopsOption['template_main'] = set_bootstrap("tad_cal_event.html");
 include_once XOOPS_ROOT_PATH . "/header.php";
 /*-----------function區--------------*/
 
@@ -86,9 +86,9 @@ function tad_cal_event_form($sn = "", $mode = '', $stamp = "")
     } else {
         $of_cate_title = _MD_TADCAL_CATE_SN;
         $cate_col      = "
-      <select name='cate_sn' size=1 class='span4'>
-      {$get_tad_cal_cate_menu_options}
-      </select>";
+          <select name='cate_sn' size=1 class='span12 form-control'>
+          {$get_tad_cal_cate_menu_options}
+          </select>";
     }
 
     $xoopsTpl->assign("of_cate_title", $of_cate_title);
@@ -144,12 +144,13 @@ function tad_cal_event_form($sn = "", $mode = '', $stamp = "")
     $weekday         = array("SU" => _MD_TADCAL_SU, "MO" => _MD_TADCAL_MO, "TU" => _MD_TADCAL_TU, "WE" => _MD_TADCAL_WE, "TH" => _MD_TADCAL_TH, "FR" => _MD_TADCAL_FR, "SA" => _MD_TADCAL_SA);
     $week_repeat_col = "";
     $warr            = (isset($rrule_arr['RRULE']['FREQ']) and $rrule_arr['RRULE']['FREQ'] == 'WEEKLY') ? explode(",", $rrule_arr['RRULE']['BYDAY']) : array(strtoupper(substr(date("D", strtotime($start)), 0, 2)));
+    $class           = $_SESSION['bootstrap'] == 3 ? 'checkbox-inline' : 'checkbox inline';
     foreach ($weekday as $en => $ch) {
         $checked = (in_array($en, $warr)) ? "checked" : "";
         $week_repeat_col .= "
-    <label class='checkbox inline'>
-      <input type='checkbox' name='BYDAY[]' value='{$en}' id='{$en}' $checked> {$ch}
-    </label> ";
+        <label class='$class'>
+          <input type='checkbox' name='BYDAY[]' value='{$en}' id='{$en}' $checked> {$ch}
+        </label> ";
     }
 
     //$rrule_arr['RRULE']['BYDAY']
@@ -832,10 +833,11 @@ function ajax_update_date($sn = '')
 }
 
 /*-----------執行動作判斷區----------*/
-$op      = (empty($_REQUEST['op'])) ? "" : $_REQUEST['op'];
-$cate_sn = (empty($_REQUEST['cate_sn'])) ? "" : intval($_REQUEST['cate_sn']);
-$sn      = (empty($_REQUEST['sn'])) ? "" : intval($_REQUEST['sn']);
-$stamp   = (empty($_REQUEST['stamp'])) ? "" : intval($_REQUEST['stamp']);
+include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+$op      = system_CleanVars($_REQUEST, 'op', '', 'string');
+$cate_sn = system_CleanVars($_REQUEST, 'cate_sn', 0, 'int');
+$sn      = system_CleanVars($_REQUEST, 'sn', 0, 'int');
+$stamp   = system_CleanVars($_REQUEST, 'stamp', 0, 'int');
 
 switch ($op) {
 
@@ -848,18 +850,21 @@ switch ($op) {
     case "replace_tad_cal_event":
         replace_tad_cal_event();
         header("location: " . XOOPS_URL . "/modules/tad_cal/index.php");
+        exit;
         break;
 
     //新增資料
     case "insert_tad_cal_event":
         $sn = insert_tad_cal_event();
         header("location: " . XOOPS_URL . "/modules/tad_cal/index.php");
+        exit;
         break;
 
     //更新資料
     case "update_tad_cal_event":
         update_tad_cal_event($sn);
         header("location: " . XOOPS_URL . "/modules/tad_cal/index.php");
+        exit;
         break;
     //輸入表格
     case "tad_cal_event_form":
@@ -870,6 +875,7 @@ switch ($op) {
     case "delete_tad_cal_event":
         delete_tad_cal_event($sn);
         header("location: " . XOOPS_URL . "/modules/tad_cal/index.php");
+        exit;
         break;
 
     case "view":
@@ -893,8 +899,6 @@ switch ($op) {
 
 /*-----------秀出結果區--------------*/
 $xoopsTpl->assign("toolbar", toolbar_bootstrap($interface_menu));
-$xoopsTpl->assign("bootstrap", get_bootstrap());
-$xoopsTpl->assign("jquery", get_jquery(true));
 $xoopsTpl->assign("isAdmin", $isAdmin);
 
 include_once XOOPS_ROOT_PATH . '/footer.php';

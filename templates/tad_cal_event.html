@@ -1,5 +1,3 @@
-<{$bootstrap}>
-<{$jquery}>
 <{$toolbar}>
 
 <{if $op=="show_one_tad_cal_event"}>
@@ -182,29 +180,34 @@
   <script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/My97DatePicker/WdatePicker.js"></script>
   <script type="text/javascript" src="<{$xoops_url}>/modules/tad_cal/class/date.js"></script>
   <script type="text/javascript" src="<{$xoops_url}>/modules/tad_cal/class/strtotime.js"></script>
-  <form action="<{$xoops_url}>/modules/tad_cal/event.php" method="post" id="myForm" enctype="multipart/form-data">
 
+  <form action="<{$xoops_url}>/modules/tad_cal/event.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
     <!--事件標題-->
-    <div class="controls controls-row">
-      <div class="span2"><{$smarty.const._MD_TADCAL_TITLE}></div>
-      <input type="text" name="title" value="<{$title}>" id="title" class="validate[required] span10">
+    <div class="control-group">
+      <label class="span2 control-label">
+        <{$smarty.const._MD_TADCAL_TITLE}>
+      </label>
+      <div class="span10 controls">
+        <input type="text" name="title" value="<{$title}>" id="title" class="validate[required] span12">
+      </div>
     </div>
 
     <!--事件起始時間-->
-    <div class="controls controls-row">
-      <div class="span2"><{$smarty.const._MD_TADCAL_TIME}></div>
+    <div class="control-group">
+      <label class="span2 control-label">
+        <{$smarty.const._MD_TADCAL_TIME}>
+      </label>
 
       <!--開始時間-->
-      <input type="text" name="start" value="<{$start_allday}>" id="start_allday" class="validate[required] span2" onClick="WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d'})" onChange="check_end();month_repeat_chk();">
-
-      <input type="text" name="start" value="<{$start}>" id="start" class="validate[required] span3" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm' , startDate:'%y-%M-%d %H:%m'})" onChange="$('#bymonthday').text($('#start').val().substr(8,2));check_end();">
+      <div class="span2 controls">
+        <input type="text" name="start" value="<{$start_allday}>" id="start_allday" class="validate[required] span12" onClick="WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d'})" onChange="check_end();month_repeat_chk();">
+      </div>
 
       <!--結束時間-->
-      <input type="text" name="end" value="<{$end_allday}>" id="end_allday" onClick="WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d'})" onChange="update_long();" class="span2">
-
-      <input type="text" name="end" value="<{$end}>" id="end" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm' , startDate:'%y-%M-%d %H:%m'})" onChange="update_long();" class="span3">
-
-      <div class="span4">
+      <div class="span2 controls">
+        <input type="text" name="end" value="<{$end_allday}>" id="end_allday" onClick="WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d'})" onChange="update_long();" class="span12">
+      </div>
+      <div class="span6 controls">
         <!--全日事件-->
         <label class="checkbox inline">
           <input type="checkbox" name="allday" id="allday" value="1" <{$chk_allday_1}>>
@@ -219,38 +222,56 @@
       </div>
     </div>
 
-
     <!--重複事件設定框-->
     <div class="well"id="repeat_box">
-      <div  class="row-fluid">
+
+      <div  class="row">
         <div class="span7">
-          <div class="controls controls-row">
-            <div class="span3"><{$smarty.const._MD_TADCAL_REPEAT}><{$smarty.const._TAD_FOR}></div>
-            <select name="FREQ" id="freq_select" class="span8">
-              <option value="DAILY" <{$chk_DAILY}>><{$smarty.const._MD_TADCAL_REPEAT_DAILY}></option>
-              <option value="WEEKLY" <{$chk_WEEKLY}>><{$smarty.const._MD_TADCAL_REPEAT_WEEKLY}></option>
-              <option value="MONTHLY" <{$chk_MONTHLY}>><{$smarty.const._MD_TADCAL_REPEAT_MONTHLY}></option>
-              <option value="YEARLY" <{$chk_YEARLY}>><{$smarty.const._MD_TADCAL_REPEAT_YEARLY}></option>
-            </select>
+
+          <div class="control-group">
+            <label class="span3 control-label">
+              <{$smarty.const._MD_TADCAL_REPEAT}><{$smarty.const._TAD_FOR}>
+            </label>
+            <div class="span8 controls">
+              <select name="FREQ" id="freq_select" class="span12">
+                <option value="DAILY" <{$chk_DAILY}>><{$smarty.const._MD_TADCAL_REPEAT_DAILY}></option>
+                <option value="WEEKLY" <{$chk_WEEKLY}>><{$smarty.const._MD_TADCAL_REPEAT_WEEKLY}></option>
+                <option value="MONTHLY" <{$chk_MONTHLY}>><{$smarty.const._MD_TADCAL_REPEAT_MONTHLY}></option>
+                <option value="YEARLY" <{$chk_YEARLY}>><{$smarty.const._MD_TADCAL_REPEAT_YEARLY}></option>
+              </select>
+            </div>
           </div>
 
-          <div class="controls controls-row">
-
-            <div class="span3"><{$smarty.const._MD_TADCAL_INTERVAL}><{$smarty.const._TAD_FOR}></div>
-            <select name="INTERVAL" class="span7">
-              <{$INTERVAL_OPT}>
-            </select>
-            <span id="interval_unit" class="span1"><{$repeat_unit}></span>
+          <div class="control-group">
+            <label class="span3 control-label">
+              <{$smarty.const._MD_TADCAL_INTERVAL}><{$smarty.const._TAD_FOR}>
+            </label>
+            <div class="span7 controls">
+              <select name="INTERVAL" class="span12">
+                <{$INTERVAL_OPT}>
+              </select>
+            </div>
+            <div class="span1 controls">
+              <span id="interval_unit"><{$repeat_unit}></span>
+            </div>
           </div>
 
-          <div id="week_repeat" class="controls controls-row">
-            <div class="span3"><{$smarty.const._MD_TADCAL_WEEK_REPEAT}><{$smarty.const._TAD_FOR}></div>
-            <div class="span9"><{$week_repeat_col}></div>
+
+          <div id="week_repeat" class="control-group">
+            <label class="span3 control-label">
+              <{$smarty.const._MD_TADCAL_WEEK_REPEAT}><{$smarty.const._TAD_FOR}>
+            </label>
+            <div class="span9 controls">
+              <{$week_repeat_col}>
+            </div>
           </div>
 
-          <div id="month_repeat" class="controls controls-row">
-            <div class="span3"><{$smarty.const._MD_TADCAL_MONTH_REPEAT}><{$smarty.const._TAD_FOR}></div>
-            <div class="span9">
+
+          <div id="month_repeat" class="control-group">
+            <label class="span3 control-label">
+              <{$smarty.const._MD_TADCAL_MONTH_REPEAT}><{$smarty.const._TAD_FOR}>
+            </label>
+            <div class="span9 controls">
               <label class="radio inline">
                 <input type="radio" name="month_repeat" value="BYMONTHDAY" id="BYMONTHDAY" <{$RRULE_BYDAY}>><{$bymonthday}>
               </label>
@@ -258,93 +279,98 @@
                 <input type="radio" name="month_repeat" value="BYDAY" id="BYDAY"><span id="get_w"></span>
               </label>
             </div>
-
           </div>
-
         </div>
 
         <div class="span5">
 
-          <div class="controls controls-row">
 
-            <div class="span12">
+          <div class="control-group">
+            <div class="span12 controls">
               <label class="radio inline">
                 <input type="radio" name="END" id="none" value="none" <{$ENDType_none}>><{$smarty.const._MD_TADCAL_NEVER_END}>
               </label>
             </div>
           </div>
 
-          <div class="controls controls-row">
-
-            <div class="span3">
+          <div class="control-group">
+            <div class="span3 controls">
               <label class="radio inline">
                 <input type="radio" name="END" id="count" value="count" <{$ENDType_count}>><{$smarty.const._MD_TADCAL_END_COUNT1}>
               </label>
             </div>
-
-            <input type="text" name="COUNT" class="span2" value="<{$RRULE_COUNT}>" onChange="$('#count').attr('checked','checked'); if(this.value=="")this.value=10;">
-            <div class="span7">
-              <label class="radio inline"><{$smarty.const._MD_TADCAL_END_COUNT2}></label>
+            <div class="span5 controls">
+              <input type="text" name="COUNT" class="span12" value="<{$RRULE_COUNT}>" onChange="$('#count').attr('checked','checked'); if(this.value=="")this.value=10;">
             </div>
-
+            <div class="span4 controls">
+              <{$smarty.const._MD_TADCAL_END_COUNT2}>
+            </div>
           </div>
 
-          <div class="controls controls-row">
 
-            <div class="span3">
+          <div class="control-group">
+            <div class="span3 controls">
               <label class="radio inline">
                 <input type="radio" name="END" id="until" value="until" <{$ENDType_until}>><{$smarty.const._MD_TADCAL_END_UNTIL1}>
               </label>
             </div>
-
-
-            <input type="text" name="UNTIL" class="span5"  value="<{$UNTIL}>" onClick="$('#until').attr('checked' , 'checked');WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d'})">
-            <div class="span4">
-              <label class="radio inline"><{$smarty.const._MD_TADCAL_END_UNTIL2}></label>
+            <div class="span5 controls">
+              <input type="text" name="UNTIL" class="span12"  value="<{$UNTIL}>" onClick="$('#until').attr('checked' , 'checked');WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d'})">
             </div>
-
+            <div class="span4 controls">
+              <{$smarty.const._MD_TADCAL_END_UNTIL2}>
+            </div>
           </div>
 
         </div>
       </div>
     </div>
 
-    <div class="controls controls-row">
+
+    <div class="control-group">
       <!--所屬行事曆-->
-      <div class="span2"><{$of_cate_title}></div>
-      <{$cate_col}>
-
+      <label class="span2 control-label">
+        <{$of_cate_title}>
+      </label>
+      <div class="span4 controls">
+        <{$cate_col}>
+      </div>
       <!--事件地點-->
-      <div class="span2"><{$smarty.const._MD_TADCAL_LOCATION}></div>
-      <input type="text" name="location" class="span4" value="<{$location}>" id="location" >
+      <label class="span2 control-label">
+        <{$smarty.const._MD_TADCAL_LOCATION}>
+      </label>
+      <div class="span4 controls">
+        <input type="text" name="location" class="span12" value="<{$location}>" id="location" >
+      </div>
     </div>
 
-    <div class="controls controls-row">
-      <!--事件內容-->
-      <div class="span2"><{$smarty.const._MD_TADCAL_DETAILS}></div>
-      <textarea name="details" class="span10" rows=4 id="details"><{$details}></textarea>
 
+    <!--事件內容-->
+    <div class="control-group">
+      <label class="span2 control-label">
+        <{$smarty.const._MD_TADCAL_DETAILS}>
+      </label>
+      <div class="span10 controls">
+        <textarea name="details" class="span12" rows=4 id="details"><{$details}></textarea>
+      </div>
     </div>
 
-    <input type="hidden" id="long" value="<{$long}>">
-    <!--事件etag-->
-    <input type="hidden" name="etag" value="<{$etag}>">
 
-    <!--事件id-->
-    <input type="hidden" name="id" value="<{$id}>">
+    <div class="text-center">
+      <input type="hidden" id="long" value="<{$long}>">
+      <!--事件etag-->
+      <input type="hidden" name="etag" value="<{$etag}>">
 
-    <!--事件編號-->
-    <input type="hidden" name="sn" value="<{$sn}>">
+      <!--事件id-->
+      <input type="hidden" name="id" value="<{$id}>">
 
-    <!--事件排序-->
-    <input type="hidden" name="sequence" size="2" value="<{$sequence}>" id="sequence">
-    <input type="hidden" name="op" value="<{$next_op}>">
+      <!--事件編號-->
+      <input type="hidden" name="sn" value="<{$sn}>">
 
-    <div style="text-align:center;">
+      <!--事件排序-->
+      <input type="hidden" name="sequence" size="2" value="<{$sequence}>" id="sequence">
+      <input type="hidden" name="op" value="<{$next_op}>">
       <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
     </div>
   </form>
-
-
-
 <{/if}>

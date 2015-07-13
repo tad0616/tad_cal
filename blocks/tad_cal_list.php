@@ -51,8 +51,8 @@ function tad_cal_list($options)
 
     }
 
-    $block = $event = "";
-    $i     = 0;
+    $content = $event = "";
+    $i       = 0;
     if (is_array($all_event)) {
         foreach ($all_event as $start => $arr) {
             $j = 0;
@@ -61,12 +61,17 @@ function tad_cal_list($options)
                 $event[$j]['title'] = $title;
                 $j++;
             }
-            $block[$i]['start'] = $start;
-            $block[$i]['event'] = $event;
-            $event              = "";
+            $content[$i]['start'] = $start;
+            $content[$i]['event'] = $event;
+            $event                = "";
             $i++;
         }
     }
+
+    $block['content']           = $content;
+    $block['bootstrap_version'] = $_SESSION['bootstrap'];
+    $block['row']               = $_SESSION['bootstrap'] == '3' ? 'row' : 'row-fluid';
+    $block['span']              = $_SESSION['bootstrap'] == '3' ? 'col-md-' : 'span';
     return $block;
 }
 

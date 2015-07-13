@@ -29,3 +29,4 @@ define('_MA_TADCAL_LAST_UPDATE', '最後更新時間');
 define('_MA_TADCAL_ALL_SYNC', '全部同步');
 define('_MA_TADCAL_NEXT', '下一步');
 define('_MA_TADCAL_NO_GOOGLE_CAL', '查無Google行事曆');
+define('_MA_TADCAL_FUNCTION_CLOSED', '該功能暫時關閉');

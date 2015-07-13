@@ -44,7 +44,6 @@
   background: -o-linear-gradient(#E3E3E3, #FFFFFF);
   background: linear-gradient(#E3E3E3, #FFFFFF);
   -pie-background: linear-gradient(#E3E3E3, #FFFFFF);
-  behavior: url(PIE.htc);
 }
 
 /*-------------impromptu---------- */
@@ -64,5 +63,5 @@
 			div.jqi .jqimessage .field input{ width: 150px; border: solid 1px #777777; }
 			div.jqi .jqimessage .field input.error{ width: 150px; border: solid 1px #ff0000; }
 			/*-------------------------------- */
-			
-			
+
+

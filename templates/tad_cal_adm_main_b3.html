@@ -1,6 +1,5 @@
 <link href="<{$xoops_url}>/modules/tadtools/css/font-awesome/css/font-awesome.css" rel="stylesheet">
 <div class="container-fluid">
-
   <{if $op=="tad_cal_cate_form"}>
     <h1><{$smarty.const._MA_TADCAL_CATE_FORM}></h1>
     <{$formValidator_code}>
@@ -13,19 +12,19 @@
     </script>
 
     <form action="main.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
-      <div class="control-group">
+      <div class="form-group">
         <!--行事曆標題-->
-        <label class="span2 control-label">
+        <label class="col-md-2 control-label">
           <{$smarty.const._MA_TADCAL_CATE_TITLE}>
         </label>
-        <div class="span4 controls">
-          <input type="text" name="cate_title" class="span12" value="<{$cate_title}>" id="cate_title" class="validate[required]">
+        <div class="col-md-4">
+          <input type="text" name="cate_title" class="form-control" value="<{$cate_title}>" id="cate_title" class="validate[required]">
         </div>
         <!--是否啟用-->
-        <label class="span2 control-label">
+        <label class="col-md-2 control-label">
           <{$smarty.const._MA_TADCAL_CATE_ENABLE}>
         </label>
-        <div class="span4 controls">
+        <div class="col-md-4">
           <label class="radio-inline">
             <input type="radio" name="cate_enable" id="cate_enable" value="1" <{$cate_enable1}>><{$smarty.const._YES}>
           </label>
@@ -35,38 +34,38 @@
         </div>
       </div>
 
-      <div class="control-group">
+      <div class="form-group">
         <!--背景色-->
-        <label class="span2 control-label">
+        <label class="col-md-2 control-label">
           <{$smarty.const._MA_TADCAL_CATE_BGCOLOR}>
         </label>
-        <div class="span4 controls">
-          <input type="text" name="cate_bgcolor" id="cate_bgcolor" class="span12" value="<{$cate_bgcolor}>" data-text="hidden" data-hex="true">
+        <div class="col-md-4">
+          <input type="text" name="cate_bgcolor" id="cate_bgcolor" class="form-control" value="<{$cate_bgcolor}>" data-text="hidden" data-hex="true">
         </div>
         <!--文字色-->
-        <label class="span2 control-label">
+        <label class="col-md-2 control-label">
           <{$smarty.const._MA_TADCAL_CATE_COLOR}>
         </label>
-        <div class="span4 controls">
-          <input type="text" name="cate_color" id="cate_color" class="span12" value="<{$cate_color}>" data-text="hidden" data-hex="true">
+        <div class="col-md-4">
+          <input type="text" name="cate_color" id="cate_color" class="form-control" value="<{$cate_color}>" data-text="hidden" data-hex="true">
         </div>
       </div>
 
 
 
-      <div class="control-group">
+      <div class="form-group">
         <!--可讀群組-->
-        <label class="span2 control-label">
+        <label class="col-md-2 control-label">
           <{$smarty.const._MA_TADCAL_ENABLE_GROUP}>
         </label>
-        <div class="span4 controls">
+        <div class="col-md-4">
           <{$enable_group}>
         </div>
         <!--可寫群組-->
-        <label class="span2 control-label">
+        <label class="col-md-2 control-label">
           <{$smarty.const._MA_TADCAL_ENABLE_UPLOAD_GROUP}>
         </label>
-        <div class="span4 controls">
+        <div class="col-md-4">
           <{$enable_upload_group}>
         </div>
       </div>
@@ -74,20 +73,20 @@
 
       <{if $cate_handle}>
 
-        <div class="control-group">
+        <div class="form-group">
           <!--google帳號-->
-          <label class="span2 control-label">
+          <label class="col-md-2 control-label">
             <{$smarty.const._MA_TADCAL_GOOGLE_ID}>
           </label>
-          <div class="span4 controls">
-            <input type="text" name="google_id" value="<{$google_id}>" class="span12" id="google_id" ><{$smarty.const._MA_TADCAL_GOOGLE_ID_NOTE}>
+          <div class="col-md-4">
+            <input type="text" name="google_id" value="<{$google_id}>" class="form-control" id="google_id" ><{$smarty.const._MA_TADCAL_GOOGLE_ID_NOTE}>
           </div>
           <!--google密碼-->
-          <label class="span2 control-label">
+          <label class="col-md-2 control-label">
             <{$smarty.const._MA_TADCAL_GOOGLE_PASS}>
           </label>
-          <div class="span4 controls">
-            <input type="password" name="google_pass" value="<{$google_pass}>" class="span12" id="google_pass" >
+          <div class="col-md-4">
+            <input type="password" name="google_pass" value="<{$google_pass}>" class="form-control" id="google_pass" >
           </div>
         </div>
       <{/if}>
@@ -161,9 +160,9 @@
   <{else}>
     <{if $all_content==""}>
 
-      <a href="main.php?op=tad_cal_cate_form" class="btn btn-large btn-primary"><img src="../images/date_big.png" title="<{$smarty.const._TAD_ADD_CAL}>" alt="<{$smarty.const._TAD_ADD_CAL}>"><{$smarty.const._TAD_ADD_CAL}></a>
+      <a href="main.php?op=tad_cal_cate_form" class="btn btn-lg btn-primary"><img src="../images/date_big.png" title="<{$smarty.const._TAD_ADD_CAL}>" alt="<{$smarty.const._TAD_ADD_CAL}>"><{$smarty.const._TAD_ADD_CAL}></a>
 
-      <a href="main.php?op=tad_cal_add_gcal_form"  class="btn btn-large disabled btn-primary"><img src="../images/google_big.png" title="<{$smarty.const._TAD_ADD_GOOGLE}>" alt="<{$smarty.const._TAD_ADD_GOOGLE}>" align="left"><{$smarty.const._TAD_ADD_GOOGLE}><br><{$smarty.const._MA_TADCAL_FUNCTION_CLOSED}></a>
+      <a href="main.php?op=tad_cal_add_gcal_form"  class="btn btn-lg disabled btn-primary"><img src="../images/google_big.png" title="<{$smarty.const._TAD_ADD_GOOGLE}>" alt="<{$smarty.const._TAD_ADD_GOOGLE}>" align="left"><{$smarty.const._TAD_ADD_GOOGLE}><br><{$smarty.const._MA_TADCAL_FUNCTION_CLOSED}></a>
 
     <{else}>
 
@@ -216,10 +215,10 @@
           <td>
           <a href="javascript:delete_tad_cal_cate_func(<{$cal.cate_sn}>);"><img src="../images/delete.png" title="<{$smarty.const._TAD_DEL}>" alt="<{$smarty.const._TAD_DEL}>" align="absmiddle" style="margin-right:4px;"></a>
 
-          <a href="main.php?op=tad_cal_cate_form&cate_sn=<{$cal.cate_sn}>" class="btn btn-mini btn-warning"><img src="../images/edit.png" title="<{$smarty.const._TAD_EDIT}>" alt="<{$smarty.const._TAD_EDIT}>" align="absmiddle" style="margin-right:4px;"><{$smarty.const._TAD_EDIT}></a>
+          <a href="main.php?op=tad_cal_cate_form&cate_sn=<{$cal.cate_sn}>" class="btn btn-xs btn-warning"><img src="../images/edit.png" title="<{$smarty.const._TAD_EDIT}>" alt="<{$smarty.const._TAD_EDIT}>" align="absmiddle" style="margin-right:4px;"><{$smarty.const._TAD_EDIT}></a>
 
           <{if $cal.cate_handle!=""}>
-            <a href="import.php?cate_sn=<{$cal.cate_sn}>" class="btn btn-mini btn-info"><img src="../images/sync.png" title="<{$smarty.const._MA_TADCAL_GOOGLE_IMPORT}>" alt="<{$smarty.const._MA_TADCAL_GOOGLE_IMPORT}>" align="absmiddle" style="margin-right:4px;"><{$smarty.const._MA_TADCAL_GOOGLE_IMPORT}></a>
+            <a href="import.php?cate_sn=<{$cal.cate_sn}>" class="btn btn-xs btn-info"><img src="../images/sync.png" title="<{$smarty.const._MA_TADCAL_GOOGLE_IMPORT}>" alt="<{$smarty.const._MA_TADCAL_GOOGLE_IMPORT}>" align="absmiddle" style="margin-right:4px;"><{$smarty.const._MA_TADCAL_GOOGLE_IMPORT}></a>
           <{/if}>
 
           </td>
@@ -228,11 +227,11 @@
       <tr>
       <td colspan=10 class="bar">
 
-      <a href="main.php?op=tad_cal_cate_form" class="btn btn-mini btn-info"><img src="../images/date.png" title="<{$smarty.const._TAD_ADD_CAL}>" alt="<{$smarty.const._TAD_ADD_CAL}>" style="margin-right:4px;" align="absmiddle"><{$smarty.const._TAD_ADD_CAL}></a>
+      <a href="main.php?op=tad_cal_cate_form" class="btn btn-xs btn-info"><img src="../images/date.png" title="<{$smarty.const._TAD_ADD_CAL}>" alt="<{$smarty.const._TAD_ADD_CAL}>" style="margin-right:4px;" align="absmiddle"><{$smarty.const._TAD_ADD_CAL}></a>
 
-      <a href="main.php?op=tad_cal_all_sync"  class="btn btn-mini btn-info"><img src="../images/sync.png" title="<{$smarty.const._MA_TADCAL_ALL_SYNC}>" alt="<{$smarty.const._MA_TADCAL_ALL_SYNC}>" style="margin-right:4px;" align="absmiddle"><{$smarty.const._MA_TADCAL_ALL_SYNC}></a>
+      <a href="main.php?op=tad_cal_all_sync"  class="btn btn-xs btn-info"><img src="../images/sync.png" title="<{$smarty.const._MA_TADCAL_ALL_SYNC}>" alt="<{$smarty.const._MA_TADCAL_ALL_SYNC}>" style="margin-right:4px;" align="absmiddle"><{$smarty.const._MA_TADCAL_ALL_SYNC}></a>
 
-      <a href="main.php?op=tad_cal_add_gcal_form"  class="btn btn-mini btn-info"><img src="../images/google.png" title="<{$smarty.const._TAD_ADD_GOOGLE}>" alt="<{$smarty.const._TAD_ADD_GOOGLE}>" style="margin-right:4px;" align="absmiddle"><{$smarty.const._TAD_ADD_GOOGLE}></a>
+      <a href="main.php?op=tad_cal_add_gcal_form"  class="btn btn-xs btn-info"><img src="../images/google.png" title="<{$smarty.const._TAD_ADD_GOOGLE}>" alt="<{$smarty.const._TAD_ADD_GOOGLE}>" style="margin-right:4px;" align="absmiddle"><{$smarty.const._TAD_ADD_GOOGLE}></a>
 
       <{$bar}>
       </td></tr>

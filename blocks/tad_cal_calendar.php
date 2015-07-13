@@ -17,8 +17,11 @@ function tad_cal_calendar($options)
 
     $jquery_path = get_jquery(true); //一般只要此行即可
 
-    $block['jquery_path'] = $jquery_path;
-    $block['firstDay']    = $xoopsModuleConfig['cal_start'];
+    $block['jquery_path']       = $jquery_path;
+    $block['firstDay']          = $xoopsModuleConfig['cal_start'];
+    $block['bootstrap_version'] = $_SESSION['bootstrap'];
+    $block['row']               = $_SESSION['bootstrap'] == '3' ? 'row' : 'row-fluid';
+    $block['span']              = $_SESSION['bootstrap'] == '3' ? 'col-md-' : 'span';
 
     return $block;
 }

@@ -116,15 +116,17 @@ function tad_cal_full_calendar($options)
 
     }
 
-    $block['eventDrop']     = $eventDrop;
-    $block['eventAdd']      = $eventAdd;
-    $block['style_css']     = $style['css'];
-    $block['cate_sn']       = $cate_sn;
-    $block['eventShowMode'] = $xoopsModuleConfig['eventShowMode'];
-    $block['eventTheme']    = $xoopsModuleConfig['eventTheme'];
-    $block['style_mark']    = $style['mark'];
-    $block['my_counter']    = my_counter();
-    $block['firstDay']      = $xoopsModuleConfig['cal_start'];
-
+    $block['eventDrop']         = $eventDrop;
+    $block['eventAdd']          = $eventAdd;
+    $block['style_css']         = $style['css'];
+    $block['cate_sn']           = $cate_sn;
+    $block['eventShowMode']     = $xoopsModuleConfig['eventShowMode'];
+    $block['eventTheme']        = $xoopsModuleConfig['eventTheme'];
+    $block['style_mark']        = $style['mark'];
+    $block['my_counter']        = my_counter();
+    $block['firstDay']          = $xoopsModuleConfig['cal_start'];
+    $block['bootstrap_version'] = $_SESSION['bootstrap'];
+    $block['row']               = $_SESSION['bootstrap'] == '3' ? 'row' : 'row-fluid';
+    $block['span']              = $_SESSION['bootstrap'] == '3' ? 'col-md-' : 'span';
     return $block;
 }
