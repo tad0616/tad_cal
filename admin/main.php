@@ -407,7 +407,7 @@ switch ($op) {
     // break;
 
     case "tad_cal_all_sync":
-        tad_cal_all_sync();
+        //tad_cal_all_sync();
         redirect_header($_SERVER['PHP_SELF'], 3, _MA_TADCAL_GOOGLE_IMPORT_OK);
         break;
 

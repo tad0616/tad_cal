@@ -138,7 +138,7 @@ if (!function_exists("my_counter")) {
 
         $times = $new_count % $sync_conut;
         if ($times == 0) {
-            tad_cal_all_sync();
+            //tad_cal_all_sync();
         }
 
         $show_times = $sync_conut - $times;
