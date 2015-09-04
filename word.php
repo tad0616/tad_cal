@@ -45,18 +45,34 @@ if (!empty($_POST['cate_sn'])) {
     $ok_arr = $ok_cate_arr;
 }
 
-$table->addRow(); //新增一列
-$table->addCell(1500, $cellStyle)->addText(_MD_TADCAL_SIMPLE_DATE, $headStyle, $paraStyle);
-$table->addCell(700, $cellStyle)->addText(_MD_TADCAL_WEEK, $headStyle, $paraStyle);
-if ($_POST['show_type'] == "separate") {
-    $cates   = get_cal_array();
-    $cal_num = sizeof($ok_arr);
-    $width   = round(11200 / $cal_num);
-    foreach ($ok_arr as $cate_sn) {
-        $table->addCell($width, $cellStyle)->addText($cates[$cate_sn], $headStyle, $paraStyle);
+if ( $_POST['dl_type'] == "all_week"  ) {
+    $table->addRow(); //新增一列
+    for ($w=0 ; $w<=6 ;$w++){
+        if ($w == 0 or $w == 6) {
+            $cellStyle = array('bgColor' => 'FEE9E7');
+            $table->addCell(500, $cellStyle)->addText($cw[$w], null, $paraStyle); //新增一格
+        } else {
+            $cellStyle = array('bgColor' => 'FFFFFF');
+            $table->addCell(500, $cellStyle)->addText($cw[$w], null, $paraStyle); //新增一格
+        }
     }
-} else {
-    $table->addCell(11200, $cellStyle)->addText(_MD_TADCAL_SIMPLE_EVENT, $headStyle, $paraStyle);
+    $cellStyle = array('bgColor' => 'FFFFFF');
+    $table->addCell(10000, $cellStyle)->addText(_MD_TADCAL_SIMPLE_EVENT, $headStyle, $paraStyle);
+
+}else    {
+    $table->addRow(); //新增一列
+    $table->addCell(1500, $cellStyle)->addText(_MD_TADCAL_SIMPLE_DATE, $headStyle, $paraStyle);
+    $table->addCell(700, $cellStyle)->addText(_MD_TADCAL_WEEK, $headStyle, $paraStyle);
+    if ($_POST['show_type'] == "separate") {
+        $cates   = get_cal_array();
+        $cal_num = sizeof($ok_arr);
+        $width   = round(11200 / $cal_num);
+        foreach ($ok_arr as $cate_sn) {
+            $table->addCell($width, $cellStyle)->addText($cates[$cate_sn], $headStyle, $paraStyle);
+        }
+    } else {
+        $table->addCell(11200, $cellStyle)->addText(_MD_TADCAL_SIMPLE_EVENT, $headStyle, $paraStyle);
+    }
 }
 
 $all_ok_cate  = implode(",", $ok_arr);
@@ -110,46 +126,107 @@ while ($all = $xoopsDB->fetchArray($result)) {
 }
 
 //die(var_export($all_event));
-
-foreach ($dates as $start) {
-
-    if ($_POST['dl_type'] == "only_event" and !isset($all_event[$start])) {
-        continue;
-    } else {
-        $arr = $all_event[$start];
-    }
-    $w = date('w', strtotime($start));
-
-    if ($w == 0 or $w == 6) {
-        $cellStyle = array('bgColor' => 'FEE9E7');
-    } else {
-        $cellStyle = array('bgColor' => 'FFFFFF');
-    }
+if ( $_POST['dl_type'] == "all_week"  ) {
 
     $table->addRow(); //新增一列
-    $table->addCell(1500, $cellStyle)->addText($start, null, $paraStyle); //新增一格
-    $table->addCell(700, $cellStyle)->addText($cw[$w], null, $paraStyle); //新增一格
+    //取得開始位置是星期 ? 補空
+    $w = date('w', strtotime($_POST['start']))  ;
 
-    if ($_POST['show_type'] == "separate") {
-        foreach ($ok_arr as $cate_sn) {
-            $cell = "";
-            foreach ($arr[$cate_sn] as $sn => $title) {
-                $cell[] = $title;
-            }
-            $content = implode("\n", $cell);
-            $table->addCell($width, $cellStyle)->addText($content);
+    for ($a_s = 0 ; $a_s< $w ; $a_s++) {
+        if ($a_s == 0 or $a_s == 6) {
+            $cellStyle = array('bgColor' => 'FEE9E7');
+            $table->addCell(500, $cellStyle)->addText('_', null, $paraStyle); //新增一格
+        } else {
+            $cellStyle = array('bgColor' => 'FFFFFF');
+            $table->addCell(500, $cellStyle)->addText('_', null, $paraStyle); //新增一格
         }
-    } else {
+    }
 
-        $cell = "";
+    $cell = "";
+    //有資料
+    foreach ($dates as $start) {
+
+        $w = date('w', strtotime($start));
+        $d = date('d',  strtotime($start));
+        if ($w == 0 or $w == 6) {
+            $cellStyle = array('bgColor' => 'FEE9E7');
+            $table->addCell(500, $cellStyle)->addText($d, null, $paraStyle); //新增一格
+        } else {
+            $cellStyle = array('bgColor' => 'FFFFFF');
+            $table->addCell(500, $cellStyle)->addText($d, null, $paraStyle); //新增一格
+        }
+        //事件
+        $arr = $all_event[$start];
+
         foreach ($arr as $sn => $title) {
             $cell[] = $title;
         }
         $content = implode("\n", $cell);
 
-        $table->addCell(11200, $cellStyle)->addText($content); //新增一格
-    }
 
+        if ($w==6)  {
+            $cellStyle = array('bgColor' => 'FEE9E7');
+            $table->addCell(10000, $cellStyle)->addText($content, null, $paraStyle); //新增一格
+            $cell = "";
+            $content ="" ;
+            $table->addRow(); //新增一列
+        }
+
+    }
+    for ($lw=$w+1 ; $lw<=6 ;$lw++) {
+        if ($lw == 0 or $lw == 6) {
+            $cellStyle = array('bgColor' => 'FEE9E7');
+            $table->addCell(500, $cellStyle)->addText('', null, $paraStyle); //新增一格
+        } else {
+            $cellStyle = array('bgColor' => 'FFFFFF');
+            $table->addCell(500, $cellStyle)->addText('', null, $paraStyle); //新增一格
+        }
+    }
+    $cellStyle = array('bgColor' => 'FEE9E7');
+    $table->addCell(10000, $cellStyle)->addText($content, null, $paraStyle); //新增一格
+
+}else {
+    // --- 依每日呈現
+    foreach ($dates as $start) {
+
+        if ($_POST['dl_type'] == "only_event" and !isset($all_event[$start])) {
+            continue;
+        } else {
+            $arr = $all_event[$start];
+        }
+        $w = date('w', strtotime($start));
+
+        if ($w == 0 or $w == 6) {
+            $cellStyle = array('bgColor' => 'FEE9E7');
+        } else {
+            $cellStyle = array('bgColor' => 'FFFFFF');
+        }
+
+        $table->addRow(); //新增一列
+        $table->addCell(1500, $cellStyle)->addText($start, null, $paraStyle); //新增一格
+        $table->addCell(700, $cellStyle)->addText($cw[$w], null, $paraStyle); //新增一格
+
+        if ($_POST['show_type'] == "separate") {
+            foreach ($ok_arr as $cate_sn) {
+                $cell = "";
+                foreach ($arr[$cate_sn] as $sn => $title) {
+                    $cell[] = $title;
+                }
+                $content = implode("\n", $cell);
+                $table->addCell($width, $cellStyle)->addText($content);
+            }
+        } else {
+
+            $cell = "";
+            foreach ($arr as $sn => $title) {
+                $cell[] = $title;
+            }
+            $content = implode("\n", $cell);
+
+            $table->addCell(11200, $cellStyle)->addText($content); //新增一格
+        }
+
+    }
 }
 
 header('Content-Type: application/vnd.ms-word');
