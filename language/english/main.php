@@ -63,6 +63,7 @@ define('_MD_TADCAL_SIMPLE_EVENT', 'Event Project');
 define('_MD_TADCAL_DL_TYPE', 'Downloadable content');
 define('_MD_TADCAL_ONLY_EVENT', 'Download only from a date of the event');
 define('_MD_TADCAL_ALL_DATE', 'Download all dates');
+define('_MD_TADCAL_ALL_DATE', 'Download all dates and show week');
 define('_MD_TADCAL_SHOW_TYPE', 'Show as');
 define('_MD_TADCAL_SEPARATE', 'Separate events ');
 define('_MD_TADCAL_MERGE', 'Merged view');
