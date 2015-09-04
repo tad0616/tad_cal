@@ -165,8 +165,8 @@ if ( $_POST['dl_type'] == "all_week"  ) {
 
 
         if ($w==6)  {
-            $cellStyle = array('bgColor' => 'FEE9E7');
-            $table->addCell(10000, $cellStyle)->addText($content, null, $paraStyle); //新增一格
+            $cellStyle = array('bgColor' => 'FFFFFF');
+            $table->addCell(10000, $cellStyle)->addText($content); //新增一格
             $cell = "";
             $content ="" ;
             $table->addRow(); //新增一列
@@ -182,8 +182,10 @@ if ( $_POST['dl_type'] == "all_week"  ) {
             $table->addCell(500, $cellStyle)->addText('', null, $paraStyle); //新增一格
         }
     }
-    $cellStyle = array('bgColor' => 'FEE9E7');
-    $table->addCell(10000, $cellStyle)->addText($content, null, $paraStyle); //新增一格
+    if ($w<>6){
+        $cellStyle = array('bgColor' => 'FFFFFF');
+        $table->addCell(10000, $cellStyle)->addText($content); //新增一格
+    }
 
 }else {
     // --- 依每日呈現
