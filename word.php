@@ -235,10 +235,10 @@ if ( $_POST['dl_type'] == "all_week"  ) {
     for ($lw=$w+1 ; $lw<=6 ;$lw++) {
         if ($lw == 0 or $lw == 6) {
             $cellStyle = array('bgColor' => 'FEE9E7');
-            $table->addCell(600, $cellStyle)->addText('', null, $paraStyle); //新增一格
+            $table->addCell(500, $cellStyle)->addText('', null, $paraStyle); //新增一格
         } else {
             $cellStyle = array('bgColor' => 'FFFFFF');
-            $table->addCell(600, $cellStyle)->addText('', null, $paraStyle); //新增一格
+            $table->addCell(500, $cellStyle)->addText('', null, $paraStyle); //新增一格
         }
     }
     //最後列出最後事件
