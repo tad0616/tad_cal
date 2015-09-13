@@ -21,6 +21,7 @@ $fontStyle = array('color' => '000000', 'size' => 16, 'bold' => true);
 $PHPWord->addTitleStyle(1, $fontStyle);
 $section->addTitle($page_title, 1);
 $contentfontStyle = array('color' => '000000', 'size' => 9, 'bold' => false);
+$leftfontStyle = array('color' => '000000', 'size' => 7, 'bold' => false);
 
 $styleTable    = array('borderColor' => '000000', 'borderSize' => 6, 'cellMargin' => 50);
 $styleFirstRow = array('bgColor' => 'CFCFCF'); //首行樣式
@@ -147,8 +148,8 @@ if ( $_POST['dl_type'] == "all_week"  ) {
         $table->addRow(); //新增一列
 
         $cellStyle = array('bgColor' => 'FFFFFF');
-        $table->addCell(500, $cellStyle)->addText($week_num, null, $paraStyle); //新增一格
-        $table->addCell(500, $cellStyle)->addText($m, null, $paraStyle); //新增一格
+        $table->addCell(500, $cellStyle)->addText($week_num, $leftfontStyle , $paraStyle); //新增一格
+        $table->addCell(500, $cellStyle)->addText($m, $leftfontStyle  , $paraStyle); //新增一格
         $m_pre =$m ;
         $week_num ++ ;
 
@@ -156,10 +157,10 @@ if ( $_POST['dl_type'] == "all_week"  ) {
         for ($a_s = 0 ; $a_s< $w ; $a_s++) {
             if ($a_s == 0 or $a_s == 6) {
                 $cellStyle = array('bgColor' => 'FEE9E7');
-                $table->addCell(500, $cellStyle)->addText('', null, $paraStyle); //新增一格
+                $table->addCell(500, $cellStyle)->addText('', $leftfontStyle , $paraStyle); //新增一格
             } else {
                 $cellStyle = array('bgColor' => 'FFFFFF');
-                $table->addCell(500, $cellStyle)->addText('', null, $paraStyle); //新增一格
+                $table->addCell(500, $cellStyle)->addText('', $leftfontStyle , $paraStyle); //新增一格
             }
         }
     }
@@ -176,12 +177,12 @@ if ( $_POST['dl_type'] == "all_week"  ) {
             $table->addRow(); //新增一列
             $m = date('n',  strtotime($start) + 6*24*60*60 );
             $cellStyle = array('bgColor' => 'FFFFFF');
-            $table->addCell(500, $cellStyle)->addText($week_num, null, $paraStyle); //新增一格
+            $table->addCell(500, $cellStyle)->addText($week_num, $leftfontStyle , $paraStyle); //新增一格
             if ($m<>$m_pre)
                 $show_m = $m ;
             else
                 $show_m ='' ;
-            $table->addCell(500, $cellStyle)->addText($show_m, null, $paraStyle); //新增一格
+            $table->addCell(500, $cellStyle)->addText($show_m, $leftfontStyle , $paraStyle); //新增一格
 
             $m_pre =$m ;
             $week_num ++ ;
@@ -211,14 +212,14 @@ if ( $_POST['dl_type'] == "all_week"  ) {
 
         if ($w == 0 or $w == 6 or  $vacation_fg ) {
             $cellStyle = array('bgColor' => 'FEE9E7');
-            $table->addCell(500, $cellStyle)->addText($d, null, $paraStyle); //新增一格
+            $table->addCell(500, $cellStyle)->addText($d, $leftfontStyle , $paraStyle); //新增一格
 
         } else {
             if ($exam_fg)
                 $cellStyle = array('bgColor' => 'acf2a8');
             else
                 $cellStyle = array('bgColor' => 'FFFFFF');
-            $table->addCell(500, $cellStyle)->addText($d, null, $paraStyle); //新增一格
+            $table->addCell(500, $cellStyle)->addText($d, $leftfontStyle , $paraStyle); //新增一格
         }
 
         //列出本周事件
