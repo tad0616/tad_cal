@@ -7,7 +7,6 @@ while($date = $rule->GetNext()){
 echo "<p>".$date->Render()."</p>";
 }
 
-
 for($i=0;$i<=31;$i++){
 $time=strtotime('2011-11-01')+86400*$i;
 echo date("Y-m-d(w)",$time)."=".getWeekOfTheMonth($time)."<br>";
@@ -159,7 +158,7 @@ class RRule
      * The constructor takes a start date and an RRULE definition.  Both of these
      * follow the iCalendar standard.
      */
-    public function RRule($start, $rrule)
+    public function __construct($start, $rrule)
     {
         //die("aa:".$start);
         $this->_first    = new iCalDate($start);
@@ -462,7 +461,7 @@ class iCalDate
      * The constructor takes either an iCalendar date, a text string formatted as
      * an iCalendar date, or epoch seconds.
      */
-    public function iCalDate($input)
+    public function __construct($input)
     {
         if (gettype($input) == 'object') {
             $this->_text  = $input->_text;
@@ -606,24 +605,24 @@ class iCalDate
         }
 
         switch ($mo) {
-            case 1:// January
-            case 3:// March
-            case 5:// May
-            case 7:// July
-            case 8:// August
-            case 10:// October
-            case 12:    // December
+            case 1: // January
+            case 3: // March
+            case 5: // May
+            case 7: // July
+            case 8: // August
+            case 10: // October
+            case 12: // December
                 return 31;
                 break;
 
-            case 4:// April
-            case 6:// June
-            case 9:// September
-            case 11:    // November
+            case 4: // April
+            case 6: // June
+            case 9: // September
+            case 11: // November
                 return 30;
                 break;
 
-            case 2:    // February
+            case 2: // February
                 if ($yy === false) {
                     $yy = $this->_yy;
                 }

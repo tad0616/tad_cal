@@ -3,7 +3,7 @@ $modversion = array();
 
 //---模組基本資訊---//
 $modversion['name']        = _MI_TADCAL_NAME;
-$modversion['version']     = 2.7;
+$modversion['version']     = 2.81;
 $modversion['description'] = _MI_TADCAL_DESC;
 $modversion['author']      = _MI_TADCAL_AUTHOR;
 $modversion['credits']     = _MI_TADCAL_CREDITS;
@@ -14,7 +14,7 @@ $modversion['image']       = "images/logo_{$xoopsConfig['language']}.png";
 $modversion['dirname']     = basename(dirname(__FILE__));
 
 //---模組狀態資訊---//
-$modversion['release_date']        = '2015/07/13';
+$modversion['release_date']        = '2016/05/26';
 $modversion['module_website_url']  = 'http://tad0616.net/';
 $modversion['module_website_name'] = _MI_TAD_WEB;
 $modversion['module_status']       = 'release';
@@ -52,32 +52,16 @@ $modversion['hasMain'] = 1;
 
 //---樣板設定---//
 $i                                          = 1;
-$modversion['templates'][$i]['file']        = 'tad_cal_index.html';
-$modversion['templates'][$i]['description'] = 'tad_cal_index.html';
-
-$i++;
 $modversion['templates'][$i]['file']        = 'tad_cal_index_b3.html';
 $modversion['templates'][$i]['description'] = 'tad_cal_index_b3.html';
-
-$i++;
-$modversion['templates'][$i]['file']        = 'tad_cal_event.html';
-$modversion['templates'][$i]['description'] = 'tad_cal_event.html';
 
 $i++;
 $modversion['templates'][$i]['file']        = 'tad_cal_event_b3.html';
 $modversion['templates'][$i]['description'] = 'tad_cal_event_b3.html';
 
 $i++;
-$modversion['templates'][$i]['file']        = 'tad_cal_adm_main.html';
-$modversion['templates'][$i]['description'] = 'tad_cal_adm_main.html';
-
-$i++;
 $modversion['templates'][$i]['file']        = 'tad_cal_adm_main_b3.html';
 $modversion['templates'][$i]['description'] = 'tad_cal_adm_main_b3.html';
-
-$i++;
-$modversion['templates'][$i]['file']        = 'tad_cal_download.html';
-$modversion['templates'][$i]['description'] = 'tad_cal_download.html';
 
 $i++;
 $modversion['templates'][$i]['file']        = 'tad_cal_download_b3.html';

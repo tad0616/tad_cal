@@ -19,7 +19,7 @@ function tad_cal_list($options)
     $sql = "select * from " . $xoopsDB->prefix("tad_cal_event") . " where `start` >= '$even_start' and `end` <= '$even_end' $and_ok_cate order by `start` , `sequence`";
     //die($sql);
 
-    $result    = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $result    = $xoopsDB->query($sql) or web_error($sql);
     $i         = 0;
     $all_event = "";
     while ($all = $xoopsDB->fetchArray($result)) {
@@ -38,7 +38,7 @@ function tad_cal_list($options)
     //抓出重複事件
     $sql = "select a.*,b.title,b.cate_sn from " . $xoopsDB->prefix("tad_cal_repeat") . " as a join " . $xoopsDB->prefix("tad_cal_event") . " as b on a.sn=b.sn where a.`start` >= '$even_start' and a.`end` <= '$even_end' $and_ok_cate2 order by a.`start`";
 //die($sql);
-    $result = $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $result = $xoopsDB->queryF($sql) or web_error($sql);
 
     while ($all = $xoopsDB->fetchArray($result)) {
         //以下會產生這些變數： $sn , $title , $start , $end , $recurrence , $location , $kind , $details , $etag , $id , $sequence , $uid , $cate_sn
@@ -68,10 +68,7 @@ function tad_cal_list($options)
         }
     }
 
-    $block['content']           = $content;
-    $block['bootstrap_version'] = $_SESSION['bootstrap'];
-    $block['row']               = $_SESSION['bootstrap'] == '3' ? 'row' : 'row-fluid';
-    $block['span']              = $_SESSION['bootstrap'] == '3' ? 'col-md-' : 'span';
+    $block['content'] = $content;
     return $block;
 }
 

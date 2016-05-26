@@ -12,7 +12,7 @@ if (!function_exists("make_style")) {
 
         //抓出現有google行事曆
         $sql         = "select `cate_sn`,`cate_title`,`cate_bgcolor`,`cate_color` from " . $xoopsDB->prefix("tad_cal_cate") . " where $and_ok_cate order by `cate_sort`";
-        $result      = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $result      = $xoopsDB->query($sql) or web_error($sql);
         $main['css'] = $main['mark'] = "";
         while (list($cate_sn, $cate_title, $cate_bgcolor, $cate_color) = $xoopsDB->fetchRow($result)) {
             //$color=num2color($cate_sn);
@@ -57,7 +57,7 @@ if (!function_exists("chk_tad_cal_cate_power")) {
         }
 
         $sql    = "select `cate_sn`,`{$kind}`,`cate_enable` from " . $xoopsDB->prefix("tad_cal_cate") . "";
-        $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $result = $xoopsDB->query($sql) or web_error($sql);
 
         while (list($cate_sn, $power, $cate_enable) = $xoopsDB->fetchRow($result)) {
             if (empty($cate_sn)) {
@@ -97,7 +97,7 @@ if (!function_exists("get_tad_cal_cate_menu_options")) {
         $and_ok_cate   = empty($all_ok_cate) ? "cate_sn='0'" : "cate_sn in($all_ok_cate)";
 
         $sql    = "select cate_sn,cate_title from " . $xoopsDB->prefix("tad_cal_cate") . " where $and_ok_cate order by `cate_sort`";
-        $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $result = $xoopsDB->query($sql) or web_error($sql);
         $total  = $xoopsDB->getRowsNum($result);
         if (empty($total)) {
             return;
@@ -180,19 +180,23 @@ if (!function_exists("rrule")) {
         if (empty($sn) or empty($recurrence)) {
             return;
         }
-
+        // die($recurrence);
         $ical = new ical();
         $ical->parse($recurrence);
         $rrule_array = $ical->get_all_data();
+        // die('[rrule_array]' . var_export($rrule_array));
 
         foreach ($rrule_array['']['RRULE'] as $key => $val) {
             $all[] = "{$key}={$val}";
         }
-        $rrule   = 'RRULE:' . implode(";", $all);
+        $rrule = 'RRULE:' . implode(";", $all);
+        // die($rrule_array['']['DTSTART']['unixtime']);
         $start   = substr(str_replace(":", "", str_replace("-", "", date("c", $rrule_array['']['DTSTART']['unixtime']))), 0, 15);
         $endTime = $rrule_array['']['DTEND']['unixtime'] - $rrule_array['']['DTSTART']['unixtime'];
 
-        //die($start."====".$rrule);
+        // die($start . "====" . $rrule);
+        // echo "<p>start= $start</p>";
+        // echo "<p>rrule= $rrule</p>";
         $rule = new RRule($start, $rrule);
         $i    = 0;
         while ($date = $rule->GetNext()) {
@@ -201,6 +205,7 @@ if (!function_exists("rrule")) {
             }
 
             $new_date = $date->Render();
+            // echo "<p>new_date= $new_date</p>";
             if (empty($new_date)) {
                 continue;
             }
@@ -210,6 +215,7 @@ if (!function_exists("rrule")) {
             $allDate[] = "('{$sn}','{$new_date}','{$end}','{$allday}')";
             $i++;
         }
+        // exit;
         $sql_data = implode(",", $allDate);
         if (empty($sql_data)) {
             return;
@@ -217,11 +223,12 @@ if (!function_exists("rrule")) {
 
         $sql = "delete from " . $xoopsDB->prefix("tad_cal_repeat") . " where `sn`='{$sn}'";
 
-        $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $xoopsDB->queryF($sql) or web_error($sql);
 
         $sql = "insert into " . $xoopsDB->prefix("tad_cal_repeat") . "
         (`sn` , `start` , `end` , `allday`)
         values{$sql_data}";
-        $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        // echo "<p>$sql</p>";
+        $xoopsDB->queryF($sql) or web_error($sql);
     }
 }

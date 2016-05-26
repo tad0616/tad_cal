@@ -9,19 +9,16 @@ function tad_cal_calendar($options)
     }
     include_once XOOPS_ROOT_PATH . "/modules/tadtools/tad_function.php";
 
-    $modhandler        = &xoops_gethandler('module');
+    $modhandler        = xoops_gethandler('module');
     $xoopsModule       = &$modhandler->getByDirname("tad_cal");
-    $config_handler    = &xoops_gethandler('config');
+    $config_handler    = xoops_gethandler('config');
     $module_id         = $xoopsModule->getVar('mid');
     $xoopsModuleConfig = &$config_handler->getConfigsByCat(0, $module_id);
 
     $jquery_path = get_jquery(true); //一般只要此行即可
 
-    $block['jquery_path']       = $jquery_path;
-    $block['firstDay']          = $xoopsModuleConfig['cal_start'];
-    $block['bootstrap_version'] = $_SESSION['bootstrap'];
-    $block['row']               = $_SESSION['bootstrap'] == '3' ? 'row' : 'row-fluid';
-    $block['span']              = $_SESSION['bootstrap'] == '3' ? 'col-md-' : 'span';
+    $block['jquery_path'] = $jquery_path;
+    $block['firstDay']    = $xoopsModuleConfig['cal_start'];
 
     return $block;
 }

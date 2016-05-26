@@ -1,6 +1,6 @@
 <?php
 
-define('_TAD_NEED_TADTOOLS', 'This module needs TadTools module. You can download TadTools from <a href="http://campus-xoops.tn.edu.tw/modules/tad_modules/index.php?module_sn=1" target="_blank">XOOPS EasyGO</a>.');
+define('_TAD_NEED_TADTOOLS', "This module needs TadTools module. You can download TadTools from <a href='http://www.tad0616.net/modules/tad_uploader/index.php?of_cat_sn=50' target='_blank'>Tad's web</a>.");
 define('_MD_TADCAL_SMNAME2', 'Add Event');
 define('_MD_TADCAL_SMNAME3', 'Download events');
 define('_MD_TADCAL_TITLE', 'Event title');

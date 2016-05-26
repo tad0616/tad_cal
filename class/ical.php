@@ -127,7 +127,7 @@ class ical
         // read FILE text
         $this->file_text = $text;
 
-        $this->file_text = split("[\n]", $this->file_text);
+        $this->file_text = explode("\n", $this->file_text);
 
         // is this text vcalendar standart text ? on line 1 is BEGIN:VCALENDAR
         //if (!stristr($this->file_text[0],'BEGIN:VCALENDAR')) return 'error not VCALENDAR';
@@ -140,25 +140,25 @@ class ical
                 list($key, $value) = $this->retun_key_value($text);
 
                 switch ($text) // search special string
-                    {
+                {
                     case "BEGIN:VTODO":
-                        $this->todo_count = $this->todo_count + 1;     // new todo begin
+                        $this->todo_count = $this->todo_count + 1; // new todo begin
                         $type             = "VTODO";
                         break;
 
                     case "BEGIN:VEVENT":
-                        $this->event_count = $this->event_count + 1;     // new event begin
+                        $this->event_count = $this->event_count + 1; // new event begin
                         $type              = "VEVENT";
                         break;
 
-                    case "BEGIN:VCALENDAR":// all other special string
+                    case "BEGIN:VCALENDAR": // all other special string
                     case "BEGIN:DAYLIGHT":
                     case "BEGIN:VTIMEZONE":
                     case "BEGIN:STANDARD":
-                        $type = $value;     // save tu array under value key
+                        $type = $value; // save tu array under value key
                         break;
 
-                    case "END:VTODO":// end special text - goto VCALENDAR key
+                    case "END:VTODO": // end special text - goto VCALENDAR key
                     case "END:VEVENT":
 
                     case "END:VCALENDAR":
@@ -168,8 +168,8 @@ class ical
                         $type = "VCALENDAR";
                         break;
 
-                    default:    // no special string
-                        $this->add_to_array($type, $key, $value);     // add to array
+                    default: // no special string
+                        $this->add_to_array($type, $key, $value); // add to array
                         break;
                 }
             }
@@ -185,6 +185,7 @@ class ical
      */
     public function add_to_array($type, $key, $value)
     {
+        // die("$type, $key, $value");
         if ($key == false) {
             $key = $this->last_key;
             switch ($type) {
@@ -205,6 +206,8 @@ class ical
 
         if (stristr($key, "DTSTART") or stristr($key, "DTEND")) {
             list($key, $value) = $this->ical_dt_date($key, $value);
+            // var_export($value);
+            // die("$key, $value");
         }
 
         switch ($type) {
@@ -231,11 +234,11 @@ class ical
     public function retun_key_value($text)
     {
         preg_match("/([^:]+)[:]([\w\W]+)/", $text, $matches);
-
         if (empty($matches)) {
             return array(false, $text);
         } else {
             $matches = array_splice($matches, 1, 2);
+            // die(var_export($matches));
             return $matches;
         }
 
@@ -261,19 +264,27 @@ class ical
      * @param unknown_type $ical_date
      * @return unknown
      */
-    public function ical_date_to_unix($ical_date)
+    public function ical_date_to_unix($icalDate)
     {
-        $ical_date = str_replace('T', '', $ical_date);
-        $ical_date = str_replace('Z', '', $ical_date);
+        $icalDate = str_replace('T', '', $icalDate);
+        $icalDate = str_replace('Z', '', $icalDate);
 
-        // TIME LIMITED EVENT
-        ereg('([0-9]{4})([0-9]{2})([0-9]{2})([0-9]{0,2})([0-9]{0,2})([0-9]{0,2})', $ical_date, $date);
-
-        // UNIX timestamps can't deal with pre 1970 dates
+        $pattern = '/([0-9]{4})'; // 1: YYYY
+        $pattern .= '([0-9]{2})'; // 2: MM
+        $pattern .= '([0-9]{2})'; // 3: DD
+        $pattern .= '([0-9]{0,2})'; // 4: HH
+        $pattern .= '([0-9]{0,2})'; // 5: MM
+        $pattern .= '([0-9]{0,2})/'; // 6: SS
+        preg_match($pattern, $icalDate, $date);
+        // die(var_export($date));
+        // Unix timestamp can't represent dates before 1970
         if ($date[1] <= 1970) {
-            $date[1] = 1971;
+            return false;
         }
-        return mktime($date[4], $date[5], $date[6], $date[2], $date[3], $date[1]);
+        // Unix timestamps after 03:14:07 UTC 2038-01-19 might cause an overflow
+        // if 32 bit integers are used.
+        $timestamp = mktime((int) $date[4], (int) $date[5], (int) $date[6], (int) $date[2], (int) $date[3], (int) $date[1]);
+        return $timestamp;
     }
     /**
      * Return unix date from iCal date format

@@ -110,6 +110,7 @@ function fullcalendar($cate_sn = 0)
     $xoopsTpl->assign('my_counter', my_counter());
 
     $xoopsTpl->assign('firstDay', $xoopsModuleConfig['cal_start']);
+    $xoopsTpl->assign('cate', get_tad_cal_cate($cate_sn));
 
 }
 

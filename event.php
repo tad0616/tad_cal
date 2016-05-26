@@ -144,11 +144,11 @@ function tad_cal_event_form($sn = "", $mode = '', $stamp = "")
     $weekday         = array("SU" => _MD_TADCAL_SU, "MO" => _MD_TADCAL_MO, "TU" => _MD_TADCAL_TU, "WE" => _MD_TADCAL_WE, "TH" => _MD_TADCAL_TH, "FR" => _MD_TADCAL_FR, "SA" => _MD_TADCAL_SA);
     $week_repeat_col = "";
     $warr            = (isset($rrule_arr['RRULE']['FREQ']) and $rrule_arr['RRULE']['FREQ'] == 'WEEKLY') ? explode(",", $rrule_arr['RRULE']['BYDAY']) : array(strtoupper(substr(date("D", strtotime($start)), 0, 2)));
-    $class           = $_SESSION['bootstrap'] == 3 ? 'checkbox-inline' : 'checkbox inline';
+
     foreach ($weekday as $en => $ch) {
         $checked = (in_array($en, $warr)) ? "checked" : "";
         $week_repeat_col .= "
-        <label class='$class'>
+        <label class='checkbox-inline'>
           <input type='checkbox' name='BYDAY[]' value='{$en}' id='{$en}' $checked> {$ch}
         </label> ";
     }
@@ -244,7 +244,7 @@ function tad_cal_event_max_sort()
 {
     global $xoopsDB;
     $sql        = "select max(`sequence`) from " . $xoopsDB->prefix("tad_cal_event");
-    $result     = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $result     = $xoopsDB->query($sql) or web_error($sql);
     list($sort) = $xoopsDB->fetchRow($result);
     return ++$sort;
 }
@@ -346,14 +346,14 @@ function insert_tad_cal_event()
   (`title` , `start` , `end` , `recurrence` , `location` , `kind` , `details` , `etag` , `id` , `sequence` , `uid` , `cate_sn` , `allday` , `tag` ,`last_update`)
   values('{$_POST['title']}' , '{$start}' , '{$end}' , '{$recurrence}' , '{$_POST['location']}' , '{$_POST['kind']}' , '{$_POST['details']}' , '{$_POST['etag']}' , '{$_POST['id']}' , '{$_POST['sequence']}' , '{$uid}' , '{$cate_sn}' , '{$allDay}', '' , '{$last_update}')";
 
-    $xoopsDB->queryF($sql) or die(mysql_error());
+    $xoopsDB->queryF($sql) or web_error($sql);
 
     //取得最後新增資料的流水編號
     $sn = $xoopsDB->getInsertId();
 
     //更新 id
     $sql = "update " . $xoopsDB->prefix("tad_cal_event") . " set `id` = '{$sn}' where sn='$sn'";
-    $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $xoopsDB->queryF($sql) or web_error($sql);
 
     //重複事件
     rrule($sn, $recurrence, $allDay);
@@ -457,7 +457,7 @@ function update_tad_cal_event($sn = "")
    `tag` = '{$_POST['tag']}' ,
    `last_update` = '{$last_update}'
   where sn='$sn'";
-    $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $xoopsDB->queryF($sql) or web_error($sql);
 
     //重複事件
     rrule($sn, $recurrence, $allDay);
@@ -493,7 +493,7 @@ function list_tad_cal_event()
     $sql     = $PageBar['sql'];
     $total   = $PageBar['total'];
 
-    $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $result = $xoopsDB->query($sql) or web_error($sql);
 
     $all_content = "";
 
@@ -546,7 +546,7 @@ function get_tad_cal_event($sn = "")
     }
 
     $sql    = "select * from " . $xoopsDB->prefix("tad_cal_event") . " where sn='$sn'";
-    $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $result = $xoopsDB->query($sql) or web_error($sql);
     $data   = $xoopsDB->fetchArray($result);
     return $data;
 }
@@ -560,9 +560,9 @@ function delete_tad_cal_event($sn = "")
     $sql    = "delete from " . $xoopsDB->prefix("tad_cal_event") . " where sn='$sn' $andUID";
     if ($xoopsDB->queryF($sql)) {
         $sql = "delete from " . $xoopsDB->prefix("tad_cal_repeat") . " where sn='$sn'";
-        $xoopsDB->queryF($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        $xoopsDB->queryF($sql) or web_error($sql);
     } else {
-        redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+        web_error($sql);
     }
 }
 
@@ -588,7 +588,7 @@ function show_one_tad_cal_event($sn = "", $stamp = "")
     } else {
         $sql = "select * from " . $xoopsDB->prefix("tad_cal_event") . " where sn='{$sn}'";
     }
-    $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $result = $xoopsDB->query($sql) or web_error($sql);
     $all    = $xoopsDB->fetchArray($result);
 
     //以下會產生這些變數： $sn , $title , $start , $end , $recurrence , $location , $kind , $details , $etag , $id , $sequence , $uid , $cate_sn
@@ -658,7 +658,7 @@ function show_simple_event($sn = "", $stamp = "")
     }
     //die($sql);
 
-    $result = $xoopsDB->queryF($sql) or die(mysql_error());
+    $result = $xoopsDB->queryF($sql) or web_error($sql);
     $all    = $xoopsDB->fetchArray($result);
 
     //以下會產生這些變數： $sn , $title , $start , $end , $recurrence , $location , $kind , $details , $etag , $id , $sequence , $uid , $cate_sn
@@ -764,9 +764,9 @@ function ajax_update_date($sn = '')
 
     //抓出事件原有資料
     $sql    = "select * from " . $xoopsDB->prefix("tad_cal_event") . " where sn='$sn'";
-    $result = $xoopsDB->query($sql) or redirect_header($_SERVER['PHP_SELF'], 3, mysql_error());
+    $result = $xoopsDB->query($sql) or web_error($sql);
     if (!$result) {
-        sprintf(_MD_TADCAL_MOVE_ERROR, mysql_error());
+        sprintf(_MD_TADCAL_MOVE_ERROR, $xoopsDB->error());
     }
     $i   = 0;
     $all = $xoopsDB->fetchArray($result);
@@ -788,7 +788,6 @@ function ajax_update_date($sn = '')
     $new_start=$rrule_arr['DTSTART']['unixtime'] + $dayDelta * 86400 + $minuteDelta * 60;
     //計算新的結束日期
     $new_end=$rrule_arr['DTEND']['unixtime'] + $dayDelta * 86400 + $minuteDelta * 60;
-
 
      */
 
@@ -824,7 +823,7 @@ function ajax_update_date($sn = '')
    recurrence='{$recurrence}'
   where sn='$sn'";
     if (!$xoopsDB->queryF($sql)) {
-        sprintf(_MD_TADCAL_MOVE_ERROR, mysql_error());
+        sprintf(_MD_TADCAL_MOVE_ERROR, $xoopsDB->error());
     }
 
     //重複事件
