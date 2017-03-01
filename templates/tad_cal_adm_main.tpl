@@ -14,17 +14,17 @@
     <form action="main.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
       <div class="form-group">
         <!--行事曆標題-->
-        <label class="col-md-2 control-label">
+        <label class="col-sm-2 control-label">
           <{$smarty.const._MA_TADCAL_CATE_TITLE}>
         </label>
-        <div class="col-md-4">
+        <div class="col-sm-4">
           <input type="text" name="cate_title" class="form-control" value="<{$cate_title}>" id="cate_title" class="validate[required]">
         </div>
         <!--是否啟用-->
-        <label class="col-md-2 control-label">
+        <label class="col-sm-2 control-label">
           <{$smarty.const._MA_TADCAL_CATE_ENABLE}>
         </label>
-        <div class="col-md-4">
+        <div class="col-sm-4">
           <label class="radio-inline">
             <input type="radio" name="cate_enable" id="cate_enable" value="1" <{$cate_enable1}>><{$smarty.const._YES}>
           </label>
@@ -36,17 +36,17 @@
 
       <div class="form-group">
         <!--背景色-->
-        <label class="col-md-2 control-label">
+        <label class="col-sm-2 control-label">
           <{$smarty.const._MA_TADCAL_CATE_BGCOLOR}>
         </label>
-        <div class="col-md-4">
+        <div class="col-sm-4">
           <input type="text" name="cate_bgcolor" id="cate_bgcolor" class="form-control" value="<{$cate_bgcolor}>" data-text="hidden" data-hex="true">
         </div>
         <!--文字色-->
-        <label class="col-md-2 control-label">
+        <label class="col-sm-2 control-label">
           <{$smarty.const._MA_TADCAL_CATE_COLOR}>
         </label>
-        <div class="col-md-4">
+        <div class="col-sm-4">
           <input type="text" name="cate_color" id="cate_color" class="form-control" value="<{$cate_color}>" data-text="hidden" data-hex="true">
         </div>
       </div>
@@ -55,17 +55,17 @@
 
       <div class="form-group">
         <!--可讀群組-->
-        <label class="col-md-2 control-label">
+        <label class="col-sm-2 control-label">
           <{$smarty.const._MA_TADCAL_ENABLE_GROUP}>
         </label>
-        <div class="col-md-4">
+        <div class="col-sm-4">
           <{$enable_group}>
         </div>
         <!--可寫群組-->
-        <label class="col-md-2 control-label">
+        <label class="col-sm-2 control-label">
           <{$smarty.const._MA_TADCAL_ENABLE_UPLOAD_GROUP}>
         </label>
-        <div class="col-md-4">
+        <div class="col-sm-4">
           <{$enable_upload_group}>
         </div>
       </div>
@@ -75,17 +75,17 @@
 
         <div class="form-group">
           <!--google帳號-->
-          <label class="col-md-2 control-label">
+          <label class="col-sm-2 control-label">
             <{$smarty.const._MA_TADCAL_GOOGLE_ID}>
           </label>
-          <div class="col-md-4">
+          <div class="col-sm-4">
             <input type="text" name="google_id" value="<{$google_id}>" class="form-control" id="google_id" ><{$smarty.const._MA_TADCAL_GOOGLE_ID_NOTE}>
           </div>
           <!--google密碼-->
-          <label class="col-md-2 control-label">
+          <label class="col-sm-2 control-label">
             <{$smarty.const._MA_TADCAL_GOOGLE_PASS}>
           </label>
-          <div class="col-md-4">
+          <div class="col-sm-4">
             <input type="password" name="google_pass" value="<{$google_pass}>" class="form-control" id="google_pass" >
           </div>
         </div>

@@ -1,3 +1,9 @@
+Tad Cal 2.8.2 (2017-01-08 釋出)
+===============================================
+ 1.Change the col-md of boootstrap to col-sm
+ 2.The compatibility of XOOPS 2.5.8
+
+
 Tad Cal 2.8.1 (2016-05-26 release)
 ===============================================
 1.Remove BootStrap2 Code

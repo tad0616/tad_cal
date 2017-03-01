@@ -12,12 +12,12 @@
   <h1><{$title}></h1>
 
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-sm-6">
     <img src='<{$xoops_url}>/modules/tad_cal/images/date.png' alt='<{$smarty.const._MD_TADCAL_TIME}>'>
     <{$date}>
     </div>
 
-    <div class="col-md-6">
+    <div class="col-sm-6">
     <{$location_img}>
     <{$location}>
     </div>
@@ -185,30 +185,30 @@
   <form action="<{$xoops_url}>/modules/tad_cal/event.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
     <!--事件標題-->
     <div class="form-group">
-      <label class="col-md-2 control-label">
+      <label class="col-sm-2 control-label">
         <{$smarty.const._MD_TADCAL_TITLE}>
       </label>
-      <div class="col-md-10">
+      <div class="col-sm-10">
         <input type="text" name="title" value="<{$title}>" id="title" class="validate[required] form-control">
       </div>
     </div>
 
     <!--事件起始時間-->
     <div class="form-group">
-      <label class="col-md-2 control-label">
+      <label class="col-sm-2 control-label">
         <{$smarty.const._MD_TADCAL_TIME}>
       </label>
 
       <!--開始時間-->
-      <div class="col-md-2">
+      <div class="col-sm-2">
         <input type="text" name="start" value="<{$start_allday}>" id="start_allday" class="validate[required] form-control" onClick="WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d'})" onChange="check_end();month_repeat_chk();">
       </div>
 
       <!--結束時間-->
-      <div class="col-md-2">
+      <div class="col-sm-2">
         <input type="text" name="end" value="<{$end_allday}>" id="end_allday" onClick="WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d'})" onChange="update_long();" class="form-control">
       </div>
-      <div class="col-md-6">
+      <div class="col-sm-6">
         <!--全日事件-->
         <label class="checkbox-inline">
           <input type="checkbox" name="allday" id="allday" value="1" <{$chk_allday_1}>>
@@ -227,13 +227,13 @@
     <div class="well"id="repeat_box">
 
       <div  class="row">
-        <div class="col-md-7">
+        <div class="col-sm-7">
 
           <div class="form-group">
-            <label class="col-md-3 control-label">
+            <label class="col-sm-3 control-label">
               <{$smarty.const._MD_TADCAL_REPEAT}><{$smarty.const._TAD_FOR}>
             </label>
-            <div class="col-md-8">
+            <div class="col-sm-8">
               <select name="FREQ" id="freq_select" class="form-control">
                 <option value="DAILY" <{$chk_DAILY}>><{$smarty.const._MD_TADCAL_REPEAT_DAILY}></option>
                 <option value="WEEKLY" <{$chk_WEEKLY}>><{$smarty.const._MD_TADCAL_REPEAT_WEEKLY}></option>
@@ -244,35 +244,35 @@
           </div>
 
           <div class="form-group">
-            <label class="col-md-3 control-label">
+            <label class="col-sm-3 control-label">
               <{$smarty.const._MD_TADCAL_INTERVAL}><{$smarty.const._TAD_FOR}>
             </label>
-            <div class="col-md-7">
+            <div class="col-sm-7">
               <select name="INTERVAL" class="form-control">
                 <{$INTERVAL_OPT}>
               </select>
             </div>
-            <div class="col-md-1">
+            <div class="col-sm-1">
               <span id="interval_unit"><{$repeat_unit}></span>
             </div>
           </div>
 
 
           <div id="week_repeat" class="form-group">
-            <label class="col-md-3 control-label">
+            <label class="col-sm-3 control-label">
               <{$smarty.const._MD_TADCAL_WEEK_REPEAT}><{$smarty.const._TAD_FOR}>
             </label>
-            <div class="col-md-9">
+            <div class="col-sm-9">
               <{$week_repeat_col}>
             </div>
           </div>
 
 
           <div id="month_repeat" class="form-group">
-            <label class="col-md-3 control-label">
+            <label class="col-sm-3 control-label">
               <{$smarty.const._MD_TADCAL_MONTH_REPEAT}><{$smarty.const._TAD_FOR}>
             </label>
-            <div class="col-md-9">
+            <div class="col-sm-9">
               <label class="radio-inline">
                 <input type="radio" name="month_repeat" value="BYMONTHDAY" id="BYMONTHDAY" <{$RRULE_BYDAY}>><{$bymonthday}>
               </label>
@@ -283,11 +283,11 @@
           </div>
         </div>
 
-        <div class="col-md-5">
+        <div class="col-sm-5">
 
 
           <div class="form-group">
-            <div class="col-md-12">
+            <div class="col-sm-12">
               <label class="radio-inline">
                 <input type="radio" name="END" id="none" value="none" <{$ENDType_none}>><{$smarty.const._MD_TADCAL_NEVER_END}>
               </label>
@@ -295,30 +295,30 @@
           </div>
 
           <div class="form-group">
-            <div class="col-md-3">
+            <div class="col-sm-3">
               <label class="radio-inline">
                 <input type="radio" name="END" id="count" value="count" <{$ENDType_count}>><{$smarty.const._MD_TADCAL_END_COUNT1}>
               </label>
             </div>
-            <div class="col-md-5">
+            <div class="col-sm-5">
               <input type="text" name="COUNT" class="form-control" value="<{$RRULE_COUNT}>" onChange="$('#count').attr('checked','checked'); if(this.value=="")this.value=10;">
             </div>
-            <div class="col-md-4">
+            <div class="col-sm-4">
               <{$smarty.const._MD_TADCAL_END_COUNT2}>
             </div>
           </div>
 
 
           <div class="form-group">
-            <div class="col-md-3">
+            <div class="col-sm-3">
               <label class="radio-inline">
                 <input type="radio" name="END" id="until" value="until" <{$ENDType_until}>><{$smarty.const._MD_TADCAL_END_UNTIL1}>
               </label>
             </div>
-            <div class="col-md-5">
+            <div class="col-sm-5">
               <input type="text" name="UNTIL" class="form-control"  value="<{$UNTIL}>" onClick="$('#until').attr('checked' , 'checked');WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d'})">
             </div>
-            <div class="col-md-4">
+            <div class="col-sm-4">
               <{$smarty.const._MD_TADCAL_END_UNTIL2}>
             </div>
           </div>
@@ -330,17 +330,17 @@
 
     <div class="form-group">
       <!--所屬行事曆-->
-      <label class="col-md-2 control-label">
+      <label class="col-sm-2 control-label">
         <{$of_cate_title}>
       </label>
-      <div class="col-md-4">
+      <div class="col-sm-4">
         <{$cate_col}>
       </div>
       <!--事件地點-->
-      <label class="col-md-2 control-label">
+      <label class="col-sm-2 control-label">
         <{$smarty.const._MD_TADCAL_LOCATION}>
       </label>
-      <div class="col-md-4">
+      <div class="col-sm-4">
         <input type="text" name="location" class="form-control" value="<{$location}>" id="location" >
       </div>
     </div>
@@ -348,10 +348,10 @@
 
     <!--事件內容-->
     <div class="form-group">
-      <label class="col-md-2 control-label">
+      <label class="col-sm-2 control-label">
         <{$smarty.const._MD_TADCAL_DETAILS}>
       </label>
-      <div class="col-md-10">
+      <div class="col-sm-10">
         <textarea name="details" class="form-control" rows=4 id="details"><{$details}></textarea>
       </div>
     </div>
