@@ -55,7 +55,7 @@ function tad_cal_full_calendar($options)
             //快速新增功能
             $eventAdd = "selectable: true,
       selectHelper: true,
-      select: function(start, end, allDay) {
+      select: function(start, end) {
         var promptBox = \"" . _MB_TADCAL_TITLE . _TAD_FOR . "<input type='text' id='eventTitle' name='eventTitle' value='' /><br>$cate\";
 
         function mycallbackform(e,v,m,f){
@@ -65,11 +65,11 @@ function tad_cal_full_calendar($options)
                 title: f.eventTitle,
                 start: start,
                 end: end,
-                allDay: allDay
+                allDay: !start.hasTime()
               },
               false // make the event 'stick'
             );
-            $.post('" . XOOPS_URL . "/modules/tad_cal/event.php', {op: 'insert_tad_cal_event', fc_start: start.valueOf(), fc_end: end.valueOf(), title: f.eventTitle, cate_sn: f.cate_sn, new_cate_title: f.new_cate_title},function(){
+            $.post('" . XOOPS_URL . "/modules/tad_cal/event.php', {op: 'insert_tad_cal_event', start: start.format(), end: end.format(), fc: '1', allday: start.hasTime() ? '0' : '1', title: f.eventTitle, cate_sn: f.cate_sn, new_cate_title: f.new_cate_title},function(){
               calendar.fullCalendar('refetchEvents');
             });
           }
@@ -125,5 +125,6 @@ function tad_cal_full_calendar($options)
     $block['style_mark']    = $style['mark'];
     $block['my_counter']    = my_counter();
     $block['firstDay']      = $xoopsModuleConfig['cal_start'];
+    $block['timezone']      = date('e');
     return $block;
 }

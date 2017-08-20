@@ -19,12 +19,10 @@ $(document).ready(function(){
 
   var calendar = $("#calendar").fullCalendar({
     theme: true,
-    locale: navigator.language,
     firstDay:<{$firstDay}>,
     buttonText:{today:"<{$smarty.const._MD_TADCAL_TODAY}>"},
     header: {
       left: "prev,today,next",
-      center: "",
       right: "title"
     },
     <{$eventAdd}>
@@ -32,8 +30,8 @@ $(document).ready(function(){
     events: function(start, end, timezone, callback) {
       $.getJSON("get_event.php",
       {
-        start: start.valueOf(),
-        end: end.valueOf(),
+        start: start.format(),
+        end: end.format(),
         cate_sn: <{$cate_sn}>
       },
       function(result) {

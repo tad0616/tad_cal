@@ -22,8 +22,8 @@ function get_event_num()
     $and_ok_cate  = empty($all_ok_cate) ? "and cate_sn='0'" : "and cate_sn in($all_ok_cate)";
     $and_ok_cate2 = empty($all_ok_cate) ? "and a.sn='0'" : "and b.cate_sn in($all_ok_cate)";
 
-    $even_start = date("Y-m-d H:i", $_REQUEST['start'] / 1000);
-    $even_end   = ($_REQUEST['end'] == "0000-00-00 00:00") ? "" : date("Y-m-d H:i", $_REQUEST['end'] / 1000);
+    $even_start = $_REQUEST['start'];
+    $even_end   = empty($_REQUEST['end']) ? "" : $_REQUEST['end'];
 
     //抓出事件
     $sql = "select * from " . $xoopsDB->prefix("tad_cal_event") . " where `start` >= '$even_start' and `end` <= '$even_end' $and_ok_cate order by `start` , `sequence`";
@@ -40,7 +40,7 @@ function get_event_num()
             continue;
         }
 
-        $startTime = strtotime($start)*1000;
+        $startTime = strtotime($start);
         $key       = date('Y-m-d', $startTime);
 
         $event_arr[$key]++;
@@ -57,7 +57,7 @@ function get_event_num()
             $$k = $v;
         }
 
-        $startTime = strtotime($start)*1000;
+        $startTime = strtotime($start);
         $key       = date('Y-m-d', $startTime);
 
         $event_arr[$key]++;
@@ -68,7 +68,7 @@ function get_event_num()
     foreach ($event_arr as $start => $title) {
         $myEvents[$i]['id']        = $i;
         $myEvents[$i]['title']     = "{$title}";
-        $myEvents[$i]['start']     = $Time_arr[$start];
+        $myEvents[$i]['start']     = date('c', $Time_arr[$start]);
         $myEvents[$i]['allDay']    = 1;
         $myEvents[$i]['className'] = "blockevent";
         $i++;

@@ -7,6 +7,7 @@ include_once XOOPS_ROOT_PATH . "/header.php";
 
 function fullcalendar($cate_sn = 0)
 {
+    global $xoopsConfig;
     global $xoopsUser, $xoopsModuleConfig, $isAdmin, $xoopsTpl;
 
     if (empty($xoopsModuleConfig['eventShowMode'])) {
@@ -37,7 +38,7 @@ function fullcalendar($cate_sn = 0)
             //快速新增功能
             $eventAdd = "selectable: true,
       selectHelper: true,
-      select: function(start, end, allDay) {
+      select: function(start, end) {
         var promptBox = \"" . _MD_TADCAL_TITLE . _TAD_FOR . "<input type='text' id='eventTitle' name='eventTitle' value='' /><br>$cate\";
 
         function mycallbackform(e,v,m,f){
@@ -48,13 +49,13 @@ function fullcalendar($cate_sn = 0)
                 title: f.eventTitle,
                 start: start,
                 end: end,
-                allDay: allDay
+                allDay: !start.hasTime()
               },
               false // make the event 'stick'
             );
 
 
-            $.post('event.php', {op: 'insert_tad_cal_event', fc_start: start.valueOf(), fc_end: end.valueOf(), title: f.eventTitle, cate_sn: f.cate_sn, new_cate_title: f.new_cate_title},function(){
+            $.post('event.php', {op: 'insert_tad_cal_event', start: start.format(), end: end.format(), allday: start.hasTime() ? '0' : '1', fc: '1', title: f.eventTitle, cate_sn: f.cate_sn, new_cate_title: f.new_cate_title},function(){
               calendar.fullCalendar('refetchEvents');
             });
           }
@@ -89,9 +90,9 @@ function fullcalendar($cate_sn = 0)
 
             //拖曳搬移功能
             $eventDrop = "editable:true,
-      eventDrop: function(event,dayDelta,minuteDelta,allDay,revertFunc) {
+      eventDrop: function(event,delta,revertFunc) {
         var startTime=event.start.valueOf();
-        $.post('event.php', {op: 'ajax_update_date', dayDelta: dayDelta , minuteDelta: minuteDelta  , sn: event.id },function(data){
+        $.post('event.php', {op: 'ajax_update_date', delta: delta, sn: event.id },function(data){
           alert(data);
         });
       },
@@ -99,7 +100,8 @@ function fullcalendar($cate_sn = 0)
         }
 
     }
-    $xoopsTpl->assign('timezone', date('e'));
+    $xoopsTpl->assign('timezone', $xoopsConfig['default_TZ']);
+    $xoopsTpl->assign('timezone', 'Asia/Taipei');
     $xoopsTpl->assign('eventDrop', $eventDrop);
     $xoopsTpl->assign('eventAdd', $eventAdd);
     $xoopsTpl->assign('style_css', $style['css']);

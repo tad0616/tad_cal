@@ -19,6 +19,7 @@ function tad_cal_calendar($options)
 
     $block['jquery_path'] = $jquery_path;
     $block['firstDay']    = $xoopsModuleConfig['cal_start'];
+    $block['timezone']    = date('e');
 
     return $block;
 }

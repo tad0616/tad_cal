@@ -31,6 +31,8 @@ $(document).ready(function(){
     locale: navigator.language,
     firstDay:<{$block.firstDay}>,
     buttonText:{today:"<{$smarty.const._MB_TADCAL_TODAY}>"},
+    timezone: '<{$block.timezone}>',
+    height: 'auto',
     header: {
       left: "prev,today,next",
       center: "",
@@ -39,8 +41,8 @@ $(document).ready(function(){
     events: function(start, end, timezone, callback) {
       $.getJSON("<{$xoops_url}>/modules/tad_cal/get_block_event.php",
       {
-        start: start.valueOf(),
-        end: end.valueOf()
+        start: start.format(),
+        end: end.format()
       },
       function(result) {
         callback(result);
