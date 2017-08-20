@@ -3,14 +3,15 @@
 
 <link rel="stylesheet" type="text/css" href="module.css" />
 <link rel="stylesheet" type="text/css" href="class/fullcalendar/redmond/theme.css" />
-<link rel="stylesheet" type="text/css" href="class/fullcalendar/fullcalendar.css">
+<link rel="stylesheet" type="text/css" href="class/fullcalendar/fullcalendar.3.4.0.min.css">
 <style type="text/css">
 <{$style_css}>
 </style>
-<script src="class/jquery-impromptu.3.2.min.js" type="text/javascript"></script>
-<script src="class/fullcalendar/fullcalendar.js" type="text/javascript"></script>
-<link rel="stylesheet" type="text/css" href="class/qtip/jquery.qtip.min.css" />
-<script src="class/qtip/jquery.qtip.min.js" type="text/javascript"></script>
+<script src="class/moment/moment-with-locales.2.18.1.min.js" type="text/javascript"></script>
+<script src="class/jquery-impromptu.6.2.3.min.js" type="text/javascript"></script>
+<script src="class/fullcalendar/fullcalendar.3.4.0.min.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="class/qtip/jquery.qtip.3.0.3.min.css" />
+<script src="class/qtip/jquery.qtip.3.0.3.min.js" type="text/javascript"></script>
 <script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/My97DatePicker/WdatePicker.js"></script>
 
 <script type="text/javascript">
@@ -18,6 +19,7 @@ $(document).ready(function(){
 
   var calendar = $("#calendar").fullCalendar({
     theme: true,
+    locale: navigator.language,
     firstDay:<{$firstDay}>,
     buttonText:{today:"<{$smarty.const._MD_TADCAL_TODAY}>"},
     header: {
@@ -27,11 +29,11 @@ $(document).ready(function(){
     },
     <{$eventAdd}>
     <{$eventDrop}>
-    events: function(start, end, callback) {
+    events: function(start, end, timezone, callback) {
       $.getJSON("get_event.php",
       {
-        start: start.getTime(),
-        end: end.getTime(),
+        start: start.valueOf(),
+        end: end.valueOf(),
         cate_sn: <{$cate_sn}>
       },
       function(result) {

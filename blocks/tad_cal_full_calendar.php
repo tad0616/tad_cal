@@ -58,7 +58,7 @@ function tad_cal_full_calendar($options)
       select: function(start, end, allDay) {
         var promptBox = \"" . _MB_TADCAL_TITLE . _TAD_FOR . "<input type='text' id='eventTitle' name='eventTitle' value='' /><br>$cate\";
 
-        function mycallbackform(v,m,f){
+        function mycallbackform(e,v,m,f){
           if(v != undefined){
             calendar.fullCalendar('renderEvent',
               {
@@ -69,24 +69,24 @@ function tad_cal_full_calendar($options)
               },
               false // make the event 'stick'
             );
-            $.post('" . XOOPS_URL . "/modules/tad_cal/event.php', {op: 'insert_tad_cal_event', fc_start: start.getTime(), fc_end: end.getTime(), title: f.eventTitle, cate_sn: f.cate_sn, new_cate_title: f.new_cate_title},function(){
+            $.post('" . XOOPS_URL . "/modules/tad_cal/event.php', {op: 'insert_tad_cal_event', fc_start: start.valueOf(), fc_end: end.valueOf(), title: f.eventTitle, cate_sn: f.cate_sn, new_cate_title: f.new_cate_title},function(){
               calendar.fullCalendar('refetchEvents');
             });
           }
         }
 
-        function mysubmitfunc(v,m,f){
+        function mysubmitfunc(e,v,m,f){
           an = m.children('#eventTitle');
 
           if(f.eventTitle == ''){
             an.css('border','solid #ff0000 1px');
             return false;
           }
+          mycallbackform(e,v,m,f);
           return true;
         }
 
         $.prompt(promptBox,{
-          callback: mycallbackform,
           submit: mysubmitfunc,
           zIndex: 99999,
           buttons: { Ok:true }
@@ -105,7 +105,7 @@ function tad_cal_full_calendar($options)
             //拖曳搬移功能
             $eventDrop = "editable:true,
       eventDrop: function(event,dayDelta,minuteDelta,allDay,revertFunc) {
-        var startTime=event.start.getTime();
+        var startTime=event.start.valueOf();
         $.post('event.php', {op: 'ajax_update_date', dayDelta: dayDelta , minuteDelta: minuteDelta  , sn: event.id },function(data){
           alert(data);
         });

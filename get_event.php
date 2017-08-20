@@ -69,9 +69,9 @@ function get_event()
         $myEvents[$i]['title'] = "{$event_title}";
         //$myEvents[$i]['url']="event.php?sn=$sn";
         $myEvents[$i]['rel']   = XOOPS_URL . "/modules/tad_cal/event.php?op=view&sn=$sn";
-        $myEvents[$i]['start'] = $startTime;
+        $myEvents[$i]['start'] = $startTime * 1000;
         if (!empty($end)) {
-            $myEvents[$i]['end'] = $endTime;
+            $myEvents[$i]['end'] = $endTime * 1000;
         }
 
         $myEvents[$i]['allDay']    = $allDay;
@@ -124,9 +124,9 @@ function get_event()
         $myEvents[$i]['title'] = "* {$event_title}";
         //$myEvents[$i]['url']="event.php?sn=$sn&stamp=$startTime";
         $myEvents[$i]['rel']   = XOOPS_URL . "/modules/tad_cal/event.php?op=view&sn=$sn&stamp=$DBstartTime";
-        $myEvents[$i]['start'] = $startTime;
+        $myEvents[$i]['start'] = $startTime * 1000;
         if (!empty($end)) {
-            $myEvents[$i]['end'] = $endTime;
+            $myEvents[$i]['end'] = $endTime * 1000;
         }
 
         $myEvents[$i]['allDay']    = $allDay;

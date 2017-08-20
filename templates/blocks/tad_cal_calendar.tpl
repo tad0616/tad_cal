@@ -1,9 +1,10 @@
 
 <{$block.jquery_path}>
 
-<link rel="stylesheet" type="text/css" href="<{$xoops_url}>/modules/tad_cal/class/fullcalendar/fullcalendar.block.css">
+<link rel="stylesheet" type="text/css" href="<{$xoops_url}>/modules/tad_cal/class/fullcalendar/fullcalendar.3.4.0.min.css">
 <link rel="stylesheet" type="text/css" href="<{$xoops_url}>/modules/tad_cal/class/fullcalendar/redmond/block.css" />
-<script src="<{$xoops_url}>/modules/tad_cal/class/fullcalendar/fullcalendar.js" type="text/javascript"></script>
+<script src="<{$xoops_url}>/modules/tad_cal/class/moment/moment-with-locales.2.18.1.min.js" type="text/javascript"></script>
+<script src="<{$xoops_url}>/modules/tad_cal/class/fullcalendar/fullcalendar.3.4.0.min.js" type="text/javascript"></script>
 
 <style type="text/css">
 #block_calendar *{
@@ -21,12 +22,13 @@
 }
 </style>
 
-<link rel="stylesheet" type="text/css" href="<{$xoops_url}>/modules/tad_cal/class/qtip/jquery.qtip.min.css" />
-<script src="<{$xoops_url}>/modules/tad_cal/class/qtip/jquery.qtip.min.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="<{$xoops_url}>/modules/tad_cal/class/qtip/jquery.qtip.3.0.3.min.css" />
+<script src="<{$xoops_url}>/modules/tad_cal/class/qtip/jquery.qtip.3.0.3.min.js" type="text/javascript"></script>
 <script type="text/javascript">
 $(document).ready(function(){
   $("#block_calendar").fullCalendar({
     theme: true,
+    locale: navigator.language,
     firstDay:<{$block.firstDay}>,
     buttonText:{today:"<{$smarty.const._MB_TADCAL_TODAY}>"},
     header: {
@@ -34,26 +36,26 @@ $(document).ready(function(){
       center: "",
       right: "title"
     },
-    events: function(start, end, callback) {
+    events: function(start, end, timezone, callback) {
       $.getJSON("<{$xoops_url}>/modules/tad_cal/get_block_event.php",
       {
-        start: start.getTime(),
-        end: end.getTime()
+        start: start.valueOf(),
+        end: end.valueOf()
       },
       function(result) {
         callback(result);
       });
     },
     eventClick: function(event) {
-        var event_month= event.start.getMonth()*1 + 1;
+        var event_month= event.start.get('month')*1 + 1;
         $(this).qtip({
          content: {
           text: "<img class='throbber' src='<{$xoops_url}>/modules/tad_cal/images/loading.gif' alt='Loading...' />",
           ajax: {
-            url: "<{$xoops_url}>/modules/tad_cal/get_block_event.php?op=title&start=" + event.start.getTime()
+            url: "<{$xoops_url}>/modules/tad_cal/get_block_event.php?op=title&start=" + event.start.valueOf()
           },
           title: {
-           text: "" + event.start.getFullYear() + "-" + event_month +"-" + event.start.getDate(),
+           text: "" + event.start.get('year') + "-" + event_month +"-" + event.start.get('date'),
            button: true
           }
          },

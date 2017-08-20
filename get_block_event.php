@@ -40,7 +40,7 @@ function get_event_num()
             continue;
         }
 
-        $startTime = strtotime($start);
+        $startTime = strtotime($start)*1000;
         $key       = date('Y-m-d', $startTime);
 
         $event_arr[$key]++;
@@ -57,7 +57,7 @@ function get_event_num()
             $$k = $v;
         }
 
-        $startTime = strtotime($start);
+        $startTime = strtotime($start)*1000;
         $key       = date('Y-m-d', $startTime);
 
         $event_arr[$key]++;
