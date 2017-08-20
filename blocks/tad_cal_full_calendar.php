@@ -105,7 +105,7 @@ function tad_cal_full_calendar($options)
             //拖曳搬移功能
             $eventDrop = "editable:true,
       eventDrop: function(event,delta,revertFunc) {
-        $.post('" . XOOPS_URL . "/modules/tad_cal/event.php', {op: 'ajax_update_date', delta: delta.seconds(), sn: event.id },function(data){
+        $.post('" . XOOPS_URL . "/modules/tad_cal/event.php', {op: 'ajax_update_date', delta: delta.asSeconds(), sn: event.id },function(data){
           alert(data);
         });
       },

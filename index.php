@@ -91,7 +91,7 @@ function fullcalendar($cate_sn = 0)
             //拖曳搬移功能
             $eventDrop = "editable:true,
       eventDrop: function(event,delta,revertFunc) {
-        $.post('event.php', {op: 'ajax_update_date', delta: delta.seconds(), sn: event.id },function(data){
+        $.post('event.php', {op: 'ajax_update_date', delta: delta.asSeconds(), sn: event.id },function(data){
           alert(data);
         });
       },
