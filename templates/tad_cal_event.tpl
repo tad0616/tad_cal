@@ -189,7 +189,7 @@
         <{$smarty.const._MD_TADCAL_TITLE}>
       </label>
       <div class="col-sm-10">
-        <input type="text" id="title" name="title" value="<{$title}>" id="title" class="validate[required] form-control">
+        <input type="text" name="title" value="<{$title}>" id="title" class="validate[required] form-control">
       </div>
     </div>
 
@@ -201,12 +201,12 @@
 
       <!--開始時間-->
       <div class="col-sm-2">
-        <input type="text" id="start" name="start" value="<{$start_allday}>" id="start_allday" class="validate[required] form-control" onClick="WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d'})" onChange="check_end();month_repeat_chk();">
+        <input type="text" name="start" value="<{$start_allday}>" id="start_allday" class="validate[required] form-control" onClick="WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d'})" onChange="check_end();month_repeat_chk();">
       </div>
 
       <!--結束時間-->
       <div class="col-sm-2">
-        <input type="text" id="end" name="end" value="<{$end_allday}>" id="end_allday" onClick="WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d'})" onChange="update_long();" class="form-control">
+        <input type="text" name="end" value="<{$end_allday}>" id="end_allday" onClick="WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d'})" onChange="update_long();" class="form-control">
       </div>
       <div class="col-sm-6">
         <!--全日事件-->
