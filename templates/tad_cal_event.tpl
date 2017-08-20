@@ -211,7 +211,7 @@
       <div class="col-sm-6">
         <!--全日事件-->
         <label class="checkbox-inline">
-          <input type="checkbox" id="allday" name="allday" id="allday" value="1" <{$chk_allday_1}>>
+          <input type="checkbox" name="allday" id="allday" value="1" <{$chk_allday_1}>>
           <{$smarty.const._MD_TADCAL_ALLDAY}>
         </label>
 
