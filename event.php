@@ -782,10 +782,8 @@ function show_date($start = null, $end = null, $allday = '0', $mark = '<br>')
 function ajax_update_date($sn = '')
 {
     global $xoopsDB, $xoopsUser;
-    //新增或減少的日數
-    $dayDelta = $_POST['dayDelta'];
-    //新增或減少的分鐘數
-    $minuteDelta = $_POST['minuteDelta'];
+    //新增或減少的秒數
+    $delta = $_POST['delta'];
 
     //抓出事件原有資料
     $sql    = "select * from " . $xoopsDB->prefix("tad_cal_event") . " where sn='$sn'";
@@ -817,9 +815,9 @@ function ajax_update_date($sn = '')
      */
 
     //新的開始日期時間戳記
-    $new_start = strtotime($start) + $dayDelta * 86400 + $minuteDelta * 60;
+    $new_start = strtotime($start) + $delta;
     //計算新的結束日期
-    $new_end = strtotime($end) + $dayDelta * 86400 + $minuteDelta * 60;
+    $new_end = strtotime($end) + $delta;
 
     if ($allday) {
         $start = date("Y-m-d", $new_start);

@@ -91,8 +91,7 @@ function fullcalendar($cate_sn = 0)
             //拖曳搬移功能
             $eventDrop = "editable:true,
       eventDrop: function(event,delta,revertFunc) {
-        var startTime=event.start.valueOf();
-        $.post('event.php', {op: 'ajax_update_date', delta: delta, sn: event.id },function(data){
+        $.post('event.php', {op: 'ajax_update_date', delta: delta.seconds(), sn: event.id },function(data){
           alert(data);
         });
       },
@@ -100,8 +99,7 @@ function fullcalendar($cate_sn = 0)
         }
 
     }
-    $xoopsTpl->assign('timezone', $xoopsConfig['default_TZ']);
-    $xoopsTpl->assign('timezone', 'Asia/Taipei');
+
     $xoopsTpl->assign('eventDrop', $eventDrop);
     $xoopsTpl->assign('eventAdd', $eventAdd);
     $xoopsTpl->assign('style_css', $style['css']);

@@ -21,8 +21,8 @@ $(document).ready(function(){
   var calendar = $("#full_calendar_block").fullCalendar({
     theme: true,
     locale: navigator.language,
-    timezone: '<{$block.timezone}>',
     firstDay:<{$block.firstDay}>,
+    locale: window.navigator.userLanguage || window.navigator.language,
     buttonText:{today:"<{$smarty.const._MB_TADCAL_TODAY}>"},
     header: {
       left: "prev,today,next",
