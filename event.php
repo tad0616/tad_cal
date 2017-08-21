@@ -5,6 +5,18 @@ $xoopsOption['template_main'] = "tad_cal_event.tpl";
 include_once XOOPS_ROOT_PATH . "/header.php";
 /*-----------function區--------------*/
 
+function toServerTime($time)
+{
+    global $xoopsConfig, $xoopsUser;
+    if ($xoopsUser) {
+        $timeoffset = $xoopsUser->getVar('timezone_offset');
+    } else {
+        $timeoffset = $xoopsConfig['default_TZ'];
+    }
+    $usertimestamp = (int)$time + ((float)$xoopsConfig['server_TZ'] - $timeoffset) * 3600;
+    return $usertimestamp;
+}
+
 //tad_cal_event編輯表單 $mode=ajax
 function tad_cal_event_form($sn = "", $mode = '', $stamp = "")
 {
@@ -276,19 +288,19 @@ function insert_tad_cal_event()
 
     $allDay = !empty($_POST['fc_start']) ? 1 : $_POST['allday'];
 
-    //fc_start 和 fc_end 是從 js 的 ajax 來的，如搬移、點擊新增
     if ($allDay == '1') {
-        $start = !empty($_POST['fc_start']) ? date("Y-m-d", $_POST['fc_start'] / 1000) : date("Y-m-d", strtotime($_POST['start']));
+        $start = date("Y-m-d", strtotime($_POST['start']));
         if (empty($_POST['end'])) {
             $_POST['end'] = $_POST['start'];
         }
 
-        $end         = !empty($_POST['fc_end']) ? date("Y-m-d", $_POST['fc_end'] / 1000 + 86400) : date("Y-m-d", strtotime($_POST['end']) + 86400);
+        $end         = strtotime($_POST['end']) + (empty($_POST['fc']) ? 86400 : 0);
+        $end         = date("Y-m-d", $end);
         $rrule_start = str_replace("-", "", $start);
         $rrule_end   = str_replace("-", "", $end);
         $DTSTART     = "DTSTART;VALUE=DATE:{$rrule_start}\nDTEND;VALUE=DATE:{$rrule_end}\n";
     } else {
-        $start = !empty($_POST['fc_start']) ? date("Y-m-d H:i", $_POST['fc_start'] / 1000) : date("Y-m-d H:i", strtotime($_POST['start']));
+        $start = date("Y-m-d H:i", strtotime($_POST['start']));
         if (empty($_POST['end'])) {
             $_POST['end'] = $_POST['start'];
         }
@@ -298,6 +310,12 @@ function insert_tad_cal_event()
         $rrule_end   = substr(str_replace(":", "", str_replace("-", "", date("c", $end))), 0, 15);
         $TZ          = date('e'); //Asia/Taipei
         $DTSTART     = "DTSTART;TZID={$TZ}:{$rrule_start}\nDTEND;TZID={$TZ}:{$rrule_end}\n";
+    }
+
+    // Conver to user timezone
+    if ($allDay != '1') {
+        $start = date("Y-m-d H:i:s", toServerTime(strtotime($start)));
+        $end   = date("Y-m-d H:i:s", toServerTime(strtotime($end)));
     }
 
     $recurrence = "";
@@ -377,17 +395,18 @@ function update_tad_cal_event($sn = "")
     $allDay = !empty($_POST['fc_start']) ? 1 : $_POST['allday'];
 
     if ($allDay == '1') {
-        $start = !empty($_POST['fc_start']) ? date("Y-m-d", $_POST['fc_start'] / 1000) : date("Y-m-d", strtotime($_POST['start']));
+        $start = date("Y-m-d", strtotime($_POST['start']));
         if (empty($_POST['end'])) {
             $_POST['end'] = $_POST['start'];
         }
 
-        $end         = !empty($_POST['fc_end']) ? date("Y-m-d", $_POST['fc_end'] / 1000 + 86400) : date("Y-m-d", strtotime($_POST['end']) + 86400);
+        $end         = strtotime($_POST['end']) + (empty($_POST['fc']) ? 86400 : 0);
+        $end         = date("Y-m-d", $end);
         $rrule_start = str_replace("-", "", $start);
         $rrule_end   = str_replace("-", "", $end);
         $DTSTART     = "DTSTART;VALUE=DATE:{$rrule_start}\nDTEND;VALUE=DATE:{$rrule_end}\n";
     } else {
-        $start = !empty($_POST['fc_start']) ? date("Y-m-d H:i", $_POST['fc_start'] / 1000) : date("Y-m-d H:i", strtotime($_POST['start']));
+        $start = date("Y-m-d H:i", strtotime($_POST['start']));
         if (empty($_POST['end'])) {
             $_POST['end'] = $_POST['start'];
         }
@@ -397,6 +416,12 @@ function update_tad_cal_event($sn = "")
         $rrule_end   = substr(str_replace(":", "", str_replace("-", "", date("c", strtotime($end)))), 0, 15);
         $TZ          = date('e'); //Asia/Taipei
         $DTSTART     = "DTSTART;TZID={$TZ}:{$rrule_start}\nDTEND;TZID={$TZ}:{$rrule_end}\n";
+    }
+
+    // Conver to user timezone
+    if ($allDay != '1') {
+        $start = date("Y-m-d H:i:s", toServerTime(strtotime($start)));
+        $end   = date("Y-m-d H:i:s", toServerTime(strtotime($end)));
     }
 //die("{$start}:00={$DTSTART}=".date("c",strtotime("{$start}:00")));
     $recurrence = "";
@@ -757,10 +782,8 @@ function show_date($start = null, $end = null, $allday = '0', $mark = '<br>')
 function ajax_update_date($sn = '')
 {
     global $xoopsDB, $xoopsUser;
-    //新增或減少的日數
-    $dayDelta = $_POST['dayDelta'];
-    //新增或減少的分鐘數
-    $minuteDelta = $_POST['minuteDelta'];
+    //新增或減少的秒數
+    $delta = $_POST['delta'];
 
     //抓出事件原有資料
     $sql    = "select * from " . $xoopsDB->prefix("tad_cal_event") . " where sn='$sn'";
@@ -792,9 +815,9 @@ function ajax_update_date($sn = '')
      */
 
     //新的開始日期時間戳記
-    $new_start = strtotime($start) + $dayDelta * 86400 + $minuteDelta * 60;
+    $new_start = strtotime($start) + $delta;
     //計算新的結束日期
-    $new_end = strtotime($end) + $dayDelta * 86400 + $minuteDelta * 60;
+    $new_end = strtotime($end) + $delta;
 
     if ($allday) {
         $start = date("Y-m-d", $new_start);

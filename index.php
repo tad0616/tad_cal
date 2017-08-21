@@ -7,6 +7,7 @@ include_once XOOPS_ROOT_PATH . "/header.php";
 
 function fullcalendar($cate_sn = 0)
 {
+    global $xoopsConfig;
     global $xoopsUser, $xoopsModuleConfig, $isAdmin, $xoopsTpl;
 
     if (empty($xoopsModuleConfig['eventShowMode'])) {
@@ -37,10 +38,10 @@ function fullcalendar($cate_sn = 0)
             //快速新增功能
             $eventAdd = "selectable: true,
       selectHelper: true,
-      select: function(start, end, allDay) {
+      select: function(start, end) {
         var promptBox = \"" . _MD_TADCAL_TITLE . _TAD_FOR . "<input type='text' id='eventTitle' name='eventTitle' value='' /><br>$cate\";
 
-        function mycallbackform(v,m,f){
+        function mycallbackform(e,v,m,f){
           if(v != undefined){
 
             calendar.fullCalendar('renderEvent',
@@ -48,30 +49,30 @@ function fullcalendar($cate_sn = 0)
                 title: f.eventTitle,
                 start: start,
                 end: end,
-                allDay: allDay
+                allDay: !start.hasTime()
               },
               false // make the event 'stick'
             );
 
 
-            $.post('event.php', {op: 'insert_tad_cal_event', fc_start: start.getTime(), fc_end: end.getTime(), title: f.eventTitle, cate_sn: f.cate_sn, new_cate_title: f.new_cate_title},function(){
+            $.post('event.php', {op: 'insert_tad_cal_event', start: start.format(), end: end.format(), allday: start.hasTime() ? '0' : '1', fc: '1', title: f.eventTitle, cate_sn: f.cate_sn, new_cate_title: f.new_cate_title},function(){
               calendar.fullCalendar('refetchEvents');
             });
           }
         }
 
-        function mysubmitfunc(v,m,f){
+        function mysubmitfunc(e,v,m,f){
           an = m.children('#eventTitle');
 
           if(f.eventTitle == ''){
             an.css('border','solid #ff0000 1px');
             return false;
           }
+          mycallbackform(e,v,m,f);
           return true;
         }
 
         $.prompt(promptBox,{
-          callback: mycallbackform,
           submit: mysubmitfunc,
           zIndex: 99999,
           buttons: { Ok:true }
@@ -89,9 +90,8 @@ function fullcalendar($cate_sn = 0)
 
             //拖曳搬移功能
             $eventDrop = "editable:true,
-      eventDrop: function(event,dayDelta,minuteDelta,allDay,revertFunc) {
-        var startTime=event.start.getTime();
-        $.post('event.php', {op: 'ajax_update_date', dayDelta: dayDelta , minuteDelta: minuteDelta  , sn: event.id },function(data){
+      eventDrop: function(event,delta,revertFunc) {
+        $.post('event.php', {op: 'ajax_update_date', delta: delta.asSeconds(), sn: event.id },function(data){
           alert(data);
         });
       },
