@@ -1,9 +1,20 @@
 
 <{$block.jquery_path}>
 
-<link rel="stylesheet" type="text/css" href="<{$xoops_url}>/modules/tad_cal/class/fullcalendar/fullcalendar.block.css">
-<link rel="stylesheet" type="text/css" href="<{$xoops_url}>/modules/tad_cal/class/fullcalendar/redmond/block.css" />
-<script src="<{$xoops_url}>/modules/tad_cal/class/fullcalendar/fullcalendar.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="<{$xoops_url}>/modules/tad_cal/module.css">
+
+<link rel="stylesheet" type="text/css" href="<{$xoops_url}>/modules/tad_cal/class/jquery-impromptu.css">
+<script src="<{$xoops_url}>/modules/tad_cal/class/jquery-impromptu.js" type="text/javascript"></script>
+
+
+<link rel='stylesheet' href='<{$xoops_url}>/modules/tad_cal/class/fullcalendar/fullcalendar.css' />
+<script src='<{$xoops_url}>/modules/tad_cal/class/fullcalendar/moment.min.js'></script>
+<script src='<{$xoops_url}>/modules/tad_cal/class/fullcalendar/fullcalendar.js'></script>
+<script src='<{$xoops_url}>/modules/tad_cal/class/fullcalendar/locale-all.js'></script>
+
+
+<link rel="stylesheet" type="text/css" href="class/qtip/jquery.qtip.min.css" />
+<script src="<{$xoops_url}>/modules/tad_cal/class/qtip/jquery.qtip.min.js" type="text/javascript"></script>
 
 <style type="text/css">
 #block_calendar *{
@@ -21,67 +32,46 @@
 }
 </style>
 
-<link rel="stylesheet" type="text/css" href="<{$xoops_url}>/modules/tad_cal/class/qtip/jquery.qtip.min.css" />
-<script src="<{$xoops_url}>/modules/tad_cal/class/qtip/jquery.qtip.min.js" type="text/javascript"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-  $("#block_calendar").fullCalendar({
-    theme: true,
-    firstDay:<{$block.firstDay}>,
-    buttonText:{today:"<{$smarty.const._MB_TADCAL_TODAY}>"},
-    header: {
-      left: "prev,today,next",
-      center: "",
-      right: "title"
-    },
-    events: function(start, end, callback) {
-      $.getJSON("<{$xoops_url}>/modules/tad_cal/get_block_event.php",
-      {
-        start: start.getTime(),
-        end: end.getTime()
-      },
-      function(result) {
-        callback(result);
-      });
-    },
-    eventClick: function(event) {
-        var event_month= event.start.getMonth()*1 + 1;
-        $(this).qtip({
-         content: {
-          text: "<img class='throbber' src='<{$xoops_url}>/modules/tad_cal/images/loading.gif' alt='Loading...' />",
-          ajax: {
-            url: "<{$xoops_url}>/modules/tad_cal/get_block_event.php?op=title&start=" + event.start.getTime()
-          },
-          title: {
-           text: "" + event.start.getFullYear() + "-" + event_month +"-" + event.start.getDate(),
-           button: true
-          }
-         },
-         position: {
-            at: "top center", // 提示位置
-            my: "bottom center",
-            viewport: $(window), //確保提示在畫面上
-            effect: false, // 取消動畫
-            adjust: {
-             target: $(document),
-             resize: true // Can be ommited (e.g. default behaviour)
-            }
-         },
-         show: {
-          event: "false",
-          ready: true, // ... but show the tooltip when ready
-          solo: true // 一次只秀出一個提示
-         },
-         hide: "unfocus",
-         style: {
-          classes: "ui-tooltip-blue ui-tooltip-shadow ui-tooltip-rounded"
-         }
-      })
-      return false;
 
+  var calendar = $("#block_calendar").fullCalendar({
+
+    firstDay:<{$block.firstDay}>,
+    header: {
+      left: 'prev,today,next',
+      center: 'title',
+      right: 'month,agendaWeek,agendaDay,listWeek'
+    },
+    navLinks: true, // can click day/week names to navigate views
+    editable: true,
+    droppable: true,
+    selectable: true,
+    // eventLimit: true, // allow "more" link when too many events
+    locale : 'zh-tw',
+    googleCalendarApiKey: 'AIzaSyCaZ3uPmTzibuAXMD8c8_zJRYgRslvKIuc',
+    eventSources: [
+        {
+          googleCalendarId: 'tad0616@gmail.com'
+        },
+        {
+          url: '<{$xoops_url}>/modules/tad_cal/get_event.php', // use the `url` property
+          color: 'yellow',    // an option!
+          textColor: 'black'  // an option!
+        }
+    ],
+    eventClick: function(event) {
+        if (event.url) {
+            window.open(event.url);
+            return false;
+        }
     }
+
   });
 });
+
+
+
 </script>
 
 <div id="block_calendar"></div>

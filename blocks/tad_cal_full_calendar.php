@@ -35,11 +35,7 @@ function tad_cal_full_calendar($options)
         $xoopsModuleConfig['eventTheme'] = 'ui-tooltip-blue';
     }
 
-    $style = make_style();
-
-    if (empty($cate_sn)) {
-        $cate_sn = 0;
-    }
+    $cate_sn = empty($options[0]) ? 0 : $options[0];
 
     $eventDrop = $del_js = "";
     if ($xoopsUser) {
@@ -54,63 +50,63 @@ function tad_cal_full_calendar($options)
 
             //快速新增功能
             $eventAdd = "selectable: true,
-      selectHelper: true,
-      select: function(start, end, allDay) {
-        var promptBox = \"" . _MB_TADCAL_TITLE . _TAD_FOR . "<input type='text' id='eventTitle' name='eventTitle' value='' /><br>$cate\";
+            selectHelper: true,
+            select: function(start, end, allDay) {
+              var promptBox = \"" . _MB_TADCAL_TITLE . _TAD_FOR . "<input type='text' id='eventTitle' name='eventTitle' value='' /><br>$cate\";
 
-        function mycallbackform(v,m,f){
-          if(v != undefined){
-            calendar.fullCalendar('renderEvent',
-              {
-                title: f.eventTitle,
-                start: start,
-                end: end,
-                allDay: allDay
-              },
-              false // make the event 'stick'
-            );
-            $.post('" . XOOPS_URL . "/modules/tad_cal/event.php', {op: 'insert_tad_cal_event', fc_start: start.getTime(), fc_end: end.getTime(), title: f.eventTitle, cate_sn: f.cate_sn, new_cate_title: f.new_cate_title},function(){
-              calendar.fullCalendar('refetchEvents');
-            });
-          }
-        }
+              function mycallbackform(v,m,f){
+                if(v != undefined){
+                  calendar.fullCalendar('renderEvent',
+                    {
+                      title: f.eventTitle,
+                      start: start,
+                      end: end,
+                      allDay: allDay
+                    },
+                    false // make the event 'stick'
+                  );
+                  $.post('" . XOOPS_URL . "/modules/tad_cal/event.php', {op: 'insert_tad_cal_event', fc_start: start.getTime(), fc_end: end.getTime(), title: f.eventTitle, cate_sn: f.cate_sn, new_cate_title: f.new_cate_title},function(){
+                    calendar.fullCalendar('refetchEvents');
+                  });
+                }
+              }
 
-        function mysubmitfunc(v,m,f){
-          an = m.children('#eventTitle');
+              function mysubmitfunc(v,m,f){
+                an = m.children('#eventTitle');
 
-          if(f.eventTitle == ''){
-            an.css('border','solid #ff0000 1px');
-            return false;
-          }
-          return true;
-        }
+                if(f.eventTitle == ''){
+                  an.css('border','solid #ff0000 1px');
+                  return false;
+                }
+                return true;
+              }
 
-        $.prompt(promptBox,{
-          callback: mycallbackform,
-          submit: mysubmitfunc,
-          zIndex: 99999,
-          buttons: { Ok:true }
-        });
-        $('#eventTitle').focus();
+              $.prompt(promptBox,{
+                callback: mycallbackform,
+                submit: mysubmitfunc,
+                zIndex: 99999,
+                buttons: { Ok:true }
+              });
+              $('#eventTitle').focus();
 
-        $('#eventTitle').keypress(function(event) {
-          if (event.keyCode == '13') {
-             $('#jqi_state0_buttonOk').click();
-           }
-        });
-        calendar.fullCalendar('unselect');
-      },
-      ";
+              $('#eventTitle').keypress(function(event) {
+                if (event.keyCode == '13') {
+                   $('#jqi_state0_buttonOk').click();
+                 }
+              });
+              calendar.fullCalendar('unselect');
+            },
+            ";
 
             //拖曳搬移功能
             $eventDrop = "editable:true,
-      eventDrop: function(event,dayDelta,minuteDelta,allDay,revertFunc) {
-        var startTime=event.start.getTime();
-        $.post('event.php', {op: 'ajax_update_date', dayDelta: dayDelta , minuteDelta: minuteDelta  , sn: event.id },function(data){
-          alert(data);
-        });
-      },
-      ";
+            eventDrop: function(event,dayDelta,minuteDelta,allDay,revertFunc) {
+              // var startTime=event.start.getTime();
+              $.post('event.php', {op: 'ajax_update_date', dayDelta: dayDelta , minuteDelta: minuteDelta  , sn: event.id },function(data){
+                alert(data);
+              });
+            },
+            ";
 
         }
 
@@ -118,12 +114,90 @@ function tad_cal_full_calendar($options)
 
     $block['eventDrop']     = $eventDrop;
     $block['eventAdd']      = $eventAdd;
-    $block['style_css']     = $style['css'];
     $block['cate_sn']       = $cate_sn;
     $block['eventShowMode'] = $xoopsModuleConfig['eventShowMode'];
     $block['eventTheme']    = $xoopsModuleConfig['eventTheme'];
-    $block['style_mark']    = $style['mark'];
-    $block['my_counter']    = my_counter();
-    $block['firstDay']      = $xoopsModuleConfig['cal_start'];
+
+    if ($options[1] == 'only_selected') {
+        $style               = make_style($cate_sn);
+        $block['style_mark'] = $style['mark'];
+    } elseif ($options[1] == 'none') {
+        $style               = make_style();
+        $block['style_mark'] = '';
+    } else {
+        $style               = make_style();
+        $block['style_mark'] = $style['mark'];
+    }
+    $block['style_css'] = $style['css'];
+
+    $block['my_counter'] = my_counter();
+    $block['firstDay']   = $xoopsModuleConfig['cal_start'];
     return $block;
+}
+
+//區塊編輯函式
+function tad_cal_full_calendar_edit($options)
+{
+
+    $options0_1 = ($options[0] == "1") ? "checked" : "";
+    $options0_0 = ($options[0] == "0") ? "checked" : "";
+    $option     = block_cal_cate($options[0]);
+
+    $seled1_0 = ($options[1] == "") ? "selected" : "";
+    $seled1_1 = ($options[1] == "none") ? "selected" : "";
+    $seled1_2 = ($options[1] == "only_selected") ? "selected" : "";
+
+    $form = "
+    {$option['js']}
+
+    " . _MB_TADCAL_SHOW_CATE . "
+      {$option['form']}
+      <INPUT type='hidden' name='options[0]' id='bb' value='{$options[0]}'><br>
+      " . _MB_TADCAL_SHOW_CATE_TYPE . "
+      <select name='options[1]'>
+        <option $seled1_0 value=''>" . _MB_TADCAL_SHOW_ALL . "</option>
+        <option $seled1_1 value='none'>" . _MB_TADCAL_SHOW_NONE . "</option>
+        <option $seled1_2 value='only_selected'>" . _MB_TADCAL_SHOW_ONLY_SELECTED . "</option>
+      </select><br>
+    ";
+
+    return $form;
+}
+
+//取得所有類別標題
+if (!function_exists("block_cal_cate")) {
+    function block_cal_cate($selected = "")
+    {
+        global $xoopsDB;
+
+        if (!empty($selected)) {
+            $sc = explode(",", $selected);
+        }
+
+        $js = "<script>
+            function bbv(){
+              i=0;
+              var arr = new Array();";
+
+        $sql    = "select cate_sn,cate_title from " . $xoopsDB->prefix("tad_cal_cate") . " where cate_enable='1' order by cate_sort";
+        $result = $xoopsDB->query($sql);
+        $option = "";
+        while (list($cate_sn, $cate_title) = $xoopsDB->fetchRow($result)) {
+
+            $js .= "if(document.getElementById('c{$cate_sn}').checked){
+               arr[i] = document.getElementById('c{$cate_sn}').value;
+               i++;
+              }";
+            $ckecked = (in_array($cate_sn, $sc)) ? "checked" : "";
+            $option .= "<span style='white-space:nowrap;'><input type='checkbox' id='c{$cate_sn}' value='{$cate_sn}' class='bbv' onChange=bbv() $ckecked><label for='c{$cate_sn}'>$cate_title</label></span> ";
+        }
+
+        $js .= "document.getElementById('bb').value=arr.join(',');
+    }
+    </script>";
+
+        $main['js']   = $js;
+        $main['form'] = $option;
+        return $main;
+    }
 }

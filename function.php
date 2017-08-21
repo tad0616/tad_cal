@@ -72,6 +72,7 @@ function num2color($cate_sn = '')
 
 function setTimezoneByOffset($offset)
 {
+    
     $testTimestamp = time();
     date_default_timezone_set('UTC');
     $testLocaltime = localtime($testTimestamp, true);

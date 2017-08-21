@@ -6,7 +6,7 @@ include_once XOOPS_ROOT_PATH . "/header.php";
 /*-----------function區--------------*/
 
 //tad_cal_event編輯表單 $mode=ajax
-function tad_cal_event_form($sn = "", $mode = '', $stamp = "")
+function tad_cal_event_form($sn = "", $mode = '', $stamp = "", $cate_sn = "")
 {
     global $xoopsDB, $xoopsUser, $xoopsTpl;
     include_once XOOPS_ROOT_PATH . "/modules/tad_cal/class/ical.php";
@@ -63,7 +63,7 @@ function tad_cal_event_form($sn = "", $mode = '', $stamp = "")
     $uid      = (!isset($DBV['uid'])) ? $user_uid : $DBV['uid'];
 
     //設定「cate_sn」欄位預設值
-    $cate_sn = (!isset($DBV['cate_sn'])) ? "" : $DBV['cate_sn'];
+    $cate_sn = (!isset($DBV['cate_sn'])) ? $cate_sn : $DBV['cate_sn'];
 
     //設定「allday」欄位預設值
     $allday = (!isset($DBV['allday'])) ? "1" : $DBV['allday'];
@@ -888,7 +888,7 @@ switch ($op) {
     //預設動作
     default:
         if (empty($sn)) {
-            tad_cal_event_form();
+            tad_cal_event_form(null, null, null, $cate_sn);
         } else {
             show_one_tad_cal_event($sn, $stamp);
         }

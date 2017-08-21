@@ -54,9 +54,9 @@ function fullcalendar($cate_sn = 0)
             );
 
 
-            $.post('event.php', {op: 'insert_tad_cal_event', fc_start: start.getTime(), fc_end: end.getTime(), title: f.eventTitle, cate_sn: f.cate_sn, new_cate_title: f.new_cate_title},function(){
-              calendar.fullCalendar('refetchEvents');
-            });
+            // $.post('event.php', {op: 'insert_tad_cal_event', fc_start: start.getTime(), fc_end: end.getTime(), title: f.eventTitle, cate_sn: f.cate_sn, new_cate_title: f.new_cate_title},function(){
+            //   calendar.fullCalendar('refetchEvents');
+            // });
           }
         }
 
@@ -90,7 +90,7 @@ function fullcalendar($cate_sn = 0)
             //拖曳搬移功能
             $eventDrop = "editable:true,
       eventDrop: function(event,dayDelta,minuteDelta,allDay,revertFunc) {
-        var startTime=event.start.getTime();
+        // var startTime=event.start.getTime();
         $.post('event.php', {op: 'ajax_update_date', dayDelta: dayDelta , minuteDelta: minuteDelta  , sn: event.id },function(data){
           alert(data);
         });

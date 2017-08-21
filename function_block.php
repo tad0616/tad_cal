@@ -1,9 +1,13 @@
 <?php
 
 if (!function_exists("make_style")) {
-    function make_style()
+    function make_style($def_cate_sn = '')
     {
         global $xoopsDB;
+        $def_cate_arr = '';
+        if ($def_cate_sn) {
+            $def_cate_arr = explode(',', $def_cate_sn);
+        }
 
         //取得目前使用者可讀的群組
         $ok_cate_arr = chk_tad_cal_cate_power('enable_group');
@@ -16,6 +20,13 @@ if (!function_exists("make_style")) {
         $main['css'] = $main['mark'] = "";
         while (list($cate_sn, $cate_title, $cate_bgcolor, $cate_color) = $xoopsDB->fetchRow($result)) {
             //$color=num2color($cate_sn);
+
+            if (!empty($def_cate_arr)) {
+                if (!in_array($cate_sn, $def_cate_arr)) {
+                    continue;
+                }
+            }
+
             $main['css'] .= "
                 /* {$cate_sn} */
                 .my{$cate_sn},
