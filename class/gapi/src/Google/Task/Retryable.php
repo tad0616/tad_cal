@@ -23,12 +23,12 @@ require_once realpath(dirname(__FILE__) . '/../../../autoload.php');
  */
 interface Google_Task_Retryable
 {
-  /**
-   * Gets the number of times the associated task can be retried.
-   *
-   * NOTE: -1 is returned if the task can be retried indefinitely
-   *
-   * @return integer
-   */
-  public function allowedRetries();
+    /**
+     * Gets the number of times the associated task can be retried.
+     *
+     * NOTE: -1 is returned if the task can be retried indefinitely
+     *
+     * @return integer
+     */
+    public function allowedRetries();
 }
