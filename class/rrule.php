@@ -189,7 +189,7 @@ class RRule
         if (isset($this->_part['COUNT']) && isset($this->_part['UNTIL'])) {
             //echo sprintf("<br> RRULE MUST NOT have both COUNT=value and UNTIL=value (%s)", $rrule );
         }
-        if (isset($this->_part['COUNT']) && intval($this->_part['COUNT']) < 1) {
+        if (isset($this->_part['COUNT']) && (int)$this->_part['COUNT'] < 1) {
             //echo sprintf("<br> RRULE MUST NOT have both COUNT=value and UNTIL=value (%s)", $rrule );
         }
         if (!preg_match('/(YEAR|MONTH|WEEK|DAI)LY/', $this->_part['FREQ'])) {
@@ -481,7 +481,7 @@ class iCalDate
             $this->SetLocalDate($input);
         } else if (preg_match('/^\d{8}[T ]\d{6}Z$/', $input)) {
             $this->SetGMTDate($input);
-        } else if (intval($input) == 0) {
+        } else if ((int)$input == 0) {
             $this->SetLocalDate(strtotime($input));
             return;
         } else {
@@ -514,7 +514,7 @@ class iCalDate
      */
     public function SetEpochDate($input)
     {
-        $this->_epoch = intval($input);
+        $this->_epoch = (int)$input;
         $this->_TextFromEpoch();
         $this->_PartsFromText();
     }
@@ -542,12 +542,12 @@ class iCalDate
      */
     public function _PartsFromText()
     {
-        $this->_yy = intval(substr($this->_text, 0, 4));
-        $this->_mo = intval(substr($this->_text, 4, 2));
-        $this->_dd = intval(substr($this->_text, 6, 2));
-        $this->_hh = intval(substr($this->_text, 9, 2));
-        $this->_mi = intval(substr($this->_text, 11, 2));
-        $this->_ss = intval(substr($this->_text, 13, 2));
+        $this->_yy = (int)substr($this->_text, 0, 4);
+        $this->_mo = (int)substr($this->_text, 4, 2);
+        $this->_dd = (int)substr($this->_text, 6, 2);
+        $this->_hh = (int)substr($this->_text, 9, 2);
+        $this->_mi = (int)substr($this->_text, 11, 2);
+        $this->_ss = (int)substr($this->_text, 13, 2);
     }
 
     /**
@@ -725,7 +725,7 @@ class iCalDate
         $sign                     = ($sign == "-" ? -1 : 1);
         //echo sprintf("<br> Adding duration to '%s' of sign: %d,  days: %s,  time: %s", $this->_text, $sign, $days, $time );
         if (preg_match('/(\d+)(D|W)/', $days, $matches)) {
-            $days = intval($matches[1]);
+            $days = (int)$matches[1];
             if ($matches[2] == 'W') {
                 $days *= 7;
             }
@@ -753,23 +753,23 @@ class iCalDate
         $this->_ss += ($ss * $sign);
 
         if ($this->_ss < 0) {
-            $this->_mi -= (intval(abs($this->_ss / 60)) + 1);
-            $this->_ss += ((intval(abs($this->_mi / 60)) + 1) * 60);}
+            $this->_mi -= ((int)abs($this->_ss / 60) + 1);
+            $this->_ss += (((int)abs($this->_mi / 60) + 1) * 60);}
         if ($this->_ss > 59) {
-            $this->_mi += (intval(abs($this->_ss / 60)) + 1);
-            $this->_ss -= ((intval(abs($this->_mi / 60)) + 1) * 60);}
+            $this->_mi += ((int)abs($this->_ss / 60) + 1);
+            $this->_ss -= (((int)abs($this->_mi / 60) + 1) * 60);}
         if ($this->_mi < 0) {
-            $this->_hh -= (intval(abs($this->_mi / 60)) + 1);
-            $this->_mi += ((intval(abs($this->_mi / 60)) + 1) * 60);}
+            $this->_hh -= ((int)abs($this->_mi / 60) + 1);
+            $this->_mi += (((int)abs($this->_mi / 60) + 1) * 60);}
         if ($this->_mi > 59) {
-            $this->_hh += (intval(abs($this->_mi / 60)) + 1);
-            $this->_mi -= ((intval(abs($this->_mi / 60)) + 1) * 60);}
+            $this->_hh += ((int)abs($this->_mi / 60) + 1);
+            $this->_mi -= (((int)abs($this->_mi / 60) + 1) * 60);}
         if ($this->_hh < 0) {
-            $this->AddDays(-1 * (intval(abs($this->_hh / 24)) + 1));
-            $this->_hh += ((intval(abs($this->_hh / 24)) + 1) * 24);}
+            $this->AddDays(-1 * ((int)abs($this->_hh / 24) + 1));
+            $this->_hh += (((int)abs($this->_hh / 24) + 1) * 24);}
         if ($this->_hh > 23) {
-            $this->AddDays((intval(abs($this->_hh / 24)) + 1));
-            $this->_hh -= ((intval(abs($this->_hh / 24)) + 1) * 24);}
+            $this->AddDays(((int)abs($this->_hh / 24) + 1));
+            $this->_hh -= (((int)abs($this->_hh / 24) + 1) * 24);}
 
         $this->_EpochFromParts();
         $this->_TextFromEpoch();
@@ -795,26 +795,26 @@ class iCalDate
         $diff   = $from->_epoch - $this->_epoch;
         $result = "";
         if ($diff >= 86400) {
-            $result = intval($diff / 86400);
+            $result = (int)($diff / 86400);
             $diff   = $diff % 86400;
             if ($diff == 0 && (($result % 7) == 0)) {
                 // Duration is an integer number of weeks.
-                $result .= intval($result / 7) . "W";
+                $result .= (int)($result / 7) . "W";
                 return $result;
             }
             $result .= "D";
         }
         $result = "P" . $result . "T";
         if ($diff >= 3600) {
-            $result .= intval($diff / 3600) . "H";
+            $result .= (int)($diff / 3600) . "H";
             $diff = $diff % 3600;
         }
         if ($diff >= 60) {
-            $result .= intval($diff / 60) . "M";
+            $result .= (int)($diff / 60) . "M";
             $diff = $diff % 60;
         }
         if ($diff > 0) {
-            $result .= intval($diff) . "S";
+            $result .= (int)$diff . "S";
         }
         return $result;
 //    }
@@ -898,7 +898,7 @@ return $result;
         $dayrules      = explode(',', $bymonthday);
         $set           = array();
         foreach ($dayrules as $k => $v) {
-            $v = intval($v);
+            $v = (int)$v;
             if ($v > 0 && $v <= $days_in_month) {
                 $set[$v] = $v;
             }
@@ -985,7 +985,7 @@ return $result;
         //echo sprintf("<br>MonthDays: Getting days for '%s'. %d days starting on a %d", $dayspec, $days_in_month, $dow_first );
         $set = array();
         preg_match('/([0-9-]*)(MO|TU|WE|TH|FR|SA|SU)/', $dayspec, $matches);
-        $numeric = intval($matches[1]);
+        $numeric = (int)$matches[1];
         $dow     = $this->ical_weekdays[$matches[2]];
 
         $first_matching_day = 1 + ($dow - $dow_first);

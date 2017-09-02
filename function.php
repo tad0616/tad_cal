@@ -62,7 +62,7 @@ function num2color($cate_sn = '')
     $R      = $G = $B = 255;
     $m      = ceil($cate_sn / 3);
     $n      = $cate_sn % 3;
-    $degree = intval($cate_sn) * 10 * $m;
+    $degree = (int)$cate_sn * 10 * $m;
 
     $cor        = array("R", "G", "B");
     ${$cor[$n]} -= $degree;
