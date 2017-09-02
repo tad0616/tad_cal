@@ -110,7 +110,7 @@ foreach ($events->getItems() as $event) {
     echo "<hr>";
 }
 */
-?>
+
 
 
 
