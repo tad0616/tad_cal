@@ -60,7 +60,7 @@ class GCalendar
         $this->password = $password;
         date_default_timezone_set("Asia/Taipei");
 
-        DEFINE("DEFAULT_MAX_EVENTS", 10000);
+        define("DEFAULT_MAX_EVENTS", 10000);
 
     }
 
