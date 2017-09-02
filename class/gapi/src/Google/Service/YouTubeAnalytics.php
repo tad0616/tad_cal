@@ -30,31 +30,31 @@
  */
 class Google_Service_YouTubeAnalytics extends Google_Service
 {
-  /** View YouTube Analytics monetary reports for your YouTube content. */
-  const YT_ANALYTICS_MONETARY_READONLY =
+    /** View YouTube Analytics monetary reports for your YouTube content. */
+    const YT_ANALYTICS_MONETARY_READONLY =
       "https://www.googleapis.com/auth/yt-analytics-monetary.readonly";
-  /** View YouTube Analytics reports for your YouTube content. */
-  const YT_ANALYTICS_READONLY =
+    /** View YouTube Analytics reports for your YouTube content. */
+    const YT_ANALYTICS_READONLY =
       "https://www.googleapis.com/auth/yt-analytics.readonly";
 
-  public $batchReportDefinitions;
-  public $batchReports;
-  public $reports;
+    public $batchReportDefinitions;
+    public $batchReports;
+    public $reports;
   
 
-  /**
-   * Constructs the internal representation of the YouTubeAnalytics service.
-   *
-   * @param Google_Client $client
-   */
-  public function __construct(Google_Client $client)
-  {
-    parent::__construct($client);
-    $this->servicePath = 'youtube/analytics/v1/';
-    $this->version = 'v1';
-    $this->serviceName = 'youtubeAnalytics';
+    /**
+     * Constructs the internal representation of the YouTubeAnalytics service.
+     *
+     * @param Google_Client $client
+     */
+    public function __construct(Google_Client $client)
+    {
+        parent::__construct($client);
+        $this->servicePath = 'youtube/analytics/v1/';
+        $this->version = 'v1';
+        $this->serviceName = 'youtubeAnalytics';
 
-    $this->batchReportDefinitions = new Google_Service_YouTubeAnalytics_BatchReportDefinitions_Resource(
+        $this->batchReportDefinitions = new Google_Service_YouTubeAnalytics_BatchReportDefinitions_Resource(
         $this,
         $this->serviceName,
         'batchReportDefinitions',
@@ -74,7 +74,7 @@ class Google_Service_YouTubeAnalytics extends Google_Service
           )
         )
     );
-    $this->batchReports = new Google_Service_YouTubeAnalytics_BatchReports_Resource(
+        $this->batchReports = new Google_Service_YouTubeAnalytics_BatchReports_Resource(
         $this,
         $this->serviceName,
         'batchReports',
@@ -99,7 +99,7 @@ class Google_Service_YouTubeAnalytics extends Google_Service
           )
         )
     );
-    $this->reports = new Google_Service_YouTubeAnalytics_Reports_Resource(
+        $this->reports = new Google_Service_YouTubeAnalytics_Reports_Resource(
         $this,
         $this->serviceName,
         'reports',
@@ -154,7 +154,7 @@ class Google_Service_YouTubeAnalytics extends Google_Service
           )
         )
     );
-  }
+    }
 }
 
 
@@ -178,12 +178,12 @@ class Google_Service_YouTubeAnalytics_BatchReportDefinitions_Resource extends Go
    * @param array $optParams Optional parameters.
    * @return Google_Service_YouTubeAnalytics_BatchReportDefinitionList
    */
-  public function listBatchReportDefinitions($onBehalfOfContentOwner, $optParams = array())
-  {
-    $params = array('onBehalfOfContentOwner' => $onBehalfOfContentOwner);
-    $params = array_merge($params, $optParams);
-    return $this->call('list', array($params), "Google_Service_YouTubeAnalytics_BatchReportDefinitionList");
-  }
+    public function listBatchReportDefinitions($onBehalfOfContentOwner, $optParams = array())
+    {
+        $params = array('onBehalfOfContentOwner' => $onBehalfOfContentOwner);
+        $params = array_merge($params, $optParams);
+        return $this->call('list', array($params), "Google_Service_YouTubeAnalytics_BatchReportDefinitionList");
+    }
 }
 
 /**
@@ -208,12 +208,12 @@ class Google_Service_YouTubeAnalytics_BatchReports_Resource extends Google_Servi
    * @param array $optParams Optional parameters.
    * @return Google_Service_YouTubeAnalytics_BatchReportList
    */
-  public function listBatchReports($batchReportDefinitionId, $onBehalfOfContentOwner, $optParams = array())
-  {
-    $params = array('batchReportDefinitionId' => $batchReportDefinitionId, 'onBehalfOfContentOwner' => $onBehalfOfContentOwner);
-    $params = array_merge($params, $optParams);
-    return $this->call('list', array($params), "Google_Service_YouTubeAnalytics_BatchReportList");
-  }
+    public function listBatchReports($batchReportDefinitionId, $onBehalfOfContentOwner, $optParams = array())
+    {
+        $params = array('batchReportDefinitionId' => $batchReportDefinitionId, 'onBehalfOfContentOwner' => $onBehalfOfContentOwner);
+        $params = array_merge($params, $optParams);
+        return $this->call('list', array($params), "Google_Service_YouTubeAnalytics_BatchReportList");
+    }
 }
 
 /**
@@ -269,12 +269,12 @@ class Google_Service_YouTubeAnalytics_Reports_Resource extends Google_Service_Re
    * the given video in Italy.
    * @return Google_Service_YouTubeAnalytics_ResultTable
    */
-  public function query($ids, $startDate, $endDate, $metrics, $optParams = array())
-  {
-    $params = array('ids' => $ids, 'start-date' => $startDate, 'end-date' => $endDate, 'metrics' => $metrics);
-    $params = array_merge($params, $optParams);
-    return $this->call('query', array($params), "Google_Service_YouTubeAnalytics_ResultTable");
-  }
+    public function query($ids, $startDate, $endDate, $metrics, $optParams = array())
+    {
+        $params = array('ids' => $ids, 'start-date' => $startDate, 'end-date' => $endDate, 'metrics' => $metrics);
+        $params = array_merge($params, $optParams);
+        return $this->call('query', array($params), "Google_Service_YouTubeAnalytics_ResultTable");
+    }
 }
 
 
@@ -282,307 +282,307 @@ class Google_Service_YouTubeAnalytics_Reports_Resource extends Google_Service_Re
 
 class Google_Service_YouTubeAnalytics_BatchReport extends Google_Collection
 {
-  protected $collection_key = 'outputs';
-  protected $internal_gapi_mappings = array(
+    protected $collection_key = 'outputs';
+    protected $internal_gapi_mappings = array(
   );
-  public $id;
-  public $kind;
-  protected $outputsType = 'Google_Service_YouTubeAnalytics_BatchReportOutputs';
-  protected $outputsDataType = 'array';
-  public $reportId;
-  protected $timeSpanType = 'Google_Service_YouTubeAnalytics_BatchReportTimeSpan';
-  protected $timeSpanDataType = '';
-  public $timeUpdated;
+    public $id;
+    public $kind;
+    protected $outputsType = 'Google_Service_YouTubeAnalytics_BatchReportOutputs';
+    protected $outputsDataType = 'array';
+    public $reportId;
+    protected $timeSpanType = 'Google_Service_YouTubeAnalytics_BatchReportTimeSpan';
+    protected $timeSpanDataType = '';
+    public $timeUpdated;
 
 
-  public function setId($id)
-  {
-    $this->id = $id;
-  }
-  public function getId()
-  {
-    return $this->id;
-  }
-  public function setKind($kind)
-  {
-    $this->kind = $kind;
-  }
-  public function getKind()
-  {
-    return $this->kind;
-  }
-  public function setOutputs($outputs)
-  {
-    $this->outputs = $outputs;
-  }
-  public function getOutputs()
-  {
-    return $this->outputs;
-  }
-  public function setReportId($reportId)
-  {
-    $this->reportId = $reportId;
-  }
-  public function getReportId()
-  {
-    return $this->reportId;
-  }
-  public function setTimeSpan(Google_Service_YouTubeAnalytics_BatchReportTimeSpan $timeSpan)
-  {
-    $this->timeSpan = $timeSpan;
-  }
-  public function getTimeSpan()
-  {
-    return $this->timeSpan;
-  }
-  public function setTimeUpdated($timeUpdated)
-  {
-    $this->timeUpdated = $timeUpdated;
-  }
-  public function getTimeUpdated()
-  {
-    return $this->timeUpdated;
-  }
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+    public function getId()
+    {
+        return $this->id;
+    }
+    public function setKind($kind)
+    {
+        $this->kind = $kind;
+    }
+    public function getKind()
+    {
+        return $this->kind;
+    }
+    public function setOutputs($outputs)
+    {
+        $this->outputs = $outputs;
+    }
+    public function getOutputs()
+    {
+        return $this->outputs;
+    }
+    public function setReportId($reportId)
+    {
+        $this->reportId = $reportId;
+    }
+    public function getReportId()
+    {
+        return $this->reportId;
+    }
+    public function setTimeSpan(Google_Service_YouTubeAnalytics_BatchReportTimeSpan $timeSpan)
+    {
+        $this->timeSpan = $timeSpan;
+    }
+    public function getTimeSpan()
+    {
+        return $this->timeSpan;
+    }
+    public function setTimeUpdated($timeUpdated)
+    {
+        $this->timeUpdated = $timeUpdated;
+    }
+    public function getTimeUpdated()
+    {
+        return $this->timeUpdated;
+    }
 }
 
 class Google_Service_YouTubeAnalytics_BatchReportDefinition extends Google_Model
 {
-  protected $internal_gapi_mappings = array(
+    protected $internal_gapi_mappings = array(
   );
-  public $id;
-  public $kind;
-  public $name;
-  public $status;
-  public $type;
+    public $id;
+    public $kind;
+    public $name;
+    public $status;
+    public $type;
 
 
-  public function setId($id)
-  {
-    $this->id = $id;
-  }
-  public function getId()
-  {
-    return $this->id;
-  }
-  public function setKind($kind)
-  {
-    $this->kind = $kind;
-  }
-  public function getKind()
-  {
-    return $this->kind;
-  }
-  public function setName($name)
-  {
-    $this->name = $name;
-  }
-  public function getName()
-  {
-    return $this->name;
-  }
-  public function setStatus($status)
-  {
-    $this->status = $status;
-  }
-  public function getStatus()
-  {
-    return $this->status;
-  }
-  public function setType($type)
-  {
-    $this->type = $type;
-  }
-  public function getType()
-  {
-    return $this->type;
-  }
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+    public function getId()
+    {
+        return $this->id;
+    }
+    public function setKind($kind)
+    {
+        $this->kind = $kind;
+    }
+    public function getKind()
+    {
+        return $this->kind;
+    }
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+    public function getName()
+    {
+        return $this->name;
+    }
+    public function setStatus($status)
+    {
+        $this->status = $status;
+    }
+    public function getStatus()
+    {
+        return $this->status;
+    }
+    public function setType($type)
+    {
+        $this->type = $type;
+    }
+    public function getType()
+    {
+        return $this->type;
+    }
 }
 
 class Google_Service_YouTubeAnalytics_BatchReportDefinitionList extends Google_Collection
 {
-  protected $collection_key = 'items';
-  protected $internal_gapi_mappings = array(
+    protected $collection_key = 'items';
+    protected $internal_gapi_mappings = array(
   );
-  protected $itemsType = 'Google_Service_YouTubeAnalytics_BatchReportDefinition';
-  protected $itemsDataType = 'array';
-  public $kind;
+    protected $itemsType = 'Google_Service_YouTubeAnalytics_BatchReportDefinition';
+    protected $itemsDataType = 'array';
+    public $kind;
 
 
-  public function setItems($items)
-  {
-    $this->items = $items;
-  }
-  public function getItems()
-  {
-    return $this->items;
-  }
-  public function setKind($kind)
-  {
-    $this->kind = $kind;
-  }
-  public function getKind()
-  {
-    return $this->kind;
-  }
+    public function setItems($items)
+    {
+        $this->items = $items;
+    }
+    public function getItems()
+    {
+        return $this->items;
+    }
+    public function setKind($kind)
+    {
+        $this->kind = $kind;
+    }
+    public function getKind()
+    {
+        return $this->kind;
+    }
 }
 
 class Google_Service_YouTubeAnalytics_BatchReportList extends Google_Collection
 {
-  protected $collection_key = 'items';
-  protected $internal_gapi_mappings = array(
+    protected $collection_key = 'items';
+    protected $internal_gapi_mappings = array(
   );
-  protected $itemsType = 'Google_Service_YouTubeAnalytics_BatchReport';
-  protected $itemsDataType = 'array';
-  public $kind;
+    protected $itemsType = 'Google_Service_YouTubeAnalytics_BatchReport';
+    protected $itemsDataType = 'array';
+    public $kind;
 
 
-  public function setItems($items)
-  {
-    $this->items = $items;
-  }
-  public function getItems()
-  {
-    return $this->items;
-  }
-  public function setKind($kind)
-  {
-    $this->kind = $kind;
-  }
-  public function getKind()
-  {
-    return $this->kind;
-  }
+    public function setItems($items)
+    {
+        $this->items = $items;
+    }
+    public function getItems()
+    {
+        return $this->items;
+    }
+    public function setKind($kind)
+    {
+        $this->kind = $kind;
+    }
+    public function getKind()
+    {
+        return $this->kind;
+    }
 }
 
 class Google_Service_YouTubeAnalytics_BatchReportOutputs extends Google_Model
 {
-  protected $internal_gapi_mappings = array(
+    protected $internal_gapi_mappings = array(
   );
-  public $downloadUrl;
-  public $format;
-  public $type;
+    public $downloadUrl;
+    public $format;
+    public $type;
 
 
-  public function setDownloadUrl($downloadUrl)
-  {
-    $this->downloadUrl = $downloadUrl;
-  }
-  public function getDownloadUrl()
-  {
-    return $this->downloadUrl;
-  }
-  public function setFormat($format)
-  {
-    $this->format = $format;
-  }
-  public function getFormat()
-  {
-    return $this->format;
-  }
-  public function setType($type)
-  {
-    $this->type = $type;
-  }
-  public function getType()
-  {
-    return $this->type;
-  }
+    public function setDownloadUrl($downloadUrl)
+    {
+        $this->downloadUrl = $downloadUrl;
+    }
+    public function getDownloadUrl()
+    {
+        return $this->downloadUrl;
+    }
+    public function setFormat($format)
+    {
+        $this->format = $format;
+    }
+    public function getFormat()
+    {
+        return $this->format;
+    }
+    public function setType($type)
+    {
+        $this->type = $type;
+    }
+    public function getType()
+    {
+        return $this->type;
+    }
 }
 
 class Google_Service_YouTubeAnalytics_BatchReportTimeSpan extends Google_Model
 {
-  protected $internal_gapi_mappings = array(
+    protected $internal_gapi_mappings = array(
   );
-  public $endTime;
-  public $startTime;
+    public $endTime;
+    public $startTime;
 
 
-  public function setEndTime($endTime)
-  {
-    $this->endTime = $endTime;
-  }
-  public function getEndTime()
-  {
-    return $this->endTime;
-  }
-  public function setStartTime($startTime)
-  {
-    $this->startTime = $startTime;
-  }
-  public function getStartTime()
-  {
-    return $this->startTime;
-  }
+    public function setEndTime($endTime)
+    {
+        $this->endTime = $endTime;
+    }
+    public function getEndTime()
+    {
+        return $this->endTime;
+    }
+    public function setStartTime($startTime)
+    {
+        $this->startTime = $startTime;
+    }
+    public function getStartTime()
+    {
+        return $this->startTime;
+    }
 }
 
 class Google_Service_YouTubeAnalytics_ResultTable extends Google_Collection
 {
-  protected $collection_key = 'rows';
-  protected $internal_gapi_mappings = array(
+    protected $collection_key = 'rows';
+    protected $internal_gapi_mappings = array(
   );
-  protected $columnHeadersType = 'Google_Service_YouTubeAnalytics_ResultTableColumnHeaders';
-  protected $columnHeadersDataType = 'array';
-  public $kind;
-  public $rows;
+    protected $columnHeadersType = 'Google_Service_YouTubeAnalytics_ResultTableColumnHeaders';
+    protected $columnHeadersDataType = 'array';
+    public $kind;
+    public $rows;
 
 
-  public function setColumnHeaders($columnHeaders)
-  {
-    $this->columnHeaders = $columnHeaders;
-  }
-  public function getColumnHeaders()
-  {
-    return $this->columnHeaders;
-  }
-  public function setKind($kind)
-  {
-    $this->kind = $kind;
-  }
-  public function getKind()
-  {
-    return $this->kind;
-  }
-  public function setRows($rows)
-  {
-    $this->rows = $rows;
-  }
-  public function getRows()
-  {
-    return $this->rows;
-  }
+    public function setColumnHeaders($columnHeaders)
+    {
+        $this->columnHeaders = $columnHeaders;
+    }
+    public function getColumnHeaders()
+    {
+        return $this->columnHeaders;
+    }
+    public function setKind($kind)
+    {
+        $this->kind = $kind;
+    }
+    public function getKind()
+    {
+        return $this->kind;
+    }
+    public function setRows($rows)
+    {
+        $this->rows = $rows;
+    }
+    public function getRows()
+    {
+        return $this->rows;
+    }
 }
 
 class Google_Service_YouTubeAnalytics_ResultTableColumnHeaders extends Google_Model
 {
-  protected $internal_gapi_mappings = array(
+    protected $internal_gapi_mappings = array(
   );
-  public $columnType;
-  public $dataType;
-  public $name;
+    public $columnType;
+    public $dataType;
+    public $name;
 
 
-  public function setColumnType($columnType)
-  {
-    $this->columnType = $columnType;
-  }
-  public function getColumnType()
-  {
-    return $this->columnType;
-  }
-  public function setDataType($dataType)
-  {
-    $this->dataType = $dataType;
-  }
-  public function getDataType()
-  {
-    return $this->dataType;
-  }
-  public function setName($name)
-  {
-    $this->name = $name;
-  }
-  public function getName()
-  {
-    return $this->name;
-  }
+    public function setColumnType($columnType)
+    {
+        $this->columnType = $columnType;
+    }
+    public function getColumnType()
+    {
+        return $this->columnType;
+    }
+    public function setDataType($dataType)
+    {
+        $this->dataType = $dataType;
+    }
+    public function getDataType()
+    {
+        return $this->dataType;
+    }
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+    public function getName()
+    {
+        return $this->name;
+    }
 }
