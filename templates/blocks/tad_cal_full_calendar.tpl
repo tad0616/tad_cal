@@ -1,6 +1,7 @@
 
 <{$block.jquery_path}>
 
+<<<<<<< HEAD
 <link rel="stylesheet" type="text/css" href="<{$xoops_url}>/modules/tad_cal/module.css">
 
 <link rel="stylesheet" type="text/css" href="<{$xoops_url}>/modules/tad_cal/class/jquery-impromptu.css">
@@ -16,6 +17,17 @@
 <link rel="stylesheet" type="text/css" href="class/qtip/jquery.qtip.min.css" />
 <script src="<{$xoops_url}>/modules/tad_cal/class/qtip/jquery.qtip.min.js" type="text/javascript"></script>
 <script type='text/javascript' src='<{$xoops_url}>/modules/tad_cal/class/fullcalendar/gcal.js'></script>
+=======
+<link rel="stylesheet" type="text/css" href="<{$xoops_url}>/modules/tad_cal/module.css" />
+<link rel="stylesheet" type="text/css" href="<{$xoops_url}>/modules/tad_cal/class/fullcalendar/redmond/theme.css" />
+<link rel="stylesheet" type="text/css" href="<{$xoops_url}>/modules/tad_cal/class/fullcalendar/fullcalendar.3.4.0.min.css">
+<script src="<{$xoops_url}>/modules/tad_cal/class/moment/moment-with-locales.2.18.1.min.js" type="text/javascript"></script>
+<script src="<{$xoops_url}>/modules/tad_cal/class/jquery-impromptu.6.2.3.min.js" type="text/javascript"></script>
+<script src="<{$xoops_url}>/modules/tad_cal/class/fullcalendar/fullcalendar.3.4.0.min.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="<{$xoops_url}>/modules/tad_cal/class/qtip/jquery.qtip.3.0.3.min.css" />
+<script src="<{$xoops_url}>/modules/tad_cal/class/qtip/jquery.qtip.3.0.3.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/My97DatePicker/WdatePicker.js"></script>
+>>>>>>> b8a82cc8ac6df837a8d26094054e90115ffd5e6c
 
 <style type="text/css">
 <{$block.style_css}>
@@ -25,13 +37,22 @@
 $(document).ready(function(){
 
   var calendar = $("#full_calendar_block").fullCalendar({
+<<<<<<< HEAD
 
     firstDay:<{$block.firstDay}>,
+=======
+    theme: true,
+    locale: navigator.language,
+    firstDay:<{$block.firstDay}>,
+    locale: window.navigator.userLanguage || window.navigator.language,
+    buttonText:{today:"<{$smarty.const._MB_TADCAL_TODAY}>"},
+>>>>>>> b8a82cc8ac6df837a8d26094054e90115ffd5e6c
     header: {
       left: 'prev,today,next',
       center: 'title',
       right: 'month,agendaWeek,agendaDay,listWeek'
     },
+<<<<<<< HEAD
     navLinks: true, // can click day/week names to navigate views
     editable: true,
     droppable: true,
@@ -54,6 +75,20 @@ $(document).ready(function(){
             window.open(event.url);
             return false;
         }
+=======
+    <{$block.eventAdd}>
+    <{$block.eventDrop}>
+    events: function(start, end, timezone ,callback) {
+      $.getJSON("<{$xoops_url}>/modules/tad_cal/get_event.php",
+      {
+        start: start.format(),
+        end: end.format(),
+        cate_sn: <{$block.cate_sn}>
+      },
+      function(result) {
+        callback(result);
+      });
+>>>>>>> b8a82cc8ac6df837a8d26094054e90115ffd5e6c
     },
 
     eventDrop: function(event, delta, revertFunc) {

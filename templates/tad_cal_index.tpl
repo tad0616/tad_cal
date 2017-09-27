@@ -1,6 +1,7 @@
 <{$toolbar}>
 
 
+<<<<<<< HEAD
 <link rel="stylesheet" type="text/css" href="module.css" >
 <style type="text/css">
 <{$style_css}>
@@ -17,6 +18,19 @@
 
 <link rel="stylesheet" type="text/css" href="class/qtip/jquery.qtip.min.css" />
 <script src="class/qtip/jquery.qtip.min.js" type="text/javascript"></script>
+=======
+<link rel="stylesheet" type="text/css" href="module.css" />
+<link rel="stylesheet" type="text/css" href="class/fullcalendar/redmond/theme.css" />
+<link rel="stylesheet" type="text/css" href="class/fullcalendar/fullcalendar.3.4.0.min.css">
+<style type="text/css">
+<{$style_css}>
+</style>
+<script src="class/moment/moment-with-locales.2.18.1.min.js" type="text/javascript"></script>
+<script src="class/jquery-impromptu.6.2.3.min.js" type="text/javascript"></script>
+<script src="class/fullcalendar/fullcalendar.3.4.0.min.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="class/qtip/jquery.qtip.3.0.3.min.css" />
+<script src="class/qtip/jquery.qtip.3.0.3.min.js" type="text/javascript"></script>
+>>>>>>> b8a82cc8ac6df837a8d26094054e90115ffd5e6c
 <script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/My97DatePicker/WdatePicker.js"></script>
 
 <script type='text/javascript' src='class/fullcalendar/gcal.js'></script>
@@ -36,6 +50,7 @@ $(document).ready(function(){
   var calendar = $("#calendar").fullCalendar({
 
     firstDay:<{$firstDay}>,
+<<<<<<< HEAD
     header: {
       left: 'prev,today,next',
       center: 'title',
@@ -102,6 +117,26 @@ $(document).ready(function(){
             alert('Error processing your request: '+e.responseText);
           }
           });
+=======
+    locale: window.navigator.userLanguage || window.navigator.language,
+    buttonText:{today:"<{$smarty.const._MD_TADCAL_TODAY}>"},
+    header: {
+      left: "prev,today,next",
+      right: "title"
+    },
+    <{$eventAdd}>
+    <{$eventDrop}>
+    events: function(start, end, timezone, callback) {
+      $.getJSON("get_event.php",
+      {
+        start: start.format(),
+        end: end.format(),
+        cate_sn: <{$cate_sn}>
+      },
+      function(result) {
+        callback(result);
+      });
+>>>>>>> b8a82cc8ac6df837a8d26094054e90115ffd5e6c
     },
     eventDragStop: function (event, jsEvent, ui, view) {
        if (isElemOverDiv()) {
