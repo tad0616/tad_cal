@@ -18,7 +18,7 @@ function toServerTime($time)
 }
 
 //tad_cal_event編輯表單 $mode=ajax
-function tad_cal_event_form($sn = "", $mode = '', $stamp = "", $cate_sn = "")
+function tad_cal_event_form($sn = "", $mode = '', $stamp = "")
 {
     global $xoopsDB, $xoopsUser, $xoopsTpl;
     include_once XOOPS_ROOT_PATH . "/modules/tad_cal/class/ical.php";
@@ -75,7 +75,7 @@ function tad_cal_event_form($sn = "", $mode = '', $stamp = "", $cate_sn = "")
     $uid      = (!isset($DBV['uid'])) ? $user_uid : $DBV['uid'];
 
     //設定「cate_sn」欄位預設值
-    $cate_sn = (!isset($DBV['cate_sn'])) ? $cate_sn : $DBV['cate_sn'];
+    $cate_sn = (!isset($DBV['cate_sn'])) ? "" : $DBV['cate_sn'];
 
     //設定「allday」欄位預設值
     $allday = (!isset($DBV['allday'])) ? "1" : $DBV['allday'];
@@ -137,6 +137,7 @@ function tad_cal_event_form($sn = "", $mode = '', $stamp = "", $cate_sn = "")
         $rrule_arr['RRULE']['INTERVAL']   = '';
         $rrule_arr['RRULE']['BYDAY']      = '';
         $rrule_arr['RRULE']['UNTIL']      = '';
+
     }
 
     if ($repeat) {
@@ -148,7 +149,7 @@ function tad_cal_event_form($sn = "", $mode = '', $stamp = "", $cate_sn = "")
     //重複事件用的
     $INTERVAL_OPT = "";
     for ($i = 1; $i <= 30; $i++) {
-        $selected     = (isset($rrule_arr['RRULE']['INTERVAL']) and $i == $rrule_arr['RRULE']['INTERVAL']) ? "selected" : "";
+        $selected = (isset($rrule_arr['RRULE']['INTERVAL']) and $i == $rrule_arr['RRULE']['INTERVAL']) ? "selected" : "";
         $INTERVAL_OPT .= "<option value='$i' $selected>$i</option>";
     }
 
@@ -157,7 +158,7 @@ function tad_cal_event_form($sn = "", $mode = '', $stamp = "", $cate_sn = "")
     $warr            = (isset($rrule_arr['RRULE']['FREQ']) and $rrule_arr['RRULE']['FREQ'] == 'WEEKLY') ? explode(",", $rrule_arr['RRULE']['BYDAY']) : array(strtoupper(substr(date("D", strtotime($start)), 0, 2)));
 
     foreach ($weekday as $en => $ch) {
-        $checked         = (in_array($en, $warr)) ? "checked" : "";
+        $checked = (in_array($en, $warr)) ? "checked" : "";
         $week_repeat_col .= "
         <label class='checkbox-inline'>
           <input type='checkbox' name='BYDAY[]' value='{$en}' id='{$en}' $checked> {$ch}
@@ -216,6 +217,7 @@ function tad_cal_event_form($sn = "", $mode = '', $stamp = "", $cate_sn = "")
         if (strtotime($end_allday) < strtotime($start_allday)) {
             $end_allday = $start_allday;
         }
+
     } else {
         $end_allday = substr($end, 0, 10);
     }
@@ -246,14 +248,15 @@ function tad_cal_event_form($sn = "", $mode = '', $stamp = "", $cate_sn = "")
     $xoopsTpl->assign("cate_col", $cate_col);
     $xoopsTpl->assign("op", 'tad_cal_event_form');
     $xoopsTpl->assign("sn", $sn);
+
 }
 
 //自動取得tad_cal_event的最新排序
 function tad_cal_event_max_sort()
 {
     global $xoopsDB;
-    $sql = "SELECT max(`sequence`) FROM " . $xoopsDB->prefix("tad_cal_event");
-    $result = $xoopsDB->query($sql) or web_error($sql);
+    $sql        = "select max(`sequence`) from " . $xoopsDB->prefix("tad_cal_event");
+    $result     = $xoopsDB->query($sql) or web_error($sql);
     list($sort) = $xoopsDB->fetchRow($result);
     return ++$sort;
 }
@@ -268,7 +271,7 @@ function insert_tad_cal_event()
     //取得使用者編號
     $uid = ($xoopsUser) ? $xoopsUser->getVar('uid') : "";
 
-    $myts                    = MyTextSanitizer::getInstance();
+    $myts                    = &MyTextSanitizer::getInstance();
     $_POST['title']          = $myts->addSlashes($_POST['title']);
     $_POST['location']       = $myts->addSlashes($_POST['location']);
     $_POST['details']        = $myts->addSlashes($_POST['details']);
@@ -352,7 +355,7 @@ function insert_tad_cal_event()
         }
 
         $recurrence = substr("{$DTSTART}RRULE:FREQ={$_POST['FREQ']};{$COUNT}{$UNTIL}{$INTERVAL}{$BYDAY}{$BYMONTHDAY}", 0, -1);
-        $start      = $end = "0000-00-00 00:00:00";
+        $start      = $end      = "0000-00-00 00:00:00";
     }
 
     $last_update = date("Y-m-d H:i:s");
@@ -380,11 +383,11 @@ function insert_tad_cal_event()
 function update_tad_cal_event($sn = "")
 {
     global $xoopsDB, $xoopsUser;
-    //die(var_export($_POST));
+//die(var_export($_POST));
     //取得使用者編號
     $uid = ($xoopsUser) ? $xoopsUser->getVar('uid') : "";
 
-    $myts              = MyTextSanitizer::getInstance();
+    $myts              = &MyTextSanitizer::getInstance();
     $_POST['title']    = $myts->addSlashes($_POST['title']);
     $_POST['location'] = $myts->addSlashes($_POST['location']);
     $_POST['details']  = $myts->addSlashes($_POST['details']);
@@ -420,7 +423,7 @@ function update_tad_cal_event($sn = "")
         $start = date("Y-m-d H:i:s", toServerTime(strtotime($start)));
         $end   = date("Y-m-d H:i:s", toServerTime(strtotime($end)));
     }
-    //die("{$start}:00={$DTSTART}=".date("c",strtotime("{$start}:00")));
+//die("{$start}:00={$DTSTART}=".date("c",strtotime("{$start}:00")));
     $recurrence = "";
     if ($_POST['repeat'] == '1') {
         //FREQ=(YEARLY|MONTHLY|WEEKLY|DAILY) UNTIL= COUNT= INTERVAL= BYDAY= BYMONTHDAY= BYSETPOS= WKST= BYYEARDAY= BYWEEKNO= BYMONTH=
@@ -458,7 +461,7 @@ function update_tad_cal_event($sn = "")
         }
 
         $recurrence = substr("{$DTSTART}RRULE:FREQ={$_POST['FREQ']};{$COUNT}{$UNTIL}{$INTERVAL}{$BYDAY}{$BYMONTHDAY}", 0, -1);
-        $start      = $end = "0000-00-00 00:00:00";
+        $start      = $end      = "0000-00-00 00:00:00";
     }
 
     $last_update = date("Y-m-d H:i:s");
@@ -567,9 +570,9 @@ function get_tad_cal_event($sn = "")
         return;
     }
 
-    $sql = "select * from " . $xoopsDB->prefix("tad_cal_event") . " where sn='$sn'";
+    $sql    = "select * from " . $xoopsDB->prefix("tad_cal_event") . " where sn='$sn'";
     $result = $xoopsDB->query($sql) or web_error($sql);
-    $data = $xoopsDB->fetchArray($result);
+    $data   = $xoopsDB->fetchArray($result);
     return $data;
 }
 
@@ -611,7 +614,7 @@ function show_one_tad_cal_event($sn = "", $stamp = "")
         $sql = "select * from " . $xoopsDB->prefix("tad_cal_event") . " where sn='{$sn}'";
     }
     $result = $xoopsDB->query($sql) or web_error($sql);
-    $all = $xoopsDB->fetchArray($result);
+    $all    = $xoopsDB->fetchArray($result);
 
     //以下會產生這些變數： $sn , $title , $start , $end , $recurrence , $location , $kind , $details , $etag , $id , $sequence , $uid , $cate_sn
     foreach ($all as $k => $v) {
@@ -681,7 +684,7 @@ function show_simple_event($sn = "", $stamp = "")
     //die($sql);
 
     $result = $xoopsDB->queryF($sql) or web_error($sql);
-    $all = $xoopsDB->fetchArray($result);
+    $all    = $xoopsDB->fetchArray($result);
 
     //以下會產生這些變數： $sn , $title , $start , $end , $recurrence , $location , $kind , $details , $etag , $id , $sequence , $uid , $cate_sn
     foreach ($all as $k => $v) {
@@ -761,8 +764,8 @@ function show_date($start = null, $end = null, $allday = '0', $mark = '<br>')
 
     if ($allday) {
         $endTime -= 86400;
-        $start   = date("Y-m-d", $startTime);
-        $end     = date("Y-m-d", $endTime);
+        $start = date("Y-m-d", $startTime);
+        $end   = date("Y-m-d", $endTime);
     } else {
         $start = date("Y-m-d H:i", $startTime);
         $end   = date("Y-m-d H:i", $endTime);
@@ -783,7 +786,7 @@ function ajax_update_date($sn = '')
     $delta = $_POST['delta'];
 
     //抓出事件原有資料
-    $sql = "select * from " . $xoopsDB->prefix("tad_cal_event") . " where sn='$sn'";
+    $sql    = "select * from " . $xoopsDB->prefix("tad_cal_event") . " where sn='$sn'";
     $result = $xoopsDB->query($sql) or web_error($sql);
     if (!$result) {
         sprintf(_MD_TADCAL_MOVE_ERROR, $xoopsDB->error());
@@ -834,7 +837,7 @@ function ajax_update_date($sn = '')
     if (!empty($recurrence)) {
         $recurrence_arr = explode("\n", $recurrence);
         $recurrence     = "{$DTSTART}{$recurrence_arr[2]}";
-        $start          = $end = '0000-00-00 00:00:00';
+        $start          = $end          = '0000-00-00 00:00:00';
     }
 
     $sql = "update " . $xoopsDB->prefix("tad_cal_event") . " set
@@ -908,7 +911,7 @@ switch ($op) {
     //預設動作
     default:
         if (empty($sn)) {
-            tad_cal_event_form(null, null, null, $cate_sn);
+            tad_cal_event_form();
         } else {
             show_one_tad_cal_event($sn, $stamp);
         }

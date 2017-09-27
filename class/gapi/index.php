@@ -8,8 +8,8 @@
 //error_reporting(E_ALL);
 //ini_set("display_errors", 1);
 
-//INCLUDE THE GOOGLE API PHP CLIENT LIBRARY FOUND HERE https://github.com/google/google-api-php-client. DOWNLOAD IT AND PUT IT ON YOUR WEBSERVER IN THE ROOT FOLDER.
-include('autoload.php');
+//INCLUDE THE GOOGLE API PHP CLIENT LIBRARY FOUND HERE https://github.com/google/google-api-php-client. DOWNLOAD IT AND PUT IT ON YOUR WEBSERVER IN THE ROOT FOLDER. 
+include('autoload.php'); 
 
 //SET THE DEFAULT TIMEZONE SO PHP DOESN'T COMPLAIN. SET TO YOUR LOCAL TIME ZONE.
 date_default_timezone_set('Asia/Taipei');
@@ -31,22 +31,23 @@ $params = array(
 $events = $cal->events->listEvents($calendarId);
 
 echo '<ol>';
-while (true) {
-    foreach ($events->getItems() as $event) {
-        echo '<li>title: '.$event->summary;
-        echo '<ul>';
-        echo '<li>start: '.$event->start->dateTime.'</li>';
-        echo '<li>end: '.$event->end->dateTime.'</li>';
+while(true) {
+  foreach ($events->getItems() as $event) {
+
+    echo '<li>title: '.$event->summary;
+      echo '<ul>';    
+        echo '<li>start: '.$event->start->dateTime.'</li>';    
+        echo '<li>end: '.$event->end->dateTime.'</li>';  
         echo '<li>recurrence: ';
-        if (is_array($event->recurrence)) {
-            echo '<ul>';
-            foreach ($event->recurrence as $key => $value) {
-                echo "<li>{$key} => {$value}</li>";
-            }
-            echo '</ul>';
+        if(is_array($event->recurrence)){
+          echo '<ul>';
+          foreach ($event->recurrence as $key => $value) {
+            echo "<li>{$key} => {$value}</li>";
+          }
+          echo '</ul>';
         }
-        echo '</li>';
-        echo '<li>recurringEventId: '.$event->recurringEventId.'</li>';
+        echo '</li>';  
+        echo '<li>recurringEventId: '.$event->recurringEventId.'</li>';  
 
         echo '<li>location: '.$event->location.'</li>';
         echo '<li>kind: '.$event->kind.'</li>';
@@ -54,35 +55,36 @@ while (true) {
         echo '<li>etag: '.$event->etag.'</li>';
         echo '<li>id: '.$event->id.'</li>';
         echo '<li>sequence: '.$event->sequence.'</li>';
-        echo "</ul>";
-        echo "</li>";
-    }
-    $pageToken = $events->getNextPageToken();
-    if ($pageToken) {
-        $optParams = array('pageToken' => $pageToken);
-        $events = $cal->events->listEvents($calendarId, $optParams);
-    } else {
-        break;
-    }
+      echo "</ul>";
+    echo "</li>";
+  }
+  $pageToken = $events->getNextPageToken();
+  if ($pageToken) {
+    $optParams = array('pageToken' => $pageToken);
+    $events = $cal->events->listEvents($calendarId, $optParams);
+
+  } else {
+    break;
+  }
 }
 
 echo '</ul>';
 
 /*
-foreach ($events->getItems() as $event) {
-
+foreach ($events->getItems() as $event) { 
+     
     $eventDateStr = $event->start->dateTime;
 
     if(empty($eventDateStr)){
       $eventDateStr = $event->start->date;
     }
-
+    
     $temp_timezone = $event->start->timeZone;
-
+ 
     if (!empty($temp_timezone)) {
       $timezone = new DateTimeZone($temp_timezone); //GET THE TIME ZONE
-    } else {
-      $timezone = new DateTimeZone("Asia/Taipei");
+    } else { 
+      $timezone = new DateTimeZone("Asia/Taipei"); 
     }
 
     $eventdate = new DateTime($eventDateStr,$timezone);
@@ -95,11 +97,11 @@ foreach ($events->getItems() as $event) {
     //echo "{$newyear}-{$newmonth}-{$newday}:";
 
     //echo '<li>alternateLink: '.$event->htmlLink.'</li>';
-    echo '<li>title: '.$event->summary.'</li>';
-    echo '<li>start: '.$event->start->datetime.'</li>';
-    echo '<li>end: '.$event->end->datetime.'</li>';
-    echo '<li>recurrence: '.$event->recurrence.'</li>';
-    echo '<li>recurringEventId: '.$event->recurringEventId.'</li>';
+    echo '<li>title: '.$event->summary.'</li>';    
+    echo '<li>start: '.$event->start->datetime.'</li>';    
+    echo '<li>end: '.$event->end->datetime.'</li>';  
+    echo '<li>recurrence: '.$event->recurrence.'</li>';  
+    echo '<li>recurringEventId: '.$event->recurringEventId.'</li>';  
 
     echo '<li>location: '.$event->location.'</li>';
     echo '<li>kind: '.$event->kind.'</li>';

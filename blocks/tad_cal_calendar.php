@@ -10,10 +10,10 @@ function tad_cal_calendar($options)
     include_once XOOPS_ROOT_PATH . "/modules/tadtools/tad_function.php";
 
     $modhandler        = xoops_gethandler('module');
-    $xoopsModule       = $modhandler->getByDirname("tad_cal");
+    $xoopsModule       = &$modhandler->getByDirname("tad_cal");
     $config_handler    = xoops_gethandler('config');
-    $module_id         = xoopsModule->getVar('mid');
-    $xoopsModuleConfig = $config_handler->getConfigsByCat(0, $module_id);
+    $module_id         = $xoopsModule->getVar('mid');
+    $xoopsModuleConfig = &$config_handler->getConfigsByCat(0, $module_id);
 
     $jquery_path = get_jquery(true); //一般只要此行即可
 

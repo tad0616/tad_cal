@@ -24,133 +24,133 @@ require_once realpath(dirname(__FILE__) . '/../../../autoload.php');
  */
 class Google_Logger_File extends Google_Logger_Abstract
 {
-    /**
-     * @var string|resource $file Where logs are written
-     */
-    private $file;
-    /**
-     * @var integer $mode The mode to use if the log file needs to be created
-     */
-    private $mode = 0640;
-    /**
-     * @var boolean $lock If a lock should be attempted before writing to the log
-     */
-    private $lock = false;
+  /**
+   * @var string|resource $file Where logs are written
+   */
+  private $file;
+  /**
+   * @var integer $mode The mode to use if the log file needs to be created
+   */
+  private $mode = 0640;
+  /**
+   * @var boolean $lock If a lock should be attempted before writing to the log
+   */
+  private $lock = false;
 
-    /**
-     * @var integer $trappedErrorNumber Trapped error number
-     */
-    private $trappedErrorNumber;
-    /**
-     * @var string $trappedErrorString Trapped error string
-     */
-    private $trappedErrorString;
+  /**
+   * @var integer $trappedErrorNumber Trapped error number
+   */
+  private $trappedErrorNumber;
+  /**
+   * @var string $trappedErrorString Trapped error string
+   */
+  private $trappedErrorString;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function __construct(Google_Client $client)
-    {
-        parent::__construct($client);
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct(Google_Client $client)
+  {
+    parent::__construct($client);
 
-        $file = $client->getClassConfig('Google_Logger_File', 'file');
-        if (!is_string($file) && !is_resource($file)) {
-            throw new Google_Logger_Exception(
+    $file = $client->getClassConfig('Google_Logger_File', 'file');
+    if (!is_string($file) && !is_resource($file)) {
+      throw new Google_Logger_Exception(
           'File logger requires a filename or a valid file pointer'
       );
-        }
-
-        $mode = $client->getClassConfig('Google_Logger_File', 'mode');
-        if (!$mode) {
-            $this->mode = $mode;
-        }
-
-        $this->lock = (bool) $client->getClassConfig('Google_Logger_File', 'lock');
-        $this->file = $file;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function write($message)
-    {
-        if (is_string($this->file)) {
-            $this->open();
-        } elseif (!is_resource($this->file)) {
-            throw new Google_Logger_Exception('File pointer is no longer available');
-        }
-
-        if ($this->lock) {
-            flock($this->file, LOCK_EX);
-        }
-
-        fwrite($this->file, (string) $message);
-
-        if ($this->lock) {
-            flock($this->file, LOCK_UN);
-        }
+    $mode = $client->getClassConfig('Google_Logger_File', 'mode');
+    if (!$mode) {
+      $this->mode = $mode;
     }
 
-    /**
-     * Opens the log for writing.
-     *
-     * @return resource
-     */
-    private function open()
-    {
-        // Used for trapping `fopen()` errors.
-        $this->trappedErrorNumber = null;
-        $this->trappedErrorString = null;
+    $this->lock = (bool) $client->getClassConfig('Google_Logger_File', 'lock');
+    $this->file = $file;
+  }
 
-        $old = set_error_handler(array($this, 'trapError'));
+  /**
+   * {@inheritdoc}
+   */
+  protected function write($message)
+  {
+    if (is_string($this->file)) {
+      $this->open();
+    } elseif (!is_resource($this->file)) {
+      throw new Google_Logger_Exception('File pointer is no longer available');
+    }
 
-        $needsChmod = !file_exists($this->file);
-        $fh = fopen($this->file, 'a');
+    if ($this->lock) {
+      flock($this->file, LOCK_EX);
+    }
 
-        restore_error_handler();
+    fwrite($this->file, (string) $message);
 
-        // Handles trapped `fopen()` errors.
-        if ($this->trappedErrorNumber) {
-            throw new Google_Logger_Exception(
+    if ($this->lock) {
+      flock($this->file, LOCK_UN);
+    }
+  }
+
+  /**
+   * Opens the log for writing.
+   *
+   * @return resource
+   */
+  private function open()
+  {
+    // Used for trapping `fopen()` errors.
+    $this->trappedErrorNumber = null;
+    $this->trappedErrorString = null;
+
+    $old = set_error_handler(array($this, 'trapError'));
+
+    $needsChmod = !file_exists($this->file);
+    $fh = fopen($this->file, 'a');
+
+    restore_error_handler();
+
+    // Handles trapped `fopen()` errors.
+    if ($this->trappedErrorNumber) {
+      throw new Google_Logger_Exception(
           sprintf(
               "Logger Error: '%s'",
               $this->trappedErrorString
           ),
           $this->trappedErrorNumber
       );
-        }
-
-        if ($needsChmod) {
-            @chmod($this->file, $this->mode & ~umask());
-        }
-
-        return $this->file = $fh;
     }
 
-    /**
-     * Closes the log stream resource.
-     */
-    private function close()
-    {
-        if (is_resource($this->file)) {
-            fclose($this->file);
-        }
+    if ($needsChmod) {
+      @chmod($this->file, $this->mode & ~umask());
     }
 
-    /**
-     * Traps `fopen()` errors.
-     *
-     * @param integer $errno The error number
-     * @param string $errstr The error string
-     */
-    private function trapError($errno, $errstr)
-    {
-        $this->trappedErrorNumber = $errno;
-        $this->trappedErrorString = $errstr;
-    }
+    return $this->file = $fh;
+  }
 
-    public function __destruct()
-    {
-        $this->close();
+  /**
+   * Closes the log stream resource.
+   */
+  private function close()
+  {
+    if (is_resource($this->file)) {
+      fclose($this->file);
     }
+  }
+
+  /**
+   * Traps `fopen()` errors.
+   *
+   * @param integer $errno The error number
+   * @param string $errstr The error string
+   */
+  private function trapError($errno, $errstr)
+  {
+    $this->trappedErrorNumber = $errno;
+    $this->trappedErrorString = $errstr;
+  }
+
+  public function __destruct()
+  {
+    $this->close();
+  }
 }

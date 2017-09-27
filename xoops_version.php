@@ -87,8 +87,6 @@ $modversion['blocks'][3]['name']        = _MI_TADCAL_BNAME3;
 $modversion['blocks'][3]['description'] = _MI_TADCAL_BDESC3;
 $modversion['blocks'][3]['show_func']   = "tad_cal_full_calendar";
 $modversion['blocks'][3]['template']    = "tad_cal_full_calendar.tpl";
-$modversion['blocks'][3]['edit_func']   = "tad_cal_full_calendar_edit";
-$modversion['blocks'][3]['options']     = "|";
 
 $modversion['config'][0]['name']        = 'eventShowMode';
 $modversion['config'][0]['title']       = '_MI_TADCAL_EVENTSHOWMODE';

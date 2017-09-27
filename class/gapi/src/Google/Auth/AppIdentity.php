@@ -29,91 +29,92 @@ require_once realpath(dirname(__FILE__) . '/../../../autoload.php');
  */
 class Google_Auth_AppIdentity extends Google_Auth_Abstract
 {
-    const CACHE_PREFIX = "Google_Auth_AppIdentity::";
-    private $key = null;
-    private $client;
-    private $token = false;
-    private $tokenScopes = false;
+  const CACHE_PREFIX = "Google_Auth_AppIdentity::";
+  private $key = null;
+  private $client;
+  private $token = false;
+  private $tokenScopes = false;
 
-    public function __construct(Google_Client $client, $config = null)
-    {
-        $this->client = $client;
+  public function __construct(Google_Client $client, $config = null)
+  {
+    $this->client = $client;
+  }
+
+  /**
+   * Retrieve an access token for the scopes supplied.
+   */
+  public function authenticateForScope($scopes)
+  {
+    if ($this->token && $this->tokenScopes == $scopes) {
+      return $this->token;
     }
 
-    /**
-     * Retrieve an access token for the scopes supplied.
-     */
-    public function authenticateForScope($scopes)
-    {
-        if ($this->token && $this->tokenScopes == $scopes) {
-            return $this->token;
-        }
-
-        $cacheKey = self::CACHE_PREFIX;
-        if (is_string($scopes)) {
-            $cacheKey .= $scopes;
-        } elseif (is_array($scopes)) {
-            $cacheKey .= implode(":", $scopes);
-        }
-
-        $this->token = $this->client->getCache()->get($cacheKey);
-        if (!$this->token) {
-            $this->retrieveToken($scopes, $cacheKey);
-        } elseif ($this->token['expiration_time'] < time()) {
-            $this->client->getCache()->delete($cacheKey);
-            $this->retrieveToken($scopes, $cacheKey);
-        }
-
-        $this->tokenScopes = $scopes;
-        return $this->token;
+    $cacheKey = self::CACHE_PREFIX;
+    if (is_string($scopes)) {
+      $cacheKey .= $scopes;
+    } else if (is_array($scopes)) {
+      $cacheKey .= implode(":", $scopes);
     }
 
-    /**
-     * Retrieve a new access token and store it in cache
-     * @param mixed $scopes
-     * @param string $cacheKey
-     */
-    private function retrieveToken($scopes, $cacheKey)
-    {
-        $this->token = AppIdentityService::getAccessToken($scopes);
-        if ($this->token) {
-            $this->client->getCache()->set(
+    $this->token = $this->client->getCache()->get($cacheKey);
+    if (!$this->token) {
+      $this->retrieveToken($scopes, $cacheKey);
+    }
+    else if ($this->token['expiration_time'] < time()) {
+      $this->client->getCache()->delete($cacheKey);
+      $this->retrieveToken($scopes, $cacheKey);
+    }
+
+    $this->tokenScopes = $scopes;
+    return $this->token;
+  }
+
+  /**
+   * Retrieve a new access token and store it in cache
+   * @param mixed $scopes
+   * @param string $cacheKey
+   */
+  private function retrieveToken($scopes, $cacheKey)
+  {
+    $this->token = AppIdentityService::getAccessToken($scopes);
+    if ($this->token) {
+      $this->client->getCache()->set(
         $cacheKey,
         $this->token
         );
-        }
+    }
+  }
+
+  /**
+   * Perform an authenticated / signed apiHttpRequest.
+   * This function takes the apiHttpRequest, calls apiAuth->sign on it
+   * (which can modify the request in what ever way fits the auth mechanism)
+   * and then calls apiCurlIO::makeRequest on the signed request
+   *
+   * @param Google_Http_Request $request
+   * @return Google_Http_Request The resulting HTTP response including the
+   * responseHttpCode, responseHeaders and responseBody.
+   */
+  public function authenticatedRequest(Google_Http_Request $request)
+  {
+    $request = $this->sign($request);
+    return $this->client->getIo()->makeRequest($request);
+  }
+
+  public function sign(Google_Http_Request $request)
+  {
+    if (!$this->token) {
+      // No token, so nothing to do.
+      return $request;
     }
 
-    /**
-     * Perform an authenticated / signed apiHttpRequest.
-     * This function takes the apiHttpRequest, calls apiAuth->sign on it
-     * (which can modify the request in what ever way fits the auth mechanism)
-     * and then calls apiCurlIO::makeRequest on the signed request
-     *
-     * @param Google_Http_Request $request
-     * @return Google_Http_Request The resulting HTTP response including the
-     * responseHttpCode, responseHeaders and responseBody.
-     */
-    public function authenticatedRequest(Google_Http_Request $request)
-    {
-        $request = $this->sign($request);
-        return $this->client->getIo()->makeRequest($request);
-    }
+    $this->client->getLogger()->debug('App Identity authentication');
 
-    public function sign(Google_Http_Request $request)
-    {
-        if (!$this->token) {
-            // No token, so nothing to do.
-            return $request;
-        }
-
-        $this->client->getLogger()->debug('App Identity authentication');
-
-        // Add the OAuth2 header to the request
-        $request->setRequestHeaders(
+    // Add the OAuth2 header to the request
+    $request->setRequestHeaders(
         array('Authorization' => 'Bearer ' . $this->token['access_token'])
     );
 
-        return $request;
-    }
+    return $request;
+  }
 }

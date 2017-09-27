@@ -55,15 +55,9 @@ function fullcalendar($cate_sn = 0)
             );
 
 
-<<<<<<< HEAD
-            // $.post('event.php', {op: 'insert_tad_cal_event', fc_start: start.getTime(), fc_end: end.getTime(), title: f.eventTitle, cate_sn: f.cate_sn, new_cate_title: f.new_cate_title},function(){
-            //   calendar.fullCalendar('refetchEvents');
-            // });
-=======
             $.post('event.php', {op: 'insert_tad_cal_event', start: start.format(), end: end.format(), allday: start.hasTime() ? '0' : '1', fc: '1', title: f.eventTitle, cate_sn: f.cate_sn, new_cate_title: f.new_cate_title},function(){
               calendar.fullCalendar('refetchEvents');
             });
->>>>>>> b8a82cc8ac6df837a8d26094054e90115ffd5e6c
           }
         }
 
@@ -96,14 +90,8 @@ function fullcalendar($cate_sn = 0)
 
             //拖曳搬移功能
             $eventDrop = "editable:true,
-<<<<<<< HEAD
-      eventDrop: function(event,dayDelta,minuteDelta,allDay,revertFunc) {
-        // var startTime=event.start.getTime();
-        $.post('event.php', {op: 'ajax_update_date', dayDelta: dayDelta , minuteDelta: minuteDelta  , sn: event.id },function(data){
-=======
       eventDrop: function(event,delta,revertFunc) {
         $.post('event.php', {op: 'ajax_update_date', delta: delta.asSeconds(), sn: event.id },function(data){
->>>>>>> b8a82cc8ac6df837a8d26094054e90115ffd5e6c
           alert(data);
         });
       },
