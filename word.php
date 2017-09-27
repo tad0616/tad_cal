@@ -3,7 +3,7 @@ include_once "header.php";
 
 $dates = dates_range($_POST['start'], $_POST['end']);
 
-$myts       = &MyTextSanitizer::getInstance();
+$myts       = MyTextSanitizer::getInstance();
 $sitename   = $myts->addSlashes($xoopsConfig['sitename']);
 $page_title = "{$sitename} {$_POST['start']}~{$_POST['end']}" . _MD_TADCAL_SIMPLE_CAL;
 $filename   = str_replace(" ", "", $page_title);

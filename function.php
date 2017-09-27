@@ -12,7 +12,7 @@ function create_cate($title = '', $sort = '', $handle = '', $enable_group = '', 
 {
     global $xoopsDB;
 
-    $myts  = &MyTextSanitizer::getInstance();
+    $myts  = MyTextSanitizer::getInstance();
     $title = $myts->addSlashes($title);
     if (empty($sort)) {
         $sort = tad_cal_cate_max_sort();
@@ -36,8 +36,8 @@ function create_cate($title = '', $sort = '', $handle = '', $enable_group = '', 
 function tad_cal_cate_max_sort()
 {
     global $xoopsDB;
-    $sql        = "select max(`cate_sort`) from " . $xoopsDB->prefix("tad_cal_cate");
-    $result     = $xoopsDB->query($sql) or web_error($sql);
+    $sql = "SELECT max(`cate_sort`) FROM " . $xoopsDB->prefix("tad_cal_cate");
+    $result = $xoopsDB->query($sql) or web_error($sql);
     list($sort) = $xoopsDB->fetchRow($result);
     return ++$sort;
 }
@@ -50,21 +50,21 @@ function get_tad_cal_cate($cate_sn = "")
         return;
     }
 
-    $sql    = "select * from " . $xoopsDB->prefix("tad_cal_cate") . " where cate_sn='$cate_sn'";
+    $sql = "select * from " . $xoopsDB->prefix("tad_cal_cate") . " where cate_sn='$cate_sn'";
     $result = $xoopsDB->query($sql) or web_error($sql);
-    $data   = $xoopsDB->fetchArray($result);
+    $data = $xoopsDB->fetchArray($result);
     return $data;
 }
 
 //自動取得顏色
 function num2color($cate_sn = '')
 {
-    $R      = $G      = $B      = 255;
+    $R      = $G = $B = 255;
     $m      = ceil($cate_sn / 3);
     $n      = $cate_sn % 3;
     $degree = intval($cate_sn) * 10 * $m;
 
-    $cor = array("R", "G", "B");
+    $cor        = array("R", "G", "B");
     ${$cor[$n]} -= $degree;
 
     return "rgb({$R},{$G},{$B})";
@@ -98,7 +98,7 @@ function setTimezoneByOffset($offset)
 function get_tad_cal_cate_all()
 {
     global $xoopsDB;
-    $sql    = "select * from " . $xoopsDB->prefix("tad_cal_cate");
+    $sql = "SELECT * FROM " . $xoopsDB->prefix("tad_cal_cate");
     $result = $xoopsDB->query($sql) or web_error($sql);
     while ($data = $xoopsDB->fetchArray($result)) {
         $cate_sn            = $data['cate_sn'];
@@ -111,7 +111,7 @@ function get_tad_cal_cate_all()
 function get_cal_array()
 {
     global $xoopsDB;
-    $sql    = "select cate_sn,cate_title from " . $xoopsDB->prefix("tad_cal_cate") . "";
+    $sql = "SELECT cate_sn,cate_title FROM " . $xoopsDB->prefix("tad_cal_cate") . "";
     $result = $xoopsDB->queryF($sql) or web_error($sql);
     while (list($cate_sn, $cate_title) = $xoopsDB->fetchRow($result)) {
         $arr[$cate_sn] = $cate_title;
