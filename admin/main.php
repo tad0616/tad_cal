@@ -198,7 +198,7 @@ function list_tad_cal_cate($show_function = 1)
 
     $function_title = ($show_function) ? "<th>" . _TAD_FUNCTION . "</th>" : "";
 
-    $all_content = "";
+    $all_content = array();
     $i           = 0;
     $last        = "";
     while ($all = $xoopsDB->fetchArray($result)) {
@@ -255,7 +255,7 @@ function link_to_google($id = "", $pass = "")
 {
     global $xoopsDB, $xoopsTpl;
 
-    $cate_title_arr = "";
+    $cate_title_arr = array();
     //抓出現有google行事曆
     $sql    = "select `cate_title`,`cate_handle` from " . $xoopsDB->prefix("tad_cal_cate") . " where `cate_handle`!=''";
     $result = $xoopsDB->query($sql) or web_error($sql);
@@ -273,7 +273,7 @@ function link_to_google($id = "", $pass = "")
         redirect_header($_SERVER['PHP_SELF'], 3, _MA_TADCAL_NO_GOOGLE_CAL);
     }
     $i   = 0;
-    $all = "";
+    $all = array();
     foreach ($Calendars as $j => $cal) {
         $Events = $gmail->getEvents($cal['handle'], 10);
         if (empty($Events['data']['items'])) {

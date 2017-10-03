@@ -1,17 +1,13 @@
 <{$toolbar}>
 
-
-<link rel="stylesheet" type="text/css" href="module.css" />
-<link rel="stylesheet" type="text/css" href="class/fullcalendar/redmond/theme.css" />
-<link rel="stylesheet" type="text/css" href="class/fullcalendar/fullcalendar.3.4.0.min.css">
-<style type="text/css">
-<{$style_css}>
-</style>
-<script src="class/moment/moment-with-locales.2.18.1.min.js" type="text/javascript"></script>
-<script src="class/jquery-impromptu.6.2.3.min.js" type="text/javascript"></script>
-<script src="class/fullcalendar/fullcalendar.3.4.0.min.js" type="text/javascript"></script>
-<link rel="stylesheet" type="text/css" href="class/qtip/jquery.qtip.3.0.3.min.css" />
-<script src="class/qtip/jquery.qtip.3.0.3.min.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="<{$xoops_url}>/modules/tad_cal/module.css">
+<link rel="stylesheet" type="text/css" href="<{$xoops_url}>/modules/tadtools/fullcalendar/redmond/theme.css">
+<link rel="stylesheet" type="text/css" href="<{$xoops_url}>/modules/tadtools/fullcalendar/fullcalendar.css">
+<script src="<{$xoops_url}>/modules/tad_cal/class/moment/moment-with-locales.2.18.1.min.js" type="text/javascript"></script>
+<script src="<{$xoops_url}>/modules/tad_cal/class/jquery-impromptu.6.2.3.min.js" type="text/javascript"></script>
+<script src="<{$xoops_url}>/modules/tadtools/fullcalendar/fullcalendar.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="<{$xoops_url}>/modules/tad_cal/class/qtip/jquery.qtip.3.0.3.min.css">
+<script src="<{$xoops_url}>/modules/tad_cal/class/qtip/jquery.qtip.3.0.3.min.js" type="text/javascript"></script>
 <script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/My97DatePicker/WdatePicker.js"></script>
 
 <script type="text/javascript">

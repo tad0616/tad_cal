@@ -1,7 +1,7 @@
 <?php
 
-if (!function_exists("make_style")) {
-    function make_style()
+if (!function_exists("style_mark")) {
+    function style_mark()
     {
         global $xoopsDB;
 
@@ -11,33 +11,16 @@ if (!function_exists("make_style")) {
         $and_ok_cate = empty($all_ok_cate) ? "cate_sn='0'" : "cate_sn in($all_ok_cate)";
 
         //抓出現有google行事曆
-        $sql         = "select `cate_sn`,`cate_title`,`cate_bgcolor`,`cate_color` from " . $xoopsDB->prefix("tad_cal_cate") . " where $and_ok_cate order by `cate_sort`";
-        $result      = $xoopsDB->query($sql) or web_error($sql);
-        $main['css'] = $main['mark'] = "";
+        $sql    = "select `cate_sn`,`cate_title`,`cate_bgcolor`,`cate_color` from " . $xoopsDB->prefix("tad_cal_cate") . " where $and_ok_cate order by `cate_sort`";
+        $result = $xoopsDB->query($sql) or web_error($sql);
+        $mark   = "";
         while (list($cate_sn, $cate_title, $cate_bgcolor, $cate_color) = $xoopsDB->fetchRow($result)) {
-            //$color=num2color($cate_sn);
-            $main['css'] .= "
-                /* {$cate_sn} */
-                .my{$cate_sn},
-                .fc-agenda .my{$cate_sn} .fc-event-time,
-                .my{$cate_sn} a {
-                    background-color: {$cate_bgcolor}; /* background color */
-                    color: {$cate_color};           /* text color */
-                }
 
-                .fc-event{$cate_sn},
-                .fc-agenda .fc-event{$cate_sn} .fc-event-time,
-                .fc-event{$cate_sn} a {
-                  background-color: {$cate_bgcolor}; /* default BACKGROUND color */
-                  color: {$cate_color};           /* default TEXT color */
-                }
-              ";
-
-            $main['mark'] .= "
-            <span class='cate_mark' style='border:1px solid {$cate_bgcolor}; border-left:16px solid {$cate_bgcolor};'><a href='" . XOOPS_URL . "/modules/tad_cal/index.php?cate_sn={$cate_sn}'>$cate_title</a></span>";
+            $mark .= "
+            <a href='" . XOOPS_URL . "/modules/tad_cal/index.php?cate_sn={$cate_sn}'  class='cate_mark' style='background: {$cate_bgcolor}; color: {$cate_color};'>$cate_title</a>";
         }
 
-        return $main;
+        return $mark;
     }
 }
 

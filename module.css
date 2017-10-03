@@ -14,12 +14,12 @@
 
 /*下方行事曆主題標籤*/
 .cate_mark{
+  display:inline-block;
   margin:4px;
   background-color:white;
-  height:16px;
-  padding:3px;
-  font-size:11px;
-  color:#663366;
+  padding:3px 6px;
+  font-size:12px;
+  border-radius: 3px;
 }
 
 .c {

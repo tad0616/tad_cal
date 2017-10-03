@@ -14,18 +14,22 @@ function get_event()
     //取得目前使用者可讀的群組
     $ok_cate_arr  = chk_tad_cal_cate_power('enable_group');
     $all_ok_cate  = implode(",", $ok_cate_arr);
-    $and_ok_cate  = empty($all_ok_cate) ? "and cate_sn='0'" : "and cate_sn in($all_ok_cate)";
+    $and_ok_cate  = empty($all_ok_cate) ? "and a.`cate_sn`='0'" : "and a.`cate_sn` in($all_ok_cate)";
     $and_ok_cate2 = empty($all_ok_cate) ? "and a.sn='0'" : "and b.cate_sn in($all_ok_cate)";
 
-    $even_start = date("Y-m-d H:i", strtotime($_REQUEST['start']));
-    $even_end   = ($_REQUEST['end'] == "0000-00-00 00:00") ? "" : date("Y-m-d H:i", strtotime($_REQUEST['end']));
+    $even_start = $_REQUEST['start'] ? $_REQUEST['start'] : date("Y-m-d H:i:s");
+    $even_end   = $_REQUEST['end'] ? $_REQUEST['end'] : date("Y-m-t H:i:s");
+    // $even_end   = ($_REQUEST['end'] == "0000-00-00 00:00") ? date("Y-m-t H:i:s") : $_REQUEST['end'];
 
-    $and_cate_sn  = empty($cate_sn) ? "" : "and `cate_sn` = '$cate_sn'";
+    $and_cate_sn  = empty($cate_sn) ? "" : "and a.`cate_sn` = '$cate_sn'";
     $and_cate_sn2 = empty($cate_sn) ? "" : "and b.`cate_sn` = '$cate_sn'";
 
     //抓出事件
-    $sql = "select * from " . $xoopsDB->prefix("tad_cal_event") . " where `start` >= '$even_start' and `end` <= '$even_end' $and_ok_cate $and_cate_sn order by `start` , `sequence`";
-    //die($sql);
+    $sql = "select a.*, b.`cate_bgcolor`, b.`cate_color` from " . $xoopsDB->prefix("tad_cal_event") . " as a
+    join " . $xoopsDB->prefix("tad_cal_cate") . " as b on a.`cate_sn`=b.`cate_sn`
+    where a.`start` >= '$even_start' and a.`end` <= '$even_end' $and_ok_cate $and_cate_sn
+    order by a.`start` , a.`sequence`";
+    // die($sql);
 
     $result = $xoopsDB->query($sql) or web_error($sql);
     $i      = 0;
@@ -72,12 +76,19 @@ function get_event()
 
         $myEvents[$i]['allDay']    = $allDay;
         $myEvents[$i]['className'] = "my{$cate_sn}";
+        $myEvents[$i]['color']     = $cate_bgcolor;
+        $myEvents[$i]['textColor'] = $cate_color;
 
         $i++;
     }
 
     //抓出重複事件
-    $sql = "select a.*,b.title,b.cate_sn from " . $xoopsDB->prefix("tad_cal_repeat") . " as a join " . $xoopsDB->prefix("tad_cal_event") . " as b on a.sn=b.sn where a.`start` >= '$even_start' and a.`end` <= '$even_end' $and_ok_cate2 $and_cate_sn2 order by a.`start`";
+    $sql = "select a.*, b.`title`, b.`cate_sn`, c.`cate_bgcolor`, c.`cate_color`
+    from " . $xoopsDB->prefix("tad_cal_repeat") . " as a
+    join " . $xoopsDB->prefix("tad_cal_event") . " as b on a.`sn` = b.`sn`
+    join " . $xoopsDB->prefix("tad_cal_cate") . " as c on b.`cate_sn` = c.`cate_sn`
+    where a.`start` >= '$even_start' and a.`end` <= '$even_end' $and_ok_cate2 $and_cate_sn2
+    order by a.`start`";
 //die($sql);
     $result = $xoopsDB->queryF($sql) or web_error($sql);
 
@@ -104,7 +115,7 @@ function get_event()
         }
 
         // 轉換成使用者的時區
-        if(!$allDay) {
+        if (!$allDay) {
             $start = date('Y-m-d H:i:s', xoops_getUserTimestamp($startTime));
             $end   = date('Y-m-d H:i:s', xoops_getUserTimestamp($endTime));
         }
@@ -126,62 +137,11 @@ function get_event()
 
         $myEvents[$i]['allDay']    = $allDay;
         $myEvents[$i]['className'] = "my{$cate_sn}";
+        $myEvents[$i]['color']     = $cate_bgcolor;
+        $myEvents[$i]['textColor'] = $cate_color;
 
         $i++;
     }
 
-    return json_encode($myEvents);
-}
-
-if (!function_exists('json_encode')) {
-    function json_encode($a = false)
-    {
-        if (is_null($a)) {
-            return 'null';
-        }
-
-        if ($a === false) {
-            return 'false';
-        }
-
-        if ($a === true) {
-            return 'true';
-        }
-
-        if (is_scalar($a)) {
-            if (is_float($a)) {
-                // Always use "." for floats.
-                return floatval(str_replace(",", ".", strval($a)));
-            }
-
-            if (is_string($a)) {
-                static $jsonReplaces = array(array("\\", "/", "\n", "\t", "\r", "\b", "\f", '"'), array('\\\\', '\\/', '\\n', '\\t', '\\r', '\\b', '\\f', '\"'));
-                return '"' . str_replace($jsonReplaces[0], $jsonReplaces[1], $a) . '"';
-            } else {
-                return $a;
-            }
-
-        }
-        $isList = true;
-        for ($i = 0, reset($a); $i < count($a); $i++, next($a)) {
-            if (key($a) !== $i) {
-                $isList = false;
-                break;
-            }
-        }
-        $result = array();
-        if ($isList) {
-            foreach ($a as $v) {
-                $result[] = json_encode($v);
-            }
-
-            return '[' . join(',', $result) . ']';
-        } else {
-            foreach ($a as $k => $v) {
-                $result[] = json_encode($k) . ':' . json_encode($v);
-            }
-
-            return '{' . join(',', $result) . '}';
-        }
-    }
+    return json_encode($myEvents, JSON_UNESCAPED_UNICODE);
 }

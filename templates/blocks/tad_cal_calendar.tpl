@@ -1,10 +1,11 @@
 
 <{$block.jquery_path}>
 
-<link rel="stylesheet" type="text/css" href="<{$xoops_url}>/modules/tad_cal/class/fullcalendar/fullcalendar.3.4.0.min.css">
-<link rel="stylesheet" type="text/css" href="<{$xoops_url}>/modules/tad_cal/class/fullcalendar/redmond/block.css" />
+
+<link rel="stylesheet" type="text/css" href="<{$xoops_url}>/modules/tadtools/fullcalendar/redmond/block.css">
+<link rel="stylesheet" type="text/css" href="<{$xoops_url}>/modules/tadtools/fullcalendar/fullcalendar.css">
 <script src="<{$xoops_url}>/modules/tad_cal/class/moment/moment-with-locales.2.18.1.min.js" type="text/javascript"></script>
-<script src="<{$xoops_url}>/modules/tad_cal/class/fullcalendar/fullcalendar.3.4.0.min.js" type="text/javascript"></script>
+<script src="<{$xoops_url}>/modules/tadtools/fullcalendar/fullcalendar.js" type="text/javascript"></script>
 
 <style type="text/css">
 #block_calendar *{
