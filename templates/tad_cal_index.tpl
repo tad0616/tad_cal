@@ -3,11 +3,15 @@
 <link rel="stylesheet" type="text/css" href="<{$xoops_url}>/modules/tad_cal/module.css">
 <link rel="stylesheet" type="text/css" href="<{$xoops_url}>/modules/tadtools/fullcalendar/redmond/theme.css">
 <link rel="stylesheet" type="text/css" href="<{$xoops_url}>/modules/tadtools/fullcalendar/fullcalendar.css">
-<script src="<{$xoops_url}>/modules/tad_cal/class/moment/moment-with-locales.2.18.1.min.js" type="text/javascript"></script>
+
+<script src="<{$xoops_url}>/modules/tadtools/moment/moment-with-locales.min.js" type="text/javascript"></script>
 <script src="<{$xoops_url}>/modules/tad_cal/class/jquery-impromptu.6.2.3.min.js" type="text/javascript"></script>
 <script src="<{$xoops_url}>/modules/tadtools/fullcalendar/fullcalendar.js" type="text/javascript"></script>
-<link rel="stylesheet" type="text/css" href="<{$xoops_url}>/modules/tad_cal/class/qtip/jquery.qtip.3.0.3.min.css">
-<script src="<{$xoops_url}>/modules/tad_cal/class/qtip/jquery.qtip.3.0.3.min.js" type="text/javascript"></script>
+<script src="<{$xoops_url}>/modules/tadtools/fullcalendar/fullcalendar/gcal.js" type="text/javascript" ></script>
+
+<link rel="stylesheet" type="text/css" href="<{$xoops_url}>/modules/tadtools/jquery.qtip_2/jquery.qtip.min.css">
+<script src="<{$xoops_url}>/modules/tadtools/jquery.qtip_2/jquery.qtip.min.js" type="text/javascript"></script>
+
 <script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/My97DatePicker/WdatePicker.js"></script>
 
 <script type="text/javascript">
@@ -66,7 +70,7 @@ $(document).ready(function(){
            },
            hide: "unfocus",
            style: {
-            classes: "<{$eventTheme}> ui-tooltip-shadow ui-tooltip-rounded"
+            classes: "ui-tooltip-shadow ui-tooltip-rounded"
            }
         })
         return false;

@@ -2,13 +2,13 @@
 //區塊主函式 (大行事曆(tad_cal_full_calendar))
 function tad_cal_full_calendar($options)
 {
-    global $xoopsUser, $xoopsTpl;
+    global $xoopsUser, $xoopsTpl, $xoTheme;
 
     $modhandler        = xoops_gethandler('module');
-    $xoopsModule       = &$modhandler->getByDirname("tad_cal");
+    $xoopsModule       = $modhandler->getByDirname("tad_cal");
     $config_handler    = xoops_gethandler('config');
     $module_id         = $xoopsModule->getVar('mid');
-    $xoopsModuleConfig = &$config_handler->getConfigsByCat(0, $module_id);
+    $xoopsModuleConfig = $config_handler->getConfigsByCat(0, $module_id);
 
     if ($xoopsUser) {
         $isAdmin = $xoopsUser->isAdmin($module_id);
@@ -123,5 +123,12 @@ function tad_cal_full_calendar($options)
     $block['style_mark']    = $style_mark;
     $block['my_counter']    = my_counter();
     $block['firstDay']      = $xoopsModuleConfig['cal_start'];
+
+    $ver = intval(str_replace('.', '', substr(XOOPS_VERSION, 6, 5)));
+    if ($ver >= 259) {
+        $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate-3.0.0.min.js');
+    } else {
+        $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate-1.4.1.min.js');
+    }
     return $block;
 }
