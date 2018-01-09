@@ -10,6 +10,8 @@ function fullcalendar($cate_sn = 0)
     global $xoopsConfig, $xoTheme;
     global $xoopsUser, $xoopsModuleConfig, $isAdmin, $xoopsTpl;
 
+    get_jquery();
+
     if (empty($xoopsModuleConfig['eventShowMode'])) {
         $xoopsModuleConfig['eventShowMode'] = 'eventClick';
     }

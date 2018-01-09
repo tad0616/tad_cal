@@ -13,7 +13,7 @@ function toServerTime($time)
     } else {
         $timeoffset = $xoopsConfig['default_TZ'];
     }
-    $usertimestamp = (int)$time + ((float)$xoopsConfig['server_TZ'] - $timeoffset) * 3600;
+    $usertimestamp = (int) $time + ((float) $xoopsConfig['server_TZ'] - $timeoffset) * 3600;
     return $usertimestamp;
 }
 
@@ -109,7 +109,7 @@ function tad_cal_event_form($sn = "", $mode = '', $stamp = "")
     //紀錄目前結束-開始的時間差
     $long = strtotime($end) - strtotime($start);
 
-    $rrule_array = "";
+    $rrule_array = array();
     $rrule_arr   = array();
     if (!empty($recurrence)) {
         $ical = new ical();
@@ -520,7 +520,7 @@ function list_tad_cal_event()
 
     $result = $xoopsDB->query($sql) or web_error($sql);
 
-    $all_content = "";
+    $all_content = array();
 
     while ($all = $xoopsDB->fetchArray($result)) {
         //以下會產生這些變數： $sn , $title , $start , $end , $recurrence , $location , $kind , $details , $etag , $id , $sequence , $uid , $cate_sn

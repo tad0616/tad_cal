@@ -46,13 +46,13 @@ if (!empty($_POST['cate_sn'])) {
 }
 
 //標題行
-if ( $_POST['dl_type'] == "all_week"  ) {
+if ($_POST['dl_type'] == "all_week") {
     //週簡曆
     $table->addRow(); //新增一列
     $cellStyle = array('bgColor' => 'FFFFFF');
     $table->addCell(500, $cellStyle)->addText('週', $headStyle, $paraStyle); //新增一格
     $table->addCell(500, $cellStyle)->addText('月', $headStyle, $paraStyle); //新增一格
-    for ($w=0 ; $w<=6 ;$w++){
+    for ($w = 0; $w <= 6; $w++) {
         if ($w == 0 or $w == 6) {
             $cellStyle = array('bgColor' => 'FEE9E7');
             $table->addCell(500, $cellStyle)->addText($cw[$w], $headStyle, $paraStyle); //新增一格
@@ -66,7 +66,7 @@ if ( $_POST['dl_type'] == "all_week"  ) {
     $table->addCell(600, $cellStyle)->addText('註', $headStyle, $paraStyle);
     $table->addCell(8000, $cellStyle)->addText(_MD_TADCAL_SIMPLE_EVENT, $headStyle, $paraStyle);
 
-}else    {
+} else {
     //每日簡例
     $table->addRow(); //新增一列
     $table->addCell(1500, $cellStyle)->addText(_MD_TADCAL_SIMPLE_DATE, $headStyle, $paraStyle);
@@ -134,26 +134,26 @@ while ($all = $xoopsDB->fetchArray($result)) {
 }
 
 //die(var_export($all_event));
-if ( $_POST['dl_type'] == "all_week"  ) {
+if ($_POST['dl_type'] == "all_week") {
     //周簡曆
 
     //取得開始位置是星期 ? 補空
-    $w = date('w', strtotime($_POST['start']))  ;
-    $m = date('n', strtotime($_POST['start']))  ;
+    $w = date('w', strtotime($_POST['start']));
+    $m = date('n', strtotime($_POST['start']));
 
-    $week_num=1 ;
+    $week_num = 1;
 
-    if ($w>0 ) {
+    if ($w > 0) {
         $table->addRow(); //新增一列
 
         $cellStyle = array('bgColor' => 'FFFFFF');
         $table->addCell(500, $cellStyle)->addText($week_num, null, $paraStyle); //新增一格
         $table->addCell(500, $cellStyle)->addText($m, null, $paraStyle); //新增一格
-        $m_pre =$m ;
-        $week_num ++ ;
+        $m_pre = $m;
+        $week_num++;
 
         //補由星期日開始
-        for ($a_s = 0 ; $a_s< $w ; $a_s++) {
+        for ($a_s = 0; $a_s < $w; $a_s++) {
             if ($a_s == 0 or $a_s == 6) {
                 $cellStyle = array('bgColor' => 'FEE9E7');
                 $table->addCell(500, $cellStyle)->addText('', null, $paraStyle); //新增一格
@@ -164,75 +164,83 @@ if ( $_POST['dl_type'] == "all_week"  ) {
         }
     }
 
-    $cell = "";
+    $cell = array();
     //有資料
     foreach ($dates as $start) {
 
         $w = date('w', strtotime($start));
-        $d = date('j',  strtotime($start));
+        $d = date('j', strtotime($start));
 
-        if ($w == 0 ) {
+        if ($w == 0) {
             //新增一列
             $table->addRow(); //新增一列
-            $m = date('n',  strtotime($start) + 6*24*60*60 );
+            $m         = date('n', strtotime($start) + 6 * 24 * 60 * 60);
             $cellStyle = array('bgColor' => 'FFFFFF');
             $table->addCell(500, $cellStyle)->addText($week_num, null, $paraStyle); //新增一格
-            if ($m<>$m_pre)
-                $show_m = $m ;
-            else
-                $show_m ='' ;
+            if ($m != $m_pre) {
+                $show_m = $m;
+            } else {
+                $show_m = '';
+            }
+
             $table->addCell(500, $cellStyle)->addText($show_m, null, $paraStyle); //新增一格
 
-            $m_pre =$m ;
-            $week_num ++ ;
+            $m_pre = $m;
+            $week_num++;
         }
 
-        $vacation_fg = false ;
-        $exam_fg = false ;
+        $vacation_fg = false;
+        $exam_fg     = false;
         //事件
         $arr = $all_event[$start];
         foreach ($arr as $sn => $title) {
-            $cell[] = "($d)" .$title;
+            $cell[] = "($d)" . $title;
 
             //格子顏色(特定日期)
             $pos = strpos($title, '放假');
-                if ($pos !== false)
-                $vacation_fg = true  ;
+            if ($pos !== false) {
+                $vacation_fg = true;
+            }
 
             $pos = strpos($title, '補假');
-            if ($pos !== false)
-                $vacation_fg = true  ;
+            if ($pos !== false) {
+                $vacation_fg = true;
+            }
 
             $pos = strpos($title, '評量');
-                if ($pos !== false)
-                    $exam_fg = true  ;
+            if ($pos !== false) {
+                $exam_fg = true;
+            }
+
         }
         $content = implode("  、  ", $cell);
 
-        if ($w == 0 or $w == 6 or  $vacation_fg ) {
+        if ($w == 0 or $w == 6 or $vacation_fg) {
             $cellStyle = array('bgColor' => 'FEE9E7');
             $table->addCell(500, $cellStyle)->addText($d, null, $paraStyle); //新增一格
 
         } else {
-            if ($exam_fg)
+            if ($exam_fg) {
                 $cellStyle = array('bgColor' => 'acf2a8');
-            else
+            } else {
                 $cellStyle = array('bgColor' => 'FFFFFF');
+            }
+
             $table->addCell(500, $cellStyle)->addText($d, null, $paraStyle); //新增一格
         }
 
         //列出本周事件
-        if ($w==6)  {
+        if ($w == 6) {
             $cellStyle = array('bgColor' => 'FFFFFF');
             $table->addCell(600, $cellStyle)->addText('', null, $paraStyle); //新增一格
             $table->addCell(8000, $cellStyle)->addText($content); //新增一格
-            $cell = "";
-            $content ="" ;
+            $cell    = array();
+            $content = "";
         }
 
     }
     //最後補滿星期每格
-    for ($lw=$w+1 ; $lw<=6 ;$lw++) {
+    for ($lw = $w + 1; $lw <= 6; $lw++) {
         if ($lw == 0 or $lw == 6) {
             $cellStyle = array('bgColor' => 'FEE9E7');
             $table->addCell(500, $cellStyle)->addText('', null, $paraStyle); //新增一格
@@ -242,13 +250,13 @@ if ( $_POST['dl_type'] == "all_week"  ) {
         }
     }
     //最後列出最後事件
-    if ($w<>6){
+    if ($w != 6) {
         $cellStyle = array('bgColor' => 'FFFFFF');
         $table->addCell(600, $cellStyle)->addText('', null, $paraStyle); //新增一格
         $table->addCell(8000, $cellStyle)->addText($content); //新增一格
     }
 
-}else {
+} else {
     // --- 依每日呈現
     foreach ($dates as $start) {
 
@@ -271,7 +279,7 @@ if ( $_POST['dl_type'] == "all_week"  ) {
 
         if ($_POST['show_type'] == "separate") {
             foreach ($ok_arr as $cate_sn) {
-                $cell = "";
+                $cell = array();
                 foreach ($arr[$cate_sn] as $sn => $title) {
                     $cell[] = $title;
                 }
@@ -280,7 +288,7 @@ if ( $_POST['dl_type'] == "all_week"  ) {
             }
         } else {
 
-            $cell = "";
+            $cell = array();
             foreach ($arr as $sn => $title) {
                 $cell[] = $title;
             }

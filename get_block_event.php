@@ -28,7 +28,7 @@ function get_event_num()
     $even_start = $_REQUEST['start'] ? $_REQUEST['start'] : date("Y-m-d H:i:s");
     $even_end   = $_REQUEST['end'] ? $_REQUEST['end'] : date("Y-m-t H:i:s");
     //抓出事件
-    $sql = "select * from " . $xoopsDB->prefix("tad_cal_event") . " where `start` >= '$even_start' and `end` <= '$even_end' $and_ok_cate order by `start` , `sequence`";
+    $sql = "select * from " . $xoopsDB->prefix("tad_cal_event") . " where (`start` >= '$even_start' or `end` <= '$even_end')  or (`start` <= '$even_end' and `end` > '$even_end') or (`start` <= '$even_start' and `end` > '$even_start') $and_ok_cate order by `start` , `sequence`";
     //die($sql);
 
     $result = $xoopsDB->query($sql) or web_error($sql);

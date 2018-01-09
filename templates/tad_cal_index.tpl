@@ -7,7 +7,7 @@
 <script src="<{$xoops_url}>/modules/tadtools/moment/moment-with-locales.min.js" type="text/javascript"></script>
 <script src="<{$xoops_url}>/modules/tad_cal/class/jquery-impromptu.6.2.3.min.js" type="text/javascript"></script>
 <script src="<{$xoops_url}>/modules/tadtools/fullcalendar/fullcalendar.js" type="text/javascript"></script>
-<script src="<{$xoops_url}>/modules/tadtools/fullcalendar/fullcalendar/gcal.js" type="text/javascript" ></script>
+<script src="<{$xoops_url}>/modules/tadtools/fullcalendar/gcal.js" type="text/javascript" ></script>
 
 <link rel="stylesheet" type="text/css" href="<{$xoops_url}>/modules/tadtools/jquery.qtip_2/jquery.qtip.min.css">
 <script src="<{$xoops_url}>/modules/tadtools/jquery.qtip_2/jquery.qtip.min.js" type="text/javascript"></script>
@@ -29,6 +29,9 @@ $(document).ready(function(){
     <{$eventAdd}>
     <{$eventDrop}>
     events: function(start, end, timezone, callback) {
+
+      console.log("<{$xoops_url}>/modules/tad_cal/get_event.php?start="+start.format()+"&end="+end.format()+"&cate_sn=<{$cate_sn}>");
+
       $.getJSON("get_event.php",
       {
         start: start.format(),

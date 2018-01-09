@@ -200,7 +200,7 @@ function list_tad_cal_cate($show_function = 1)
 
     $all_content = array();
     $i           = 0;
-    $last        = "";
+    // $last        = "";
     while ($all = $xoopsDB->fetchArray($result)) {
         //以下會產生這些變數： $cate_sn , $cate_title , $cate_sort , $cate_enable , $cate_handle , $enable_group , $enable_upload_group , $google_id , $google_pass, $cate_bgcolor, $cate_color
         foreach ($all as $k => $v) {
