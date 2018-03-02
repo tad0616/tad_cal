@@ -9,9 +9,9 @@ function tad_cal_calendar($options)
     }
     include_once XOOPS_ROOT_PATH . "/modules/tadtools/tad_function.php";
 
-    $modhandler        = xoops_gethandler('module');
+    $modhandler        = xoops_getHandler('module');
     $xoopsModule       = $modhandler->getByDirname("tad_cal");
-    $config_handler    = xoops_gethandler('config');
+    $config_handler    = xoops_getHandler('config');
     $module_id         = $xoopsModule->getVar('mid');
     $xoopsModuleConfig = $config_handler->getConfigsByCat(0, $module_id);
 
