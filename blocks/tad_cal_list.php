@@ -21,7 +21,7 @@ function tad_cal_list($options)
 
     $result    = $xoopsDB->query($sql) or web_error($sql);
     $i         = 0;
-    $all_event = "";
+    $all_event = array();
     while ($all = $xoopsDB->fetchArray($result)) {
         //以下會產生這些變數： $sn , $title , $start , $end , $recurrence , $location , $kind , $details , $etag , $id , $sequence , $uid , $cate_sn
         foreach ($all as $k => $v) {
@@ -51,7 +51,7 @@ function tad_cal_list($options)
 
     }
 
-    $content = $event = "";
+    $content = $event = array();
     $i       = 0;
     if (is_array($all_event)) {
         foreach ($all_event as $start => $arr) {
@@ -63,7 +63,7 @@ function tad_cal_list($options)
             }
             $content[$i]['start'] = $start;
             $content[$i]['event'] = $event;
-            $event                = "";
+            $event                = array();
             $i++;
         }
     }

@@ -106,7 +106,7 @@ function insert_tad_cal_cate()
 {
     global $xoopsDB, $xoopsUser;
 
-    $myts                 = MyTextSanitizer::getInstance();
+    $myts                 = &MyTextSanitizer::getInstance();
     $_POST['cate_title']  = $myts->addSlashes($_POST['cate_title']);
     $_POST['google_id']   = $myts->addSlashes($_POST['google_id']);
     $_POST['google_pass'] = $myts->addSlashes($_POST['google_pass']);
@@ -146,7 +146,7 @@ function update_tad_cal_cate($cate_sn = "")
 {
     global $xoopsDB, $xoopsUser;
 
-    $myts                 = MyTextSanitizer::getInstance();
+    $myts                 = &MyTextSanitizer::getInstance();
     $_POST['cate_title']  = $myts->addSlashes($_POST['cate_title']);
     $_POST['google_id']   = $myts->addSlashes($_POST['google_id']);
     $_POST['google_pass'] = $myts->addSlashes($_POST['google_pass']);
@@ -185,20 +185,20 @@ function list_tad_cal_cate($show_function = 1)
     global $xoopsDB, $xoopsModule, $xoopsTpl;
 
     //取得資料數
-    $sql = "SELECT count(*),cate_sn,max(`last_update`) FROM " . $xoopsDB->prefix("tad_cal_event") . " GROUP BY cate_sn";
+    $sql    = "select count(*),cate_sn,max(`last_update`) from " . $xoopsDB->prefix("tad_cal_event") . " group by cate_sn";
     $result = $xoopsDB->query($sql) or web_error($sql);
     while (list($count, $cate_sn, $last_update) = $xoopsDB->fetchRow($result)) {
         $counter[$cate_sn] = $count;
         $last[$cate_sn]    = $last_update;
     }
 
-    $sql = "SELECT * FROM " . $xoopsDB->prefix("tad_cal_cate") . " ORDER BY cate_sort";
+    $sql = "select * from " . $xoopsDB->prefix("tad_cal_cate") . " order by cate_sort";
 
     $result = $xoopsDB->query($sql) or web_error($sql);
 
     $function_title = ($show_function) ? "<th>" . _TAD_FUNCTION . "</th>" : "";
 
-    $all_content = "";
+    $all_content = array();
     $i           = 0;
     $last        = "";
     while ($all = $xoopsDB->fetchArray($result)) {
@@ -255,9 +255,9 @@ function link_to_google($id = "", $pass = "")
 {
     global $xoopsDB, $xoopsTpl;
 
-    $cate_title_arr = "";
+    $cate_title_arr = array();
     //抓出現有google行事曆
-    $sql = "SELECT `cate_title`,`cate_handle` FROM " . $xoopsDB->prefix("tad_cal_cate") . " WHERE `cate_handle`!=''";
+    $sql    = "select `cate_title`,`cate_handle` from " . $xoopsDB->prefix("tad_cal_cate") . " where `cate_handle`!=''";
     $result = $xoopsDB->query($sql) or web_error($sql);
     while (list($cate_title, $cate_handle) = $xoopsDB->fetchRow($result)) {
         $all_handle[]                 = $cate_handle;
@@ -273,7 +273,7 @@ function link_to_google($id = "", $pass = "")
         redirect_header($_SERVER['PHP_SELF'], 3, _MA_TADCAL_NO_GOOGLE_CAL);
     }
     $i   = 0;
-    $all = "";
+    $all = array();
     foreach ($Calendars as $j => $cal) {
         $Events = $gmail->getEvents($cal['handle'], 10);
         if (empty($Events['data']['items'])) {
@@ -303,14 +303,14 @@ function save_google()
     global $xoopsDB, $xoopsUser;
 
     //抓出現有google行事曆
-    $sql = "SELECT `cate_sn`,`cate_handle` FROM " . $xoopsDB->prefix("tad_cal_cate") . " WHERE `cate_handle`!=''";
+    $sql    = "select `cate_sn`,`cate_handle` from " . $xoopsDB->prefix("tad_cal_cate") . " where `cate_handle`!=''";
     $result = $xoopsDB->query($sql) or web_error($sql);
     while (list($cate_sn, $cate_handle) = $xoopsDB->fetchRow($result)) {
         $all_handle[]              = $cate_handle;
         $cate_sn_arr[$cate_handle] = $cate_sn;
     }
 
-    $myts                 = MyTextSanitizer::getInstance();
+    $myts                 = &MyTextSanitizer::getInstance();
     $_POST['google_id']   = $myts->addSlashes($_POST['google_id']);
     $_POST['google_pass'] = $myts->addSlashes($_POST['google_pass']);
 
@@ -338,7 +338,7 @@ function tad_cal_all_sync()
 {
     global $xoopsDB, $xoopsModule;
 
-    $sql = "SELECT cate_sn FROM " . $xoopsDB->prefix("tad_cal_cate") . " WHERE `cate_handle`!=''";
+    $sql    = "select cate_sn from " . $xoopsDB->prefix("tad_cal_cate") . " where `cate_handle`!=''";
     $result = $xoopsDB->query($sql) or web_error($sql);
 
     while (list($cate_sn) = $xoopsDB->fetchRow($result)) {

@@ -2,7 +2,7 @@
 //區塊主函式 (大行事曆(tad_cal_full_calendar))
 function tad_cal_full_calendar($options)
 {
-    global $xoopsUser, $xoopsTpl;
+    global $xoopsUser, $xoopsTpl, $xoTheme;
 
     $modhandler        = xoops_getHandler('module');
     $xoopsModule       = $modhandler->getByDirname("tad_cal");
@@ -35,7 +35,7 @@ function tad_cal_full_calendar($options)
         $xoopsModuleConfig['eventTheme'] = 'ui-tooltip-blue';
     }
 
-    $style = make_style();
+    $style_mark = style_mark();
 
     if (empty($cate_sn)) {
         $cate_sn = 0;
@@ -117,12 +117,18 @@ function tad_cal_full_calendar($options)
 
     $block['eventDrop']     = $eventDrop;
     $block['eventAdd']      = $eventAdd;
-    $block['style_css']     = $style['css'];
     $block['cate_sn']       = $cate_sn;
     $block['eventShowMode'] = $xoopsModuleConfig['eventShowMode'];
     $block['eventTheme']    = $xoopsModuleConfig['eventTheme'];
-    $block['style_mark']    = $style['mark'];
+    $block['style_mark']    = $style_mark;
     $block['my_counter']    = my_counter();
     $block['firstDay']      = $xoopsModuleConfig['cal_start'];
+
+    $ver = intval(str_replace('.', '', substr(XOOPS_VERSION, 6, 5)));
+    if ($ver >= 259) {
+        $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate-3.0.0.min.js');
+    } else {
+        $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate-1.4.1.min.js');
+    }
     return $block;
 }

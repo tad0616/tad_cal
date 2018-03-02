@@ -1,23 +1,21 @@
 
 <{$block.jquery_path}>
 
-<link rel="stylesheet" type="text/css" href="<{$xoops_url}>/modules/tad_cal/module.css" />
-<link rel="stylesheet" type="text/css" href="<{$xoops_url}>/modules/tad_cal/class/fullcalendar/redmond/theme.css" />
-<link rel="stylesheet" type="text/css" href="<{$xoops_url}>/modules/tad_cal/class/fullcalendar/fullcalendar.3.4.0.min.css">
-<script src="<{$xoops_url}>/modules/tad_cal/class/moment/moment-with-locales.2.18.1.min.js" type="text/javascript"></script>
-<script src="<{$xoops_url}>/modules/tad_cal/class/jquery-impromptu.6.2.3.min.js" type="text/javascript"></script>
-<script src="<{$xoops_url}>/modules/tad_cal/class/fullcalendar/fullcalendar.3.4.0.min.js" type="text/javascript"></script>
-<link rel="stylesheet" type="text/css" href="<{$xoops_url}>/modules/tad_cal/class/qtip/jquery.qtip.3.0.3.min.css" />
-<script src="<{$xoops_url}>/modules/tad_cal/class/qtip/jquery.qtip.3.0.3.min.js" type="text/javascript"></script>
-<script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/My97DatePicker/WdatePicker.js"></script>
+<link rel="stylesheet" type="text/css" href="<{$xoops_url}>/modules/tad_cal/module.css">
+<link rel="stylesheet" type="text/css" href="<{$xoops_url}>/modules/tadtools/fullcalendar/redmond/theme.css">
+<link rel="stylesheet" type="text/css" href="<{$xoops_url}>/modules/tadtools/fullcalendar/fullcalendar.css">
 
-<style type="text/css">
-<{$block.style_css}>
-</style>
+<script src="<{$xoops_url}>/modules/tadtools/moment/moment-with-locales.min.js" type="text/javascript"></script>
+<script src="<{$xoops_url}>/modules/tad_cal/class/jquery-impromptu.6.2.3.min.js" type="text/javascript"></script>
+<script src="<{$xoops_url}>/modules/tadtools/fullcalendar/fullcalendar.js" type="text/javascript"></script>
+<script src="<{$xoops_url}>/modules/tadtools/fullcalendar/fullcalendar/gcal.js" type="text/javascript" ></script>
+
+<link rel="stylesheet" type="text/css" href="<{$xoops_url}>/modules/tadtools/jquery.qtip_2/jquery.qtip.min.css">
+<script src="<{$xoops_url}>/modules/tadtools/jquery.qtip_2/jquery.qtip.min.js" type="text/javascript"></script>
+
 
 <script type="text/javascript">
 $(document).ready(function(){
-
   var calendar = $("#full_calendar_block").fullCalendar({
     theme: true,
     locale: navigator.language,
@@ -73,11 +71,11 @@ $(document).ready(function(){
            },
            hide: "unfocus",
            style: {
-            classes: "<{$block.eventTheme}> ui-tooltip-shadow ui-tooltip-rounded"
+            classes: "ui-tooltip-shadow ui-tooltip-rounded"
            }
-        })
-        return false;
-      }
+          })
+          return false;
+        }
     }
   });
 });
@@ -93,4 +91,7 @@ function delete_tad_cal_event_func(sn){
 <div id="full_calendar_block" style="margin-top:20px;"></div>
 <div style="margin:10px auto;width:auto;"><{$block.style_mark}></div>
 
+<div style="text-align:right;">
+  <a href="<{$xoops_url}>/modules/tad_cal" class="label label-info"><{$smarty.const._MB_TADCAL_TO_INDEX}></a>
+</div>
 <{$block.my_counter}>
