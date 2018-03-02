@@ -9,7 +9,7 @@ function get_event()
 {
     global $xoopsDB, $xoopsUser, $xoopsModuleConfig;
 
-    $cate_sn = intval($_REQUEST['cate_sn']);
+    $cate_sn = (int) $_REQUEST['cate_sn'];
 
     //取得目前使用者可讀的群組
     $ok_cate_arr  = chk_tad_cal_cate_power('enable_group');

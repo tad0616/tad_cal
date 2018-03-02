@@ -266,7 +266,7 @@ function insert_tad_cal_event()
 {
     global $xoopsDB, $xoopsUser;
 
-    $cate_sn = intval($_POST['cate_sn']);
+    $cate_sn = (int)$_POST['cate_sn'];
 
     //取得使用者編號
     $uid = ($xoopsUser) ? $xoopsUser->getVar('uid') : "";
@@ -341,7 +341,7 @@ function insert_tad_cal_event()
 
         $COUNT = $UNTIL = "";
         if ($_POST['END'] == 'count') {
-            $counter = empty($_POST['COUNT']) ? 1 : intval($_POST['COUNT']);
+            $counter = empty($_POST['COUNT']) ? 1 : (int)$_POST['COUNT'];
             $COUNT   = "COUNT={$counter};";
         } elseif ($_POST['END'] == 'until') {
             if ($allDay == '1') {
@@ -447,7 +447,7 @@ function update_tad_cal_event($sn = "")
 
         $COUNT = $UNTIL = "";
         if ($_POST['END'] == 'count') {
-            $counter = empty($_POST['COUNT']) ? 1 : intval($_POST['COUNT']);
+            $counter = empty($_POST['COUNT']) ? 1 : (int)$_POST['COUNT'];
             $COUNT   = "COUNT={$counter};";
         } elseif ($_POST['END'] == 'until') {
             if ($allDay == '1') {
@@ -601,7 +601,7 @@ function show_one_tad_cal_event($sn = "", $stamp = "")
     if (empty($sn)) {
         return;
     } else {
-        $sn = intval($sn);
+        $sn = (int)$sn;
     }
 
     $now_uid = ($xoopsUser) ? $xoopsUser->uid() : 0;
@@ -668,7 +668,7 @@ function show_simple_event($sn = "", $stamp = "")
     if (empty($sn)) {
         return;
     } else {
-        $sn = intval($sn);
+        $sn = (int)$sn;
     }
 
     $now_uid = ($xoopsUser) ? $xoopsUser->uid() : 0;

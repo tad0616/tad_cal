@@ -106,7 +106,7 @@ if (!function_exists("my_counter")) {
         } elseif (is_null(($xoopsModuleConfig['sync_conut'])) or $xoopsModuleConfig['sync_conut'] == '') {
             $sync_conut = 100;
         } else {
-            $sync_conut = intval($xoopsModuleConfig['sync_conut']);
+            $sync_conut = (int)$xoopsModuleConfig['sync_conut'];
         }
 
         $data = XOOPS_ROOT_PATH . "/uploads/tad_cal_count.txt";

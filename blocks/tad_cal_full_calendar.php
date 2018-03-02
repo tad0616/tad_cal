@@ -4,9 +4,9 @@ function tad_cal_full_calendar($options)
 {
     global $xoopsUser, $xoopsTpl, $xoTheme;
 
-    $modhandler        = xoops_gethandler('module');
+    $modhandler        = xoops_getHandler('module');
     $xoopsModule       = $modhandler->getByDirname("tad_cal");
-    $config_handler    = xoops_gethandler('config');
+    $config_handler    = xoops_getHandler('config');
     $module_id         = $xoopsModule->getVar('mid');
     $xoopsModuleConfig = $config_handler->getConfigsByCat(0, $module_id);
 
