@@ -17,8 +17,8 @@ function get_event()
     $and_ok_cate  = empty($all_ok_cate) ? "and a.`cate_sn`='0'" : "and a.`cate_sn` in($all_ok_cate)";
     $and_ok_cate2 = empty($all_ok_cate) ? "and a.sn='0'" : "and b.cate_sn in($all_ok_cate)";
 
-    $even_start = $_REQUEST['start'] ? $_REQUEST['start'] : date("Y-m-d H:i:s");
-    $even_end   = $_REQUEST['end'] ? $_REQUEST['end'] : date("Y-m-t H:i:s");
+    $even_start = $_REQUEST['start'] ? date('Y-m-d', strtotime($_REQUEST['start'])) : date("Y-m-d H:i:s");
+    $even_end   = $_REQUEST['end'] ? date('Y-m-d', strtotime($_REQUEST['end'])) : date("Y-m-t H:i:s");
     // $even_end   = ($_REQUEST['end'] == "0000-00-00 00:00") ? date("Y-m-t H:i:s") : $_REQUEST['end'];
 
     $and_cate_sn  = empty($cate_sn) ? "" : "and a.`cate_sn` = '$cate_sn'";
