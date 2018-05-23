@@ -72,7 +72,7 @@ function import_google($cate_sn = "")
             $$k = $v;
         }
 
-        $myts = &MyTextSanitizer::getInstance();
+        $myts = MyTextSanitizer::getInstance();
         $now  = date('Y-m-d H:i:s', time());
 
         date_default_timezone_set('Asia/Taipei');

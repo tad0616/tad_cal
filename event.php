@@ -266,24 +266,28 @@ function insert_tad_cal_event()
 {
     global $xoopsDB, $xoopsUser;
 
-    $cate_sn = (int)$_POST['cate_sn'];
+    $cate_sn = (int) $_POST['cate_sn'];
 
     //取得使用者編號
-    $uid = ($xoopsUser) ? $xoopsUser->getVar('uid') : "";
+    $uid = ($xoopsUser) ? $xoopsUser->getVar('uid') : 0;
 
-    $myts                    = &MyTextSanitizer::getInstance();
-    $_POST['title']          = $myts->addSlashes($_POST['title']);
-    $_POST['location']       = $myts->addSlashes($_POST['location']);
-    $_POST['details']        = $myts->addSlashes($_POST['details']);
-    $_POST['new_cate_title'] = $myts->addSlashes($_POST['new_cate_title']);
+    $myts           = MyTextSanitizer::getInstance();
+    $title          = $myts->addSlashes($_POST['title']);
+    $location       = $myts->addSlashes($_POST['location']);
+    $kind           = $myts->addSlashes($_POST['kind']);
+    $details        = $myts->addSlashes($_POST['details']);
+    $etag           = $myts->addSlashes($_POST['etag']);
+    $id             = $myts->addSlashes($_POST['id']);
+    $sequence       = (int) $_POST['sequence'];
+    $new_cate_title = $myts->addSlashes($_POST['new_cate_title']);
 
     //若無分類編號，那就是要新增行事曆
     if (empty($cate_sn)) {
-        if (empty($_POST['new_cate_title'])) {
-            $_POST['new_cate_title'] = _MD_TADCAL_NEW_CALENDAR;
+        if (empty($new_cate_title)) {
+            $new_cate_title = _MD_TADCAL_NEW_CALENDAR;
         }
 
-        $cate_sn = create_cate($_POST['new_cate_title']);
+        $cate_sn = create_cate($new_cate_title);
     }
 
     $allDay = !empty($_POST['fc_start']) ? 1 : $_POST['allday'];
@@ -341,7 +345,7 @@ function insert_tad_cal_event()
 
         $COUNT = $UNTIL = "";
         if ($_POST['END'] == 'count') {
-            $counter = empty($_POST['COUNT']) ? 1 : (int)$_POST['COUNT'];
+            $counter = empty($_POST['COUNT']) ? 1 : (int) $_POST['COUNT'];
             $COUNT   = "COUNT={$counter};";
         } elseif ($_POST['END'] == 'until') {
             if ($allDay == '1') {
@@ -361,8 +365,8 @@ function insert_tad_cal_event()
     $last_update = date("Y-m-d H:i:s");
 
     $sql = "insert into " . $xoopsDB->prefix("tad_cal_event") . "
-  (`title` , `start` , `end` , `recurrence` , `location` , `kind` , `details` , `etag` , `id` , `sequence` , `uid` , `cate_sn` , `allday` , `tag` ,`last_update`)
-  values('{$_POST['title']}' , '{$start}' , '{$end}' , '{$recurrence}' , '{$_POST['location']}' , '{$_POST['kind']}' , '{$_POST['details']}' , '{$_POST['etag']}' , '{$_POST['id']}' , '{$_POST['sequence']}' , '{$uid}' , '{$cate_sn}' , '{$allDay}', '' , '{$last_update}')";
+    (`title` , `start` , `end` , `recurrence` , `location` , `kind` , `details` , `etag` , `id` , `sequence` , `uid` , `cate_sn` , `allday` , `tag` ,`last_update`)
+    values('{$title}' , '{$start}' , '{$end}' , '{$recurrence}' , '{$location}' , '{$kind}' , '{$details}' , '{$etag}' , '{$id}' , '{$sequence}' , '{$uid}' , '{$cate_sn}' , '{$allDay}', '' , '{$last_update}')";
 
     $xoopsDB->queryF($sql) or web_error($sql);
 
@@ -387,7 +391,7 @@ function update_tad_cal_event($sn = "")
     //取得使用者編號
     $uid = ($xoopsUser) ? $xoopsUser->getVar('uid') : "";
 
-    $myts              = &MyTextSanitizer::getInstance();
+    $myts              = MyTextSanitizer::getInstance();
     $_POST['title']    = $myts->addSlashes($_POST['title']);
     $_POST['location'] = $myts->addSlashes($_POST['location']);
     $_POST['details']  = $myts->addSlashes($_POST['details']);
@@ -447,7 +451,7 @@ function update_tad_cal_event($sn = "")
 
         $COUNT = $UNTIL = "";
         if ($_POST['END'] == 'count') {
-            $counter = empty($_POST['COUNT']) ? 1 : (int)$_POST['COUNT'];
+            $counter = empty($_POST['COUNT']) ? 1 : (int) $_POST['COUNT'];
             $COUNT   = "COUNT={$counter};";
         } elseif ($_POST['END'] == 'until') {
             if ($allDay == '1') {
@@ -601,7 +605,7 @@ function show_one_tad_cal_event($sn = "", $stamp = "")
     if (empty($sn)) {
         return;
     } else {
-        $sn = (int)$sn;
+        $sn = (int) $sn;
     }
 
     $now_uid = ($xoopsUser) ? $xoopsUser->uid() : 0;
@@ -668,7 +672,7 @@ function show_simple_event($sn = "", $stamp = "")
     if (empty($sn)) {
         return;
     } else {
-        $sn = (int)$sn;
+        $sn = (int) $sn;
     }
 
     $now_uid = ($xoopsUser) ? $xoopsUser->uid() : 0;
@@ -873,21 +877,19 @@ switch ($op) {
         replace_tad_cal_event();
         header("location: " . XOOPS_URL . "/modules/tad_cal/index.php");
         exit;
-        break;
 
     //新增資料
     case "insert_tad_cal_event":
-        $sn = insert_tad_cal_event();
+        insert_tad_cal_event();
         header("location: " . XOOPS_URL . "/modules/tad_cal/index.php");
         exit;
-        break;
 
     //更新資料
     case "update_tad_cal_event":
         update_tad_cal_event($sn);
         header("location: " . XOOPS_URL . "/modules/tad_cal/index.php");
         exit;
-        break;
+
     //輸入表格
     case "tad_cal_event_form":
         tad_cal_event_form($sn);
@@ -898,7 +900,6 @@ switch ($op) {
         delete_tad_cal_event($sn);
         header("location: " . XOOPS_URL . "/modules/tad_cal/index.php");
         exit;
-        break;
 
     case "view":
         show_simple_event($sn, $stamp);

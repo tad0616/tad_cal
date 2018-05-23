@@ -12,7 +12,7 @@ function create_cate($title = '', $sort = '', $handle = '', $enable_group = '', 
 {
     global $xoopsDB;
 
-    $myts  = &MyTextSanitizer::getInstance();
+    $myts  = MyTextSanitizer::getInstance();
     $title = $myts->addSlashes($title);
     if (empty($sort)) {
         $sort = tad_cal_cate_max_sort();

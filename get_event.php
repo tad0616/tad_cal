@@ -27,7 +27,7 @@ function get_event()
     //抓出事件
     $sql = "select a.*, b.`cate_bgcolor`, b.`cate_color` from " . $xoopsDB->prefix("tad_cal_event") . " as a
     join " . $xoopsDB->prefix("tad_cal_cate") . " as b on a.`cate_sn`=b.`cate_sn`
-    where (a.`start` >= '$even_start' and a.`end` <= '$even_end') or (a.`start` <= '$even_end' and a.`end` > '$even_end') or (a.`start` <= '$even_start' and a.`end` > '$even_start') $and_ok_cate $and_cate_sn
+    where ((a.`start` >= '$even_start' and a.`end` <= '$even_end') or (a.`start` <= '$even_end' and a.`end` > '$even_end') or (a.`start` <= '$even_start' and a.`end` > '$even_start')) $and_ok_cate $and_cate_sn
     order by a.`start` , a.`sequence`";
 
     $result = $xoopsDB->query($sql) or web_error($sql);

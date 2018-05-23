@@ -26,10 +26,10 @@
         <input type="radio" name="dl_type" value="only_event" id="only_event" checked><{$smarty.const._MD_TADCAL_ONLY_EVENT}>
       </label>
       <label class="radio">
-        <input type="radio" name="dl_type" value="all_date" id="only_event"><{$smarty.const._MD_TADCAL_ALL_DATE}>
+        <input type="radio" name="dl_type" value="all_date" id="all_date"><{$smarty.const._MD_TADCAL_ALL_DATE}>
       </label>
       <label class="radio">
-        <input type="radio" name="dl_type" value="all_week" id="only_event"><{$smarty.const._MD_TADCAL_ALL_WEEK}>
+        <input type="radio" name="dl_type" value="all_week" id="all_week"><{$smarty.const._MD_TADCAL_ALL_WEEK}>
       </label>
     </div>
   </div>

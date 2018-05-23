@@ -1,3 +1,13 @@
+Tad Cal 2.8.7 (released on 2018-05-23)
+================================
+1. Mandatory date type conversion
+2. Supports PHP 7.2
+3. Support database strict mode
+4. Delete the tchinese Big5 language
+5. Fix the problem that the authority mechanism is invalid
+6. Fixed an issue with download options in the word file
+
+
 Tad Cal 2.8.6 (released on 2018-01-09)
 ================================
 1. Support for PHP 7.1

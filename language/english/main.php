@@ -66,3 +66,5 @@ define('_MD_TADCAL_ALL_DATE', 'Download all dates');
 define('_MD_TADCAL_SHOW_TYPE', 'Show as');
 define('_MD_TADCAL_SEPARATE', 'Separate events ');
 define('_MD_TADCAL_MERGE', 'Merged view');
+
+define('_MD_TADCAL_MONTH_STR', 'Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec');
