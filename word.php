@@ -22,8 +22,13 @@ $filename   = str_replace(" ", "", $page_title);
 require_once XOOPS_ROOT_PATH . '/modules/tadtools/vendor/autoload.php';
 $phpWord = new \PhpOffice\PhpWord\PhpWord();
 
-$phpWord->setDefaultFontName('標楷體');
-$phpWord->setDefaultFontSize(9);
+$phpWord->setDefaultFontName('標楷體'); //設定預設字型
+$phpWord->setDefaultFontSize(9); //設定預設字型大小
+$section      = $phpWord->addSection(); //建立一個區域
+$sectionStyle = $section->getStyle();
+$sectionStyle->setMarginTop(\PhpOffice\PhpWord\Shared\Converter::cmToTwip(2.5));
+$sectionStyle->setMarginLeft(\PhpOffice\PhpWord\Shared\Converter::cmToTwip(2.2));
+$sectionStyle->setMarginRight(\PhpOffice\PhpWord\Shared\Converter::cmToTwip(2.2));
 
 $TitleStyle = array('color' => '000000', 'size' => 16, 'bold' => true);
 $cellStyle  = array('valign' => 'center');
@@ -35,11 +40,6 @@ $left_paraStyle  = array('align' => 'left', 'valign' => 'center');
 $right_paraStyle = array('align' => 'right', 'valign' => 'center');
 
 $phpWord->addTitleStyle(1, $TitleStyle, $paraStyle);
-$section      = $phpWord->addSection();
-$sectionStyle = $section->getStyle();
-$sectionStyle->setMarginTop(\PhpOffice\PhpWord\Shared\Converter::cmToTwip(2.5));
-$sectionStyle->setMarginLeft(\PhpOffice\PhpWord\Shared\Converter::cmToTwip(2.2));
-$sectionStyle->setMarginRight(\PhpOffice\PhpWord\Shared\Converter::cmToTwip(2.2));
 $section->addTitle($page_title, 1);
 
 $styleTable    = array('borderColor' => '000000', 'borderSize' => 6, 'cellMargin' => 80);
@@ -66,7 +66,6 @@ $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
 header('Cache-Control: max-age=0');
 header('Content-Type: application/vnd.ms-word');
 header("Content-Disposition: attachment;filename={$filename}.docx");
-
 $objWriter->save('php://output');
 
 //日期範圍中有多少日期
