@@ -14,31 +14,31 @@ function xoops_module_update_tad_cal(&$module, $old_version)
     return true;
 }
 
-//§R°£¿ù»~ªº­«½ÆÄæ¦ì¤Î¼ËªOÀÉ
+//åˆªé™¤éŒ¯èª¤çš„é‡è¤‡æ¬„ä½åŠæ¨£æ¿æª”
 function chk_tad_cal_block()
 {
     global $xoopsDB;
     //die(var_export($xoopsConfig));
     include XOOPS_ROOT_PATH . '/modules/tad_cal/xoops_version.php';
 
-    //¥ý§ä¥X¸Ó¦³ªº°Ï¶ô¥H¤Î¹ïÀ³¼ËªO
+    //å…ˆæ‰¾å‡ºè©²æœ‰çš„å€å¡Šä»¥åŠå°æ‡‰æ¨£æ¿
     foreach ($modversion['blocks'] as $i => $block) {
         $show_func                = $block['show_func'];
         $tpl_file_arr[$show_func] = $block['template'];
         $tpl_desc_arr[$show_func] = $block['description'];
     }
 
-    //§ä¥X¥Ø«e©Ò¦³ªº¼ËªOÀÉ
+    //æ‰¾å‡ºç›®å‰æ‰€æœ‰çš„æ¨£æ¿æª”
     $sql = "SELECT bid,name,visible,show_func,template FROM `" . $xoopsDB->prefix("newblocks") . "`
     WHERE `dirname` = 'tad_cal' ORDER BY `func_num`";
     $result = $xoopsDB->query($sql);
     while (list($bid, $name, $visible, $show_func, $template) = $xoopsDB->fetchRow($result)) {
-        //°²¦p²{¦³ªº°Ï¶ô©M¼ËªO¹ï¤£¤W´N§R±¼
+        //å‡å¦‚ç¾æœ‰çš„å€å¡Šå’Œæ¨£æ¿å°ä¸ä¸Šå°±åˆªæŽ‰
         if ($template != $tpl_file_arr[$show_func]) {
             $sql = "delete from " . $xoopsDB->prefix("newblocks") . " where bid='{$bid}'";
             $xoopsDB->queryF($sql);
 
-            //³s¦P¼ËªO¥H¤Î¼ËªO¹êÅéÀÉ®×¤]­n§R±¼
+            //é€£åŒæ¨£æ¿ä»¥åŠæ¨£æ¿å¯¦é«”æª”æ¡ˆä¹Ÿè¦åˆªæŽ‰
             $sql = "delete from " . $xoopsDB->prefix("tplfile") . " as a
             left join " . $xoopsDB->prefix("tplsource") . "  as b on a.tpl_id=b.tpl_id
             where a.tpl_refid='$bid' and a.tpl_module='tad_cal' and a.tpl_type='block'";
@@ -53,7 +53,7 @@ function chk_tad_cal_block()
 
 }
 
-//­×¥¿uidÄæ¦ì
+//ä¿®æ­£uidæ¬„ä½
 function chk_uid()
 {
     global $xoopsDB;
@@ -68,7 +68,7 @@ function chk_uid()
     return false;
 }
 
-//°õ¦æ§ó·s
+//åŸ·è¡Œæ›´æ–°
 function go_update_uid()
 {
     global $xoopsDB;
@@ -77,99 +77,87 @@ function go_update_uid()
     return true;
 }
 
-/*
-//ÀË¬d¬YÄæ¦ì¬O§_¦s¦b
-function chk_chk1(){
-global $xoopsDB;
-$sql="select count(`Äæ¦ì`) from ".$xoopsDB->prefix("¸ê®Æªí");
-$result=$xoopsDB->query($sql);
-if(empty($result)) return false;
-return true;
-}
 
-//°õ¦æ§ó·s
-function go_update1(){
-global $xoopsDB;
-$sql="ALTER TABLE ".$xoopsDB->prefix("¸ê®Æªí")." ADD `Äæ¦ì` smallint(5) NOT NULL";
-$xoopsDB->queryF($sql) or web_error($sql);
-
-return true;
-}
- */
-
-//«Ø¥ß¥Ø¿ý
-function mk_dir($dir = "")
-{
-    //­YµL¥Ø¿ý¦WºÙ¨q¥XÄµ§i°T®§
-    if (empty($dir)) {
-        return;
-    }
-
-    //­Y¥Ø¿ý¤£¦s¦bªº¸Ü«Ø¥ß¥Ø¿ý
-    if (!is_dir($dir)) {
-        umask(000);
-        //­Y«Ø¥ß¥¢±Ñ¨q¥XÄµ§i°T®§
-        mkdir($dir, 0777);
-    }
-}
-
-//«þ¨©¥Ø¿ý
-function full_copy($source = "", $target = "")
-{
-    if (is_dir($source)) {
-        @mkdir($target);
-        $d = dir($source);
-        while (false !== ($entry = $d->read())) {
-            if ($entry == '.' || $entry == '..') {
-                continue;
-            }
-
-            $Entry = $source . '/' . $entry;
-            if (is_dir($Entry)) {
-                full_copy($Entry, $target . '/' . $entry);
-                continue;
-            }
-            copy($Entry, $target . '/' . $entry);
+//å»ºç«‹ç›®éŒ„
+if (!function_exists('mk_dir')) {
+    function mk_dir($dir = "")
+    {
+        //è‹¥ç„¡ç›®éŒ„åç¨±ç§€å‡ºè­¦å‘Šè¨Šæ¯
+        if (empty($dir)) {
+            return;
         }
-        $d->close();
-    } else {
-        copy($source, $target);
-    }
-}
 
-function rename_win($oldfile, $newfile)
-{
-    if (!rename($oldfile, $newfile)) {
-        if (copy($oldfile, $newfile)) {
-            unlink($oldfile);
-            return true;
-        }
-        return false;
-    }
-    return true;
-}
-
-function delete_directory($dirname)
-{
-    if (is_dir($dirname)) {
-        $dir_handle = opendir($dirname);
-    }
-
-    if (!$dir_handle) {
-        return false;
-    }
-
-    while ($file = readdir($dir_handle)) {
-        if ($file != "." && $file != "..") {
-            if (!is_dir($dirname . "/" . $file)) {
-                unlink($dirname . "/" . $file);
-            } else {
-                delete_directory($dirname . '/' . $file);
-            }
-
+        //è‹¥ç›®éŒ„ä¸å­˜åœ¨çš„è©±å»ºç«‹ç›®éŒ„
+        if (!is_dir($dir)) {
+            umask(000);
+            //è‹¥å»ºç«‹å¤±æ•—ç§€å‡ºè­¦å‘Šè¨Šæ¯
+            mkdir($dir, 0777);
         }
     }
-    closedir($dir_handle);
-    rmdir($dirname);
-    return true;
+}
+
+//æ‹·è²ç›®éŒ„
+if (!function_exists('full_copy')) {
+    function full_copy($source = "", $target = "")
+    {
+        if (is_dir($source)) {
+            @mkdir($target);
+            $d = dir($source);
+            while (false !== ($entry = $d->read())) {
+                if ($entry == '.' || $entry == '..') {
+                    continue;
+                }
+
+                $Entry = $source . '/' . $entry;
+                if (is_dir($Entry)) {
+                    full_copy($Entry, $target . '/' . $entry);
+                    continue;
+                }
+                copy($Entry, $target . '/' . $entry);
+            }
+            $d->close();
+        } else {
+            copy($source, $target);
+        }
+    }
+}
+
+if (!function_exists('rename_win')) {
+    function rename_win($oldfile, $newfile)
+    {
+        if (!rename($oldfile, $newfile)) {
+            if (copy($oldfile, $newfile)) {
+                unlink($oldfile);
+                return true;
+            }
+            return false;
+        }
+        return true;
+    }
+}
+
+if (!function_exists('delete_directory')) {
+    function delete_directory($dirname)
+    {
+        if (is_dir($dirname)) {
+            $dir_handle = opendir($dirname);
+        }
+
+        if (!$dir_handle) {
+            return false;
+        }
+
+        while ($file = readdir($dir_handle)) {
+            if ($file != "." && $file != "..") {
+                if (!is_dir($dirname . "/" . $file)) {
+                    unlink($dirname . "/" . $file);
+                } else {
+                    delete_directory($dirname . '/' . $file);
+                }
+            }
+        }
+        closedir($dir_handle);
+        rmdir($dirname);
+        return true;
+    }
 }
