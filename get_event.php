@@ -30,7 +30,7 @@ function get_event()
     where ((a.`start` >= '$even_start' and a.`end` <= '$even_end') or (a.`start` <= '$even_end' and a.`end` > '$even_end') or (a.`start` <= '$even_start' and a.`end` > '$even_start')) $and_ok_cate $and_cate_sn
     order by a.`start` , a.`sequence`";
 
-    $result = $xoopsDB->query($sql) or web_error($sql);
+    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
     $i      = 0;
     while ($all = $xoopsDB->fetchArray($result)) {
         //以下會產生這些變數： $sn , $title , $start , $end , $recurrence , $location , $kind , $details , $etag , $id , $sequence , $uid , $cate_sn
@@ -89,7 +89,7 @@ function get_event()
     where a.`start` >= '$even_start' and a.`end` <= '$even_end' $and_ok_cate2 $and_cate_sn2
     order by a.`start`";
     // die($sql);
-    $result = $xoopsDB->queryF($sql) or web_error($sql);
+    $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
 
     while ($all = $xoopsDB->fetchArray($result)) {
         //以下會產生這些變數： $sn , $title , $start , $end , $recurrence , $location , $kind , $details , $etag , $id , $sequence , $uid , $cate_sn

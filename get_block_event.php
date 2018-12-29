@@ -31,7 +31,7 @@ function get_event_num()
     $sql = "select * from " . $xoopsDB->prefix("tad_cal_event") . " where (`start` >= '$even_start' or `end` <= '$even_end')  or (`start` <= '$even_end' and `end` > '$even_end') or (`start` <= '$even_start' and `end` > '$even_start') $and_ok_cate order by `start` , `sequence`";
     //die($sql);
 
-    $result = $xoopsDB->query($sql) or web_error($sql);
+    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
 
     while ($all = $xoopsDB->fetchArray($result)) {
         //以下會產生這些變數： $sn , $title , $start , $end , $recurrence , $location , $kind , $details , $etag , $id , $sequence , $uid , $cate_sn
@@ -52,7 +52,7 @@ function get_event_num()
     //抓出重複事件
     $sql = "select a.*,b.title,b.cate_sn from " . $xoopsDB->prefix("tad_cal_repeat") . " as a join " . $xoopsDB->prefix("tad_cal_event") . " as b on a.sn=b.sn where a.`start` >= '$even_start' and a.`end` <= '$even_end' $and_ok_cate2 order by a.`start`";
 //die($sql);
-    $result = $xoopsDB->queryF($sql) or web_error($sql);
+    $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
     while ($all = $xoopsDB->fetchArray($result)) {
         //以下會產生這些變數： $sn , $title , $start , $end , $recurrence , $location , $kind , $details , $etag , $id , $sequence , $uid , $cate_sn
         foreach ($all as $k => $v) {
@@ -100,7 +100,7 @@ function get_event_title($start = "")
     $sql = "select * from " . $xoopsDB->prefix("tad_cal_event") . " where ((`start` >= '$even_start' and `start` <= '$even_end') or (`end` > '$even_start' and `end` <= '$even_end')) $and_ok_cate order by `start` , `sequence`";
     //die($sql);
 
-    $result = $xoopsDB->query($sql) or web_error($sql);
+    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
 
     while ($all = $xoopsDB->fetchArray($result)) {
         //以下會產生這些變數： $sn , $title , $start , $end , $recurrence , $location , $kind , $details , $etag , $id , $sequence , $uid , $cate_sn
@@ -117,7 +117,7 @@ function get_event_title($start = "")
     //抓出重複事件
     $sql = "select a.*,b.title,b.cate_sn from " . $xoopsDB->prefix("tad_cal_repeat") . " as a join " . $xoopsDB->prefix("tad_cal_event") . " as b on a.sn=b.sn where ((a.`start` >= '$even_start' and a.`start` <= '$even_end') or (a.`end` > '$even_start' and a.`end` <= '$even_end')) $and_ok_cate2 order by a.`start`";
 //die($sql);
-    $result = $xoopsDB->queryF($sql) or web_error($sql);
+    $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
     while ($all = $xoopsDB->fetchArray($result)) {
         //以下會產生這些變數： $sn , $title , $start , $end , $recurrence , $location , $kind , $details , $etag , $id , $sequence , $uid , $cate_sn
         foreach ($all as $k => $v) {
