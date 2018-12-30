@@ -3,7 +3,9 @@
 //區塊主函式 (待辦事項(tad_cal_list))
 function tad_cal_list($options)
 {
-    global $xoopsDB, $xoopsUser, $xoopsTpl;
+    global $xoopsDB, $xoopsUser, $xoopsTpl, $xoTheme;
+    $xoTheme->addStylesheet('modules/tadtools/css/vertical_menu.css');
+
     include_once XOOPS_ROOT_PATH . "/modules/tad_cal/function_block.php";
 
     //取得目前使用者可讀的群組
