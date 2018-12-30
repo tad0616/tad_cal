@@ -73,7 +73,7 @@ function go_update_uid()
 {
     global $xoopsDB;
     $sql = "ALTER TABLE `" . $xoopsDB->prefix("tad_cal_event") . "` CHANGE `uid` `uid` mediumint(8) unsigned NOT NULL default 0";
-    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
     return true;
 }
 

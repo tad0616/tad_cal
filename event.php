@@ -256,7 +256,7 @@ function tad_cal_event_max_sort()
 {
     global $xoopsDB;
     $sql        = "select max(`sequence`) from " . $xoopsDB->prefix("tad_cal_event");
-    $result     = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+    $result     = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
     list($sort) = $xoopsDB->fetchRow($result);
     return ++$sort;
 }
@@ -368,14 +368,14 @@ function insert_tad_cal_event()
     (`title` , `start` , `end` , `recurrence` , `location` , `kind` , `details` , `etag` , `id` , `sequence` , `uid` , `cate_sn` , `allday` , `tag` ,`last_update`)
     values('{$title}' , '{$start}' , '{$end}' , '{$recurrence}' , '{$location}' , '{$kind}' , '{$details}' , '{$etag}' , '{$id}' , '{$sequence}' , '{$uid}' , '{$cate_sn}' , '{$allDay}', '' , '{$last_update}')";
 
-    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
     //取得最後新增資料的流水編號
     $sn = $xoopsDB->getInsertId();
 
     //更新 id
     $sql = "update " . $xoopsDB->prefix("tad_cal_event") . " set `id` = '{$sn}' where sn='$sn'";
-    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
     //重複事件
     rrule($sn, $recurrence, $allDay);
@@ -486,7 +486,7 @@ function update_tad_cal_event($sn = "")
    `tag` = '{$_POST['tag']}' ,
    `last_update` = '{$last_update}'
   where sn='$sn'";
-    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
     //重複事件
     rrule($sn, $recurrence, $allDay);
@@ -522,7 +522,7 @@ function list_tad_cal_event()
     $sql     = $PageBar['sql'];
     $total   = $PageBar['total'];
 
-    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
     $all_content = array();
 
@@ -575,7 +575,7 @@ function get_tad_cal_event($sn = "")
     }
 
     $sql    = "select * from " . $xoopsDB->prefix("tad_cal_event") . " where sn='$sn'";
-    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
     $data   = $xoopsDB->fetchArray($result);
     return $data;
 }
@@ -589,9 +589,9 @@ function delete_tad_cal_event($sn = "")
     $sql    = "delete from " . $xoopsDB->prefix("tad_cal_event") . " where sn='$sn' $andUID";
     if ($xoopsDB->queryF($sql)) {
         $sql = "delete from " . $xoopsDB->prefix("tad_cal_repeat") . " where sn='$sn'";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
     } else {
-        web_error($sql, __FILE__, _LINE__);
+        web_error($sql, __FILE__, __LINE__);
     }
 }
 
@@ -617,7 +617,7 @@ function show_one_tad_cal_event($sn = "", $stamp = "")
     } else {
         $sql = "select * from " . $xoopsDB->prefix("tad_cal_event") . " where sn='{$sn}'";
     }
-    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
     $all    = $xoopsDB->fetchArray($result);
 
     //以下會產生這些變數： $sn , $title , $start , $end , $recurrence , $location , $kind , $details , $etag , $id , $sequence , $uid , $cate_sn
@@ -687,7 +687,7 @@ function show_simple_event($sn = "", $stamp = "")
     }
     //die($sql);
 
-    $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, _LINE__);
+    $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
     $all    = $xoopsDB->fetchArray($result);
 
     //以下會產生這些變數： $sn , $title , $start , $end , $recurrence , $location , $kind , $details , $etag , $id , $sequence , $uid , $cate_sn
@@ -791,7 +791,7 @@ function ajax_update_date($sn = '')
 
     //抓出事件原有資料
     $sql    = "select * from " . $xoopsDB->prefix("tad_cal_event") . " where sn='$sn'";
-    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, _LINE__);
+    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
     if (!$result) {
         sprintf(_MD_TADCAL_MOVE_ERROR, $xoopsDB->error());
     }
