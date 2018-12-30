@@ -15,10 +15,9 @@ function tad_cal_calendar($options)
     $module_id         = $xoopsModule->getVar('mid');
     $xoopsModuleConfig = $config_handler->getConfigsByCat(0, $module_id);
 
-    $jquery_path = get_jquery(true); //一般只要此行即可
+    get_jquery(true); //一般只要此行即可
 
-    $block['jquery_path'] = $jquery_path;
-    $block['firstDay']    = $xoopsModuleConfig['cal_start'];
+    $block['firstDay'] = $xoopsModuleConfig['cal_start'];
 
     $ver = intval(str_replace('.', '', substr(XOOPS_VERSION, 6, 5)));
     if ($ver >= 259) {
@@ -26,5 +25,17 @@ function tad_cal_calendar($options)
     } else {
         $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate-1.4.1.min.js');
     }
+
+    $xoTheme->addStylesheet('modules/tad_cal/module.css');
+    $xoTheme->addStylesheet('modules/tadtools/fullcalendar/redmond/theme.css');
+    $xoTheme->addStylesheet('modules/tadtools/fullcalendar/fullcalendar.css');
+    $xoTheme->addStylesheet('modules/tadtools/jquery.qtip_2/jquery.qtip.min.css');
+
+    $xoTheme->addScript('modules/tadtools/moment/moment-with-locales.min.js');
+    $xoTheme->addScript('modules/tad_cal/class/jquery-impromptu.6.2.3.min.js');
+    $xoTheme->addScript('modules/tadtools/fullcalendar/fullcalendar.js');
+    $xoTheme->addScript('modules/tadtools/fullcalendar/gcal.js');
+    $xoTheme->addScript('modules/tadtools/jquery.qtip_2/jquery.qtip.min.js');
+
     return $block;
 }

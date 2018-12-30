@@ -98,9 +98,9 @@ function tad_cal_event_form($sn = "", $mode = '', $stamp = "")
     } else {
         $of_cate_title = _MD_TADCAL_CATE_SN;
         $cate_col      = "
-          <select name='cate_sn' size=1 class='span12 form-control'>
-          {$get_tad_cal_cate_menu_options}
-          </select>";
+        <select name='cate_sn' size=1 class='span12 form-control'>
+        {$get_tad_cal_cate_menu_options}
+        </select>";
     }
 
     $xoopsTpl->assign("of_cate_title", $of_cate_title);
