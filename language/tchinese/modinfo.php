@@ -38,7 +38,7 @@ define('_MI_TADCAL_SU', '星期日');
 define('_MI_TADCAL_MO', '星期一');
 
 define('_MI_TADCAL_DIRNAME', basename(dirname(dirname(__DIR__))));
-define('_MI_TADCAL_HELP_HEADER', __DIR__ . '/help/helpheader.html');
+define('_MI_TADCAL_HELP_HEADER', __DIR__ . '/help/helpheader.tpl');
 define('_MI_TADCAL_BACK_2_ADMIN', '管理');
 
 //help
