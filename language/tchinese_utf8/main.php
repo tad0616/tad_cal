@@ -63,6 +63,9 @@ define('_MD_TADCAL_SIMPLE_EVENT', '事件項目');
 define('_MD_TADCAL_DL_TYPE', '下載內容');
 define('_MD_TADCAL_ONLY_EVENT', '僅下載有事件的日期');
 define('_MD_TADCAL_ALL_DATE', '下載所有日期');
+define('_MD_TADCAL_ALL_WEEK', '下載周曆');
 define('_MD_TADCAL_SHOW_TYPE', '呈現方式');
 define('_MD_TADCAL_SEPARATE', '分開呈現');
 define('_MD_TADCAL_MERGE', '合併呈現');
+
+define('_MD_TADCAL_MONTH_STR', '一月,二月,三月,四月,五月,六月,七月,八月,九月,十月,十一月,十二月');

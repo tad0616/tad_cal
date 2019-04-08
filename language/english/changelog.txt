@@ -1,16 +1,58 @@
-Tad Cal 2.8.1 (2016-05-26 release)
+Tad Cal 2.8.8 (released on 2019-01-01)
+================================
+1.Support BootStrap4
+2.Support PHP 7.3
+
+
+Tad Cal 2.8.7 (released on 2018-05-23)
+================================
+1. Mandatory date type conversion
+2. Supports PHP 7.2
+3. Support database strict mode
+4. Delete the tchinese Big5 language
+5. Fix the problem that the authority mechanism is invalid
+6. Fixed an issue with download options in the word file
+
+
+Tad Cal 2.8.6 (released on 2018-01-09)
+================================
+1. Support for PHP 7.1
+2. Correction across events can not be displayed
+
+
+Tad Cal 2.8.5 (released on 2017-12-27)
+===============================================
+1. Fixed gcal.js import path is not correct
+
+Tad Cal 2.8.4 (released on 2017-10-03)
+===============================================
+1.Fixed a problem with the calendar color is not correct
+
+
+Tad Cal 2.8.3 (released on 2017-09-28)
+===============================================
+1.Fixed in XOOPS 2.5.9 charge can not click to add new events (thanks to 王彥傑)
+
+
+Tad Cal 2.8.2 (released on 2017-01-08)
+===============================================
+ 1.Change the col-md of boootstrap to col-sm
+ 2.The compatibility of XOOPS 2.5.8
+
+
+Tad Cal 2.8.1 (released on 2016-05-26)
 ===============================================
 1.Remove BootStrap2 Code
 
 
-Tad Cal 2.8 (2016-05-24 release)
+Tad Cal 2.8 (released on 2016-05-24)
 ===============================================
  1.Support PHP7
  2.Remove BootStrap2
  3.Fixed the problem with repeat events can't be add.
 
 
-Tad Cal 2.7 (2015-07-13 release)
+Tad Cal 2.7 (released on 2015-07-13)
 ===============================================
  1. Thanks Michael Beck in English language
  2. Modify the PHP code to conform to specifications PSR2
@@ -19,35 +61,35 @@ Tad Cal 2.7 (2015-07-13 release)
  5. Temporarily disable Google Calendar import function
 
 
-Tad Cal 2.61 (2014-09-25 release)
+Tad Cal 2.61 (released on 2014-09-25)
 ===============================================
  1. Modify the program so that it conforms with WCAG
  2. Fixed in MySQL strict mode can not issue new event
 
 
-Tad Cal 2.6 (2014-08-17 release)
+Tad Cal 2.6 (released on 2014-08-17)
 ===============================================
  1.Fixed language duplication
 
-Tad Cal 2.5 (2014-06-16 release)
+Tad Cal 2.5 (released on 2014-06-16)
 ===============================================
  1. Add optional weekly Preferences option from the start of Monday or Sunday
  2. Fixed uid field is mediumint (8) Format
 
 
-Tad Cal 2.4 (2014-05-02 release)
+Tad Cal 2.4 (released on 2014-05-02)
 ===============================================
  1. To solve the new version of FireFox or chrome if transparency color selection, will be showing a black problem.
  2. Fix the error message at the bottom of the message FB
 
 
-Tad Cal 2.3 (2014-04-15 release)
+Tad Cal 2.3 (released on 2014-04-15)
 ===============================================
  1. Amend large block calendar can not sync bug
  2. fine-tuning the program to avoid duplication of functions
 
 
-Tad Cal 2.2 (2014-04-14 release)
+Tad Cal 2.2 (released on 2014-04-14)
 ===============================================
  1. streamlining common functions (need tadtools 2.06 above)
  2. Amendments to the list of recent items will have recurring bug
@@ -55,7 +97,7 @@ Tad Cal 2.2 (2014-04-14 release)
  4. improve quickly add events, no need to refresh the entire page.
 
 
-Tad Cal 2.1 (2014-01-18 release)
+Tad Cal 2.1 (released on 2014-01-18)
 ===============================================
   1. Adjust the calendar setting screen
   2. Adjust the color can not be set when the new issue calendar
@@ -65,7 +107,7 @@ Tad Cal 2.1 (2014-01-18 release)
   6. Fixed resume downloading without content problem
   7. Increase resume download various setting items
 
-Tad Cal 2.0 (2013-07-29 release)
+Tad Cal 2.0 (released on 2013-07-29)
 ===============================================
  1. Fixed calendar button layout problems (lack of year and month).
  2. Add facebook message box switch
@@ -74,14 +116,14 @@ Tad Cal 2.0 (2013-07-29 release)
  5. Modify the XOOPS 2.5 architecture
 
 
-Tad Cal 1.1 (2012-11-01 release)
+Tad Cal 1.1 (released on 2012-11-01)
 ===============================================
  1. Update fullcalendar to version 1.5.4 to support jquery 1.8 or later
  2. Add facebook message switch
  3. Click below to view a single calendar content Calendar
 
 
-Tad Cal 1.0 (forget there is no release)
+Tad Cal 1.0 (forget there is no)
 ===============================================
  Permissions 1. Fixed release event is evaluated not the right questions.
  2. Add the distal automatic synchronization calendar function.
@@ -89,7 +131,7 @@ Tad Cal 1.0 (forget there is no release)
  4. Fixed few small month calendar month block problem.
 
 
-Tad Cal 1.0 RC1 (2011-11-11 release)
+Tad Cal 1.0 RC1 (released on 2011-11-11)
 ===============================================
  1. Fixed issue permission judgment is incorrect.
  2. redefinition of the term, the abolition of "classification" of the term, to avoid confusion.

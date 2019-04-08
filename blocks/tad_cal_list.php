@@ -3,7 +3,9 @@
 //區塊主函式 (待辦事項(tad_cal_list))
 function tad_cal_list($options)
 {
-    global $xoopsDB, $xoopsUser, $xoopsTpl;
+    global $xoopsDB, $xoopsUser, $xoopsTpl, $xoTheme;
+    $xoTheme->addStylesheet('modules/tadtools/css/vertical_menu.css');
+
     include_once XOOPS_ROOT_PATH . "/modules/tad_cal/function_block.php";
 
     //取得目前使用者可讀的群組
@@ -19,9 +21,9 @@ function tad_cal_list($options)
     $sql = "select * from " . $xoopsDB->prefix("tad_cal_event") . " where `start` >= '$even_start' and `end` <= '$even_end' $and_ok_cate order by `start` , `sequence`";
     //die($sql);
 
-    $result    = $xoopsDB->query($sql) or web_error($sql);
+    $result    = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
     $i         = 0;
-    $all_event = "";
+    $all_event = array();
     while ($all = $xoopsDB->fetchArray($result)) {
         //以下會產生這些變數： $sn , $title , $start , $end , $recurrence , $location , $kind , $details , $etag , $id , $sequence , $uid , $cate_sn
         foreach ($all as $k => $v) {
@@ -38,7 +40,7 @@ function tad_cal_list($options)
     //抓出重複事件
     $sql = "select a.*,b.title,b.cate_sn from " . $xoopsDB->prefix("tad_cal_repeat") . " as a join " . $xoopsDB->prefix("tad_cal_event") . " as b on a.sn=b.sn where a.`start` >= '$even_start' and a.`end` <= '$even_end' $and_ok_cate2 order by a.`start`";
 //die($sql);
-    $result = $xoopsDB->queryF($sql) or web_error($sql);
+    $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
     while ($all = $xoopsDB->fetchArray($result)) {
         //以下會產生這些變數： $sn , $title , $start , $end , $recurrence , $location , $kind , $details , $etag , $id , $sequence , $uid , $cate_sn
@@ -51,7 +53,7 @@ function tad_cal_list($options)
 
     }
 
-    $content = $event = "";
+    $content = $event = array();
     $i       = 0;
     if (is_array($all_event)) {
         foreach ($all_event as $start => $arr) {
@@ -63,7 +65,7 @@ function tad_cal_list($options)
             }
             $content[$i]['start'] = $start;
             $content[$i]['event'] = $event;
-            $event                = "";
+            $event                = array();
             $i++;
         }
     }
@@ -77,8 +79,13 @@ function tad_cal_list_edit($options)
 {
 
     $form = "
-  " . _MB_TADCAL_TAD_CAL_LIST_EDIT_BITEM0 . "
-  <INPUT type='text' name='options[0]' value='{$options[0]}'>
-  ";
+    <ol class='my-form'>
+        <li class='my-row'>
+            <lable class='my-label'>" . _MB_TADCAL_TAD_CAL_LIST_EDIT_BITEM0 . "</lable>
+            <div class='my-content'>
+                <input type='text' class='my-input' name='options[0]' value='{$options[0]}' size=6>
+            </div>
+        </li>
+    </ol>";
     return $form;
 }

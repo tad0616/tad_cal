@@ -2,13 +2,13 @@
 //區塊主函式 (大行事曆(tad_cal_full_calendar))
 function tad_cal_full_calendar($options)
 {
-    global $xoopsUser, $xoopsTpl;
+    global $xoopsUser, $xoopsTpl, $xoTheme;
 
-    $modhandler        = xoops_gethandler('module');
-    $xoopsModule       = &$modhandler->getByDirname("tad_cal");
-    $config_handler    = xoops_gethandler('config');
+    $modhandler        = xoops_getHandler('module');
+    $xoopsModule       = $modhandler->getByDirname("tad_cal");
+    $config_handler    = xoops_getHandler('config');
     $module_id         = $xoopsModule->getVar('mid');
-    $xoopsModuleConfig = &$config_handler->getConfigsByCat(0, $module_id);
+    $xoopsModuleConfig = $config_handler->getConfigsByCat(0, $module_id);
 
     if ($xoopsUser) {
         $isAdmin = $xoopsUser->isAdmin($module_id);
@@ -35,7 +35,7 @@ function tad_cal_full_calendar($options)
         $xoopsModuleConfig['eventTheme'] = 'ui-tooltip-blue';
     }
 
-    $style = make_style();
+    $style_mark = style_mark();
 
     if (empty($cate_sn)) {
         $cate_sn = 0;
@@ -54,63 +54,62 @@ function tad_cal_full_calendar($options)
 
             //快速新增功能
             $eventAdd = "selectable: true,
-      selectHelper: true,
-      select: function(start, end, allDay) {
-        var promptBox = \"" . _MB_TADCAL_TITLE . _TAD_FOR . "<input type='text' id='eventTitle' name='eventTitle' value='' /><br>$cate\";
+            selectHelper: true,
+            select: function(start, end) {
+                var promptBox = \"" . _MB_TADCAL_TITLE . _TAD_FOR . "<input type='text' id='eventTitle' name='eventTitle' value='' /><br>$cate\";
 
-        function mycallbackform(v,m,f){
-          if(v != undefined){
-            calendar.fullCalendar('renderEvent',
-              {
-                title: f.eventTitle,
-                start: start,
-                end: end,
-                allDay: allDay
-              },
-              false // make the event 'stick'
-            );
-            $.post('" . XOOPS_URL . "/modules/tad_cal/event.php', {op: 'insert_tad_cal_event', fc_start: start.getTime(), fc_end: end.getTime(), title: f.eventTitle, cate_sn: f.cate_sn, new_cate_title: f.new_cate_title},function(){
-              calendar.fullCalendar('refetchEvents');
-            });
-          }
-        }
+                function mycallbackform(e,v,m,f){
+                if(v != undefined){
+                    calendar.fullCalendar('renderEvent',
+                    {
+                        title: f.eventTitle,
+                        start: start,
+                        end: end,
+                        allDay: !start.hasTime()
+                    },
+                    false // make the event 'stick'
+                    );
+                    $.post('" . XOOPS_URL . "/modules/tad_cal/event.php', {op: 'insert_tad_cal_event', start: start.format(), end: end.format(), fc: '1', allday: start.hasTime() ? '0' : '1', title: f.eventTitle, cate_sn: f.cate_sn, new_cate_title: f.new_cate_title},function(){
+                    calendar.fullCalendar('refetchEvents');
+                    });
+                }
+                }
 
-        function mysubmitfunc(v,m,f){
-          an = m.children('#eventTitle');
+                function mysubmitfunc(e,v,m,f){
+                an = m.children('#eventTitle');
 
-          if(f.eventTitle == ''){
-            an.css('border','solid #ff0000 1px');
-            return false;
-          }
-          return true;
-        }
+                if(f.eventTitle == ''){
+                    an.css('border','solid #ff0000 1px');
+                    return false;
+                }
+                mycallbackform(e,v,m,f);
+                return true;
+                }
 
-        $.prompt(promptBox,{
-          callback: mycallbackform,
-          submit: mysubmitfunc,
-          zIndex: 99999,
-          buttons: { Ok:true }
-        });
-        $('#eventTitle').focus();
+                $.prompt(promptBox,{
+                submit: mysubmitfunc,
+                zIndex: 99999,
+                buttons: { Ok:true }
+                });
+                $('#eventTitle').focus();
 
-        $('#eventTitle').keypress(function(event) {
-          if (event.keyCode == '13') {
-             $('#jqi_state0_buttonOk').click();
-           }
-        });
-        calendar.fullCalendar('unselect');
-      },
-      ";
+                $('#eventTitle').keypress(function(event) {
+                if (event.keyCode == '13') {
+                    $('#jqi_state0_buttonOk').click();
+                }
+                });
+                calendar.fullCalendar('unselect');
+            },
+            ";
 
             //拖曳搬移功能
             $eventDrop = "editable:true,
-      eventDrop: function(event,dayDelta,minuteDelta,allDay,revertFunc) {
-        var startTime=event.start.getTime();
-        $.post('event.php', {op: 'ajax_update_date', dayDelta: dayDelta , minuteDelta: minuteDelta  , sn: event.id },function(data){
-          alert(data);
-        });
-      },
-      ";
+            eventDrop: function(event,delta,revertFunc) {
+                $.post('" . XOOPS_URL . "/modules/tad_cal/event.php', {op: 'ajax_update_date', delta: delta.asSeconds(), sn: event.id },function(data){
+                alert(data);
+                });
+            },
+            ";
 
         }
 
@@ -118,12 +117,30 @@ function tad_cal_full_calendar($options)
 
     $block['eventDrop']     = $eventDrop;
     $block['eventAdd']      = $eventAdd;
-    $block['style_css']     = $style['css'];
     $block['cate_sn']       = $cate_sn;
     $block['eventShowMode'] = $xoopsModuleConfig['eventShowMode'];
     $block['eventTheme']    = $xoopsModuleConfig['eventTheme'];
-    $block['style_mark']    = $style['mark'];
+    $block['style_mark']    = $style_mark;
     $block['my_counter']    = my_counter();
     $block['firstDay']      = $xoopsModuleConfig['cal_start'];
+
+    $ver = intval(str_replace('.', '', substr(XOOPS_VERSION, 6, 5)));
+    if ($ver >= 259) {
+        $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate-3.0.0.min.js');
+    } else {
+        $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate-1.4.1.min.js');
+    }
+
+    $xoTheme->addStylesheet('modules/tad_cal/module.css');
+    $xoTheme->addStylesheet('modules/tadtools/fullcalendar/redmond/theme.css');
+    $xoTheme->addStylesheet('modules/tadtools/fullcalendar/fullcalendar.css');
+    $xoTheme->addStylesheet('modules/tadtools/jquery.qtip_2/jquery.qtip.min.css');
+
+    $xoTheme->addScript('modules/tadtools/moment/moment-with-locales.min.js');
+    $xoTheme->addScript('modules/tad_cal/class/jquery-impromptu.6.2.3.min.js');
+    $xoTheme->addScript('modules/tadtools/fullcalendar/fullcalendar.js');
+    $xoTheme->addScript('modules/tadtools/fullcalendar/gcal.js');
+    $xoTheme->addScript('modules/tadtools/jquery.qtip_2/jquery.qtip.min.js');
+
     return $block;
 }

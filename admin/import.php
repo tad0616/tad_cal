@@ -64,7 +64,7 @@ function import_google($cate_sn = "")
         $uid = ($xoopsUser) ? $xoopsUser->getVar('uid') : "";
 
         $sql    = "select * from " . $xoopsDB->prefix("tad_cal_cate") . " where cate_sn='$cate_sn'";
-        $result = $xoopsDB->queryF($sql) or web_error($sql);
+        $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
         $all    = $xoopsDB->fetchArray($result);
 
         //以下會產生這些變數： $cate_sn , $cate_title , $cate_sort , $cate_enable , $cate_handle , $enable_group , $enable_upload_group , $google_id , $google_pass
@@ -72,7 +72,7 @@ function import_google($cate_sn = "")
             $$k = $v;
         }
 
-        $myts = &MyTextSanitizer::getInstance();
+        $myts = MyTextSanitizer::getInstance();
         $now  = date('Y-m-d H:i:s', time());
 
         date_default_timezone_set('Asia/Taipei');
@@ -96,7 +96,7 @@ function import_google($cate_sn = "")
                 $sql = "insert into " . $xoopsDB->prefix("tad_cal_event") . "
         (`title` , `start` , `end` , `recurrence` , `location` , `kind` , `details` , `etag` , `id` , `sequence` , `uid` , `cate_sn` , `allday` , `tag` , `last_update`)
         values('{$title}' , '{$start}' , '{$end}' , '{$recurrence}' , '{$location}' , '{$kind}' , '{$details}' , '{$etag}' , '{$id}' , '{$sequence}' , '{$uid}' , '{$cate_sn}' , '{$allday}' , '{$tag}' , '{$now}') ON DUPLICATE KEY UPDATE `title`='{$title}' , `start`='{$start}' , `end`='{$end}' , `recurrence`='{$recurrence}' , `location`='{$location}' , `kind`='{$kind}' , `details`='{$details}' , `etag`='{$etag}' , `id`='{$id}' , `sequence`='{$sequence}' , `uid`= '{$uid}' , `cate_sn`='{$cate_sn}' , `allday`='{$allday}' , `tag`='{$tag}' , `last_update`='{$now}'";
-                $xoopsDB->queryF($sql) or web_error($sql);
+                $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
                 //取得最後新增資料的流水編號
                 $sn = $xoopsDB->getInsertId();
@@ -113,7 +113,7 @@ function import_google($cate_sn = "")
         }
         $now = date("Y-m-d H:i:s");
         $sql = "delete from " . $xoopsDB->prefix("tad_cal_event") . " where cate_sn='{$cate_sn}' and `last_update` < '{$now}'";
-        $xoopsDB->queryF($sql) or web_error($sql);
+        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
         if (isset($_SESSION['import_google'])) {
             unset($_SESSION['import_google']);
         }

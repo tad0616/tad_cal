@@ -11,7 +11,7 @@ CREATE TABLE `tad_cal_cate` (
   `cate_bgcolor` varchar(255) NOT NULL COMMENT '背景顏色',
   `cate_color` varchar(255) NOT NULL COMMENT '前景顏色',
   PRIMARY KEY (`cate_sn`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `tad_cal_event` (
   `sn` smallint(6) unsigned NOT NULL auto_increment COMMENT '事件編號',
@@ -32,7 +32,7 @@ CREATE TABLE `tad_cal_event` (
   `last_update` DATETIME NOT NULL COMMENT '最後更新時間',
   PRIMARY KEY (`sn`),
   UNIQUE KEY `id` (`id`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
 CREATE TABLE `tad_cal_repeat` (
@@ -41,4 +41,4 @@ CREATE TABLE `tad_cal_repeat` (
   `end` datetime NOT NULL COMMENT '事件結束時間',
   `allday` ENUM( '0', '1' ) NOT NULL COMMENT '整天事件',
   UNIQUE KEY `start` (`sn`,`start`)
-) ENGINE=MyISAM;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;

@@ -12,7 +12,7 @@ function create_cate($title = '', $sort = '', $handle = '', $enable_group = '', 
 {
     global $xoopsDB;
 
-    $myts  = &MyTextSanitizer::getInstance();
+    $myts  = MyTextSanitizer::getInstance();
     $title = $myts->addSlashes($title);
     if (empty($sort)) {
         $sort = tad_cal_cate_max_sort();
@@ -21,14 +21,14 @@ function create_cate($title = '', $sort = '', $handle = '', $enable_group = '', 
     $sql = "insert into " . $xoopsDB->prefix("tad_cal_cate") . "
   (`cate_title` , `cate_sort` , `cate_enable` , `cate_handle` , `enable_group` , `enable_upload_group` , `google_id` , `google_pass`, `cate_color`)
   values('{$title}' , '{$sort}' , '1' , '{$handle}' , '{$enable_group}' , '{$enable_upload_group}' , '{$google_id}' , '{$google_pass}','rgb(0,0,0)')";
-    $xoopsDB->queryF($sql) or web_error($sql);
+    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
     //取得最後新增資料的流水編號
     $cate_sn = $xoopsDB->getInsertId();
 
     //自動給顏色碼
     $color = num2color($cate_sn);
     $sql   = "update " . $xoopsDB->prefix("tad_cal_cate") . " set `cate_bgcolor`='{$color}' where `cate_sn`='$cate_sn'";
-    $xoopsDB->queryF($sql) or web_error($sql);
+    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
     return $cate_sn;
 }
 
@@ -37,7 +37,7 @@ function tad_cal_cate_max_sort()
 {
     global $xoopsDB;
     $sql        = "select max(`cate_sort`) from " . $xoopsDB->prefix("tad_cal_cate");
-    $result     = $xoopsDB->query($sql) or web_error($sql);
+    $result     = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
     list($sort) = $xoopsDB->fetchRow($result);
     return ++$sort;
 }
@@ -51,7 +51,7 @@ function get_tad_cal_cate($cate_sn = "")
     }
 
     $sql    = "select * from " . $xoopsDB->prefix("tad_cal_cate") . " where cate_sn='$cate_sn'";
-    $result = $xoopsDB->query($sql) or web_error($sql);
+    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
     $data   = $xoopsDB->fetchArray($result);
     return $data;
 }
@@ -62,7 +62,7 @@ function num2color($cate_sn = '')
     $R      = $G      = $B      = 255;
     $m      = ceil($cate_sn / 3);
     $n      = $cate_sn % 3;
-    $degree = intval($cate_sn) * 10 * $m;
+    $degree = (int)$cate_sn * 10 * $m;
 
     $cor = array("R", "G", "B");
     ${$cor[$n]} -= $degree;
@@ -98,7 +98,7 @@ function get_tad_cal_cate_all()
 {
     global $xoopsDB;
     $sql    = "select * from " . $xoopsDB->prefix("tad_cal_cate");
-    $result = $xoopsDB->query($sql) or web_error($sql);
+    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
     while ($data = $xoopsDB->fetchArray($result)) {
         $cate_sn            = $data['cate_sn'];
         $data_arr[$cate_sn] = $data;
@@ -111,7 +111,7 @@ function get_cal_array()
 {
     global $xoopsDB;
     $sql    = "select cate_sn,cate_title from " . $xoopsDB->prefix("tad_cal_cate") . "";
-    $result = $xoopsDB->queryF($sql) or web_error($sql);
+    $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
     while (list($cate_sn, $cate_title) = $xoopsDB->fetchRow($result)) {
         $arr[$cate_sn] = $cate_title;
     }
