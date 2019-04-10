@@ -2,13 +2,13 @@
 
 function xoops_module_install_tad_cal(&$module) {
 
-  mk_dir(XOOPS_ROOT_PATH."/uploads/tad_cal");
+  tad_cal_mk_dir(XOOPS_ROOT_PATH."/uploads/tad_cal");
 
   return true;
 }
 
 //建立目錄
-function mk_dir($dir=""){
+function tad_cal_mk_dir($dir=""){
   //若無目錄名稱秀出警告訊息
   if(empty($dir))return;
   //若目錄不存在的話建立目錄
