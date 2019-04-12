@@ -35,7 +35,7 @@ if (!function_exists("chk_tad_cal_cate_power")) {
             }
             $user_array = $xoopsUser->getGroups();
         } else {
-            $user_array = array(3);
+            $user_array = [3];
             $isAdmin    = 0;
         }
 

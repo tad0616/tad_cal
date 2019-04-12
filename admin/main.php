@@ -16,7 +16,7 @@ function tad_cal_cate_form($cate_sn = "")
     if (!empty($cate_sn)) {
         $DBV = get_tad_cal_cate($cate_sn);
     } else {
-        $DBV = array();
+        $DBV = [];
     }
 
     //預設值設定
@@ -40,7 +40,7 @@ function tad_cal_cate_form($cate_sn = "")
     $enable_group = (!isset($DBV['enable_group'])) ? "" : explode(",", $DBV['enable_group']);
 
     //設定「enable_upload_group」欄位預設值
-    $enable_upload_group = (!isset($DBV['enable_upload_group'])) ? array('1') : explode(",", $DBV['enable_upload_group']);
+    $enable_upload_group = (!isset($DBV['enable_upload_group'])) ? ['1'] : explode(",", $DBV['enable_upload_group']);
 
     //設定「google_id」欄位預設值
     $google_id = (!isset($DBV['google_id'])) ? "" : $DBV['google_id'];
@@ -198,7 +198,7 @@ function list_tad_cal_cate($show_function = 1)
 
     $function_title = ($show_function) ? "<th>" . _TAD_FUNCTION . "</th>" : "";
 
-    $all_content = array();
+    $all_content = [];
     $i           = 0;
     // $last        = "";
     while ($all = $xoopsDB->fetchArray($result)) {
@@ -255,7 +255,7 @@ function link_to_google($id = "", $pass = "")
 {
     global $xoopsDB, $xoopsTpl;
 
-    $cate_title_arr = array();
+    $cate_title_arr = [];
     //抓出現有google行事曆
     $sql    = "select `cate_title`,`cate_handle` from " . $xoopsDB->prefix("tad_cal_cate") . " where `cate_handle`!=''";
     $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
@@ -273,7 +273,7 @@ function link_to_google($id = "", $pass = "")
         redirect_header($_SERVER['PHP_SELF'], 3, _MA_TADCAL_NO_GOOGLE_CAL);
     }
     $i   = 0;
-    $all = array();
+    $all = [];
     foreach ($Calendars as $j => $cal) {
         $Events = $gmail->getEvents($cal['handle'], 10);
         if (empty($Events['data']['items'])) {

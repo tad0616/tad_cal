@@ -64,7 +64,7 @@ function num2color($cate_sn = '')
     $n      = $cate_sn % 3;
     $degree = (int)$cate_sn * 10 * $m;
 
-    $cor = array("R", "G", "B");
+    $cor = ["R", "G", "B"];
     ${$cor[$n]} -= $degree;
 
     return "rgb({$R},{$G},{$B})";

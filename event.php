@@ -31,7 +31,7 @@ function tad_cal_event_form($sn = "", $mode = '', $stamp = "")
     if (!empty($sn)) {
         $DBV = get_tad_cal_event($sn);
     } else {
-        $DBV = array();
+        $DBV = [];
     }
 
     //預設值設定
@@ -109,8 +109,8 @@ function tad_cal_event_form($sn = "", $mode = '', $stamp = "")
     //紀錄目前結束-開始的時間差
     $long = strtotime($end) - strtotime($start);
 
-    $rrule_array = array();
-    $rrule_arr   = array();
+    $rrule_array = [];
+    $rrule_arr   = [];
     if (!empty($recurrence)) {
         $ical = new ical();
         $ical->parse($recurrence);
@@ -153,9 +153,9 @@ function tad_cal_event_form($sn = "", $mode = '', $stamp = "")
         $INTERVAL_OPT .= "<option value='$i' $selected>$i</option>";
     }
 
-    $weekday         = array("SU" => _MD_TADCAL_SU, "MO" => _MD_TADCAL_MO, "TU" => _MD_TADCAL_TU, "WE" => _MD_TADCAL_WE, "TH" => _MD_TADCAL_TH, "FR" => _MD_TADCAL_FR, "SA" => _MD_TADCAL_SA);
+    $weekday         = ["SU" => _MD_TADCAL_SU, "MO" => _MD_TADCAL_MO, "TU" => _MD_TADCAL_TU, "WE" => _MD_TADCAL_WE, "TH" => _MD_TADCAL_TH, "FR" => _MD_TADCAL_FR, "SA" => _MD_TADCAL_SA];
     $week_repeat_col = "";
-    $warr            = (isset($rrule_arr['RRULE']['FREQ']) and $rrule_arr['RRULE']['FREQ'] == 'WEEKLY') ? explode(",", $rrule_arr['RRULE']['BYDAY']) : array(strtoupper(substr(date("D", strtotime($start)), 0, 2)));
+    $warr            = (isset($rrule_arr['RRULE']['FREQ']) and $rrule_arr['RRULE']['FREQ'] == 'WEEKLY') ? explode(",", $rrule_arr['RRULE']['BYDAY']) : [strtoupper(substr(date("D", strtotime($start)), 0, 2))];
 
     foreach ($weekday as $en => $ch) {
         $checked = (in_array($en, $warr)) ? "checked" : "";
@@ -524,7 +524,7 @@ function list_tad_cal_event()
 
     $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
-    $all_content = array();
+    $all_content = [];
 
     while ($all = $xoopsDB->fetchArray($result)) {
         //以下會產生這些變數： $sn , $title , $start , $end , $recurrence , $location , $kind , $details , $etag , $id , $sequence , $uid , $cate_sn

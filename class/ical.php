@@ -120,7 +120,7 @@ class ical
      */
     public function parse($text)
     {
-        $this->cal = array(); // new empty array
+        $this->cal = []; // new empty array
 
         $this->event_count = -1;
 
@@ -235,7 +235,7 @@ class ical
     {
         preg_match("/([^:]+)[:]([\w\W]+)/", $text, $matches);
         if (empty($matches)) {
-            return array(false, $text);
+            return [false, $text];
         } else {
             $matches = array_splice($matches, 1, 2);
             // die(var_export($matches));
@@ -303,7 +303,7 @@ class ical
         if (empty($temp[1])) // neni TZID
         {
             $data = str_replace('T', '', $data);
-            return array($key, $value);
+            return [$key, $value];
         }
         // pridani $value a $tzid do pole
         $key                      = $temp[0];
@@ -311,7 +311,7 @@ class ical
         $return_value[$temp[0]]   = $temp[1];
         $return_value['unixtime'] = $value;
 
-        return array($key, $return_value);
+        return [$key, $return_value];
     }
     /**
      * Return sorted eventlist as array or false if calenar is empty
@@ -322,7 +322,7 @@ class ical
     {
         $temp = $this->get_event_list();
         if (!empty($temp)) {
-            usort($temp, array(&$this, "ical_dtstart_compare"));
+            usort($temp, [&$this, "ical_dtstart_compare"]);
             return $temp;
         } else {
             return false;

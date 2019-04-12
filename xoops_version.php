@@ -1,5 +1,5 @@
 <?php
-$modversion = array();
+$modversion = [];
 
 //---模組基本資訊---//
 $modversion['name']        = _MI_TADCAL_NAME;
@@ -24,7 +24,7 @@ $modversion['min_php']             = 5.4;
 $modversion['min_xoops']           = '2.5';
 
 //---paypal資訊---//
-$modversion['paypal']                  = array();
+$modversion['paypal']                  = [];
 $modversion['paypal']['business']      = 'tad0616@gmail.com';
 $modversion['paypal']['item_name']     = 'Donation : ' . _MI_TAD_WEB;
 $modversion['paypal']['amount']        = 0;
@@ -94,7 +94,7 @@ $modversion['config'][0]['description'] = '_MI_TADCAL_EVENTSHOWMODE_DESC';
 $modversion['config'][0]['formtype']    = 'select';
 $modversion['config'][0]['valuetype']   = 'text';
 $modversion['config'][0]['default']     = 'eventClick';
-$modversion['config'][0]['options']     = array(_MI_TADCAL_CONF0_OPT1 => 'eventClick', _MI_TADCAL_CONF0_OPT2 => 'eventMouseover');
+$modversion['config'][0]['options']     = [_MI_TADCAL_CONF0_OPT1 => 'eventClick', _MI_TADCAL_CONF0_OPT2 => 'eventMouseover'];
 
 $modversion['config'][1]['name']        = 'eventTheme';
 $modversion['config'][1]['title']       = '_MI_TADCAL_EVENTTHEME';
@@ -102,7 +102,7 @@ $modversion['config'][1]['description'] = '_MI_TADCAL_EVENTTHEME_DESC';
 $modversion['config'][1]['formtype']    = 'select';
 $modversion['config'][1]['valuetype']   = 'text';
 $modversion['config'][1]['default']     = 'ui-tooltip-blue';
-$modversion['config'][1]['options']     = array(_MI_TADCAL_CONF1_OPT1 => 'ui-tooltip', _MI_TADCAL_CONF1_OPT2 => 'ui-tooltip-light', _MI_TADCAL_CONF1_OPT3 => 'ui-tooltip-dark', _MI_TADCAL_CONF1_OPT4 => 'ui-tooltip-red', _MI_TADCAL_CONF1_OPT5 => 'ui-tooltip-blue', _MI_TADCAL_CONF1_OPT6 => 'ui-tooltip-green');
+$modversion['config'][1]['options']     = [_MI_TADCAL_CONF1_OPT1 => 'ui-tooltip', _MI_TADCAL_CONF1_OPT2 => 'ui-tooltip-light', _MI_TADCAL_CONF1_OPT3 => 'ui-tooltip-dark', _MI_TADCAL_CONF1_OPT4 => 'ui-tooltip-red', _MI_TADCAL_CONF1_OPT5 => 'ui-tooltip-blue', _MI_TADCAL_CONF1_OPT6 => 'ui-tooltip-green'];
 
 $modversion['config'][2]['name']        = 'title_num';
 $modversion['config'][2]['title']       = '_MI_TADCAL_TITLE_NUM';
@@ -145,4 +145,4 @@ $modversion['config'][7]['description'] = '_MI_CAL_START_DESC';
 $modversion['config'][7]['formtype']    = 'select';
 $modversion['config'][7]['valuetype']   = 'int';
 $modversion['config'][7]['default']     = '1';
-$modversion['config'][7]['options']     = array(_MI_TADCAL_SU => '0', _MI_TADCAL_MO => '1');
+$modversion['config'][7]['options']     = [_MI_TADCAL_SU => '0', _MI_TADCAL_MO => '1'];

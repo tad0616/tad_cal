@@ -164,7 +164,7 @@ class RRule
         $this->_first    = new iCalDate($start);
         $this->_finished = false;
         $this->_started  = false;
-        $this->_dates    = array();
+        $this->_dates    = [];
         $this->_current  = -1;
 
         $this->_rule = preg_replace('/\s/m', '', $rrule);
@@ -175,7 +175,7 @@ class RRule
         //echo sprintf("<br> new RRule: Start: %s, RRULE: %s", $start->Render(), $this->_rule );
 
         $parts       = explode(';', $this->_rule);
-        $this->_part = array('INTERVAL' => 1);
+        $this->_part = ['INTERVAL' => 1];
         foreach ($parts as $k => $v) {
             list($type, $value) = explode('=', $v, 2);
             //echo sprintf("<br> Parts of %s explode into %s and %s", $v, $type, $value );
@@ -218,7 +218,7 @@ class RRule
         echo "<hr>";
          */
 
-        $ok_days = array();
+        $ok_days = [];
 
         $ptr = $this->_current;
 
@@ -305,7 +305,7 @@ class RRule
             return $next;
         }
 
-        $days = array();
+        $days = [];
         if (isset($this->_part['WKST'])) {
             $next->SetWeekStart($this->_part['WKST']);
         }
@@ -453,7 +453,7 @@ class iCalDate
     /** Which day of the week does the week start on */
     public $_wkst;
 
-    public $ical_weekdays = array('SU' => 0, 'MO' => 1, 'TU' => 2, 'WE' => 3, 'TH' => 4, 'FR' => 5, 'SA' => 6);
+    public $ical_weekdays = ['SU' => 0, 'MO' => 1, 'TU' => 2, 'WE' => 3, 'TH' => 4, 'FR' => 5, 'SA' => 6];
 
     /**#@-*/
 
@@ -874,7 +874,7 @@ return $result;
         //echo sprintf("<br> Applying BYDAY %s to month", $byday );
         $days_in_month = $this->DaysInMonth();
         $dayrules      = explode(',', $byday);
-        $set           = array();
+        $set           = [];
         $first_dow     = (date('w', $this->_epoch) - $this->_dd + 36) % 7;
         foreach ($dayrules as $k => $v) {
             $days = $this->MonthDays($first_dow, $days_in_month, $v);
@@ -896,7 +896,7 @@ return $result;
         //echo sprintf("<br> Applying BYMONTHDAY %s to month", $bymonthday );
         $days_in_month = $this->DaysInMonth();
         $dayrules      = explode(',', $bymonthday);
-        $set           = array();
+        $set           = [];
         foreach ($dayrules as $k => $v) {
             $v = (int)$v;
             if ($v > 0 && $v <= $days_in_month) {
@@ -921,7 +921,7 @@ return $result;
         //echo sprintf("<br> Applying BYDAY %s to week", $byday );
         $days = explode(',', $byday);
         $dow  = date('w', $this->_epoch);
-        $set  = array();
+        $set  = [];
         foreach ($days as $k => $v) {
             $daynum = $this->ical_weekdays[$v];
             $dd     = $this->_dd - $dow + $daynum;
@@ -983,7 +983,7 @@ return $result;
     {
         //global $ical_weekdays;
         //echo sprintf("<br>MonthDays: Getting days for '%s'. %d days starting on a %d", $dayspec, $days_in_month, $dow_first );
-        $set = array();
+        $set = [];
         preg_match('/([0-9-]*)(MO|TU|WE|TH|FR|SA|SU)/', $dayspec, $matches);
         $numeric = (int)$matches[1];
         $dow     = $this->ical_weekdays[$matches[2]];
@@ -1007,10 +1007,10 @@ return $result;
                 $numeric--;
             }
             $answer = $set[$numeric];
-            $set    = array($answer => $answer);
+            $set    = [$answer => $answer];
         } else {
             $answers = $set;
-            $set     = array();
+            $set     = [];
             foreach ($answers as $k => $v) {
                 $set[$v] = $v;
             }
@@ -1033,7 +1033,7 @@ return $result;
     public function &ApplyBySetPos($bysplist, $set)
     {
         //echo sprintf("<br> ApplyBySetPos: Applying set position '%s' to set of %d days", $bysplist, count($set) );
-        $subset = array();
+        $subset = [];
         sort($set, SORT_NUMERIC);
         $max       = count($set);
         $positions = explode('[^0-9-]', $bysplist);

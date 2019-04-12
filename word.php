@@ -30,24 +30,24 @@ $sectionStyle->setMarginTop(\PhpOffice\PhpWord\Shared\Converter::cmToTwip(2.5));
 $sectionStyle->setMarginLeft(\PhpOffice\PhpWord\Shared\Converter::cmToTwip(2.2));
 $sectionStyle->setMarginRight(\PhpOffice\PhpWord\Shared\Converter::cmToTwip(2.2));
 
-$TitleStyle = array('color' => '000000', 'size' => 16, 'bold' => true);
-$cellStyle  = array('valign' => 'center');
-$fontStyle  = array('color' => '000000', 'size' => 10, 'bold' => false);
-$headStyle  = array('bold' => true);
+$TitleStyle = ['color' => '000000', 'size' => 16, 'bold' => true];
+$cellStyle  = ['valign' => 'center'];
+$fontStyle  = ['color' => '000000', 'size' => 10, 'bold' => false];
+$headStyle  = ['bold' => true];
 
-$paraStyle       = array('align' => 'center', 'valign' => 'center');
-$left_paraStyle  = array('align' => 'left', 'valign' => 'center');
-$right_paraStyle = array('align' => 'right', 'valign' => 'center');
+$paraStyle       = ['align' => 'center', 'valign' => 'center'];
+$left_paraStyle  = ['align' => 'left', 'valign' => 'center'];
+$right_paraStyle = ['align' => 'right', 'valign' => 'center'];
 
 $phpWord->addTitleStyle(1, $TitleStyle, $paraStyle);
 $section->addTitle($page_title, 1);
 
-$styleTable    = array('borderColor' => '000000', 'borderSize' => 6, 'cellMargin' => 80);
-$styleFirstRow = array('bgColor' => 'CFCFCF'); //首行樣式
+$styleTable    = ['borderColor' => '000000', 'borderSize' => 6, 'cellMargin' => 80];
+$styleFirstRow = ['bgColor' => 'CFCFCF']; //首行樣式
 $phpWord->addTableStyle('myTable', $styleTable, $styleFirstRow); //建立表格樣式
 $table = $section->addTable('myTable'); //建立表格
 
-$cw     = array(_MD_TADCAL_SU, _MD_TADCAL_MO, _MD_TADCAL_TU, _MD_TADCAL_WE, _MD_TADCAL_TH, _MD_TADCAL_FR, _MD_TADCAL_SA);
+$cw     = [_MD_TADCAL_SU, _MD_TADCAL_MO, _MD_TADCAL_TU, _MD_TADCAL_WE, _MD_TADCAL_TH, _MD_TADCAL_FR, _MD_TADCAL_SA];
 $cm_arr = explode(',', _MD_TADCAL_MONTH_STR);
 $i      = 1;
 foreach ($cm_arr as $month) {
@@ -86,7 +86,7 @@ function dates_range($date1, $date2)
 //日期範圍中有多少月份
 function months_range($date1, $date2)
 {
-    $months_range = array();
+    $months_range = [];
     $start        = $month        = strtotime($date1);
     $end          = strtotime($date2);
     while ($month < $end) {
@@ -102,19 +102,19 @@ function mk_month_cell($year, $month, $events, $cates)
 {
     global $xoopsDB, $dl_type, $cm, $cw, $table, $paraStyle, $headStyle, $cellStyle, $show_type, $week_width, $other_width;
     //垂直合併
-    $cellRowSpan    = array('vMerge' => 'restart', 'valign' => 'center');
-    $cellRowSpanTop = array('vMerge' => 'restart', 'valign' => 'top');
+    $cellRowSpan    = ['vMerge' => 'restart', 'valign' => 'center'];
+    $cellRowSpanTop = ['vMerge' => 'restart', 'valign' => 'top'];
     //不顯示表格
-    $cellRowContinue = array('vMerge' => 'continue');
+    $cellRowContinue = ['vMerge' => 'continue'];
     //水平合併
-    $cellColSpan = array('gridSpan' => 2, 'valign' => 'center');
+    $cellColSpan = ['gridSpan' => 2, 'valign' => 'center'];
     //水平置中
-    $cellHCentered = array('alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER);
+    $cellHCentered = ['alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER];
     //垂直置中
-    $cellVCentered = array('valign' => 'center');
+    $cellVCentered = ['valign' => 'center'];
     //垂直靠上
-    $cellVToped = array('valign' => 'top');
-    $blankStyle = array('bgColor' => 'FFFFFF');
+    $cellVToped = ['valign' => 'top'];
+    $blankStyle = ['bgColor' => 'FFFFFF'];
 
     $start_ts = strtotime("{$year}-{$month}-01");
     //取得開始位置是星期 ? 補空
@@ -125,7 +125,7 @@ function mk_month_cell($year, $month, $events, $cates)
 
     //看第一天是哪一天 先做第一排的空白格
     $table->addRow(); //新增一列
-    $cellStyle = array('bgColor' => 'FFFFFF');
+    $cellStyle = ['bgColor' => 'FFFFFF'];
     $table->addCell($week_width, $cellRowSpan)->addText($cm[$m], null, $paraStyle); //新增一格
     if ($w > 0) {
         //補由星期日開始
@@ -138,7 +138,7 @@ function mk_month_cell($year, $month, $events, $cates)
     for ($i = 1; $i <= $t; $i++) {
         $w         = date('w', strtotime("{$year}-{$month}-{$i}"));
         $color     = ($w == 0 or $w == 6) ? 'FEE9E7' : 'FFFFFF';
-        $cellStyle = array('bgColor' => $color);
+        $cellStyle = ['bgColor' => $color];
 
         if ($w == 0 and $i > 1) {
             $table->addRow(); //新增一列
@@ -150,7 +150,7 @@ function mk_month_cell($year, $month, $events, $cates)
         //在最後一格之後填入事件
         if ($line == 1 and $w == 6) {
             if ($show_type == "separate") {
-                $cellStyle = array('bgColor' => $color);
+                $cellStyle = ['bgColor' => $color];
                 $cal_num   = sizeof($cates);
                 $width     = round($other_width / $cal_num);
                 foreach ($cates as $cate_sn => $cate_title) {
@@ -182,7 +182,7 @@ function mk_month_cell($year, $month, $events, $cates)
     }
 
     if ($show_type == "separate") {
-        $cellStyle = array('bgColor' => $color);
+        $cellStyle = ['bgColor' => $color];
         foreach ($cates as $cate_sn => $cate_title) {
             $table->addCell(null, $cellRowContinue);
         }
@@ -202,20 +202,20 @@ function word_by_month()
     $table->addRow(); //新增一列
 
     //製作左邊星期別
-    $cellStyle = array('bgColor' => 'FFFFFF');
+    $cellStyle = ['bgColor' => 'FFFFFF'];
     $table->addCell($week_width, $cellStyle)->addText('月', $headStyle, $paraStyle); //新增一格
     for ($w = 0; $w <= 6; $w++) {
         if ($w == 0 or $w == 6) {
-            $cellStyle = array('bgColor' => 'FEE9E7');
+            $cellStyle = ['bgColor' => 'FEE9E7'];
             $table->addCell($week_width, $cellStyle)->addText($cw[$w], $headStyle, $paraStyle); //新增一格
         } else {
-            $cellStyle = array('bgColor' => 'FFFFFF');
+            $cellStyle = ['bgColor' => 'FFFFFF'];
             $table->addCell($week_width, $cellStyle)->addText($cw[$w], $headStyle, $paraStyle); //新增一格
         }
     }
 
     //製作右邊類別
-    $cellStyle = array('bgColor' => 'FFFFFF');
+    $cellStyle = ['bgColor' => 'FFFFFF'];
 
     if ($show_type == "separate") {
         $cal_num = sizeof($cates);
@@ -275,9 +275,9 @@ function word_by_date()
         $w = date('w', strtotime($start));
 
         if ($w == 0 or $w == 6) {
-            $cellStyle = array('bgColor' => 'FEE9E7');
+            $cellStyle = ['bgColor' => 'FEE9E7'];
         } else {
-            $cellStyle = array('bgColor' => 'FFFFFF');
+            $cellStyle = ['bgColor' => 'FFFFFF'];
         }
 
         $table->addRow(); //新增一列
@@ -303,7 +303,7 @@ function word_by_date()
 }
 
 //抓出事件陣列
-function get_events($even_start, $even_end, $cate_sn_arr = array(), $show_type, $dl_type)
+function get_events($even_start, $even_end, $cate_sn_arr = [], $show_type, $dl_type)
 {
     global $xoopsDB;
 
