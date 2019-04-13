@@ -4,10 +4,10 @@ function tad_cal_full_calendar($options)
 {
     global $xoopsUser, $xoopsTpl, $xoTheme;
 
-    $modhandler        = xoops_getHandler('module');
-    $xoopsModule       = $modhandler->getByDirname("tad_cal");
-    $config_handler    = xoops_getHandler('config');
-    $module_id         = $xoopsModule->getVar('mid');
+    $modhandler = xoops_getHandler('module');
+    $xoopsModule = $modhandler->getByDirname('tad_cal');
+    $config_handler = xoops_getHandler('config');
+    $module_id = $xoopsModule->getVar('mid');
     $xoopsModuleConfig = $config_handler->getConfigsByCat(0, $module_id);
 
     if ($xoopsUser) {
@@ -17,11 +17,11 @@ function tad_cal_full_calendar($options)
     }
 
     //引入TadTools的函式庫
-    if (!file_exists(XOOPS_ROOT_PATH . "/modules/tadtools/tad_function.php")) {
-        redirect_header("http://www.tad0616.net/modules/tad_uploader/index.php?of_cat_sn=50", 3, _TAD_NEED_TADTOOLS);
+    if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/tad_function.php')) {
+        redirect_header('http://www.tad0616.net/modules/tad_uploader/index.php?of_cat_sn=50', 3, _TAD_NEED_TADTOOLS);
     }
-    include_once XOOPS_ROOT_PATH . "/modules/tadtools/tad_function.php";
-    include_once XOOPS_ROOT_PATH . "/modules/tad_cal/function_block.php";
+    include_once XOOPS_ROOT_PATH . '/modules/tadtools/tad_function.php';
+    include_once XOOPS_ROOT_PATH . '/modules/tad_cal/function_block.php';
 
     $jquery_path = get_jquery(true); //一般只要此行即可
 
@@ -41,7 +41,7 @@ function tad_cal_full_calendar($options)
         $cate_sn = 0;
     }
 
-    $eventDrop = $del_js = "";
+    $eventDrop = $del_js = '';
     if ($xoopsUser) {
         //先抓分類下拉選單
         $get_tad_cal_cate_menu_options = get_tad_cal_cate_menu_options($cate_sn);
@@ -53,10 +53,10 @@ function tad_cal_full_calendar($options)
             }
 
             //快速新增功能
-            $eventAdd = "selectable: true,
+            $eventAdd = 'selectable: true,
             selectHelper: true,
             select: function(start, end) {
-                var promptBox = \"" . _MB_TADCAL_TITLE . _TAD_FOR . "<input type='text' id='eventTitle' name='eventTitle' value='' /><br>$cate\";
+                var promptBox = "' . _MB_TADCAL_TITLE . _TAD_FOR . "<input type='text' id='eventTitle' name='eventTitle' value='' /><br>$cate\";
 
                 function mycallbackform(e,v,m,f){
                 if(v != undefined){
@@ -110,21 +110,19 @@ function tad_cal_full_calendar($options)
                 });
             },
             ";
-
         }
-
     }
 
-    $block['eventDrop']     = $eventDrop;
-    $block['eventAdd']      = $eventAdd;
-    $block['cate_sn']       = $cate_sn;
+    $block['eventDrop'] = $eventDrop;
+    $block['eventAdd'] = $eventAdd;
+    $block['cate_sn'] = $cate_sn;
     $block['eventShowMode'] = $xoopsModuleConfig['eventShowMode'];
-    $block['eventTheme']    = $xoopsModuleConfig['eventTheme'];
-    $block['style_mark']    = $style_mark;
-    $block['my_counter']    = my_counter();
-    $block['firstDay']      = $xoopsModuleConfig['cal_start'];
+    $block['eventTheme'] = $xoopsModuleConfig['eventTheme'];
+    $block['style_mark'] = $style_mark;
+    $block['my_counter'] = my_counter();
+    $block['firstDay'] = $xoopsModuleConfig['cal_start'];
 
-    $ver = (int)str_replace('.', '', substr(XOOPS_VERSION, 6, 5));
+    $ver = (int)str_replace('.', '', mb_substr(XOOPS_VERSION, 6, 5));
     if ($ver >= 259) {
         $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate-3.0.0.min.js');
     } else {
