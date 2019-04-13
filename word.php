@@ -7,7 +7,7 @@ $dl_type = $myts->addSlashes($_POST['dl_type']);
 $sitename = $myts->addSlashes($xoopsConfig['sitename']);
 
 $page_width = 14400;
-if ('all_week' == $dl_type) {
+if ('all_week' === $dl_type) {
     $week_width = 400;
     $other_width = $page_width - ($week_width) * 8;
 } else {
@@ -55,7 +55,7 @@ foreach ($cm_arr as $month) {
     $i++;
 }
 // die(var_export($cm));
-if ('all_week' == $dl_type) {
+if ('all_week' === $dl_type) {
     word_by_month();
 } else {
     word_by_date();
@@ -150,7 +150,7 @@ function mk_month_cell($year, $month, $events, $cates)
 
         //在最後一格之後填入事件
         if (1 == $line and 6 == $w) {
-            if ('separate' == $show_type) {
+            if ('separate' === $show_type) {
                 $cellStyle = ['bgColor' => $color];
                 $cal_num = count($cates);
                 $width = round($other_width / $cal_num);
@@ -167,7 +167,7 @@ function mk_month_cell($year, $month, $events, $cates)
                 }
             }
         } elseif ($line > 1 and 6 == $w) {
-            if ('separate' == $show_type) {
+            if ('separate' === $show_type) {
                 foreach ($cates as $cate_sn => $cate_title) {
                     $table->addCell(null, $cellRowContinue);
                 }
@@ -182,7 +182,7 @@ function mk_month_cell($year, $month, $events, $cates)
         $table->addCell($week_width, $blankStyle)->addText('', null, $paraStyle); //新增一格
     }
 
-    if ('separate' == $show_type) {
+    if ('separate' === $show_type) {
         $cellStyle = ['bgColor' => $color];
         foreach ($cates as $cate_sn => $cate_title) {
             $table->addCell(null, $cellRowContinue);
@@ -218,7 +218,7 @@ function word_by_month()
     //製作右邊類別
     $cellStyle = ['bgColor' => 'FFFFFF'];
 
-    if ('separate' == $show_type) {
+    if ('separate' === $show_type) {
         $cal_num = count($cates);
         $width = round($other_width / $cal_num);
         foreach ($cates as $cate_sn => $cate_title) {
@@ -252,7 +252,7 @@ function word_by_date()
     $table->addCell($date_width, $cellStyle)->addText(_MD_TADCAL_SIMPLE_DATE, $headStyle, $paraStyle);
     $table->addCell($week_width, $cellStyle)->addText(_MD_TADCAL_WEEK, $headStyle, $paraStyle);
 
-    if ('separate' == $show_type) {
+    if ('separate' === $show_type) {
         $cates = get_cal_array();
         $cal_num = count($cates);
         $width = round($other_width / $cal_num);
@@ -267,7 +267,7 @@ function word_by_date()
 
     // --- 依每日呈現
     foreach ($dates as $start) {
-        if ('only_event' == $dl_type and !isset($all_event[$start])) {
+        if ('only_event' === $dl_type and !isset($all_event[$start])) {
             continue;
         }
         $arr = $all_event[$start];
@@ -284,7 +284,7 @@ function word_by_date()
         $table->addCell($date_width, $cellStyle)->addText($start, null, $paraStyle); //新增一格
         $table->addCell($week_width, $cellStyle)->addText($cw[$w], null, $paraStyle); //新增一格
 
-        if ('separate' == $show_type) {
+        if ('separate' === $show_type) {
             foreach ($cates as $cate_sn => $cate_title) {
                 $tableCell = $table->addCell($width, $cellStyle);
                 foreach ($arr[$cate_sn] as $sn => $item) {
@@ -338,15 +338,15 @@ function get_events($even_start, $even_end, $cate_sn_arr, $show_type, $dl_type)
         }
 
         $start = mb_substr($start, 0, 10);
-        if ('all_week' == $dl_type) {
+        if ('all_week' === $dl_type) {
             list($y, $m, $d) = explode('-', $start);
-            if ('separate' == $show_type) {
+            if ('separate' === $show_type) {
                 $all_event[$m][$cate_sn][$sn] = "{$d}){$title}";
             } else {
                 $all_event[$m][$sn] = "{$d}){$title}";
             }
         } else {
-            if ('separate' == $show_type) {
+            if ('separate' === $show_type) {
                 $all_event[$start][$cate_sn][$sn] = $title;
             } else {
                 $all_event[$start][$sn] = $title;
@@ -366,15 +366,15 @@ function get_events($even_start, $even_end, $cate_sn_arr, $show_type, $dl_type)
         }
 
         $start = mb_substr($start, 0, 10);
-        if ('all_week' == $dl_type) {
+        if ('all_week' === $dl_type) {
             list($y, $m, $d) = explode('-', $start);
-            if ('separate' == $show_type) {
+            if ('separate' === $show_type) {
                 $all_event[$m][$cate_sn][$sn] = "{$d}){$title}";
             } else {
                 $all_event[$m][$sn] = "{$d}){$title}";
             }
         } else {
-            if ('separate' == $show_type) {
+            if ('separate' === $show_type) {
                 $all_event[$start][$cate_sn][$sn] = $title;
             } else {
                 $all_event[$start][$sn] = $title;

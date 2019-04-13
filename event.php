@@ -155,7 +155,7 @@ function tad_cal_event_form($sn = '', $mode = '', $stamp = '')
 
     $weekday = ['SU' => _MD_TADCAL_SU, 'MO' => _MD_TADCAL_MO, 'TU' => _MD_TADCAL_TU, 'WE' => _MD_TADCAL_WE, 'TH' => _MD_TADCAL_TH, 'FR' => _MD_TADCAL_FR, 'SA' => _MD_TADCAL_SA];
     $week_repeat_col = '';
-    $warr = (isset($rrule_arr['RRULE']['FREQ']) and 'WEEKLY' == $rrule_arr['RRULE']['FREQ']) ? explode(',', $rrule_arr['RRULE']['BYDAY']) : [mb_strtoupper(mb_substr(date('D', strtotime($start)), 0, 2))];
+    $warr = (isset($rrule_arr['RRULE']['FREQ']) and 'WEEKLY' === $rrule_arr['RRULE']['FREQ']) ? explode(',', $rrule_arr['RRULE']['BYDAY']) : [mb_strtoupper(mb_substr(date('D', strtotime($start)), 0, 2))];
 
     foreach ($weekday as $en => $ch) {
         $checked = (in_array($en, $warr, true)) ? 'checked' : '';
@@ -175,13 +175,13 @@ function tad_cal_event_form($sn = '', $mode = '', $stamp = '')
         $ENDType = 'none';
     }
 
-    if (isset($rrule_arr['RRULE']['FREQ']) and 'YEARLY' == $rrule_arr['RRULE']['FREQ']) {
+    if (isset($rrule_arr['RRULE']['FREQ']) and 'YEARLY' === $rrule_arr['RRULE']['FREQ']) {
         $repeat_unit = _MD_TADCAL_Y;
-    } elseif (isset($rrule_arr['RRULE']['FREQ']) and 'MONTHLY' == $rrule_arr['RRULE']['FREQ']) {
+    } elseif (isset($rrule_arr['RRULE']['FREQ']) and 'MONTHLY' === $rrule_arr['RRULE']['FREQ']) {
         $repeat_unit = _MD_TADCAL_M;
         $week = getWeekOfTheMonth(strtotime($start));
         $wk = date('w', strtotime($start));
-    } elseif (isset($rrule_arr['RRULE']['FREQ']) and 'WEEKLY' == $rrule_arr['RRULE']['FREQ']) {
+    } elseif (isset($rrule_arr['RRULE']['FREQ']) and 'WEEKLY' === $rrule_arr['RRULE']['FREQ']) {
         $repeat_unit = _MD_TADCAL_W;
     } else {
         $repeat_unit = _MD_TADCAL_D;
@@ -221,8 +221,8 @@ function tad_cal_event_form($sn = '', $mode = '', $stamp = '')
         $end_allday = mb_substr($end, 0, 10);
     }
     $show_repeat_box = ($repeat) ? "$('#repeat_box').show();" : "$('#repeat_box').hide();";
-    $show_week_repeat = ('WEEKLY' == $rrule_arr['RRULE']['FREQ']) ? "$('#week_repeat').show();" : "$('#week_repeat').hide();";
-    $show_month_repeat = ('MONTHLY' == $rrule_arr['RRULE']['FREQ']) ? "$('#month_repeat').show();" : "$('#month_repeat').hide();";
+    $show_week_repeat = ('WEEKLY' === $rrule_arr['RRULE']['FREQ']) ? "$('#week_repeat').show();" : "$('#week_repeat').hide();";
+    $show_month_repeat = ('MONTHLY' === $rrule_arr['RRULE']['FREQ']) ? "$('#month_repeat').show();" : "$('#month_repeat').hide();";
     $show_allday_date = ($allday) ? "$('#start').hide().attr('disabled','disabled');\n$('#end').hide().attr('disabled','disabled');" : "$('#start_allday').hide().attr('disabled','disabled');\n$('#end_allday').hide().attr('disabled','disabled');";
 
     $xoopsTpl->assign('next_op', $op);
@@ -329,13 +329,13 @@ function insert_tad_cal_event()
         }
 
         $BYDAY = $BYMONTHDAY = '';
-        if ('WEEKLY' == $_POST['FREQ']) {
+        if ('WEEKLY' === $_POST['FREQ']) {
             $BYDAY = 'BYDAY=' . implode(',', $_POST['BYDAY']) . ';';
-        } elseif ('MONTHLY' == $_POST['FREQ']) {
-            if ('BYMONTHDAY' == $_POST['month_repeat']) {
+        } elseif ('MONTHLY' === $_POST['FREQ']) {
+            if ('BYMONTHDAY' === $_POST['month_repeat']) {
                 //算一下起始日期是當月的第幾天
                 $BYMONTHDAY = 'BYMONTHDAY=' . date('j', strtotime($start)) . ';';
-            } elseif ('BYDAY' == $_POST['month_repeat']) {
+            } elseif ('BYDAY' === $_POST['month_repeat']) {
                 //算一下起始日期是當月第幾週的星期幾
                 $startTime = strtotime($start);
                 $BYDAY = 'BYDAY=' . getWeekOfTheMonth($startTime) . mb_strtoupper(mb_substr(date('D', $startTime), 0, 2)) . ';';
@@ -343,10 +343,10 @@ function insert_tad_cal_event()
         }
 
         $COUNT = $UNTIL = '';
-        if ('count' == $_POST['END']) {
+        if ('count' === $_POST['END']) {
             $counter = empty($_POST['COUNT']) ? 1 : (int) $_POST['COUNT'];
             $COUNT = "COUNT={$counter};";
-        } elseif ('until' == $_POST['END']) {
+        } elseif ('until' === $_POST['END']) {
             if ('1' == $allDay) {
                 $UNTIL = date('Y-m-d', strtotime($_POST['UNTIL']));
                 $untilday = str_replace('-', '', $UNTIL);
@@ -435,13 +435,13 @@ function update_tad_cal_event($sn = '')
         }
 
         $BYDAY = $BYMONTHDAY = '';
-        if ('WEEKLY' == $_POST['FREQ']) {
+        if ('WEEKLY' === $_POST['FREQ']) {
             $BYDAY = 'BYDAY=' . implode(',', $_POST['BYDAY']) . ';';
-        } elseif ('MONTHLY' == $_POST['FREQ']) {
-            if ('BYMONTHDAY' == $_POST['month_repeat']) {
+        } elseif ('MONTHLY' === $_POST['FREQ']) {
+            if ('BYMONTHDAY' === $_POST['month_repeat']) {
                 //算一下起始日期是當月的第幾天
                 $BYMONTHDAY = 'BYMONTHDAY=' . date('j', strtotime($start)) . ';';
-            } elseif ('BYDAY' == $_POST['month_repeat']) {
+            } elseif ('BYDAY' === $_POST['month_repeat']) {
                 //算一下起始日期是當月第幾週的星期幾
                 $startTime = strtotime($start);
                 $BYDAY = 'BYDAY=' . getWeekOfTheMonth($startTime) . mb_strtoupper(mb_substr(date('D', $startTime), 0, 2)) . ';';
@@ -449,10 +449,10 @@ function update_tad_cal_event($sn = '')
         }
 
         $COUNT = $UNTIL = '';
-        if ('count' == $_POST['END']) {
+        if ('count' === $_POST['END']) {
             $counter = empty($_POST['COUNT']) ? 1 : (int) $_POST['COUNT'];
             $COUNT = "COUNT={$counter};";
-        } elseif ('until' == $_POST['END']) {
+        } elseif ('until' === $_POST['END']) {
             if ('1' == $allDay) {
                 $UNTIL = date('Y-m-d', strtotime($_POST['UNTIL']));
                 $untilday = str_replace('-', '', $UNTIL);
@@ -544,9 +544,9 @@ function list_tad_cal_event()
     <a href=\"javascript:delete_tad_cal_event_func($sn);\" class='btn btn-mini btn-danger'>" . _TAD_DEL . '</a>
     </td>' : '';
 
-        $re = ('0000-00-00 00:00:00' == $start) ? '*' : '';
-        $start = ('0000-00-00 00:00:00' == $start) ? $re_start : $start;
-        $end = ('0000-00-00 00:00:00' == $end) ? $re_end : $end;
+        $re = ('0000-00-00 00:00:00' === $start) ? '*' : '';
+        $start = ('0000-00-00 00:00:00' === $start) ? $re_start : $start;
+        $end = ('0000-00-00 00:00:00' === $end) ? $re_end : $end;
 
         $date = show_date($start, $end, $allday);
 

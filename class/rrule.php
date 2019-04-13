@@ -170,7 +170,7 @@ class RRule
         $this->_current = -1;
 
         $this->_rule = preg_replace('/\s/m', '', $rrule);
-        if ('RRULE:' == mb_substr($this->_rule, 0, 6)) {
+        if ('RRULE:' === mb_substr($this->_rule, 0, 6)) {
             $this->_rule = mb_substr($this->_rule, 6);
         }
 
@@ -197,7 +197,7 @@ class RRule
         if (!preg_match('/(YEAR|MONTH|WEEK|DAI)LY/', $this->_part['FREQ'])) {
             //echo sprintf("<br> RRULE Only FREQ=(YEARLY|MONTHLY|WEEKLY|DAILY) are supported at present (%s)", $rrule );
         }
-        if ('YEARLY' == $this->_part['FREQ']) {
+        if ('YEARLY' === $this->_part['FREQ']) {
             $this->_part['INTERVAL'] *= 12;
             $this->_part['FREQ'] = 'MONTHLY';
         }
@@ -311,7 +311,7 @@ class RRule
             $next->SetWeekStart($this->_part['WKST']);
         }
 
-        if ('MONTHLY' == $this->_part['FREQ']) {
+        if ('MONTHLY' === $this->_part['FREQ']) {
             //echo sprintf("<br> GetNext: Calculating more dates for MONTHLY rule" );
             $limit = 200;
             do {
@@ -340,7 +340,7 @@ class RRule
                 $days = $this->WithinScope($next, $days);
             } while ($limit && count($days) < 1 && !$this->_finished);
         //echo sprintf("<br> GetNext: Found %d days for MONTHLY rule", count($days) );
-        } elseif ('WEEKLY' == $this->_part['FREQ']) {
+        } elseif ('WEEKLY' === $this->_part['FREQ']) {
             //echo sprintf("<br> GetNext: Calculating more dates for WEEKLY rule" );
             $limit = 200;
 
@@ -367,7 +367,7 @@ class RRule
             } while ($limit && count($days) < 1 && !$this->_finished);
 
         //echo sprintf("<br> GetNext: Found %d days for WEEKLY rule", count($days) );
-        } elseif ('DAILY' == $this->_part['FREQ']) {
+        } elseif ('DAILY' === $this->_part['FREQ']) {
             //echo sprintf("<br> GetNext: Calculating more dates for DAILY rule" );
             $limit = 100;
             do {
@@ -463,7 +463,7 @@ class iCalDate
      */
     public function __construct($input)
     {
-        if ('object' == gettype($input)) {
+        if ('object' === gettype($input)) {
             $this->_text = $input->_text;
             $this->_epoch = $input->_epoch;
             $this->_yy = $input->_yy;
@@ -735,7 +735,7 @@ class iCalDate
         //echo sprintf("<br> Adding duration to '%s' of sign: %d,  days: %s,  time: %s", $this->_text, $sign, $days, $time );
         if (preg_match('/(\d+)(D|W)/', $days, $matches)) {
             $days = (int)$matches[1];
-            if ('W' == $matches[2]) {
+            if ('W' === $matches[2]) {
                 $days *= 7;
             }
 

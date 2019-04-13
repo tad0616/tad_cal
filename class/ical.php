@@ -195,11 +195,11 @@ class ical
             }
         }
 
-        if (('DTSTAMP' == $key) or ('LAST-MODIFIED' == $key) or ('CREATED' == $key)) {
+        if (('DTSTAMP' === $key) or ('LAST-MODIFIED' === $key) or ('CREATED' === $key)) {
             $value = $this->ical_date_to_unix($value);
         }
 
-        if ('RRULE' == $key) {
+        if ('RRULE' === $key) {
             $value = $this->ical_rrule($value);
         }
 

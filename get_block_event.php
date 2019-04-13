@@ -5,7 +5,7 @@ include_once 'header.php';
 include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op = system_CleanVars($_REQUEST, 'op', '', 'string');
 
-if ('title' == $op) {
+if ('title' === $op) {
     echo get_event_title($_REQUEST['start']);
 } else {
     echo get_event_num();
