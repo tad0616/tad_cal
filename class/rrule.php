@@ -1,7 +1,7 @@
 <?php
 
 /*
-include_once "rrule.php"
+require_once "rrule.php"
 $rule = new RRule('20111104T190000' , 'RRULE:FREQ=WEEKLY;UNTIL=20111230;INTERVAL=2;BYDAY=FR');
 while($date = $rule->GetNext()){
 echo "<p>".$date->Render()."</p>";

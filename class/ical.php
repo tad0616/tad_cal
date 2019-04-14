@@ -185,7 +185,7 @@ class ical
     public function add_to_array($type, $key, $value)
     {
         // die("$type, $key, $value");
-        if (false == $key) {
+        if (false === $key) {
             $key = $this->last_key;
             switch ($type) {
                 case 'VEVENT':$value = $this->cal[$type][$this->event_count][$key] . $value;

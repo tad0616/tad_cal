@@ -1,5 +1,5 @@
 <?php
-include_once XOOPS_ROOT_PATH . "/modules/tadtools/language/{$xoopsConfig['language']}/modinfo_common.php";
+require_once XOOPS_ROOT_PATH . "/modules/tadtools/language/{$xoopsConfig['language']}/modinfo_common.php";
 
 define('_MI_TADCAL_NAME', 'Tad Calendar');
 define('_MI_TADCAL_AUTHOR', 'Tad');

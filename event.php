@@ -1,8 +1,8 @@
 <?php
 /*-----------引入檔案區--------------*/
-include_once 'header.php';
-$xoopsOption['template_main'] = 'tad_cal_event.tpl';
-include_once XOOPS_ROOT_PATH . '/header.php';
+require_once __DIR__ . '/header.php';
+$GLOBALS['xoopsOption']['template_main'] = 'tad_cal_event.tpl';
+require_once XOOPS_ROOT_PATH . '/header.php';
 /*-----------function區--------------*/
 
 function toServerTime($time)
@@ -22,7 +22,7 @@ function toServerTime($time)
 function tad_cal_event_form($sn = '', $mode = '', $stamp = '')
 {
     global $xoopsDB, $xoopsUser, $xoopsTpl;
-    include_once XOOPS_ROOT_PATH . '/modules/tad_cal/class/ical.php';
+    require_once XOOPS_ROOT_PATH . '/modules/tad_cal/class/ical.php';
     if (!$xoopsUser) {
         redirect_header(XOOPS_URL . '/modules/tad_cal/index.php', 3, _MD_TADCAL_NEED_LOGIN);
         exit;
@@ -207,7 +207,7 @@ function tad_cal_event_form($sn = '', $mode = '', $stamp = '')
     if (!file_exists(TADTOOLS_PATH . '/formValidator.php')) {
         redirect_header(XOOPS_URL . '/modules/tad_cal/index.php', 3, _MD_NEED_TADTOOLS);
     }
-    include_once TADTOOLS_PATH . '/formValidator.php';
+    require_once TADTOOLS_PATH . '/formValidator.php';
     $formValidator = new formValidator('#myForm', true);
     $formValidator_code = $formValidator->render();
 
@@ -526,7 +526,7 @@ function list_tad_cal_event()
 
     $all_content = [];
 
-    while ($all = $xoopsDB->fetchArray($result)) {
+    while (false !== ($all = $xoopsDB->fetchArray($result))) {
         //以下會產生這些變數： $sn , $title , $start , $end , $recurrence , $location , $kind , $details , $etag , $id , $sequence , $uid , $cate_sn
         foreach ($all as $k => $v) {
             $$k = $v;
@@ -859,7 +859,7 @@ function ajax_update_date($sn = '')
 }
 
 /*-----------執行動作判斷區----------*/
-include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op = system_CleanVars($_REQUEST, 'op', '', 'string');
 $cate_sn = system_CleanVars($_REQUEST, 'cate_sn', 0, 'int');
 $sn = system_CleanVars($_REQUEST, 'sn', 0, 'int');
@@ -918,4 +918,4 @@ switch ($op) {
 $xoopsTpl->assign('toolbar', toolbar_bootstrap($interface_menu));
 $xoopsTpl->assign('isAdmin', $isAdmin);
 
-include_once XOOPS_ROOT_PATH . '/footer.php';
+require_once XOOPS_ROOT_PATH . '/footer.php';

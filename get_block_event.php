@@ -1,8 +1,8 @@
 <?php
-include_once 'header.php';
+require_once __DIR__ . '/header.php';
 
 /* 連資料庫檢查 */
-include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op = system_CleanVars($_REQUEST, 'op', '', 'string');
 
 if ('title' === $op) {
@@ -33,7 +33,7 @@ function get_event_num()
 
     $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
-    while ($all = $xoopsDB->fetchArray($result)) {
+    while (false !== ($all = $xoopsDB->fetchArray($result))) {
         //以下會產生這些變數： $sn , $title , $start , $end , $recurrence , $location , $kind , $details , $etag , $id , $sequence , $uid , $cate_sn
         foreach ($all as $k => $v) {
             $$k = $v;
@@ -53,7 +53,7 @@ function get_event_num()
     $sql = 'select a.*,b.title,b.cate_sn from ' . $xoopsDB->prefix('tad_cal_repeat') . ' as a join ' . $xoopsDB->prefix('tad_cal_event') . " as b on a.sn=b.sn where a.`start` >= '$even_start' and a.`end` <= '$even_end' $and_ok_cate2 order by a.`start`";
     //die($sql);
     $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
-    while ($all = $xoopsDB->fetchArray($result)) {
+    while (false !== ($all = $xoopsDB->fetchArray($result))) {
         //以下會產生這些變數： $sn , $title , $start , $end , $recurrence , $location , $kind , $details , $etag , $id , $sequence , $uid , $cate_sn
         foreach ($all as $k => $v) {
             $$k = $v;
@@ -102,7 +102,7 @@ function get_event_title($start = '')
 
     $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
-    while ($all = $xoopsDB->fetchArray($result)) {
+    while (false !== ($all = $xoopsDB->fetchArray($result))) {
         //以下會產生這些變數： $sn , $title , $start , $end , $recurrence , $location , $kind , $details , $etag , $id , $sequence , $uid , $cate_sn
         foreach ($all as $k => $v) {
             $$k = $v;
@@ -118,7 +118,7 @@ function get_event_title($start = '')
     $sql = 'select a.*,b.title,b.cate_sn from ' . $xoopsDB->prefix('tad_cal_repeat') . ' as a join ' . $xoopsDB->prefix('tad_cal_event') . " as b on a.sn=b.sn where ((a.`start` >= '$even_start' and a.`start` <= '$even_end') or (a.`end` > '$even_start' and a.`end` <= '$even_end')) $and_ok_cate2 order by a.`start`";
     //die($sql);
     $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
-    while ($all = $xoopsDB->fetchArray($result)) {
+    while (false !== ($all = $xoopsDB->fetchArray($result))) {
         //以下會產生這些變數： $sn , $title , $start , $end , $recurrence , $location , $kind , $details , $etag , $id , $sequence , $uid , $cate_sn
         foreach ($all as $k => $v) {
             $$k = $v;

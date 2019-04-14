@@ -1,5 +1,5 @@
 <?php
-include_once 'header.php';
+require_once __DIR__ . '/header.php';
 
 /* 連資料庫檢查 */
 echo get_event();
@@ -32,7 +32,7 @@ function get_event()
 
     $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
     $i = 0;
-    while ($all = $xoopsDB->fetchArray($result)) {
+    while (false !== ($all = $xoopsDB->fetchArray($result))) {
         //以下會產生這些變數： $sn , $title , $start , $end , $recurrence , $location , $kind , $details , $etag , $id , $sequence , $uid , $cate_sn
         foreach ($all as $k => $v) {
             $$k = $v;
@@ -91,7 +91,7 @@ function get_event()
     // die($sql);
     $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
 
-    while ($all = $xoopsDB->fetchArray($result)) {
+    while (false !== ($all = $xoopsDB->fetchArray($result))) {
         //以下會產生這些變數： $sn , $title , $start , $end , $recurrence , $location , $kind , $details , $etag , $id , $sequence , $uid , $cate_sn
         foreach ($all as $k => $v) {
             $$k = $v;

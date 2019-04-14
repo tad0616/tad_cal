@@ -3,8 +3,8 @@
 if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/tad_function.php')) {
     redirect_header('http://www.tad0616.net/modules/tad_uploader/index.php?of_cat_sn=50', 3, _TAD_NEED_TADTOOLS);
 }
-include_once XOOPS_ROOT_PATH . '/modules/tadtools/tad_function.php';
-include_once XOOPS_ROOT_PATH . '/modules/tad_cal/function_block.php';
+require_once XOOPS_ROOT_PATH . '/modules/tadtools/tad_function.php';
+require_once XOOPS_ROOT_PATH . '/modules/tad_cal/function_block.php';
 
 /********************* 自訂函數 *********************/
 //自動新增分類
@@ -103,7 +103,7 @@ function get_tad_cal_cate_all()
     global $xoopsDB;
     $sql = 'select * from ' . $xoopsDB->prefix('tad_cal_cate');
     $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
-    while ($data = $xoopsDB->fetchArray($result)) {
+    while (false !== ($data = $xoopsDB->fetchArray($result))) {
         $cate_sn = $data['cate_sn'];
         $data_arr[$cate_sn] = $data;
     }
@@ -117,7 +117,7 @@ function get_cal_array()
     global $xoopsDB;
     $sql = 'select cate_sn,cate_title from ' . $xoopsDB->prefix('tad_cal_cate') . '';
     $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
-    while (list($cate_sn, $cate_title) = $xoopsDB->fetchRow($result)) {
+    while (false !== (list($cate_sn, $cate_title) = $xoopsDB->fetchRow($result))) {
         $arr[$cate_sn] = $cate_title;
     }
 

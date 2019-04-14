@@ -1,7 +1,7 @@
 <?php
 /*-----------引入檔案區--------------*/
-include_once 'header.php';
-include_once '../function.php';
+require_once __DIR__ . '/header.php';
+require_once dirname(__DIR__) . '/function.php';
 
 /*-----------function區--------------*/
 
@@ -18,7 +18,7 @@ function import_google($cate_sn = '')
     $client_secret = '254265660934-4m4mon8fms910dokh93o3spp77k0ahtr@developer.gserviceaccount.com';
     $redirect_uri = XOOPS_URL . '/modules/tad_cal/admin/import.php';
 
-    include XOOPS_ROOT_PATH . '/modules/tad_cal/class/gapi/autoload.php';
+    require XOOPS_ROOT_PATH . '/modules/tad_cal/class/gapi/autoload.php';
 
     $client = new Google_Client();
     $client->setClientId($client_id);
@@ -124,6 +124,6 @@ function import_google($cate_sn = '')
     }
 }
 /*-----------執行動作判斷區----------*/
-include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $cate_sn = system_CleanVars($_REQUEST, 'cate_sn', 0, 'int');
 import_google($cate_sn);

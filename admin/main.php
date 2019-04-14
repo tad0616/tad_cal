@@ -1,15 +1,15 @@
 <?php
 /*-----------引入檔案區--------------*/
-$xoopsOption['template_main'] = 'tad_cal_adm_main.tpl';
-include_once 'header.php';
-include_once '../function.php';
+$GLOBALS['xoopsOption']['template_main'] = 'tad_cal_adm_main.tpl';
+require_once __DIR__ . '/header.php';
+require_once dirname(__DIR__) . '/function.php';
 
 /*-----------function區--------------*/
 //tad_cal_cate編輯表單
 function tad_cal_cate_form($cate_sn = '')
 {
     global $xoopsDB, $xoopsUser, $xoopsTpl;
-    include_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
+    require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
     //include_once(XOOPS_ROOT_PATH."/class/xoopseditor/xoopseditor.php");
 
     //抓取預設值
@@ -71,7 +71,7 @@ function tad_cal_cate_form($cate_sn = '')
     if (!file_exists(TADTOOLS_PATH . '/formValidator.php')) {
         redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
     }
-    include_once TADTOOLS_PATH . '/formValidator.php';
+    require_once TADTOOLS_PATH . '/formValidator.php';
     $formValidator = new formValidator('#myForm', true);
     $formValidator_code = $formValidator->render();
 
@@ -188,7 +188,7 @@ function list_tad_cal_cate($show_function = 1)
     //取得資料數
     $sql = 'select count(*),cate_sn,max(`last_update`) from ' . $xoopsDB->prefix('tad_cal_event') . ' group by cate_sn';
     $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
-    while (list($count, $cate_sn, $last_update) = $xoopsDB->fetchRow($result)) {
+    while (false !== (list($count, $cate_sn, $last_update) = $xoopsDB->fetchRow($result))) {
         $counter[$cate_sn] = $count;
         $last[$cate_sn] = $last_update;
     }
@@ -202,7 +202,7 @@ function list_tad_cal_cate($show_function = 1)
     $all_content = [];
     $i = 0;
     // $last        = "";
-    while ($all = $xoopsDB->fetchArray($result)) {
+    while (false !== ($all = $xoopsDB->fetchArray($result))) {
         //以下會產生這些變數： $cate_sn , $cate_title , $cate_sort , $cate_enable , $cate_handle , $enable_group , $enable_upload_group , $google_id , $google_pass, $cate_bgcolor, $cate_color
         foreach ($all as $k => $v) {
             $$k = $v;
@@ -260,12 +260,12 @@ function link_to_google($id = '', $pass = '')
     //抓出現有google行事曆
     $sql = 'select `cate_title`,`cate_handle` from ' . $xoopsDB->prefix('tad_cal_cate') . " where `cate_handle`!=''";
     $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
-    while (list($cate_title, $cate_handle) = $xoopsDB->fetchRow($result)) {
+    while (false !== (list($cate_title, $cate_handle) = $xoopsDB->fetchRow($result))) {
         $all_handle[] = $cate_handle;
         $cate_title_arr[$cate_handle] = $cate_title;
     }
 
-    require '../class/gcalendar.class.php';
+    require dirname(__DIR__) . '/class/gcalendar.class.php';
     $gmail = new GCalendar($id, $pass);
     $gmail->authenticate();
 
@@ -305,7 +305,7 @@ function save_google()
     //抓出現有google行事曆
     $sql = 'select `cate_sn`,`cate_handle` from ' . $xoopsDB->prefix('tad_cal_cate') . " where `cate_handle`!=''";
     $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
-    while (list($cate_sn, $cate_handle) = $xoopsDB->fetchRow($result)) {
+    while (false !== (list($cate_sn, $cate_handle) = $xoopsDB->fetchRow($result))) {
         $all_handle[] = $cate_handle;
         $cate_sn_arr[$cate_handle] = $cate_sn;
     }
@@ -339,12 +339,12 @@ function tad_cal_all_sync()
     $sql = 'select cate_sn from ' . $xoopsDB->prefix('tad_cal_cate') . " where `cate_handle`!=''";
     $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
-    while (list($cate_sn) = $xoopsDB->fetchRow($result)) {
+    while (false !== (list($cate_sn) = $xoopsDB->fetchRow($result))) {
         import_google($cate_sn);
     }
 }
 /*-----------執行動作判斷區----------*/
-include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op = system_CleanVars($_REQUEST, 'op', '', 'string');
 $cate_sn = system_CleanVars($_REQUEST, 'cate_sn', 0, 'int');
 
@@ -409,4 +409,4 @@ switch ($op) {
 }
 
 /*-----------秀出結果區--------------*/
-include_once 'footer.php';
+require_once __DIR__ . '/footer.php';

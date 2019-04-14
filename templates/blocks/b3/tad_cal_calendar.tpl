@@ -46,7 +46,7 @@
                 $(this).qtip({
                     content: {
                         // 設定載入中圖片
-                        text: "<img class='throbber' src='<{$xoops_url}>/modules/tad_cal/images/loading.gif' alt='Loading...' />",
+                        text: "<img class='throbber' src='<{$xoops_url}>/modules/tad_cal/images/loading.gif' alt='Loading...'>",
                         ajax: {
                             url: "<{$xoops_url}>/modules/tad_cal/get_block_event.php?op=title&start=" + moment.format()
                         },
