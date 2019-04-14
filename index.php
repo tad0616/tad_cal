@@ -1,8 +1,8 @@
 <?php
 /*-----------引入檔案區--------------*/
-include_once "header.php";
-$xoopsOption['template_main'] = "tad_cal_index.tpl";
-include_once XOOPS_ROOT_PATH . "/header.php";
+include_once 'header.php';
+$xoopsOption['template_main'] = 'tad_cal_index.tpl';
+include_once XOOPS_ROOT_PATH . '/header.php';
 /*-----------function區--------------*/
 
 function fullcalendar($cate_sn = 0)
@@ -26,7 +26,7 @@ function fullcalendar($cate_sn = 0)
         $cate_sn = 0;
     }
 
-    $eventDrop = $del_js = $eventAdd = "";
+    $eventDrop = $del_js = $eventAdd = '';
     if ($xoopsUser) {
         //先抓分類下拉選單
         $get_tad_cal_cate_menu_options = get_tad_cal_cate_menu_options($cate_sn);
@@ -38,10 +38,10 @@ function fullcalendar($cate_sn = 0)
             }
 
             //快速新增功能
-            $eventAdd = "selectable: true,
+            $eventAdd = 'selectable: true,
             selectHelper: true,
             select: function(start, end) {
-              var promptBox = \"" . _MD_TADCAL_TITLE . _TAD_FOR . "<input type='text' id='eventTitle' name='eventTitle' value='' /><br>$cate\";
+              var promptBox = "' . _MD_TADCAL_TITLE . _TAD_FOR . "<input type='text' id='eventTitle' name='eventTitle' value='' /><br>$cate\";
 
               function mycallbackform(e,v,m,f){
                 if(v != undefined){
@@ -100,7 +100,6 @@ function fullcalendar($cate_sn = 0)
             },
             ";
         }
-
     }
 
     $xoopsTpl->assign('eventDrop', $eventDrop);
@@ -114,7 +113,7 @@ function fullcalendar($cate_sn = 0)
 
     $xoopsTpl->assign('firstDay', $xoopsModuleConfig['cal_start']);
     $xoopsTpl->assign('cate', get_tad_cal_cate($cate_sn));
-    $ver = intval(str_replace('.', '', substr(XOOPS_VERSION, 6, 5)));
+    $ver = (int)str_replace('.', '', mb_substr(XOOPS_VERSION, 6, 5));
     if ($ver >= 259) {
         $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate-3.0.0.min.js');
     } else {
@@ -124,19 +123,18 @@ function fullcalendar($cate_sn = 0)
 
 /*-----------執行動作判斷區----------*/
 include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-$op      = system_CleanVars($_REQUEST, 'op', '', 'string');
+$op = system_CleanVars($_REQUEST, 'op', '', 'string');
 $cate_sn = system_CleanVars($_REQUEST, 'cate_sn', 0, 'int');
-$sn      = system_CleanVars($_REQUEST, 'sn', 0, 'int');
+$sn = system_CleanVars($_REQUEST, 'sn', 0, 'int');
 
 switch ($op) {
-
     default:
         fullcalendar($cate_sn);
         break;
 }
 
 /*-----------秀出結果區--------------*/
-$xoopsTpl->assign("toolbar", toolbar_bootstrap($interface_menu));
-$xoopsTpl->assign("isAdmin", $isAdmin);
+$xoopsTpl->assign('toolbar', toolbar_bootstrap($interface_menu));
+$xoopsTpl->assign('isAdmin', $isAdmin);
 
 include_once XOOPS_ROOT_PATH . '/footer.php';

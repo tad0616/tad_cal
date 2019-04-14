@@ -157,25 +157,27 @@ class RRule
     /**
      * The constructor takes a start date and an RRULE definition.  Both of these
      * follow the iCalendar standard.
+     * @param mixed $start
+     * @param mixed $rrule
      */
     public function __construct($start, $rrule)
     {
         //die("aa:".$start);
-        $this->_first    = new iCalDate($start);
+        $this->_first = new iCalDate($start);
         $this->_finished = false;
-        $this->_started  = false;
-        $this->_dates    = array();
-        $this->_current  = -1;
+        $this->_started = false;
+        $this->_dates = [];
+        $this->_current = -1;
 
         $this->_rule = preg_replace('/\s/m', '', $rrule);
-        if (substr($this->_rule, 0, 6) == 'RRULE:') {
-            $this->_rule = substr($this->_rule, 6);
+        if ('RRULE:' === mb_substr($this->_rule, 0, 6)) {
+            $this->_rule = mb_substr($this->_rule, 6);
         }
 
         //echo sprintf("<br> new RRule: Start: %s, RRULE: %s", $start->Render(), $this->_rule );
 
-        $parts       = explode(';', $this->_rule);
-        $this->_part = array('INTERVAL' => 1);
+        $parts = explode(';', $this->_rule);
+        $this->_part = ['INTERVAL' => 1];
         foreach ($parts as $k => $v) {
             list($type, $value) = explode('=', $v, 2);
             //echo sprintf("<br> Parts of %s explode into %s and %s", $v, $type, $value );
@@ -195,15 +197,17 @@ class RRule
         if (!preg_match('/(YEAR|MONTH|WEEK|DAI)LY/', $this->_part['FREQ'])) {
             //echo sprintf("<br> RRULE Only FREQ=(YEARLY|MONTHLY|WEEKLY|DAILY) are supported at present (%s)", $rrule );
         }
-        if ($this->_part['FREQ'] == "YEARLY") {
+        if ('YEARLY' === $this->_part['FREQ']) {
             $this->_part['INTERVAL'] *= 12;
-            $this->_part['FREQ'] = "MONTHLY";
+            $this->_part['FREQ'] = 'MONTHLY';
         }
     }
 
     /**
      * Processes the array of $relative_days to $base and removes any
      * which are not within the scope of our rule.
+     * @param mixed $base
+     * @param mixed $relative_days
      */
     public function WithinScope($base, $relative_days)
     {
@@ -218,13 +222,12 @@ class RRule
         echo "<hr>";
          */
 
-        $ok_days = array();
+        $ok_days = [];
 
         $ptr = $this->_current;
 
         //echo sprintf("<br> WithinScope: Processing list of %d days relative to %s", count($relative_days), $base->Render() );
         foreach ($relative_days as $day => $v) {
-
             $test = new iCalDate($base);
 
             //找出該月天數
@@ -236,7 +239,7 @@ class RRule
                 $test->AddDays(1);
                 $day -= $days_in_month;
                 $test->SetMonthDay($day);
-            } else if ($day < 1) {
+            } elseif ($day < 1) {
                 $test->SetMonthDay(1);
                 $test->AddDays(-1);
                 $days_in_month = $test->DaysInMonth();
@@ -250,6 +253,7 @@ class RRule
 
             if (isset($this->_part['UNTIL']) && $test->GreaterThan($this->_part['UNTIL'])) {
                 $this->_finished = true;
+
                 return $ok_days;
             }
 
@@ -263,9 +267,9 @@ class RRule
 
             if (isset($this->_part['COUNT']) && $ptr >= $this->_part['COUNT']) {
                 $this->_finished = true;
+
                 return $ok_days;
             }
-
         }
 
         return $ok_days;
@@ -277,7 +281,6 @@ class RRule
      */
     public function &GetNext()
     {
-
         if ($this->_current < 0) {
             $next = new iCalDate($this->_first);
             $this->_current++;
@@ -291,26 +294,24 @@ class RRule
             if (isset($this->_dates[$this->_current])) {
                 //echo sprintf("<br> GetNext: Returning %s, (%d'th)", $this->_dates[$this->_current]->Render(), $this->_current );
                 return $this->_dates[$this->_current];
-            } else {
-                if (isset($this->_part['COUNT']) && $this->_current >= $this->_part['COUNT']) // >= since _current is 0-based and COUNT is 1-based
-                {
-                    $this->_finished = true;
-                }
-
+            }
+            if (isset($this->_part['COUNT']) && $this->_current >= $this->_part['COUNT']) { // >= since _current is 0-based and COUNT is 1-based
+                $this->_finished = true;
             }
         }
 
         if ($this->_finished) {
             $next = null;
+
             return $next;
         }
 
-        $days = array();
+        $days = [];
         if (isset($this->_part['WKST'])) {
             $next->SetWeekStart($this->_part['WKST']);
         }
 
-        if ($this->_part['FREQ'] == "MONTHLY") {
+        if ('MONTHLY' === $this->_part['FREQ']) {
             //echo sprintf("<br> GetNext: Calculating more dates for MONTHLY rule" );
             $limit = 200;
             do {
@@ -326,7 +327,7 @@ class RRule
 
                 if (isset($this->_part['BYDAY'])) {
                     $days = $next->GetMonthByDay($this->_part['BYDAY']);
-                } else if (isset($this->_part['BYMONTHDAY'])) {
+                } elseif (isset($this->_part['BYMONTHDAY'])) {
                     $days = $next->GetMonthByMonthDay($this->_part['BYMONTHDAY']);
                 } else {
                     $days[$next->_dd] = $next->_dd;
@@ -338,9 +339,8 @@ class RRule
 
                 $days = $this->WithinScope($next, $days);
             } while ($limit && count($days) < 1 && !$this->_finished);
-            //echo sprintf("<br> GetNext: Found %d days for MONTHLY rule", count($days) );
-
-        } else if ($this->_part['FREQ'] == "WEEKLY") {
+        //echo sprintf("<br> GetNext: Found %d days for MONTHLY rule", count($days) );
+        } elseif ('WEEKLY' === $this->_part['FREQ']) {
             //echo sprintf("<br> GetNext: Calculating more dates for WEEKLY rule" );
             $limit = 200;
 
@@ -354,7 +354,7 @@ class RRule
 
                 if (isset($this->_part['BYDAY'])) {
                     $days = $next->GetWeekByDay($this->_part['BYDAY'], false);
-                    //die(var_export($days));
+                //die(var_export($days));
                 } else {
                     $days[$next->_dd] = $next->_dd;
                 }
@@ -366,8 +366,8 @@ class RRule
                 $days = $this->WithinScope($next, $days);
             } while ($limit && count($days) < 1 && !$this->_finished);
 
-            //echo sprintf("<br> GetNext: Found %d days for WEEKLY rule", count($days) );
-        } else if ($this->_part['FREQ'] == "DAILY") {
+        //echo sprintf("<br> GetNext: Found %d days for WEEKLY rule", count($days) );
+        } elseif ('DAILY' === $this->_part['FREQ']) {
             //echo sprintf("<br> GetNext: Calculating more dates for DAILY rule" );
             $limit = 100;
             do {
@@ -386,7 +386,7 @@ class RRule
                     $days = $next->ApplyBySetpos($this->_part['BYSETPOS'], $days);
                 }
 
-                $days           = $this->WithinScope($next, $days);
+                $days = $this->WithinScope($next, $days);
                 $this->_started = true;
             } while ($limit && count($days) < 1 && !$this->_finished);
 
@@ -401,13 +401,12 @@ class RRule
         if (isset($this->_dates[$this->_current])) {
             //echo sprintf("<br> GetNext: Returning %s, (%d'th)", $this->_dates[$this->_current]->Render(), $this->_current );
             return $this->_dates[$this->_current];
-        } else {
-            //echo sprintf("<br> GetNext: Returning null date" );
-            $next = null;
-            return $next;
         }
-    }
+        //echo sprintf("<br> GetNext: Returning null date" );
+        $next = null;
 
+        return $next;
+    }
 }
 
 /**
@@ -453,36 +452,39 @@ class iCalDate
     /** Which day of the week does the week start on */
     public $_wkst;
 
-    public $ical_weekdays = array('SU' => 0, 'MO' => 1, 'TU' => 2, 'WE' => 3, 'TH' => 4, 'FR' => 5, 'SA' => 6);
+    public $ical_weekdays = ['SU' => 0, 'MO' => 1, 'TU' => 2, 'WE' => 3, 'TH' => 4, 'FR' => 5, 'SA' => 6];
 
     /**#@-*/
 
     /**
      * The constructor takes either an iCalendar date, a text string formatted as
      * an iCalendar date, or epoch seconds.
+     * @param mixed $input
      */
     public function __construct($input)
     {
-        if (gettype($input) == 'object') {
-            $this->_text  = $input->_text;
+        if ('object' === gettype($input)) {
+            $this->_text = $input->_text;
             $this->_epoch = $input->_epoch;
-            $this->_yy    = $input->_yy;
-            $this->_mo    = $input->_mo;
-            $this->_dd    = $input->_dd;
-            $this->_hh    = $input->_hh;
-            $this->_mi    = $input->_mi;
-            $this->_ss    = $input->_ss;
-            $this->_tz    = $input->_tz;
+            $this->_yy = $input->_yy;
+            $this->_mo = $input->_mo;
+            $this->_dd = $input->_dd;
+            $this->_hh = $input->_hh;
+            $this->_mi = $input->_mi;
+            $this->_ss = $input->_ss;
+            $this->_tz = $input->_tz;
+
             return;
         }
 
         $this->_wkst = 1; // Monday
         if (preg_match('/^\d{8}[T ]\d{6}$/', $input)) {
             $this->SetLocalDate($input);
-        } else if (preg_match('/^\d{8}[T ]\d{6}Z$/', $input)) {
+        } elseif (preg_match('/^\d{8}[T ]\d{6}Z$/', $input)) {
             $this->SetGMTDate($input);
-        } else if ((int)$input == 0) {
+        } elseif (0 == (int)$input) {
             $this->SetLocalDate(strtotime($input));
+
             return;
         } else {
             $this->SetEpochDate($input);
@@ -491,6 +493,7 @@ class iCalDate
 
     /**
      * Set the date from a text string
+     * @param mixed $input
      */
     public function SetGMTDate($input)
     {
@@ -501,6 +504,7 @@ class iCalDate
 
     /**
      * Set the date from a text string
+     * @param mixed $input
      */
     public function SetLocalDate($input)
     {
@@ -511,6 +515,7 @@ class iCalDate
 
     /**
      * Set the date from an epoch
+     * @param mixed $input
      */
     public function SetEpochDate($input)
     {
@@ -542,12 +547,12 @@ class iCalDate
      */
     public function _PartsFromText()
     {
-        $this->_yy = (int)substr($this->_text, 0, 4);
-        $this->_mo = (int)substr($this->_text, 4, 2);
-        $this->_dd = (int)substr($this->_text, 6, 2);
-        $this->_hh = (int)substr($this->_text, 9, 2);
-        $this->_mi = (int)substr($this->_text, 11, 2);
-        $this->_ss = (int)substr($this->_text, 13, 2);
+        $this->_yy = (int)mb_substr($this->_text, 0, 4);
+        $this->_mo = (int)mb_substr($this->_text, 4, 2);
+        $this->_dd = (int)mb_substr($this->_text, 6, 2);
+        $this->_hh = (int)mb_substr($this->_text, 9, 2);
+        $this->_mi = (int)mb_substr($this->_text, 11, 2);
+        $this->_ss = (int)mb_substr($this->_text, 13, 2);
     }
 
     /**
@@ -581,6 +586,7 @@ class iCalDate
 
     /**
      * Set the day of week used for calculation of week starts
+     * @param mixed $fmt
      */
     public function Render($fmt = 'Y-m-d H:i:s')
     {
@@ -589,6 +595,7 @@ class iCalDate
 
     /**
      * Render the date as GMT
+     * @param mixed $fmt
      */
     public function RenderGMT($fmt = 'Ymd\THis\Z')
     {
@@ -597,10 +604,12 @@ class iCalDate
 
     /**
      * No of days in a month 1(Jan) - 12(Dec)
+     * @param mixed $mo
+     * @param mixed $yy
      */
     public function DaysInMonth($mo = false, $yy = false)
     {
-        if ($mo === false) {
+        if (false === $mo) {
             $mo = $this->_mo;
         }
 
@@ -614,35 +623,32 @@ class iCalDate
             case 12: // December
                 return 31;
                 break;
-
             case 4: // April
             case 6: // June
             case 9: // September
             case 11: // November
                 return 30;
                 break;
-
             case 2: // February
-                if ($yy === false) {
+                if (false === $yy) {
                     $yy = $this->_yy;
                 }
 
-                if ((($yy % 4) == 0) && ((($yy % 100) != 0) || (($yy % 400) == 0))) {
+                if ((0 == ($yy % 4)) && ((0 != ($yy % 100)) || (0 == ($yy % 400)))) {
                     return 29;
                 }
 
                 return 28;
                 break;
-
             default:
                 //echo sprintf("<br> Invalid month of '%s' passed to DaysInMonth", $mo );
                 break;
-
         }
     }
 
     /**
      * Set the day in the month to what we have been given
+     * @param mixed $dd
      */
     public function SetMonthDay($dd)
     {
@@ -650,7 +656,7 @@ class iCalDate
             return;
         }
         // Shortcut
-        $dd        = min($dd, $this->DaysInMonth());
+        $dd = min($dd, $this->DaysInMonth());
         $this->_dd = $dd;
         $this->_EpochFromParts();
         $this->_TextFromEpoch();
@@ -658,6 +664,7 @@ class iCalDate
 
     /**
      * Add some number of months to a date
+     * @param mixed $mo
      */
     public function AddMonths($mo)
     {
@@ -672,7 +679,7 @@ class iCalDate
             $this->_yy++;
         }
 
-        if (($this->_dd > 28 && $this->_mo == 2) || $this->_dd > 30) {
+        if (($this->_dd > 28 && 2 == $this->_mo) || $this->_dd > 30) {
             // Ensure the day of month is still reasonable and coerce to last day of month if needed
             $dim = $this->DaysInMonth();
             if ($this->_dd > $dim) {
@@ -686,12 +693,13 @@ class iCalDate
 
     /**
      * Add some integer number of days to a date
+     * @param mixed $dd
      */
     public function AddDays($dd)
     {
         $at_start = $this->_text;
         $this->_dd += $dd;
-        while (1 > $this->_dd) {
+        while ($this->_dd < 1) {
             $this->_mo--;
             if ($this->_mo < 1) {
                 $this->_mo += 12;
@@ -714,19 +722,20 @@ class iCalDate
 
     /**
      * Add duration
+     * @param mixed $duration
      */
     public function AddDuration($duration)
     {
-        if (strstr($duration, 'T') === false) {
+        if (false === mb_strstr($duration, 'T')) {
             $duration .= 'T';
         }
 
         list($sign, $days, $time) = preg_split('/[PT]/', $duration);
-        $sign                     = ($sign == "-" ? -1 : 1);
+        $sign = ('-' == $sign ? -1 : 1);
         //echo sprintf("<br> Adding duration to '%s' of sign: %d,  days: %s,  time: %s", $this->_text, $sign, $days, $time );
         if (preg_match('/(\d+)(D|W)/', $days, $matches)) {
             $days = (int)$matches[1];
-            if ($matches[2] == 'W') {
+            if ('W' === $matches[2]) {
                 $days *= 7;
             }
 
@@ -754,22 +763,28 @@ class iCalDate
 
         if ($this->_ss < 0) {
             $this->_mi -= ((int)abs($this->_ss / 60) + 1);
-            $this->_ss += (((int)abs($this->_mi / 60) + 1) * 60);}
+            $this->_ss += (((int)abs($this->_mi / 60) + 1) * 60);
+        }
         if ($this->_ss > 59) {
             $this->_mi += ((int)abs($this->_ss / 60) + 1);
-            $this->_ss -= (((int)abs($this->_mi / 60) + 1) * 60);}
+            $this->_ss -= (((int)abs($this->_mi / 60) + 1) * 60);
+        }
         if ($this->_mi < 0) {
             $this->_hh -= ((int)abs($this->_mi / 60) + 1);
-            $this->_mi += (((int)abs($this->_mi / 60) + 1) * 60);}
+            $this->_mi += (((int)abs($this->_mi / 60) + 1) * 60);
+        }
         if ($this->_mi > 59) {
             $this->_hh += ((int)abs($this->_mi / 60) + 1);
-            $this->_mi -= (((int)abs($this->_mi / 60) + 1) * 60);}
+            $this->_mi -= (((int)abs($this->_mi / 60) + 1) * 60);
+        }
         if ($this->_hh < 0) {
             $this->AddDays(-1 * ((int)abs($this->_hh / 24) + 1));
-            $this->_hh += (((int)abs($this->_hh / 24) + 1) * 24);}
+            $this->_hh += (((int)abs($this->_hh / 24) + 1) * 24);
+        }
         if ($this->_hh > 23) {
             $this->AddDays(((int)abs($this->_hh / 24) + 1));
-            $this->_hh -= (((int)abs($this->_hh / 24) + 1) * 24);}
+            $this->_hh -= (((int)abs($this->_hh / 24) + 1) * 24);
+        }
 
         $this->_EpochFromParts();
         $this->_TextFromEpoch();
@@ -784,38 +799,40 @@ class iCalDate
     public function DateDifference($from)
     {
         if (!is_object($from)) {
-            $from = new iCalDate($from);
+            $from = new self($from);
         }
         if ($from->_epoch < $this->_epoch) {
             /** One way to simplify is to always go for positive differences */
-            return ("-" . $from->DateDifference($self));
+            return ('-' . $from->DateDifference($self));
         }
 //    if ( $from->_yy == $this->_yy && $from->_mo == $this->_mo ) {
         /** Also somewhat simpler if we can use seconds */
-        $diff   = $from->_epoch - $this->_epoch;
-        $result = "";
+        $diff = $from->_epoch - $this->_epoch;
+        $result = '';
         if ($diff >= 86400) {
             $result = (int)($diff / 86400);
-            $diff   = $diff % 86400;
-            if ($diff == 0 && (($result % 7) == 0)) {
+            $diff = $diff % 86400;
+            if (0 == $diff && (0 == ($result % 7))) {
                 // Duration is an integer number of weeks.
-                $result .= (int)($result / 7) . "W";
+                $result .= (int)($result / 7) . 'W';
+
                 return $result;
             }
-            $result .= "D";
+            $result .= 'D';
         }
-        $result = "P" . $result . "T";
+        $result = 'P' . $result . 'T';
         if ($diff >= 3600) {
-            $result .= (int)($diff / 3600) . "H";
+            $result .= (int)($diff / 3600) . 'H';
             $diff = $diff % 3600;
         }
         if ($diff >= 60) {
-            $result .= (int)($diff / 60) . "M";
+            $result .= (int)($diff / 60) . 'M';
             $diff = $diff % 60;
         }
         if ($diff > 0) {
-            $result .= (int)$diff . "S";
+            $result .= (int)$diff . 'S';
         }
+
         return $result;
 //    }
 
@@ -851,7 +868,7 @@ return $result;
     /**
      * Test to see if our _mo matches something in the list of months we have received.
      * @param string $monthlist A comma-separated list of months.
-     * @return boolean Whether this date falls within one of those months.
+     * @return bool Whether this date falls within one of those months.
      */
     public function TestByMonth($monthlist)
     {
@@ -861,6 +878,7 @@ return $result;
         }
         // If BYMONTH is not specified any month is OK
         $months = array_flip(explode(',', $monthlist));
+
         return isset($months[$this->_mo]);
     }
 
@@ -873,9 +891,9 @@ return $result;
     {
         //echo sprintf("<br> Applying BYDAY %s to month", $byday );
         $days_in_month = $this->DaysInMonth();
-        $dayrules      = explode(',', $byday);
-        $set           = array();
-        $first_dow     = (date('w', $this->_epoch) - $this->_dd + 36) % 7;
+        $dayrules = explode(',', $byday);
+        $set = [];
+        $first_dow = (date('w', $this->_epoch) - $this->_dd + 36) % 7;
         foreach ($dayrules as $k => $v) {
             $days = $this->MonthDays($first_dow, $days_in_month, $v);
             foreach ($days as $k2 => $v2) {
@@ -883,6 +901,7 @@ return $result;
             }
         }
         asort($set, SORT_NUMERIC);
+
         return $set;
     }
 
@@ -895,16 +914,16 @@ return $result;
     {
         //echo sprintf("<br> Applying BYMONTHDAY %s to month", $bymonthday );
         $days_in_month = $this->DaysInMonth();
-        $dayrules      = explode(',', $bymonthday);
-        $set           = array();
+        $dayrules = explode(',', $bymonthday);
+        $set = [];
         foreach ($dayrules as $k => $v) {
             $v = (int)$v;
             if ($v > 0 && $v <= $days_in_month) {
                 $set[$v] = $v;
             }
-
         }
         asort($set, SORT_NUMERIC);
+
         return $set;
     }
 
@@ -920,11 +939,11 @@ return $result;
         //var_export($this->ical_weekdays);
         //echo sprintf("<br> Applying BYDAY %s to week", $byday );
         $days = explode(',', $byday);
-        $dow  = date('w', $this->_epoch);
-        $set  = array();
+        $dow = date('w', $this->_epoch);
+        $set = [];
         foreach ($days as $k => $v) {
             $daynum = $this->ical_weekdays[$v];
-            $dd     = $this->_dd - $dow + $daynum;
+            $dd = $this->_dd - $dow + $daynum;
             //echo "<div style='color:red;'>$v : $dd</div>";
             if ($daynum < $this->_wkst) {
                 $dd += 7;
@@ -933,7 +952,6 @@ return $result;
             if ($dd > $this->_dd || !$increasing) {
                 $set[$dd] = $dd;
             }
-
         }
         asort($set, SORT_NUMERIC);
 
@@ -943,7 +961,7 @@ return $result;
     /**
      * Test if $this is greater than the date parameter
      * @param string $lesser The other date, as a local time string
-     * @return boolean True if $this > $lesser
+     * @return bool True if $this > $lesser
      */
     public function GreaterThan($lesser)
     {
@@ -958,7 +976,7 @@ return $result;
     /**
      * Test if $this is less than the date parameter
      * @param string $greater The other date, as a local time string
-     * @return boolean True if $this < $greater
+     * @return bool True if $this < $greater
      */
     public function LessThan($greater)
     {
@@ -983,10 +1001,10 @@ return $result;
     {
         //global $ical_weekdays;
         //echo sprintf("<br>MonthDays: Getting days for '%s'. %d days starting on a %d", $dayspec, $days_in_month, $dow_first );
-        $set = array();
+        $set = [];
         preg_match('/([0-9-]*)(MO|TU|WE|TH|FR|SA|SU)/', $dayspec, $matches);
         $numeric = (int)$matches[1];
-        $dow     = $this->ical_weekdays[$matches[2]];
+        $dow = $this->ical_weekdays[$matches[2]];
 
         $first_matching_day = 1 + ($dow - $dow_first);
         while ($first_matching_day < 1) {
@@ -1000,17 +1018,17 @@ return $result;
             $first_matching_day += 7;
         }
 
-        if ($numeric != 0) {
+        if (0 != $numeric) {
             if ($numeric < 0) {
                 $numeric += count($set);
             } else {
                 $numeric--;
             }
             $answer = $set[$numeric];
-            $set    = array($answer => $answer);
+            $set = [$answer => $answer];
         } else {
             $answers = $set;
-            $set     = array();
+            $set = [];
             foreach ($answers as $k => $v) {
                 $set[$v] = $v;
             }
@@ -1033,9 +1051,9 @@ return $result;
     public function &ApplyBySetPos($bysplist, $set)
     {
         //echo sprintf("<br> ApplyBySetPos: Applying set position '%s' to set of %d days", $bysplist, count($set) );
-        $subset = array();
+        $subset = [];
         sort($set, SORT_NUMERIC);
-        $max       = count($set);
+        $max = count($set);
         $positions = explode('[^0-9-]', $bysplist);
         foreach ($positions as $k => $v) {
             if ($v < 0) {
@@ -1045,6 +1063,7 @@ return $result;
             }
             $subset[$set[$v]] = $set[$v];
         }
+
         return $subset;
     }
 }

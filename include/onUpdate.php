@@ -13,6 +13,6 @@ function xoops_module_update_tad_cal(&$module, $old_version)
     //if(!Utility::chk_chk1()) Utility::go_update1();
 
     Utility::chk_tad_cal_block();
+
     return true;
 }
-
