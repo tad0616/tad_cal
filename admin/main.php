@@ -111,7 +111,7 @@ function insert_tad_cal_cate()
     $_POST['google_id'] = $myts->addSlashes($_POST['google_id']);
     $_POST['google_pass'] = $myts->addSlashes($_POST['google_pass']);
 
-    if (empty($_POST['enable_group']) or in_array('', $_POST['enable_group'], true)) {
+    if (empty($_POST['enable_group']) or in_array('', $_POST['enable_group'])) {
         $enable_group = '';
     } else {
         $enable_group = implode(',', $_POST['enable_group']);
@@ -151,7 +151,7 @@ function update_tad_cal_cate($cate_sn = '')
     $_POST['google_id'] = $myts->addSlashes($_POST['google_id']);
     $_POST['google_pass'] = $myts->addSlashes($_POST['google_pass']);
 
-    if (empty($_POST['enable_group']) or in_array('', $_POST['enable_group'], true)) {
+    if (empty($_POST['enable_group']) or in_array('', $_POST['enable_group'])) {
         $enable_group = '';
     } else {
         $enable_group = implode(',', $_POST['enable_group']);
@@ -286,7 +286,7 @@ function link_to_google($id = '', $pass = '')
         $all[$i]['totalResults'] = $Events['data']['totalResults'];
         $all[$i]['cal_title'] = $cal['title'];
         $all[$i]['handle'] = $cal['handle'];
-        $all[$i]['in_array'] = !is_array($all_handle) ? false : in_array($cal['handle'], $all_handle, true);
+        $all[$i]['in_array'] = !is_array($all_handle) ? false : in_array($cal['handle'], $all_handle);
         $all[$i]['j'] = $j;
         $i++;
     }
@@ -320,7 +320,7 @@ function save_google()
         $enable_upload_group = '1';
         $sort = tad_cal_cate_max_sort();
 
-        if (!in_array($handle, $all_handle, true)) {
+        if (!in_array($handle, $all_handle)) {
             $cate_sn = create_cate($title, $sort, $handle, $enable_group, $enable_upload_group, $_POST['google_id'], $_POST['google_pass']);
         } else {
             $sql = 'update ' . $xoopsDB->prefix('tad_cal_cate') . " set `cate_title`='{$title}' , `google_id`='{$_POST['google_id']}' , `google_pass`='{$_POST['google_pass']}' where `cate_handle`='{$handle}'";

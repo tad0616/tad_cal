@@ -56,7 +56,7 @@ if (!function_exists('chk_tad_cal_cate_power')) {
             } else {
                 $power_array = explode(',', $power);
                 foreach ($power_array as $gid) {
-                    if (in_array($gid, $user_array, true)) {
+                    if (in_array($gid, $user_array)) {
                         $ok_cat[] = $cate_sn;
                         break;
                     }
@@ -106,7 +106,7 @@ if (!function_exists('my_counter')) {
         } elseif (null === ($xoopsModuleConfig['sync_conut']) or '' == $xoopsModuleConfig['sync_conut']) {
             $sync_conut = 100;
         } else {
-            $sync_conut = (int)$xoopsModuleConfig['sync_conut'];
+            $sync_conut = (int) $xoopsModuleConfig['sync_conut'];
         }
 
         $data = XOOPS_ROOT_PATH . '/uploads/tad_cal_count.txt';

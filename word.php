@@ -310,7 +310,7 @@ function get_events($even_start, $even_end, $cate_sn_arr, $show_type, $dl_type)
 
     if (!empty($cate_sn_arr)) {
         foreach ($cate_sn_arr as $cate_sn) {
-            if (in_array($cate_sn, $ok_cate_arr, true)) {
+            if (in_array($cate_sn, $ok_cate_arr)) {
                 $ok_arr[] = $cate_sn;
             }
         }

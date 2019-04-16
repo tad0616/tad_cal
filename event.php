@@ -117,7 +117,7 @@ function tad_cal_event_form($sn = '', $mode = '', $stamp = '')
         $ical->parse($recurrence);
         $rrule_array = $ical->get_all_data();
         $rrule_arr = $rrule_array[''];
-    /*
+        /*
     die(var_export($rrule_arr));
     $rrule_arr['DTSTART']['VALUE']='DATE';
     $rrule_arr['DTSTART']['unixtime']='1320336000';
@@ -158,7 +158,7 @@ function tad_cal_event_form($sn = '', $mode = '', $stamp = '')
     $warr = (isset($rrule_arr['RRULE']['FREQ']) and 'WEEKLY' === $rrule_arr['RRULE']['FREQ']) ? explode(',', $rrule_arr['RRULE']['BYDAY']) : [mb_strtoupper(mb_substr(date('D', strtotime($start)), 0, 2))];
 
     foreach ($weekday as $en => $ch) {
-        $checked = (in_array($en, $warr, true)) ? 'checked' : '';
+        $checked = (in_array($en, $warr)) ? 'checked' : '';
         $week_repeat_col .= "
         <label class='checkbox-inline'>
           <input type='checkbox' name='BYDAY[]' value='{$en}' id='{$en}' $checked> {$ch}
@@ -826,7 +826,7 @@ function ajax_update_date($sn = '')
     if ($allday) {
         $start = date('Y-m-d', $new_start);
         $end = date('Y-m-d', $new_end);
-    //$rrule_start=str_replace("-","",$start);
+        //$rrule_start=str_replace("-","",$start);
         //$rrule_end=str_replace("-","",$end);
         //$DTSTART="DTSTART;VALUE=DATE:{$rrule_start}\nDTEND;VALUE=DATE:{$rrule_end}\n";
     } else {
