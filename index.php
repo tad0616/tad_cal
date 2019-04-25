@@ -1,4 +1,6 @@
 <?php
+use XoopsModules\Tadtools\Utility;
+
 /*-----------引入檔案區--------------*/
 include_once 'header.php';
 $xoopsOption['template_main'] = 'tad_cal_index.tpl';
@@ -10,7 +12,7 @@ function fullcalendar($cate_sn = 0)
     global $xoopsConfig, $xoTheme;
     global $xoopsUser, $xoopsModuleConfig, $isAdmin, $xoopsTpl;
 
-    get_jquery();
+    Utility::get_jquery();
 
     if (empty($xoopsModuleConfig['eventShowMode'])) {
         $xoopsModuleConfig['eventShowMode'] = 'eventClick';
@@ -134,7 +136,7 @@ switch ($op) {
 }
 
 /*-----------秀出結果區--------------*/
-$xoopsTpl->assign('toolbar', toolbar_bootstrap($interface_menu));
+$xoopsTpl->assign('toolbar', Utility::toolbar_bootstrap($interface_menu));
 $xoopsTpl->assign('isAdmin', $isAdmin);
 
 include_once XOOPS_ROOT_PATH . '/footer.php';
