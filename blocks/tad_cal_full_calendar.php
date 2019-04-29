@@ -18,7 +18,7 @@ function tad_cal_full_calendar($options)
         $isAdmin = false;
     }
 
-    include_once XOOPS_ROOT_PATH . '/modules/tad_cal/function_block.php';
+    require_once XOOPS_ROOT_PATH . '/modules/tad_cal/function_block.php';
 
     $jquery_path = Utility::get_jquery(true); //一般只要此行即可
 

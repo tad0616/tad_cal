@@ -1,10 +1,10 @@
 <?php
 use XoopsModules\Tadtools\Utility;
 
-include_once 'header.php';
+require_once 'header.php';
 
 /* 連資料庫檢查 */
-include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op = system_CleanVars($_REQUEST, 'op', '', 'string');
 
 if ('title' === $op) {

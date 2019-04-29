@@ -159,8 +159,8 @@ if (!function_exists('rrule')) {
     function rrule($sn = '', $recurrence = '', $allDay = null)
     {
         global $xoopsDB, $xoopsUser;
-        include_once XOOPS_ROOT_PATH . '/modules/tad_cal/class/rrule.php';
-        include_once XOOPS_ROOT_PATH . '/modules/tad_cal/class/ical.php';
+        require_once XOOPS_ROOT_PATH . '/modules/tad_cal/class/rrule.php';
+        require_once XOOPS_ROOT_PATH . '/modules/tad_cal/class/ical.php';
 
         if (empty($sn) or empty($recurrence)) {
             return;

@@ -3,7 +3,7 @@ use XoopsModules\Tadtools\Utility;
 
 xoops_loadLanguage('main', 'tadtools');
 
-include_once XOOPS_ROOT_PATH . '/modules/tad_cal/function_block.php';
+require_once XOOPS_ROOT_PATH . '/modules/tad_cal/function_block.php';
 
 /********************* 自訂函數 *********************/
 //自動新增分類
@@ -11,7 +11,7 @@ function create_cate($title = '', $sort = '', $handle = '', $enable_group = '', 
 {
     global $xoopsDB;
 
-    $myts = MyTextSanitizer::getInstance();
+    $myts = \MyTextSanitizer::getInstance();
     $title = $myts->addSlashes($title);
     if (empty($sort)) {
         $sort = tad_cal_cate_max_sort();

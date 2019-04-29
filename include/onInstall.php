@@ -2,8 +2,7 @@
 
 use XoopsModules\Tadtools\Utility;
 
-
-include dirname(__DIR__) . '/preloads/autoloader.php';
+require dirname(__DIR__) . '/preloads/autoloader.php';
 
 function xoops_module_install_tad_cal(&$module)
 {

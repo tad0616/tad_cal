@@ -33,7 +33,7 @@ class Update
     {
         global $xoopsDB;
         //die(var_export($xoopsConfig));
-        include XOOPS_ROOT_PATH . '/modules/tad_cal/xoops_version.php';
+        require XOOPS_ROOT_PATH . '/modules/tad_cal/xoops_version.php';
 
         //先找出該有的區塊以及對應樣板
         foreach ($modversion['blocks'] as $i => $block) {

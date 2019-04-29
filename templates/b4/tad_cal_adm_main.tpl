@@ -2,7 +2,6 @@
 <div class="container-fluid">
   <{if $op=="tad_cal_cate_form"}>
     <h1><{$smarty.const._MA_TADCAL_CATE_FORM}></h1>
-    <{$formValidator_code}>
 
     <script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/mColorPicker/javascripts/mColorPicker.js" charset="UTF-8"></script>
     <script type="text/javascript">

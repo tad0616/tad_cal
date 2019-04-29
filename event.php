@@ -1,9 +1,11 @@
 <?php
+use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\Utility;
+
 /*-----------引入檔案區--------------*/
-include_once 'header.php';
+require_once 'header.php';
 $xoopsOption['template_main'] = 'tad_cal_event.tpl';
-include_once XOOPS_ROOT_PATH . '/header.php';
+require_once XOOPS_ROOT_PATH . '/header.php';
 /*-----------function區--------------*/
 
 function toServerTime($time)
@@ -23,7 +25,7 @@ function toServerTime($time)
 function tad_cal_event_form($sn = '', $mode = '', $stamp = '')
 {
     global $xoopsDB, $xoopsUser, $xoopsTpl;
-    include_once XOOPS_ROOT_PATH . '/modules/tad_cal/class/ical.php';
+    require_once XOOPS_ROOT_PATH . '/modules/tad_cal/class/ical.php';
     if (!$xoopsUser) {
         redirect_header(XOOPS_URL . '/modules/tad_cal/index.php', 3, _MD_TADCAL_NEED_LOGIN);
         exit;
@@ -205,12 +207,8 @@ function tad_cal_event_form($sn = '', $mode = '', $stamp = '')
     $xoopsTpl->assign('RRULE_COUNT', $rrule_arr['RRULE']['COUNT']);
     $xoopsTpl->assign('UNTIL', $UNTIL);
 
-    if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/formValidator.php')) {
-        redirect_header(XOOPS_URL . '/modules/tad_cal/index.php', 3, _MD_NEED_TADTOOLS);
-    }
-    include_once XOOPS_ROOT_PATH . '/modules/tadtools/formValidator.php';
-    $formValidator = new formValidator('#myForm', true);
-    $formValidator_code = $formValidator->render();
+    $FormValidator = new FormValidator('#myForm', true);
+    $FormValidator->render();
 
     $start_allday = mb_substr($start, 0, 10);
     if ($allday) {
@@ -244,7 +242,6 @@ function tad_cal_event_form($sn = '', $mode = '', $stamp = '')
     $xoopsTpl->assign('mode', $mode);
     $xoopsTpl->assign('show_week_repeat', $show_week_repeat);
     $xoopsTpl->assign('show_month_repeat', $show_month_repeat);
-    $xoopsTpl->assign('formValidator_code', $formValidator_code);
     $xoopsTpl->assign('cate_col', $cate_col);
     $xoopsTpl->assign('op', 'tad_cal_event_form');
     $xoopsTpl->assign('sn', $sn);
@@ -271,7 +268,7 @@ function insert_tad_cal_event()
     //取得使用者編號
     $uid = ($xoopsUser) ? $xoopsUser->getVar('uid') : 0;
 
-    $myts = MyTextSanitizer::getInstance();
+    $myts = \MyTextSanitizer::getInstance();
     $title = $myts->addSlashes($_POST['title']);
     $location = $myts->addSlashes($_POST['location']);
     $kind = $myts->addSlashes($_POST['kind']);
@@ -391,7 +388,7 @@ function update_tad_cal_event($sn = '')
     //取得使用者編號
     $uid = ($xoopsUser) ? $xoopsUser->getVar('uid') : '';
 
-    $myts = MyTextSanitizer::getInstance();
+    $myts = \MyTextSanitizer::getInstance();
     $_POST['title'] = $myts->addSlashes($_POST['title']);
     $_POST['location'] = $myts->addSlashes($_POST['location']);
     $_POST['details'] = $myts->addSlashes($_POST['details']);
@@ -860,7 +857,7 @@ function ajax_update_date($sn = '')
 }
 
 /*-----------執行動作判斷區----------*/
-include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op = system_CleanVars($_REQUEST, 'op', '', 'string');
 $cate_sn = system_CleanVars($_REQUEST, 'cate_sn', 0, 'int');
 $sn = system_CleanVars($_REQUEST, 'sn', 0, 'int');
@@ -919,4 +916,4 @@ switch ($op) {
 $xoopsTpl->assign('toolbar', Utility::toolbar_bootstrap($interface_menu));
 $xoopsTpl->assign('isAdmin', $isAdmin);
 
-include_once XOOPS_ROOT_PATH . '/footer.php';
+require_once XOOPS_ROOT_PATH . '/footer.php';

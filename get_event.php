@@ -1,7 +1,7 @@
 <?php
 use XoopsModules\Tadtools\Utility;
 
-include_once 'header.php';
+require_once 'header.php';
 
 /* 連資料庫檢查 */
 echo get_event();
@@ -67,7 +67,7 @@ function get_event()
         $event_title = xoops_substr(strip_tags($title), 0, $title_num);
 
         $myEvents[$i]['id'] = $sn;
-        $myEvents[$i]['title'] = (string)($event_title);
+        $myEvents[$i]['title'] = (string) ($event_title);
         //$myEvents[$i]['url']="event.php?sn=$sn";
         $myEvents[$i]['rel'] = XOOPS_URL . "/modules/tad_cal/event.php?op=view&sn=$sn";
         $myEvents[$i]['start'] = $start;

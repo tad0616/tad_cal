@@ -1,8 +1,8 @@
 <?php
 use XoopsModules\Tadtools\Utility;
 
-include_once 'header.php';
-$myts = MyTextSanitizer::getInstance();
+require_once 'header.php';
+$myts = \MyTextSanitizer::getInstance();
 
 $show_type = $myts->addSlashes($_POST['show_type']);
 $dl_type = $myts->addSlashes($_POST['dl_type']);

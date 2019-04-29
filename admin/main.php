@@ -1,17 +1,18 @@
 <?php
+use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\Utility;
 
 /*-----------引入檔案區--------------*/
 $xoopsOption['template_main'] = 'tad_cal_adm_main.tpl';
-include_once 'header.php';
-include_once '../function.php';
+require_once 'header.php';
+require_once '../function.php';
 
 /*-----------function區--------------*/
 //tad_cal_cate編輯表單
 function tad_cal_cate_form($cate_sn = '')
 {
     global $xoopsDB, $xoopsUser, $xoopsTpl;
-    include_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
+    require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
     //include_once(XOOPS_ROOT_PATH."/class/xoopseditor/xoopseditor.php");
 
     //抓取預設值
@@ -70,12 +71,8 @@ function tad_cal_cate_form($cate_sn = '')
     $SelectGroup_name->setExtra('class="span12 form-control"');
     $enable_upload_group = $SelectGroup_name->render();
 
-    if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/formValidator.php')) {
-        redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
-    }
-    include_once XOOPS_ROOT_PATH . '/modules/tadtools/formValidator.php';
-    $formValidator = new formValidator('#myForm', true);
-    $formValidator_code = $formValidator->render();
+    $FormValidator = new FormValidator('#myForm', true);
+    $FormValidator->render();
 
     $xoopsTpl->assign('next_op', $op);
     $xoopsTpl->assign('cate_sn', $cate_sn);
@@ -88,7 +85,6 @@ function tad_cal_cate_form($cate_sn = '')
     $xoopsTpl->assign('cate_color', $cate_color);
     $xoopsTpl->assign('cate_bgcolor', $cate_bgcolor);
     $xoopsTpl->assign('cate_title', $cate_title);
-    $xoopsTpl->assign('formValidator_code', $formValidator_code);
     $xoopsTpl->assign('google_id', $google_id);
     $xoopsTpl->assign('google_pass', $google_pass);
     $xoopsTpl->assign('op', 'tad_cal_cate_form');
@@ -108,7 +104,7 @@ function insert_tad_cal_cate()
 {
     global $xoopsDB, $xoopsUser;
 
-    $myts = MyTextSanitizer::getInstance();
+    $myts = \MyTextSanitizer::getInstance();
     $_POST['cate_title'] = $myts->addSlashes($_POST['cate_title']);
     $_POST['google_id'] = $myts->addSlashes($_POST['google_id']);
     $_POST['google_pass'] = $myts->addSlashes($_POST['google_pass']);
@@ -148,7 +144,7 @@ function update_tad_cal_cate($cate_sn = '')
 {
     global $xoopsDB, $xoopsUser;
 
-    $myts = MyTextSanitizer::getInstance();
+    $myts = \MyTextSanitizer::getInstance();
     $_POST['cate_title'] = $myts->addSlashes($_POST['cate_title']);
     $_POST['google_id'] = $myts->addSlashes($_POST['google_id']);
     $_POST['google_pass'] = $myts->addSlashes($_POST['google_pass']);
@@ -312,7 +308,7 @@ function save_google()
         $cate_sn_arr[$cate_handle] = $cate_sn;
     }
 
-    $myts = MyTextSanitizer::getInstance();
+    $myts = \MyTextSanitizer::getInstance();
     $_POST['google_id'] = $myts->addSlashes($_POST['google_id']);
     $_POST['google_pass'] = $myts->addSlashes($_POST['google_pass']);
 
@@ -346,7 +342,7 @@ function tad_cal_all_sync()
     }
 }
 /*-----------執行動作判斷區----------*/
-include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
+require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op = system_CleanVars($_REQUEST, 'op', '', 'string');
 $cate_sn = system_CleanVars($_REQUEST, 'cate_sn', 0, 'int');
 
@@ -411,4 +407,4 @@ switch ($op) {
 }
 
 /*-----------秀出結果區--------------*/
-include_once 'footer.php';
+require_once 'footer.php';
