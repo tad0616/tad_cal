@@ -61,13 +61,13 @@ function tad_cal_cate_form($cate_sn = '')
     //$op="replace_tad_cal_cate";
 
     //可見群組
-    $SelectGroup_name = new XoopsFormSelectGroup('', 'enable_group', false, $enable_group, 3, true);
+    $SelectGroup_name = new \XoopsFormSelectGroup('', 'enable_group', false, $enable_group, 3, true);
     $SelectGroup_name->addOption('', _MA_TADCAL_ALL_OK, false);
     $SelectGroup_name->setExtra('class="span12 form-control"');
     $enable_group = $SelectGroup_name->render();
 
     //可上傳群組
-    $SelectGroup_name = new XoopsFormSelectGroup('', 'enable_upload_group', false, $enable_upload_group, 3, true);
+    $SelectGroup_name = new \XoopsFormSelectGroup('', 'enable_upload_group', false, $enable_upload_group, 3, true);
     $SelectGroup_name->setExtra('class="span12 form-control"');
     $enable_upload_group = $SelectGroup_name->render();
 
