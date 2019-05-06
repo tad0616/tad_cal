@@ -44,6 +44,7 @@ $(document).ready(function(){
     },
       <{$eventShowMode}>: function(event) {
         if (event.rel) {
+          console.log(event.rel);
           $(this).qtip({
            content: {
             // 設定載入中圖片
