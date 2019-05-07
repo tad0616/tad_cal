@@ -123,7 +123,7 @@ function tad_cal_full_calendar($options)
     $block['my_counter'] = my_counter();
     $block['firstDay'] = $xoopsModuleConfig['cal_start'];
 
-    $ver = (int) str_replace('.', '', mb_substr(XOOPS_VERSION, 6, 5));
+    $ver = (int) str_replace('.', '', str_replace('XOOPS ', '', XOOPS_VERSION));
     if ($ver >= 259) {
         $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate-3.0.0.min.js');
     } else {
