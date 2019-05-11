@@ -104,7 +104,7 @@ function fullcalendar($cate_sn = 0)
 
     $xoopsTpl->assign('eventDrop', $eventDrop);
     $xoopsTpl->assign('eventAdd', $eventAdd);
-    $xoopsTpl->assign('style_css', $style['css']);
+    $xoopsTpl->assign('style_css', isset($style['css']) ? $style['css'] : '');
     $xoopsTpl->assign('cate_sn', $cate_sn);
     $xoopsTpl->assign('eventShowMode', $xoopsModuleConfig['eventShowMode']);
     $xoopsTpl->assign('eventTheme', $xoopsModuleConfig['eventTheme']);

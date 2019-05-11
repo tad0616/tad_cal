@@ -628,9 +628,9 @@ function show_one_tad_cal_event($sn = '', $stamp = '')
     $date = show_date($start, $end, $allday, '~');
 
     //以uid取得使用者名稱
-    $uid_name = XoopsUser::getUnameFromId($uid, 1);
+    $uid_name = \XoopsUser::getUnameFromId($uid, 1);
     if (empty($uid_name)) {
-        $uid_name = XoopsUser::getUnameFromId($uid, 0);
+        $uid_name = \XoopsUser::getUnameFromId($uid, 0);
     }
 
     $details = nl2br($details);
@@ -696,9 +696,9 @@ function show_simple_event($sn = '', $stamp = '')
 
     $date = show_date($start, $end, $allday, '~');
     //以uid取得使用者名稱
-    $uid_name = XoopsUser::getUnameFromId($uid, 1);
+    $uid_name = \XoopsUser::getUnameFromId($uid, 1);
     if (empty($uid_name)) {
-        $uid_name = XoopsUser::getUnameFromId($uid, 0);
+        $uid_name = \XoopsUser::getUnameFromId($uid, 0);
     }
 
     $details = nl2br($details);

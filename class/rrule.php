@@ -1,5 +1,7 @@
 <?php
 
+namespace XoopsModules\Tad_cal;
+
 /*
 require_once "rrule.php"
 $rule = new RRule('20111104T190000' , 'RRULE:FREQ=WEEKLY;UNTIL=20111230;INTERVAL=2;BYDAY=FR');

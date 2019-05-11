@@ -117,7 +117,7 @@ function get_cal_array()
     global $xoopsDB;
     $sql = 'select cate_sn,cate_title from ' . $xoopsDB->prefix('tad_cal_cate') . '';
     $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
-    while (false !== (list($cate_sn, $cate_title) = $xoopsDB->fetchRow($result))) {
+    while (list($cate_sn, $cate_title) = $xoopsDB->fetchRow($result)) {
         $arr[$cate_sn] = $cate_title;
     }
 

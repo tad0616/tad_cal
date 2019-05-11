@@ -1,4 +1,7 @@
 <?php
+
+namespace XoopsModules\Tad_cal;
+
 ################################################################################
 #                                                           DATE : 01.08.2006  #
 #  Short description :                                                         #
@@ -37,7 +40,7 @@
  * @version 1.0
  * @todo get sort todo list
  */
-class ical
+class Ical
 {
     /**
      * Text in file

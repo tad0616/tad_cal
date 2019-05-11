@@ -58,18 +58,18 @@ function tad_cal_cate_form($cate_sn = '')
     //$op="replace_tad_cal_cate";
 
     //可見群組
-    $SelectGroup_name = new XoopsFormSelectGroup('', 'enable_group', false, $enable_group, 3, true);
+    $SelectGroup_name = new \XoopsFormSelectGroup('', 'enable_group', false, $enable_group, 3, true);
     $SelectGroup_name->addOption('', _MA_TADCAL_ALL_OK, false);
     $SelectGroup_name->setExtra('class="span12 form-control"');
     $enable_group = $SelectGroup_name->render();
 
     //可上傳群組
-    $SelectGroup_name = new XoopsFormSelectGroup('', 'enable_upload_group', false, $enable_upload_group, 3, true);
+    $SelectGroup_name = new \XoopsFormSelectGroup('', 'enable_upload_group', false, $enable_upload_group, 3, true);
     $SelectGroup_name->setExtra('class="span12 form-control"');
     $enable_upload_group = $SelectGroup_name->render();
 
     if (!file_exists(TADTOOLS_PATH . '/formValidator.php')) {
-        redirect_header('index.php', 3, _MA_NEED_TADTOOLS);
+        redirect_header('index.php', 3, _TAD_NEED_TADTOOLS);
     }
     require_once TADTOOLS_PATH . '/formValidator.php';
     $formValidator = new formValidator('#myForm', true);
@@ -188,7 +188,7 @@ function list_tad_cal_cate($show_function = 1)
     //取得資料數
     $sql = 'select count(*),cate_sn,max(`last_update`) from ' . $xoopsDB->prefix('tad_cal_event') . ' group by cate_sn';
     $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
-    while (false !== (list($count, $cate_sn, $last_update) = $xoopsDB->fetchRow($result))) {
+    while (list($count, $cate_sn, $last_update) = $xoopsDB->fetchRow($result)) {
         $counter[$cate_sn] = $count;
         $last[$cate_sn] = $last_update;
     }
@@ -260,7 +260,7 @@ function link_to_google($id = '', $pass = '')
     //抓出現有google行事曆
     $sql = 'select `cate_title`,`cate_handle` from ' . $xoopsDB->prefix('tad_cal_cate') . " where `cate_handle`!=''";
     $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
-    while (false !== (list($cate_title, $cate_handle) = $xoopsDB->fetchRow($result))) {
+    while (list($cate_title, $cate_handle) = $xoopsDB->fetchRow($result)) {
         $all_handle[] = $cate_handle;
         $cate_title_arr[$cate_handle] = $cate_title;
     }
@@ -305,7 +305,7 @@ function save_google()
     //抓出現有google行事曆
     $sql = 'select `cate_sn`,`cate_handle` from ' . $xoopsDB->prefix('tad_cal_cate') . " where `cate_handle`!=''";
     $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
-    while (false !== (list($cate_sn, $cate_handle) = $xoopsDB->fetchRow($result))) {
+    while (list($cate_sn, $cate_handle) = $xoopsDB->fetchRow($result)) {
         $all_handle[] = $cate_handle;
         $cate_sn_arr[$cate_handle] = $cate_sn;
     }
@@ -339,7 +339,7 @@ function tad_cal_all_sync()
     $sql = 'select cate_sn from ' . $xoopsDB->prefix('tad_cal_cate') . " where `cate_handle`!=''";
     $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
-    while (false !== (list($cate_sn) = $xoopsDB->fetchRow($result))) {
+    while (list($cate_sn) = $xoopsDB->fetchRow($result)) {
         import_google($cate_sn);
     }
 }

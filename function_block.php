@@ -14,7 +14,7 @@ if (!function_exists('style_mark')) {
         $sql = 'select `cate_sn`,`cate_title`,`cate_bgcolor`,`cate_color` from ' . $xoopsDB->prefix('tad_cal_cate') . " where $and_ok_cate order by `cate_sort`";
         $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
         $mark = '';
-        while (false !== (list($cate_sn, $cate_title, $cate_bgcolor, $cate_color) = $xoopsDB->fetchRow($result))) {
+        while (list($cate_sn, $cate_title, $cate_bgcolor, $cate_color) = $xoopsDB->fetchRow($result)) {
             $mark .= "
             <a href='" . XOOPS_URL . "/modules/tad_cal/index.php?cate_sn={$cate_sn}'  class='cate_mark' style='background: {$cate_bgcolor}; color: {$cate_color};'>$cate_title</a>";
         }
@@ -42,7 +42,7 @@ if (!function_exists('chk_tad_cal_cate_power')) {
         $sql = "select `cate_sn`,`{$kind}`,`cate_enable` from " . $xoopsDB->prefix('tad_cal_cate') . '';
         $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
 
-        while (false !== (list($cate_sn, $power, $cate_enable) = $xoopsDB->fetchRow($result))) {
+        while (list($cate_sn, $power, $cate_enable) = $xoopsDB->fetchRow($result)) {
             if (empty($cate_sn)) {
                 continue;
             }
@@ -87,7 +87,7 @@ if (!function_exists('get_tad_cal_cate_menu_options')) {
         }
 
         $option = '';
-        while (false !== (list($cate_sn, $cate_title) = $xoopsDB->fetchRow($result))) {
+        while (list($cate_sn, $cate_title) = $xoopsDB->fetchRow($result)) {
             $selected = ($cate_sn == $default_cate_sn) ? 'selected=selected' : '';
             $option .= "<option value=$cate_sn $selected>{$cate_title}</option>";
         }
