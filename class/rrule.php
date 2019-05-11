@@ -193,7 +193,7 @@ class RRule
         if (isset($this->_part['COUNT']) && isset($this->_part['UNTIL'])) {
             //echo sprintf("<br> RRULE MUST NOT have both COUNT=value and UNTIL=value (%s)", $rrule );
         }
-        if (isset($this->_part['COUNT']) && (int)$this->_part['COUNT'] < 1) {
+        if (isset($this->_part['COUNT']) && (int) $this->_part['COUNT'] < 1) {
             //echo sprintf("<br> RRULE MUST NOT have both COUNT=value and UNTIL=value (%s)", $rrule );
         }
         if (!preg_match('/(YEAR|MONTH|WEEK|DAI)LY/', $this->_part['FREQ'])) {
@@ -297,7 +297,8 @@ class RRule
                 //echo sprintf("<br> GetNext: Returning %s, (%d'th)", $this->_dates[$this->_current]->Render(), $this->_current );
                 return $this->_dates[$this->_current];
             }
-            if (isset($this->_part['COUNT']) && $this->_current >= $this->_part['COUNT']) { // >= since _current is 0-based and COUNT is 1-based
+            if (isset($this->_part['COUNT']) && $this->_current >= $this->_part['COUNT']) {
+                // >= since _current is 0-based and COUNT is 1-based
                 $this->_finished = true;
             }
         }
@@ -341,7 +342,7 @@ class RRule
 
                 $days = $this->WithinScope($next, $days);
             } while ($limit && count($days) < 1 && !$this->_finished);
-        //echo sprintf("<br> GetNext: Found %d days for MONTHLY rule", count($days) );
+            //echo sprintf("<br> GetNext: Found %d days for MONTHLY rule", count($days) );
         } elseif ('WEEKLY' === $this->_part['FREQ']) {
             //echo sprintf("<br> GetNext: Calculating more dates for WEEKLY rule" );
             $limit = 200;
@@ -356,7 +357,7 @@ class RRule
 
                 if (isset($this->_part['BYDAY'])) {
                     $days = $next->GetWeekByDay($this->_part['BYDAY'], false);
-                //die(var_export($days));
+                    //die(var_export($days));
                 } else {
                     $days[$next->_dd] = $next->_dd;
                 }
@@ -368,7 +369,7 @@ class RRule
                 $days = $this->WithinScope($next, $days);
             } while ($limit && count($days) < 1 && !$this->_finished);
 
-        //echo sprintf("<br> GetNext: Found %d days for WEEKLY rule", count($days) );
+            //echo sprintf("<br> GetNext: Found %d days for WEEKLY rule", count($days) );
         } elseif ('DAILY' === $this->_part['FREQ']) {
             //echo sprintf("<br> GetNext: Calculating more dates for DAILY rule" );
             $limit = 100;
@@ -484,7 +485,7 @@ class iCalDate
             $this->SetLocalDate($input);
         } elseif (preg_match('/^\d{8}[T ]\d{6}Z$/', $input)) {
             $this->SetGMTDate($input);
-        } elseif (0 == (int)$input) {
+        } elseif (0 == (int) $input) {
             $this->SetLocalDate(strtotime($input));
 
             return;
@@ -521,7 +522,7 @@ class iCalDate
      */
     public function SetEpochDate($input)
     {
-        $this->_epoch = (int)$input;
+        $this->_epoch = (int) $input;
         $this->_TextFromEpoch();
         $this->_PartsFromText();
     }
@@ -549,12 +550,12 @@ class iCalDate
      */
     public function _PartsFromText()
     {
-        $this->_yy = (int)mb_substr($this->_text, 0, 4);
-        $this->_mo = (int)mb_substr($this->_text, 4, 2);
-        $this->_dd = (int)mb_substr($this->_text, 6, 2);
-        $this->_hh = (int)mb_substr($this->_text, 9, 2);
-        $this->_mi = (int)mb_substr($this->_text, 11, 2);
-        $this->_ss = (int)mb_substr($this->_text, 13, 2);
+        $this->_yy = (int) mb_substr($this->_text, 0, 4);
+        $this->_mo = (int) mb_substr($this->_text, 4, 2);
+        $this->_dd = (int) mb_substr($this->_text, 6, 2);
+        $this->_hh = (int) mb_substr($this->_text, 9, 2);
+        $this->_mi = (int) mb_substr($this->_text, 11, 2);
+        $this->_ss = (int) mb_substr($this->_text, 13, 2);
     }
 
     /**
@@ -736,7 +737,7 @@ class iCalDate
         $sign = ('-' == $sign ? -1 : 1);
         //echo sprintf("<br> Adding duration to '%s' of sign: %d,  days: %s,  time: %s", $this->_text, $sign, $days, $time );
         if (preg_match('/(\d+)(D|W)/', $days, $matches)) {
-            $days = (int)$matches[1];
+            $days = (int) $matches[1];
             if ('W' === $matches[2]) {
                 $days *= 7;
             }
@@ -764,28 +765,28 @@ class iCalDate
         $this->_ss += ($ss * $sign);
 
         if ($this->_ss < 0) {
-            $this->_mi -= ((int)abs($this->_ss / 60) + 1);
-            $this->_ss += (((int)abs($this->_mi / 60) + 1) * 60);
+            $this->_mi -= ((int) abs($this->_ss / 60) + 1);
+            $this->_ss += (((int) abs($this->_mi / 60) + 1) * 60);
         }
         if ($this->_ss > 59) {
-            $this->_mi += ((int)abs($this->_ss / 60) + 1);
-            $this->_ss -= (((int)abs($this->_mi / 60) + 1) * 60);
+            $this->_mi += ((int) abs($this->_ss / 60) + 1);
+            $this->_ss -= (((int) abs($this->_mi / 60) + 1) * 60);
         }
         if ($this->_mi < 0) {
-            $this->_hh -= ((int)abs($this->_mi / 60) + 1);
-            $this->_mi += (((int)abs($this->_mi / 60) + 1) * 60);
+            $this->_hh -= ((int) abs($this->_mi / 60) + 1);
+            $this->_mi += (((int) abs($this->_mi / 60) + 1) * 60);
         }
         if ($this->_mi > 59) {
-            $this->_hh += ((int)abs($this->_mi / 60) + 1);
-            $this->_mi -= (((int)abs($this->_mi / 60) + 1) * 60);
+            $this->_hh += ((int) abs($this->_mi / 60) + 1);
+            $this->_mi -= (((int) abs($this->_mi / 60) + 1) * 60);
         }
         if ($this->_hh < 0) {
-            $this->AddDays(-1 * ((int)abs($this->_hh / 24) + 1));
-            $this->_hh += (((int)abs($this->_hh / 24) + 1) * 24);
+            $this->AddDays(-1 * ((int) abs($this->_hh / 24) + 1));
+            $this->_hh += (((int) abs($this->_hh / 24) + 1) * 24);
         }
         if ($this->_hh > 23) {
-            $this->AddDays(((int)abs($this->_hh / 24) + 1));
-            $this->_hh -= (((int)abs($this->_hh / 24) + 1) * 24);
+            $this->AddDays(((int) abs($this->_hh / 24) + 1));
+            $this->_hh -= (((int) abs($this->_hh / 24) + 1) * 24);
         }
 
         $this->_EpochFromParts();
@@ -812,11 +813,11 @@ class iCalDate
         $diff = $from->_epoch - $this->_epoch;
         $result = '';
         if ($diff >= 86400) {
-            $result = (int)($diff / 86400);
+            $result = (int) ($diff / 86400);
             $diff = $diff % 86400;
             if (0 == $diff && (0 == ($result % 7))) {
                 // Duration is an integer number of weeks.
-                $result .= (int)($result / 7) . 'W';
+                $result .= (int) ($result / 7) . 'W';
 
                 return $result;
             }
@@ -824,15 +825,15 @@ class iCalDate
         }
         $result = 'P' . $result . 'T';
         if ($diff >= 3600) {
-            $result .= (int)($diff / 3600) . 'H';
+            $result .= (int) ($diff / 3600) . 'H';
             $diff = $diff % 3600;
         }
         if ($diff >= 60) {
-            $result .= (int)($diff / 60) . 'M';
+            $result .= (int) ($diff / 60) . 'M';
             $diff = $diff % 60;
         }
         if ($diff > 0) {
-            $result .= (int)$diff . 'S';
+            $result .= (int) $diff . 'S';
         }
 
         return $result;
@@ -919,7 +920,7 @@ return $result;
         $dayrules = explode(',', $bymonthday);
         $set = [];
         foreach ($dayrules as $k => $v) {
-            $v = (int)$v;
+            $v = (int) $v;
             if ($v > 0 && $v <= $days_in_month) {
                 $set[$v] = $v;
             }
@@ -1005,7 +1006,7 @@ return $result;
         //echo sprintf("<br>MonthDays: Getting days for '%s'. %d days starting on a %d", $dayspec, $days_in_month, $dow_first );
         $set = [];
         preg_match('/([0-9-]*)(MO|TU|WE|TH|FR|SA|SU)/', $dayspec, $matches);
-        $numeric = (int)$matches[1];
+        $numeric = (int) $matches[1];
         $dow = $this->ical_weekdays[$matches[2]];
 
         $first_matching_day = 1 + ($dow - $dow_first);

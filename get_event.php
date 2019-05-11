@@ -1,7 +1,10 @@
 <?php
+use XoopsModules\Tadtools\Utility;
+
 require_once __DIR__ . '/header.php';
 
 /* 連資料庫檢查 */
+header("Content-type: application/json");
 echo get_event();
 
 //取得事件
@@ -30,7 +33,7 @@ function get_event()
     where ((a.`start` >= '$even_start' and a.`end` <= '$even_end') or (a.`start` <= '$even_end' and a.`end` > '$even_end') or (a.`start` <= '$even_start' and a.`end` > '$even_start')) $and_ok_cate $and_cate_sn
     order by a.`start` , a.`sequence`";
 
-    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     $i = 0;
     while (false !== ($all = $xoopsDB->fetchArray($result))) {
         //以下會產生這些變數： $sn , $title , $start , $end , $recurrence , $location , $kind , $details , $etag , $id , $sequence , $uid , $cate_sn
@@ -66,7 +69,7 @@ function get_event()
 
         $myEvents[$i]['id'] = $sn;
         $myEvents[$i]['title'] = (string)($event_title);
-        //$myEvents[$i]['url']="event.php?sn=$sn";
+        $myEvents[$i]['url'] = XOOPS_URL . "/modules/tad_cal/event.php?sn=$sn";
         $myEvents[$i]['rel'] = XOOPS_URL . "/modules/tad_cal/event.php?op=view&sn=$sn";
         $myEvents[$i]['start'] = $start;
         if (!empty($end)) {
@@ -89,7 +92,7 @@ function get_event()
     where a.`start` >= '$even_start' and a.`end` <= '$even_end' $and_ok_cate2 $and_cate_sn2
     order by a.`start`";
     // die($sql);
-    $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+    $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
     while (false !== ($all = $xoopsDB->fetchArray($result))) {
         //以下會產生這些變數： $sn , $title , $start , $end , $recurrence , $location , $kind , $details , $etag , $id , $sequence , $uid , $cate_sn

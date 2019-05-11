@@ -1,13 +1,14 @@
 <?php
+use XoopsModules\Tadtools\Utility;
+
+if (!class_exists('XoopsModules\Tadtools\Utility')) {
+    require XOOPS_ROOT_PATH . '/modules/tadtools/preloads/autoloader.php';
+}
+
 //區塊主函式 (小行事曆(tad_cal_calendar))
 function tad_cal_calendar($options)
 {
     global $xoTheme;
-    //引入TadTools的函式庫
-    if (!file_exists(XOOPS_ROOT_PATH . '/modules/tadtools/tad_function.php')) {
-        redirect_header('http://www.tad0616.net/modules/tad_uploader/index.php?of_cat_sn=50', 3, _TAD_NEED_TADTOOLS);
-    }
-    require_once XOOPS_ROOT_PATH . '/modules/tadtools/tad_function.php';
 
     $moduleHandler = xoops_getHandler('module');
     $xoopsModule = $moduleHandler->getByDirname('tad_cal');
@@ -15,11 +16,11 @@ function tad_cal_calendar($options)
     $module_id = $xoopsModule->getVar('mid');
     $xoopsModuleConfig = $configHandler->getConfigsByCat(0, $module_id);
 
-    get_jquery(true); //一般只要此行即可
+    Utility::get_jquery(true); //一般只要此行即可
 
     $block['firstDay'] = $xoopsModuleConfig['cal_start'];
 
-    $ver = (int)str_replace('.', '', mb_substr(XOOPS_VERSION, 6, 5));
+    $ver = (int) str_replace('.', '', str_replace('XOOPS ', '', XOOPS_VERSION));
     if ($ver >= 259) {
         $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate-3.0.0.min.js');
     } else {

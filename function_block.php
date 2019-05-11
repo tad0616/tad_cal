@@ -1,4 +1,5 @@
 <?php
+use XoopsModules\Tadtools\Utility;
 
 if (!function_exists('style_mark')) {
     function style_mark()
@@ -12,7 +13,7 @@ if (!function_exists('style_mark')) {
 
         //抓出現有google行事曆
         $sql = 'select `cate_sn`,`cate_title`,`cate_bgcolor`,`cate_color` from ' . $xoopsDB->prefix('tad_cal_cate') . " where $and_ok_cate order by `cate_sort`";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $mark = '';
         while (list($cate_sn, $cate_title, $cate_bgcolor, $cate_color) = $xoopsDB->fetchRow($result)) {
             $mark .= "
@@ -40,7 +41,7 @@ if (!function_exists('chk_tad_cal_cate_power')) {
         }
 
         $sql = "select `cate_sn`,`{$kind}`,`cate_enable` from " . $xoopsDB->prefix('tad_cal_cate') . '';
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
         while (list($cate_sn, $power, $cate_enable) = $xoopsDB->fetchRow($result)) {
             if (empty($cate_sn)) {
@@ -80,7 +81,7 @@ if (!function_exists('get_tad_cal_cate_menu_options')) {
         $and_ok_cate = empty($all_ok_cate) ? "cate_sn='0'" : "cate_sn in($all_ok_cate)";
 
         $sql = 'select cate_sn,cate_title from ' . $xoopsDB->prefix('tad_cal_cate') . " where $and_ok_cate order by `cate_sort`";
-        $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $total = $xoopsDB->getRowsNum($result);
         if (empty($total)) {
             return;
@@ -207,12 +208,12 @@ if (!function_exists('rrule')) {
 
         $sql = 'delete from ' . $xoopsDB->prefix('tad_cal_repeat') . " where `sn`='{$sn}'";
 
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
         $sql = 'insert into ' . $xoopsDB->prefix('tad_cal_repeat') . "
         (`sn` , `start` , `end` , `allday`)
         values{$sql_data}";
         // echo "<p>$sql</p>";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     }
 }

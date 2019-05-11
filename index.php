@@ -1,7 +1,9 @@
 <?php
+use XoopsModules\Tadtools\Utility;
+
 /*-----------引入檔案區--------------*/
 require_once __DIR__ . '/header.php';
-$GLOBALS['xoopsOption']['template_main'] = 'tad_cal_index.tpl';
+$xoopsOption['template_main'] = 'tad_cal_index.tpl';
 require_once XOOPS_ROOT_PATH . '/header.php';
 /*-----------function區--------------*/
 
@@ -10,7 +12,7 @@ function fullcalendar($cate_sn = 0)
     global $xoopsConfig, $xoTheme;
     global $xoopsUser, $xoopsModuleConfig, $isAdmin, $xoopsTpl;
 
-    get_jquery();
+    Utility::get_jquery();
 
     if (empty($xoopsModuleConfig['eventShowMode'])) {
         $xoopsModuleConfig['eventShowMode'] = 'eventClick';
@@ -113,7 +115,7 @@ function fullcalendar($cate_sn = 0)
 
     $xoopsTpl->assign('firstDay', $xoopsModuleConfig['cal_start']);
     $xoopsTpl->assign('cate', get_tad_cal_cate($cate_sn));
-    $ver = (int)str_replace('.', '', mb_substr(XOOPS_VERSION, 6, 5));
+    $ver = (int) str_replace('.', '', str_replace('XOOPS ', '', XOOPS_VERSION));
     if ($ver >= 259) {
         $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate-3.0.0.min.js');
     } else {
@@ -134,7 +136,7 @@ switch ($op) {
 }
 
 /*-----------秀出結果區--------------*/
-$xoopsTpl->assign('toolbar', toolbar_bootstrap($interface_menu));
+$xoopsTpl->assign('toolbar', Utility::toolbar_bootstrap($interface_menu));
 $xoopsTpl->assign('isAdmin', $isAdmin);
 
 require_once XOOPS_ROOT_PATH . '/footer.php';

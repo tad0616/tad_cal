@@ -1,6 +1,7 @@
 <?php
 xoops_loadLanguage('modinfo_common', 'tadtools');
 
+
 define('_MI_TADCAL_NAME', '行事曆');
 define('_MI_TADCAL_AUTHOR', '行事曆');
 define('_MI_TADCAL_CREDITS', 'tad');

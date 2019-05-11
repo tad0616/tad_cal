@@ -1,7 +1,10 @@
 <?php
+use XoopsModules\Tadtools\FormValidator;
+use XoopsModules\Tadtools\Utility;
+
 /*-----------引入檔案區--------------*/
 require_once __DIR__ . '/header.php';
-$GLOBALS['xoopsOption']['template_main'] = 'tad_cal_event.tpl';
+$xoopsOption['template_main'] = 'tad_cal_event.tpl';
 require_once XOOPS_ROOT_PATH . '/header.php';
 /*-----------function區--------------*/
 
@@ -189,27 +192,23 @@ function tad_cal_event_form($sn = '', $mode = '', $stamp = '')
 
     $UNTIL = ($allday) ? $rrule_arr['RRULE']['UNTIL'] : date('Y-m-d', strtotime($rrule_arr['RRULE']['UNTIL']));
 
-    $xoopsTpl->assign('chk_DAILY', chk($rrule_arr['RRULE']['FREQ'], 'DAILY', 1, 'selected'));
-    $xoopsTpl->assign('chk_WEEKLY', chk($rrule_arr['RRULE']['FREQ'], 'WEEKLY', 0, 'selected'));
-    $xoopsTpl->assign('chk_MONTHLY', chk($rrule_arr['RRULE']['FREQ'], 'MONTHLY', 0, 'selected'));
-    $xoopsTpl->assign('chk_YEARLY', chk($rrule_arr['RRULE']['FREQ'], 'YEARLY', 0, 'selected'));
+    $xoopsTpl->assign('chk_DAILY', Utility::chk($rrule_arr['RRULE']['FREQ'], 'DAILY', 1, 'selected'));
+    $xoopsTpl->assign('chk_WEEKLY', Utility::chk($rrule_arr['RRULE']['FREQ'], 'WEEKLY', 0, 'selected'));
+    $xoopsTpl->assign('chk_MONTHLY', Utility::chk($rrule_arr['RRULE']['FREQ'], 'MONTHLY', 0, 'selected'));
+    $xoopsTpl->assign('chk_YEARLY', Utility::chk($rrule_arr['RRULE']['FREQ'], 'YEARLY', 0, 'selected'));
     $xoopsTpl->assign('INTERVAL_OPT', $INTERVAL_OPT);
     $xoopsTpl->assign('repeat_unit', $repeat_unit);
     $xoopsTpl->assign('week_repeat_col', $week_repeat_col);
-    $xoopsTpl->assign('RRULE_BYDAY', chk($rrule_arr['RRULE']['BYDAY']));
+    $xoopsTpl->assign('RRULE_BYDAY', Utility::chk($rrule_arr['RRULE']['BYDAY']));
     $xoopsTpl->assign('bymonthday', sprintf(_MD_TADCAL_BYMONTHDAY, "<span id='bymonthday'></span>"));
-    $xoopsTpl->assign('ENDType_none', chk($ENDType, 'none'));
-    $xoopsTpl->assign('ENDType_count', chk($ENDType, 'count'));
-    $xoopsTpl->assign('ENDType_until', chk($ENDType, 'until'));
+    $xoopsTpl->assign('ENDType_none', Utility::chk($ENDType, 'none'));
+    $xoopsTpl->assign('ENDType_count', Utility::chk($ENDType, 'count'));
+    $xoopsTpl->assign('ENDType_until', Utility::chk($ENDType, 'until'));
     $xoopsTpl->assign('RRULE_COUNT', $rrule_arr['RRULE']['COUNT']);
     $xoopsTpl->assign('UNTIL', $UNTIL);
 
-    if (!file_exists(TADTOOLS_PATH . '/formValidator.php')) {
-        redirect_header(XOOPS_URL . '/modules/tad_cal/index.php', 3, _MD_NEED_TADTOOLS);
-    }
-    require_once TADTOOLS_PATH . '/formValidator.php';
-    $formValidator = new formValidator('#myForm', true);
-    $formValidator_code = $formValidator->render();
+    $FormValidator = new FormValidator('#myForm', true);
+    $FormValidator->render();
 
     $start_allday = mb_substr($start, 0, 10);
     if ($allday) {
@@ -231,8 +230,8 @@ function tad_cal_event_form($sn = '', $mode = '', $stamp = '')
     $xoopsTpl->assign('etag', $etag);
     $xoopsTpl->assign('details', $details);
     $xoopsTpl->assign('location', $location);
-    $xoopsTpl->assign('chk_allday_1', chk($allday, '1'));
-    $xoopsTpl->assign('chk_repeat_1', chk($repeat, '1'));
+    $xoopsTpl->assign('chk_allday_1', Utility::chk($allday, '1'));
+    $xoopsTpl->assign('chk_repeat_1', Utility::chk($repeat, '1'));
     $xoopsTpl->assign('end', $end);
     $xoopsTpl->assign('end_allday', $end_allday);
     $xoopsTpl->assign('start', $start);
@@ -243,7 +242,6 @@ function tad_cal_event_form($sn = '', $mode = '', $stamp = '')
     $xoopsTpl->assign('mode', $mode);
     $xoopsTpl->assign('show_week_repeat', $show_week_repeat);
     $xoopsTpl->assign('show_month_repeat', $show_month_repeat);
-    $xoopsTpl->assign('formValidator_code', $formValidator_code);
     $xoopsTpl->assign('cate_col', $cate_col);
     $xoopsTpl->assign('op', 'tad_cal_event_form');
     $xoopsTpl->assign('sn', $sn);
@@ -254,7 +252,7 @@ function tad_cal_event_max_sort()
 {
     global $xoopsDB;
     $sql = 'select max(`sequence`) from ' . $xoopsDB->prefix('tad_cal_event');
-    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     list($sort) = $xoopsDB->fetchRow($result);
 
     return ++$sort;
@@ -270,7 +268,7 @@ function insert_tad_cal_event()
     //取得使用者編號
     $uid = ($xoopsUser) ? $xoopsUser->getVar('uid') : 0;
 
-    $myts = MyTextSanitizer::getInstance();
+    $myts = \MyTextSanitizer::getInstance();
     $title = $myts->addSlashes($_POST['title']);
     $location = $myts->addSlashes($_POST['location']);
     $kind = $myts->addSlashes($_POST['kind']);
@@ -367,14 +365,14 @@ function insert_tad_cal_event()
     (`title` , `start` , `end` , `recurrence` , `location` , `kind` , `details` , `etag` , `id` , `sequence` , `uid` , `cate_sn` , `allday` , `tag` ,`last_update`)
     values('{$title}' , '{$start}' , '{$end}' , '{$recurrence}' , '{$location}' , '{$kind}' , '{$details}' , '{$etag}' , '{$id}' , '{$sequence}' , '{$uid}' , '{$cate_sn}' , '{$allDay}', '' , '{$last_update}')";
 
-    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+    $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
     //取得最後新增資料的流水編號
     $sn = $xoopsDB->getInsertId();
 
     //更新 id
     $sql = 'update ' . $xoopsDB->prefix('tad_cal_event') . " set `id` = '{$sn}' where sn='$sn'";
-    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+    $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
     //重複事件
     rrule($sn, $recurrence, $allDay);
@@ -390,7 +388,7 @@ function update_tad_cal_event($sn = '')
     //取得使用者編號
     $uid = ($xoopsUser) ? $xoopsUser->getVar('uid') : '';
 
-    $myts = MyTextSanitizer::getInstance();
+    $myts = \MyTextSanitizer::getInstance();
     $_POST['title'] = $myts->addSlashes($_POST['title']);
     $_POST['location'] = $myts->addSlashes($_POST['location']);
     $_POST['details'] = $myts->addSlashes($_POST['details']);
@@ -485,7 +483,7 @@ function update_tad_cal_event($sn = '')
    `tag` = '{$_POST['tag']}' ,
    `last_update` = '{$last_update}'
   where sn='$sn'";
-    $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+    $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
     //重複事件
     rrule($sn, $recurrence, $allDay);
@@ -517,12 +515,12 @@ function list_tad_cal_event()
     $now = date('Y-m-d H:i:s', xoops_getUserTimestamp(time()));
     $sql = 'select a.*,b.start as re_start,b.end as re_end from ' . $xoopsDB->prefix('tad_cal_event') . ' as a left join ' . $xoopsDB->prefix('tad_cal_repeat') . " as b on a.sn=b.sn and b.start < '{$now}'  where $and_ok_cate order by b.start desc,a.start desc , a.sequence";
     //getPageBar($原sql語法, 每頁顯示幾筆資料, 最多顯示幾個頁數選項);
-    $PageBar = getPageBar($sql, 20, 10);
+    $PageBar = Utility::getPageBar($sql, 20, 10);
     $bar = $PageBar['bar'];
     $sql = $PageBar['sql'];
     $total = $PageBar['total'];
 
-    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
     $all_content = [];
 
@@ -575,7 +573,7 @@ function get_tad_cal_event($sn = '')
     }
 
     $sql = 'select * from ' . $xoopsDB->prefix('tad_cal_event') . " where sn='$sn'";
-    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     $data = $xoopsDB->fetchArray($result);
 
     return $data;
@@ -590,9 +588,9 @@ function delete_tad_cal_event($sn = '')
     $sql = 'delete from ' . $xoopsDB->prefix('tad_cal_event') . " where sn='$sn' $andUID";
     if ($xoopsDB->queryF($sql)) {
         $sql = 'delete from ' . $xoopsDB->prefix('tad_cal_repeat') . " where sn='$sn'";
-        $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     } else {
-        web_error($sql, __FILE__, __LINE__);
+        Utility::web_error($sql, __FILE__, __LINE__);
     }
 }
 
@@ -617,7 +615,7 @@ function show_one_tad_cal_event($sn = '', $stamp = '')
     } else {
         $sql = 'select * from ' . $xoopsDB->prefix('tad_cal_event') . " where sn='{$sn}'";
     }
-    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     $all = $xoopsDB->fetchArray($result);
 
     //以下會產生這些變數： $sn , $title , $start , $end , $recurrence , $location , $kind , $details , $etag , $id , $sequence , $uid , $cate_sn
@@ -648,8 +646,8 @@ function show_one_tad_cal_event($sn = '', $stamp = '')
   <a href=\"javascript:delete_tad_cal_event_func($sn);\" class='link_button_r' style='padding:4px;font-size:12px;'><img src='" . XOOPS_URL . "/modules/tad_cal/images/delete.png' style='margin-right:4px;' align='absmiddle'>" . _TAD_DEL . '</a>
   </div>' : '';
 
-    $facebook_comments = facebook_comments($xoopsModuleConfig['facebook_comments_width'], 'tad_cal', 'event.php', 'sn', $sn);
-    $push_url = push_url($xoopsModuleConfig['use_social_tools']);
+    $facebook_comments = Utility::facebook_comments($xoopsModuleConfig['facebook_comments_width'], 'tad_cal', 'event.php', 'sn', $sn);
+    $push_url = Utility::push_url($xoopsModuleConfig['use_social_tools']);
 
     $xoopsTpl->assign('date', $date);
     $xoopsTpl->assign('location_img', $location_img);
@@ -686,7 +684,7 @@ function show_simple_event($sn = '', $stamp = '')
     }
     //die($sql);
 
-    $result = $xoopsDB->queryF($sql) or web_error($sql, __FILE__, __LINE__);
+    $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     $all = $xoopsDB->fetchArray($result);
 
     //以下會產生這些變數： $sn , $title , $start , $end , $recurrence , $location , $kind , $details , $etag , $id , $sequence , $uid , $cate_sn
@@ -791,7 +789,7 @@ function ajax_update_date($sn = '')
 
     //抓出事件原有資料
     $sql = 'select * from ' . $xoopsDB->prefix('tad_cal_event') . " where sn='$sn'";
-    $result = $xoopsDB->query($sql) or web_error($sql, __FILE__, __LINE__);
+    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     if (!$result) {
         sprintf(_MD_TADCAL_MOVE_ERROR, $xoopsDB->error());
     }
@@ -915,7 +913,7 @@ switch ($op) {
 }
 
 /*-----------秀出結果區--------------*/
-$xoopsTpl->assign('toolbar', toolbar_bootstrap($interface_menu));
+$xoopsTpl->assign('toolbar', Utility::toolbar_bootstrap($interface_menu));
 $xoopsTpl->assign('isAdmin', $isAdmin);
 
 require_once XOOPS_ROOT_PATH . '/footer.php';

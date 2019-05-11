@@ -73,8 +73,6 @@
     <h2><{$smarty.const._MD_TADCAL_EVENT_FORM}></h2>
   <{/if}>
 
-
-  <{$formValidator_code}>
   <script type="text/javascript">
   $().ready(function() {
     <{$show_week_repeat}>
