@@ -47,7 +47,7 @@ $(document).ready(function(){
           $(this).qtip({
            content: {
             // 設定載入中圖片
-            text: "<img class='throbber' src='images/loading.gif' alt='Loading...' />",
+            text: "<img class='throbber' src='images/loading.gif' alt='Loading...'>",
             ajax: {
               url: event.rel //載入指定之連結
             },

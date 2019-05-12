@@ -10,11 +10,11 @@ function tad_cal_calendar($options)
 {
     global $xoTheme;
 
-    $modhandler = xoops_getHandler('module');
-    $xoopsModule = $modhandler->getByDirname('tad_cal');
-    $config_handler = xoops_getHandler('config');
+    $moduleHandler = xoops_getHandler('module');
+    $xoopsModule = $moduleHandler->getByDirname('tad_cal');
+    $configHandler = xoops_getHandler('config');
     $module_id = $xoopsModule->getVar('mid');
-    $xoopsModuleConfig = $config_handler->getConfigsByCat(0, $module_id);
+    $xoopsModuleConfig = $configHandler->getConfigsByCat(0, $module_id);
 
     Utility::get_jquery(true); //一般只要此行即可
 

@@ -3,7 +3,7 @@ use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\Utility;
 
 /*-----------引入檔案區--------------*/
-require_once 'header.php';
+require_once __DIR__ . '/header.php';
 $xoopsOption['template_main'] = 'tad_cal_event.tpl';
 require_once XOOPS_ROOT_PATH . '/header.php';
 /*-----------function區--------------*/
@@ -467,22 +467,22 @@ function update_tad_cal_event($sn = '')
 
     $last_update = date('Y-m-d H:i:s');
     $sql = 'update ' . $xoopsDB->prefix('tad_cal_event') . " set
-    `title` = '{$_POST['title']}' ,
-    `start` = '{$start}' ,
-    `end` = '{$end}' ,
-    `recurrence` = '{$recurrence}' ,
-    `location` = '{$_POST['location']}' ,
-    `kind` = '{$_POST['kind']}' ,
-    `details` = '{$_POST['details']}' ,
-    `etag` = '{$_POST['etag']}' ,
-    `id` = '{$_POST['id']}' ,
-    `sequence` = '{$_POST['sequence']}' ,
-    `uid` = '{$uid}' ,
-    `cate_sn` = '{$_POST['cate_sn']}',
-    `allday` = '{$allDay}' ,
-    `tag` = '{$_POST['tag']}' ,
-    `last_update` = '{$last_update}'
-    where sn='$sn'";
+   `title` = '{$_POST['title']}' ,
+   `start` = '{$start}' ,
+   `end` = '{$end}' ,
+   `recurrence` = '{$recurrence}' ,
+   `location` = '{$_POST['location']}' ,
+   `kind` = '{$_POST['kind']}' ,
+   `details` = '{$_POST['details']}' ,
+   `etag` = '{$_POST['etag']}' ,
+   `id` = '{$_POST['id']}' ,
+   `sequence` = '{$_POST['sequence']}' ,
+   `uid` = '{$uid}' ,
+   `cate_sn` = '{$_POST['cate_sn']}',
+   `allday` = '{$allDay}' ,
+   `tag` = '{$_POST['tag']}' ,
+   `last_update` = '{$last_update}'
+  where sn='$sn'";
     $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
     //重複事件
@@ -524,7 +524,7 @@ function list_tad_cal_event()
 
     $all_content = [];
 
-    while ($all = $xoopsDB->fetchArray($result)) {
+    while (false !== ($all = $xoopsDB->fetchArray($result))) {
         //以下會產生這些變數： $sn , $title , $start , $end , $recurrence , $location , $kind , $details , $etag , $id , $sequence , $uid , $cate_sn
         foreach ($all as $k => $v) {
             $$k = $v;
@@ -537,10 +537,10 @@ function list_tad_cal_event()
         $details = xoops_substr(strip_tags($details), 0, 60);
 
         $fun = ($show_function and ($isAdmin or $now_uid == $uid)) ? "
-        <td>
-        <a href='{$_SERVER['PHP_SELF']}?op=tad_cal_event_form&sn=$sn' class='btn btn-mini btn-warning'>" . _TAD_EDIT . "</a>
-        <a href=\"javascript:delete_tad_cal_event_func($sn);\" class='btn btn-mini btn-danger'>" . _TAD_DEL . '</a>
-        </td>' : '';
+    <td>
+    <a href='{$_SERVER['PHP_SELF']}?op=tad_cal_event_form&sn=$sn' class='btn btn-mini btn-warning'>" . _TAD_EDIT . "</a>
+    <a href=\"javascript:delete_tad_cal_event_func($sn);\" class='btn btn-mini btn-danger'>" . _TAD_DEL . '</a>
+    </td>' : '';
 
         $re = ('0000-00-00 00:00:00' === $start) ? '*' : '';
         $start = ('0000-00-00 00:00:00' === $start) ? $re_start : $start;
@@ -626,9 +626,9 @@ function show_one_tad_cal_event($sn = '', $stamp = '')
     $date = show_date($start, $end, $allday, '~');
 
     //以uid取得使用者名稱
-    $uid_name = XoopsUser::getUnameFromId($uid, 1);
+    $uid_name = \XoopsUser::getUnameFromId($uid, 1);
     if (empty($uid_name)) {
-        $uid_name = XoopsUser::getUnameFromId($uid, 0);
+        $uid_name = \XoopsUser::getUnameFromId($uid, 0);
     }
 
     $details = nl2br($details);
@@ -694,9 +694,9 @@ function show_simple_event($sn = '', $stamp = '')
 
     $date = show_date($start, $end, $allday, '~');
     //以uid取得使用者名稱
-    $uid_name = XoopsUser::getUnameFromId($uid, 1);
+    $uid_name = \XoopsUser::getUnameFromId($uid, 1);
     if (empty($uid_name)) {
-        $uid_name = XoopsUser::getUnameFromId($uid, 0);
+        $uid_name = \XoopsUser::getUnameFromId($uid, 0);
     }
 
     $details = nl2br($details);

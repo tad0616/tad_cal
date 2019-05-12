@@ -10,11 +10,11 @@ function tad_cal_full_calendar($options)
 {
     global $xoopsUser, $xoopsTpl, $xoTheme;
 
-    $modhandler = xoops_getHandler('module');
-    $xoopsModule = $modhandler->getByDirname('tad_cal');
-    $config_handler = xoops_getHandler('config');
+    $moduleHandler = xoops_getHandler('module');
+    $xoopsModule = $moduleHandler->getByDirname('tad_cal');
+    $configHandler = xoops_getHandler('config');
     $module_id = $xoopsModule->getVar('mid');
-    $xoopsModuleConfig = $config_handler->getConfigsByCat(0, $module_id);
+    $xoopsModuleConfig = $configHandler->getConfigsByCat(0, $module_id);
 
     if ($xoopsUser) {
         $isAdmin = $xoopsUser->isAdmin($module_id);
@@ -57,7 +57,7 @@ function tad_cal_full_calendar($options)
             $eventAdd = 'selectable: true,
             selectHelper: true,
             select: function(start, end) {
-                var promptBox = "' . _MB_TADCAL_TITLE . _TAD_FOR . "<input type='text' id='eventTitle' name='eventTitle' value='' /><br>$cate\";
+                var promptBox = "' . _MB_TADCAL_TITLE . _TAD_FOR . "<input type='text' id='eventTitle' name='eventTitle' value=''><br>$cate\";
 
                 function mycallbackform(e,v,m,f){
                 if(v != undefined){

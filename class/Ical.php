@@ -1,4 +1,7 @@
 <?php
+
+namespace XoopsModules\Tad_cal;
+
 ################################################################################
 #                                                           DATE : 01.08.2006  #
 #  Short description :                                                         #
@@ -37,7 +40,7 @@
  * @version 1.0
  * @todo get sort todo list
  */
-class ical
+class Ical
 {
     /**
      * Text in file
@@ -185,7 +188,7 @@ class ical
     public function add_to_array($type, $key, $value)
     {
         // die("$type, $key, $value");
-        if (false == $key) {
+        if (false === $key) {
             $key = $this->last_key;
             switch ($type) {
                 case 'VEVENT':$value = $this->cal[$type][$this->event_count][$key] . $value;

@@ -2,7 +2,7 @@
 use XoopsModules\Tadtools\Utility;
 
 /*-----------引入檔案區--------------*/
-require_once 'header.php';
+require_once __DIR__ . '/header.php';
 $xoopsOption['template_main'] = 'tad_cal_download.tpl';
 require_once XOOPS_ROOT_PATH . '/header.php';
 /*-----------function區--------------*/

@@ -4,8 +4,8 @@ use XoopsModules\Tadtools\Utility;
 
 /*-----------引入檔案區--------------*/
 $xoopsOption['template_main'] = 'tad_cal_adm_main.tpl';
-require_once 'header.php';
-require_once '../function.php';
+require_once __DIR__ . '/header.php';
+require_once dirname(__DIR__) . '/function.php';
 
 /*-----------function區--------------*/
 //tad_cal_cate編輯表單
@@ -200,7 +200,7 @@ function list_tad_cal_cate($show_function = 1)
     $all_content = [];
     $i = 0;
     // $last        = "";
-    while ($all = $xoopsDB->fetchArray($result)) {
+    while (false !== ($all = $xoopsDB->fetchArray($result))) {
         //以下會產生這些變數： $cate_sn , $cate_title , $cate_sort , $cate_enable , $cate_handle , $enable_group , $enable_upload_group , $google_id , $google_pass, $cate_bgcolor, $cate_color
         foreach ($all as $k => $v) {
             $$k = $v;
@@ -263,7 +263,7 @@ function link_to_google($id = '', $pass = '')
         $cate_title_arr[$cate_handle] = $cate_title;
     }
 
-    require '../class/gcalendar.class.php';
+    require dirname(__DIR__) . '/class/gcalendar.class.php';
     $gmail = new GCalendar($id, $pass);
     $gmail->authenticate();
 
@@ -407,4 +407,4 @@ switch ($op) {
 }
 
 /*-----------秀出結果區--------------*/
-require_once 'footer.php';
+require_once __DIR__ . '/footer.php';

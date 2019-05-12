@@ -64,7 +64,7 @@ function num2color($cate_sn = '')
     $R = $G = $B = 255;
     $m = ceil($cate_sn / 3);
     $n = $cate_sn % 3;
-    $degree = (int) $cate_sn * 10 * $m;
+    $degree = (int)$cate_sn * 10 * $m;
 
     $cor = ['R', 'G', 'B'];
     ${$cor[$n]} -= $degree;
@@ -102,7 +102,7 @@ function get_tad_cal_cate_all()
     global $xoopsDB;
     $sql = 'select * from ' . $xoopsDB->prefix('tad_cal_cate');
     $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-    while ($data = $xoopsDB->fetchArray($result)) {
+    while (false !== ($data = $xoopsDB->fetchArray($result))) {
         $cate_sn = $data['cate_sn'];
         $data_arr[$cate_sn] = $data;
     }

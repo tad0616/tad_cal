@@ -2,7 +2,7 @@
 use XoopsModules\Tadtools\Utility;
 
 /*-----------引入檔案區--------------*/
-require_once 'header.php';
+require_once __DIR__ . '/header.php';
 $xoopsOption['template_main'] = 'tad_cal_index.tpl';
 require_once XOOPS_ROOT_PATH . '/header.php';
 /*-----------function區--------------*/
@@ -43,7 +43,7 @@ function fullcalendar($cate_sn = 0)
             $eventAdd = 'selectable: true,
             selectHelper: true,
             select: function(start, end) {
-              var promptBox = "' . _MD_TADCAL_TITLE . _TAD_FOR . "<input type='text' id='eventTitle' name='eventTitle' value='' /><br>$cate\";
+              var promptBox = "' . _MD_TADCAL_TITLE . _TAD_FOR . "<input type='text' id='eventTitle' name='eventTitle' value=''><br>$cate\";
 
               function mycallbackform(e,v,m,f){
                 if(v != undefined){
@@ -106,7 +106,7 @@ function fullcalendar($cate_sn = 0)
 
     $xoopsTpl->assign('eventDrop', $eventDrop);
     $xoopsTpl->assign('eventAdd', $eventAdd);
-    $xoopsTpl->assign('style_css', $style['css']);
+    $xoopsTpl->assign('style_css', isset($style['css']) ? $style['css'] : '');
     $xoopsTpl->assign('cate_sn', $cate_sn);
     $xoopsTpl->assign('eventShowMode', $xoopsModuleConfig['eventShowMode']);
     $xoopsTpl->assign('eventTheme', $xoopsModuleConfig['eventTheme']);
