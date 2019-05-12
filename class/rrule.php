@@ -337,7 +337,7 @@ class RRule
                 }
 
                 if (isset($this->_part['BYSETPOS'])) {
-                    $days = $next->ApplyBySetpos($this->_part['BYSETPOS'], $days);
+                    $days = $next->applyBySetPos($this->_part['BYSETPOS'], $days);
                 }
 
                 $days = $this->WithinScope($next, $days);
@@ -363,7 +363,7 @@ class RRule
                 }
 
                 if (isset($this->_part['BYSETPOS'])) {
-                    $days = $next->ApplyBySetpos($this->_part['BYSETPOS'], $days);
+                    $days = $next->applyBySetPos($this->_part['BYSETPOS'], $days);
                 }
 
                 $days = $this->WithinScope($next, $days);
@@ -386,7 +386,7 @@ class RRule
                 }
 
                 if (isset($this->_part['BYSETPOS'])) {
-                    $days = $next->ApplyBySetpos($this->_part['BYSETPOS'], $days);
+                    $days = $next->applyBySetPos($this->_part['BYSETPOS'], $days);
                 }
 
                 $days = $this->WithinScope($next, $days);
@@ -1051,7 +1051,7 @@ return $result;
      *
      * @return array The subset which matches.
      */
-    public function &ApplyBySetPos($bysplist, $set)
+    public function &applyBySetPos($bysplist, $set)
     {
         //echo sprintf("<br> ApplyBySetPos: Applying set position '%s' to set of %d days", $bysplist, count($set) );
         $subset = [];
