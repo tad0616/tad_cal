@@ -1,8 +1,7 @@
 <?php
+namespace XoopsModules\Tad_cal;
 
 use XoopsModules\Tadtools\Utility;
-
-namespace XoopsModules\Tad_cal;
 
 /*
 Update Class Definition
