@@ -5,7 +5,16 @@ xoops_loadLanguage('main', 'tadtools');
 
 require_once XOOPS_ROOT_PATH . '/modules/tad_cal/function_block.php';
 
-/********************* 自訂函數 *********************/
+/********************* 自訂函數 ********************
+ * @param string $title
+ * @param string $sort
+ * @param string $handle
+ * @param string $enable_group
+ * @param string $enable_upload_group
+ * @param string $google_id
+ * @param string $google_pass
+ * @return int
+ */
 //自動新增分類
 function create_cate($title = '', $sort = '', $handle = '', $enable_group = '', $enable_upload_group = '1', $google_id = '', $google_pass = '')
 {
