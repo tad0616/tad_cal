@@ -4,7 +4,7 @@ use XoopsModules\Tadtools\Utility;
 require_once __DIR__ . '/header.php';
 
 /* 連資料庫檢查 */
-header("Content-type: application/json");
+header('Content-type: application/json');
 echo get_event();
 
 //取得事件
