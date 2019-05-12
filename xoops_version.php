@@ -1,6 +1,8 @@
 <?php
 $modversion = [];
 
+global $xoopsConfig;
+
 //---模組基本資訊---//
 $modversion['name'] = _MI_TADCAL_NAME;
 $modversion['version'] = 2.89;

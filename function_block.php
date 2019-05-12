@@ -166,7 +166,7 @@ if (!function_exists('rrule')) {
             return;
         }
         // die($recurrence);
-        $ical = new ical();
+        $ical = new \XoopsModules\Tad_cal\Ical();
         $ical->parse($recurrence);
         $rrule_array = $ical->get_all_data();
         // die('[rrule_array]' . var_export($rrule_array));
@@ -182,7 +182,7 @@ if (!function_exists('rrule')) {
         // die($start . "====" . $rrule);
         // echo "<p>start= $start</p>";
         // echo "<p>rrule= $rrule</p>";
-        $rule = new RRule($start, $rrule);
+        $rule = new \XoopsModules\Tad_cal\RRule($start, $rrule);
         $i = 0;
         while ($date = $rule->GetNext()) {
             if ($i > 300) {

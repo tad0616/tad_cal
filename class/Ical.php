@@ -32,7 +32,7 @@ namespace XoopsModules\Tad_cal;
  * @copyright Roman Ožana (Cz)
  * @link www.nabito.net
  * @example
- *     $ical = new ical();
+ *     $ical = new \XoopsModules\Tad_cal\Ical();
  *     $ical->parse('./calendar.ics');
  *     echo "<pre>";
  *     $ical->get_all_data();
@@ -101,7 +101,7 @@ class Ical
     /**
      * Vraci pocet udalosti v kalendari
      *
-     * @return unknown
+     * @return mixed
      */
     public function get_event_count()
     {
@@ -111,7 +111,7 @@ class Ical
     /**
      * Vraci pocet ToDo uloh
      *
-     * @return unknown
+     * @return mixed
      */
     public function get_todo_count()
     {
@@ -122,7 +122,7 @@ class Ical
      * Prekladac kalendare
      *
      * @param mixed $text
-     * @return unknown
+     * @return mixed
      */
     public function parse($text)
     {
@@ -230,7 +230,7 @@ class Ical
      * Parse text "XXXX:value text some with : " and return array($key = "XXXX", $value="value");
      *
      * @param unknown_type $text
-     * @return unknown
+     * @return mixed
      */
     public function retun_key_value($text)
     {
@@ -247,7 +247,7 @@ class Ical
      * Parse RRULE  return array
      *
      * @param unknown_type $value
-     * @return unknown
+     * @return mixed
      */
     public function ical_rrule($value)
     {
@@ -264,7 +264,7 @@ class Ical
      * Return Unix time from ical date time fomrat (YYYYMMDD[T]HHMMSS[Z] or YYYYMMDD[T]HHMMSS)
      *
      * @param mixed $icalDate
-     * @return unknown
+     * @return mixed
      */
     public function ical_date_to_unix($icalDate)
     {
@@ -321,7 +321,7 @@ class Ical
     /**
      * Return sorted eventlist as array or false if calenar is empty
      *
-     * @return unknown
+     * @return mixed
      */
     public function get_sort_event_list()
     {

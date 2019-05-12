@@ -116,7 +116,7 @@ function tad_cal_event_form($sn = '', $mode = '', $stamp = '')
     $rrule_array = [];
     $rrule_arr = [];
     if (!empty($recurrence)) {
-        $ical = new ical();
+        $ical = new \XoopsModules\Tad_cal\Ical();
         $ical->parse($recurrence);
         $rrule_array = $ical->get_all_data();
         $rrule_arr = $rrule_array[''];
@@ -804,7 +804,7 @@ function ajax_update_date($sn = '')
         die(_MD_TADCAL_REPEAT_CANT_MOVE);
     }
     /*
-    $ical=new ical();
+    $ical=new \XoopsModules\Tad_cal\Ical();
     $ical->parse($recurrence);
     $rrule_array=$ical->get_all_data();
     $rrule_arr=$rrule_array[''];
