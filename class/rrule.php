@@ -210,6 +210,7 @@ class RRule
      * which are not within the scope of our rule.
      * @param mixed $base
      * @param mixed $relative_days
+     * @return array
      */
     public function WithinScope($base, $relative_days)
     {
@@ -590,6 +591,7 @@ class iCalDate
     /**
      * Set the day of week used for calculation of week starts
      * @param mixed $fmt
+     * @return false|string
      */
     public function Render($fmt = 'Y-m-d H:i:s')
     {
@@ -599,6 +601,7 @@ class iCalDate
     /**
      * Render the date as GMT
      * @param mixed $fmt
+     * @return false|string
      */
     public function RenderGMT($fmt = 'Ymd\THis\Z')
     {
@@ -609,6 +612,7 @@ class iCalDate
      * No of days in a month 1(Jan) - 12(Dec)
      * @param mixed $mo
      * @param mixed $yy
+     * @return int
      */
     public function DaysInMonth($mo = false, $yy = false)
     {
