@@ -42,7 +42,7 @@ class Update
         }
 
         //找出目前所有的樣板檔
-        $sql = "SELECT bid,name,visible,show_func,template FROM `" . $xoopsDB->prefix('newblocks') . "`
+        $sql = 'SELECT bid,name,visible,show_func,template FROM `' . $xoopsDB->prefix('newblocks') . "`
         WHERE `dirname` = 'tad_cal' ORDER BY `func_num`";
         $result = $xoopsDB->query($sql);
         while (list($bid, $name, $visible, $show_func, $template) = $xoopsDB->fetchRow($result)) {
