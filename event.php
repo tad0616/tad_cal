@@ -25,7 +25,7 @@ function toServerTime($time)
 function tad_cal_event_form($sn = '', $mode = '', $stamp = '')
 {
     global $xoopsDB, $xoopsUser, $xoopsTpl;
-    require_once XOOPS_ROOT_PATH . '/modules/tad_cal/class/ical.php';
+    require_once XOOPS_ROOT_PATH . '/modules/tad_cal/class/Ical.php';
     if (!$xoopsUser) {
         redirect_header(XOOPS_URL . '/modules/tad_cal/index.php', 3, _MD_TADCAL_NEED_LOGIN);
         exit;

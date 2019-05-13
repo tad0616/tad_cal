@@ -1,5 +1,6 @@
 <?php
 use XoopsModules\Tadtools\Utility;
+use XoopsModules\Tad_cal\Ical;
 
 if (!function_exists('style_mark')) {
     function style_mark()
@@ -159,14 +160,14 @@ if (!function_exists('rrule')) {
     function rrule($sn = '', $recurrence = '', $allDay = null)
     {
         global $xoopsDB, $xoopsUser;
-        require_once XOOPS_ROOT_PATH . '/modules/tad_cal/class/rrule.php';
-        require_once XOOPS_ROOT_PATH . '/modules/tad_cal/class/ical.php';
+        require_once XOOPS_ROOT_PATH . '/modules/tad_cal/class/RRule.php';
+        require_once XOOPS_ROOT_PATH . '/modules/tad_cal/class/Ical.php';
 
         if (empty($sn) or empty($recurrence)) {
             return;
         }
         // die($recurrence);
-        $ical = new \XoopsModules\Tad_cal\Ical();
+        $ical = new Ical();
         $ical->parse($recurrence);
         $rrule_array = $ical->get_all_data();
         // die('[rrule_array]' . var_export($rrule_array));
