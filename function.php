@@ -27,8 +27,8 @@ function create_cate($title = '', $sort = '', $handle = '', $enable_group = '', 
     }
 
     $sql = 'insert into ' . $xoopsDB->prefix('tad_cal_cate') . "
-  (`cate_title` , `cate_sort` , `cate_enable` , `cate_handle` , `enable_group` , `enable_upload_group` , `google_id` , `google_pass`, `cate_color`)
-  values('{$title}' , '{$sort}' , '1' , '{$handle}' , '{$enable_group}' , '{$enable_upload_group}' , '{$google_id}' , '{$google_pass}','rgb(0,0,0)')";
+    (`cate_title` , `cate_sort` , `cate_enable` , `cate_handle` , `enable_group` , `enable_upload_group` , `google_id` , `google_pass`, `cate_color`)
+    values('{$title}' , '{$sort}' , '1' , '{$handle}' , '{$enable_group}' , '{$enable_upload_group}' , '{$google_id}' , '{$google_pass}','rgb(0,0,0)')";
     $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     //取得最後新增資料的流水編號
     $cate_sn = $xoopsDB->getInsertId();
@@ -73,7 +73,7 @@ function num2color($cate_sn = '')
     $R = $G = $B = 255;
     $m = ceil($cate_sn / 3);
     $n = $cate_sn % 3;
-    $degree = (int)$cate_sn * 10 * $m;
+    $degree = (int) $cate_sn * 10 * $m;
 
     $cor = ['R', 'G', 'B'];
     ${$cor[$n]} -= $degree;
