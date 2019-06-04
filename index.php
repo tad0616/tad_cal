@@ -115,13 +115,7 @@ function fullcalendar($cate_sn = 0)
 
     $xoopsTpl->assign('firstDay', $xoopsModuleConfig['cal_start']);
     $xoopsTpl->assign('cate', get_tad_cal_cate($cate_sn));
-    $ver = Utility::get_version('xoops');
-
-    if ($ver >= 20509) {
-        $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate-3.0.0.min.js');
-    } else {
-        $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate-1.4.1.min.js');
-    }
+    Utility::add_migrate();
 }
 
 /*-----------執行動作判斷區----------*/

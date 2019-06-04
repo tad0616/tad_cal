@@ -123,12 +123,7 @@ function tad_cal_full_calendar($options)
     $block['my_counter'] = my_counter();
     $block['firstDay'] = $xoopsModuleConfig['cal_start'];
 
-    $ver = Utility::get_version('xoops');
-    if ($ver >= 20509) {
-        $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate-3.0.0.min.js');
-    } else {
-        $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate-1.4.1.min.js');
-    }
+    Utility::add_migrate();
 
     $xoTheme->addStylesheet('modules/tad_cal/module.css');
     $xoTheme->addStylesheet('modules/tadtools/fullcalendar/redmond/theme.css');

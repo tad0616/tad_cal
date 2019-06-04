@@ -17,14 +17,9 @@ function tad_cal_calendar($options)
     $xoopsModuleConfig = $configHandler->getConfigsByCat(0, $module_id);
 
     Utility::get_jquery(true); //一般只要此行即可
+    Utility::add_migrate();
 
     $block['firstDay'] = $xoopsModuleConfig['cal_start'];
-    $ver = Utility::get_version('xoops');
-    if ($ver >= 20509) {
-        $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate-3.0.0.min.js');
-    } else {
-        $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate-1.4.1.min.js');
-    }
 
     $xoTheme->addStylesheet('modules/tad_cal/module.css');
     $xoTheme->addStylesheet('modules/tadtools/fullcalendar/redmond/theme.css');
