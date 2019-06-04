@@ -19,9 +19,8 @@ function tad_cal_calendar($options)
     Utility::get_jquery(true); //一般只要此行即可
 
     $block['firstDay'] = $xoopsModuleConfig['cal_start'];
-
-    $ver = (int) str_pad(str_replace('.', '', str_replace('XOOPS ', '', XOOPS_VERSION)), 4, 0);
-    if ($ver >= 2590 or $ver == 2510) {
+    $ver = Utility::get_version('xoops');
+    if ($ver >= 20509) {
         $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate-3.0.0.min.js');
     } else {
         $xoTheme->addScript('modules/tadtools/jquery/jquery-migrate-1.4.1.min.js');
