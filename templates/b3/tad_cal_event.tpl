@@ -198,15 +198,19 @@
       </label>
 
       <!--開始時間-->
-      <div class="col-sm-2">
+      <div class="col-sm-3">
         <input type="text" name="start" value="<{$start_allday}>" id="start_allday" class="validate[required] form-control" onClick="WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d'})" onChange="check_end();month_repeat_chk();">
+
+        <input type="text" name="start" value="<{$start}>" id="start" class="validate[required] form-control" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm' , startDate:'%y-%M-%d %H:%m'})" onChange="$('#bymonthday').text($('#start').val().substr(8,2));check_end();">
       </div>
 
       <!--結束時間-->
-      <div class="col-sm-2">
+      <div class="col-sm-3">
         <input type="text" name="end" value="<{$end_allday}>" id="end_allday" onClick="WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d'})" onChange="update_long();" class="form-control">
+
+        <input type="text" name="end" value="<{$end}>" id="end" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm' , startDate:'%y-%M-%d %H:%m'})" onChange="update_long();" class="form-control">
       </div>
-      <div class="col-sm-6">
+      <div class="col-sm-4">
         <!--全日事件-->
         <label class="checkbox-inline">
           <input type="checkbox" name="allday" id="allday" value="1" <{$chk_allday_1}>>
