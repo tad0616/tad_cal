@@ -8,7 +8,7 @@
   text-align:right;
   border-top:1px solid #99CCCC;
   color:#99CCCC;
-  font-size:11px;
+  /* font-size: 0.9em; */
   padding:8px;
 }
 
@@ -64,8 +64,6 @@
 			div.jqi .jqimessage .field input.error{ width: 150px; border: solid 1px #ff0000; }
 			/*-------------------------------- */
 
-
-
 /*! Add shadows to your tooltips in: FF3+, Chrome 2+, Opera 10.6+, IE6+, Safari 2+ */
 .ui-tooltip-shadow{
   -webkit-box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.15);
@@ -81,7 +79,6 @@
     _margin-bottom: -3px; /* IE6 */
     .margin-bottom: -3px; /* IE7 */
   }
-
 
 /*! Add rounded corners to your tooltips in: FF3+, Chrome 2+, Opera 10.6+, IE9+, Safari 2+ */
 .ui-tooltip-rounded,

@@ -1,6 +1,6 @@
 <style type="text/css">
 #block_calendar *{
-    font-size:11px;
+    font-size: 97%;
     line-height:120%;
 }
 
