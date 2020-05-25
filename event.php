@@ -1,4 +1,5 @@
 <?php
+use Xmf\Request;
 use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\Utility;
 
@@ -857,11 +858,10 @@ function ajax_update_date($sn = '')
 }
 
 /*-----------執行動作判斷區----------*/
-require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-$op = system_CleanVars($_REQUEST, 'op', '', 'string');
-$cate_sn = system_CleanVars($_REQUEST, 'cate_sn', 0, 'int');
-$sn = system_CleanVars($_REQUEST, 'sn', 0, 'int');
-$stamp = system_CleanVars($_REQUEST, 'stamp', 0, 'int');
+$op = Request::getString('op');
+$cate_sn = Request::getInt('cate_sn');
+$sn = Request::getInt('sn');
+$stamp = Request::getInt('stamp');
 
 switch ($op) {
     //ajax_update_date

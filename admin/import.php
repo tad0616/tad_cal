@@ -1,4 +1,5 @@
 <?php
+use Xmf\Request;
 use XoopsModules\Tadtools\Utility;
 
 /*-----------引入檔案區--------------*/
@@ -126,6 +127,7 @@ function import_google($cate_sn = '')
     }
 }
 /*-----------執行動作判斷區----------*/
-require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-$cate_sn = system_CleanVars($_REQUEST, 'cate_sn', 0, 'int');
+$op = Request::getString('op');
+$cate_sn = Request::getInt('cate_sn');
+$sn = Request::getInt('sn');
 import_google($cate_sn);

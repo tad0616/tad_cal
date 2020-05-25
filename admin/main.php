@@ -1,4 +1,5 @@
 <?php
+use Xmf\Request;
 use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\Utility;
 
@@ -342,9 +343,11 @@ function tad_cal_all_sync()
     }
 }
 /*-----------執行動作判斷區----------*/
-require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-$op = system_CleanVars($_REQUEST, 'op', '', 'string');
-$cate_sn = system_CleanVars($_REQUEST, 'cate_sn', 0, 'int');
+$op = Request::getString('op');
+$google_id = Request::getString('google_id');
+$google_pass = Request::getString('google_pass');
+$cate_sn = Request::getInt('cate_sn');
+$sn = Request::getInt('sn');
 
 switch ($op) {
     /*---判斷動作請貼在下方---*/
@@ -352,53 +355,52 @@ switch ($op) {
     case 'tad_cal_add_gcal_form':
         tad_cal_add_gcal_form();
         break;
+
     //替換資料
     case 'replace_tad_cal_cate':
         replace_tad_cal_cate();
         header("location: {$_SERVER['PHP_SELF']}");
         exit;
-        break;
+
     //新增資料
     case 'insert_tad_cal_cate':
         $cate_sn = insert_tad_cal_cate();
         header("location: {$_SERVER['PHP_SELF']}");
         exit;
-        break;
+
     //更新資料
     case 'update_tad_cal_cate':
         update_tad_cal_cate($cate_sn);
         header("location: {$_SERVER['PHP_SELF']}");
         exit;
-        break;
+
     //輸入表格
     case 'tad_cal_cate_form':
         tad_cal_cate_form($cate_sn);
         break;
+
     //刪除資料
     case 'delete_tad_cal_cate':
         delete_tad_cal_cate($cate_sn);
         header("location: {$_SERVER['PHP_SELF']}");
         exit;
-        break;
+
     //連到Google
     case 'link_to_google':
-        link_to_google($_POST['google_id'], $_POST['google_pass']);
+        link_to_google($google_id, $google_pass);
         break;
+
     //儲存Google設定
     case 'save_google':
         save_google();
         header("location: {$_SERVER['PHP_SELF']}");
         exit;
-        break;
-    // case "import_google":
-    // import_google($cate_sn);
-    // redirect_header($_SERVER['PHP_SELF'],3, _MA_TADCAL_GOOGLE_IMPORT_OK);
-    // break;
 
     case 'tad_cal_all_sync':
         //tad_cal_all_sync();
         redirect_header($_SERVER['PHP_SELF'], 3, _MA_TADCAL_GOOGLE_IMPORT_OK);
         break;
+
     //預設動作
     default:
         list_tad_cal_cate();

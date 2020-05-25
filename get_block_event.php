@@ -1,14 +1,16 @@
 <?php
+use Xmf\Request;
 use XoopsModules\Tadtools\Utility;
 
 require_once __DIR__ . '/header.php';
 
 /* 連資料庫檢查 */
-require_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-$op = system_CleanVars($_REQUEST, 'op', '', 'string');
+$op = Request::getString('op');
+$start = Request::getString('start');
+$end = Request::getString('end');
 
 if ('title' === $op) {
-    echo get_event_title($_REQUEST['start']);
+    echo get_event_title($start);
 } else {
     echo get_event_num();
 }
@@ -24,11 +26,11 @@ function get_event_num()
     $and_ok_cate = empty($all_ok_cate) ? "and cate_sn='0'" : "and cate_sn in($all_ok_cate)";
     $and_ok_cate2 = empty($all_ok_cate) ? "and a.sn='0'" : "and b.cate_sn in($all_ok_cate)";
 
-    // $even_start = $_REQUEST['start'];
-    // $even_end   = empty($_REQUEST['end']) ? "" : $_REQUEST['end'];
+    // $even_start = $start;
+    // $even_end   = empty($end) ? "" : $end;
 
-    $even_start = $_REQUEST['start'] ?: date('Y-m-d H:i:s');
-    $even_end = $_REQUEST['end'] ?: date('Y-m-t H:i:s');
+    $even_start = $start ?: date('Y-m-d H:i:s');
+    $even_end = $end ?: date('Y-m-t H:i:s');
     //抓出事件
     $sql = 'select * from ' . $xoopsDB->prefix('tad_cal_event') . " where (`start` >= '$even_start' or `end` <= '$even_end')  or (`start` <= '$even_end' and `end` > '$even_end') or (`start` <= '$even_start' and `end` > '$even_start') $and_ok_cate order by `start` , `sequence`";
     //die($sql);
