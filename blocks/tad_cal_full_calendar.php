@@ -48,16 +48,16 @@ function tad_cal_full_calendar($options)
         $get_tad_cal_cate_menu_options = get_tad_cal_cate_menu_options($cate_sn);
         if ($isAdmin) {
             if (empty($get_tad_cal_cate_menu_options)) {
-                $cate = _MB_TADCAL_NEW_CATE . _TAD_FOR . "<input name='new_cate_title' id='new_cate_title' value='" . _MB_TADCAL_NEW_CALENDAR . "'>";
+                $cate = _MB_TADCAL_NEW_CATE . ": <input name='new_cate_title' id='new_cate_title' value='" . _MB_TADCAL_NEW_CALENDAR . "'>";
             } else {
-                $cate = _MB_TADCAL_CATE_SN . _TAD_FOR . "<select name='cate_sn' id='cate_sn' size=1 >{$get_tad_cal_cate_menu_options}</select>";
+                $cate = _MB_TADCAL_CATE_SN . ": <select name='cate_sn' id='cate_sn' size=1 >{$get_tad_cal_cate_menu_options}</select>";
             }
 
             //快速新增功能
             $eventAdd = 'selectable: true,
             selectHelper: true,
             select: function(start, end) {
-                var promptBox = "' . _MB_TADCAL_TITLE . _TAD_FOR . "<input type='text' id='eventTitle' name='eventTitle' value=''><br>$cate\";
+                var promptBox = "' . _MB_TADCAL_TITLE . ": <input type='text' id='eventTitle' name='eventTitle' value=''><br>$cate\";
 
                 function mycallbackform(e,v,m,f){
                 if(v != undefined){
