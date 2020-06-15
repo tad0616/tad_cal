@@ -21,7 +21,7 @@ function tad_cal_calendar($options)
 
     $block['firstDay'] = $xoopsModuleConfig['cal_start'];
 
-    $xoTheme->addStylesheet('modules/tad_cal/module.css');
+    $xoTheme->addStylesheet('modules/tad_cal/css/module.css');
     $xoTheme->addStylesheet('modules/tadtools/fullcalendar/redmond/theme.css');
     $xoTheme->addStylesheet('modules/tadtools/fullcalendar/fullcalendar.css');
     $xoTheme->addStylesheet('modules/tadtools/jquery.qtip_2/jquery.qtip.min.css');

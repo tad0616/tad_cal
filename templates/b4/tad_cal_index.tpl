@@ -1,6 +1,6 @@
 <{$toolbar}>
 
-<link rel="stylesheet" type="text/css" href="<{$xoops_url}>/modules/tad_cal/module.css">
+<link rel="stylesheet" type="text/css" href="<{$xoops_url}>/modules/tad_cal/css/module.css">
 <link rel="stylesheet" type="text/css" href="<{$xoops_url}>/modules/tadtools/fullcalendar/redmond/theme.css">
 <link rel="stylesheet" type="text/css" href="<{$xoops_url}>/modules/tadtools/fullcalendar/fullcalendar.css">
 

@@ -5,14 +5,14 @@ global $xoopsConfig;
 
 //---模組基本資訊---//
 $modversion['name'] = _MI_TADCAL_NAME;
-$modversion['version'] = 3.0;
+$modversion['version'] = 3.1;
 $modversion['description'] = _MI_TADCAL_DESC;
 $modversion['author'] = _MI_TADCAL_AUTHOR;
 $modversion['credits'] = _MI_TADCAL_CREDITS;
 $modversion['help'] = 'page=help';
 $modversion['license'] = 'GNU GPL 2.0';
 $modversion['license_url'] = 'www.gnu.org/licenses/gpl-2.0.html/';
-$modversion['image'] = "images/logo_{$xoopsConfig['language']}.png";
+$modversion['image'] = $xoopsConfig['language'] == 'tchinese_utf8' ? 'images/logo_tw.png' : 'images/logo.png';
 $modversion['dirname'] = basename(__DIR__);
 
 //---模組狀態資訊---//

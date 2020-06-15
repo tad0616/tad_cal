@@ -10,8 +10,7 @@ require_once XOOPS_ROOT_PATH . '/header.php';
 
 function fullcalendar($cate_sn = 0)
 {
-    global $xoopsConfig, $xoTheme;
-    global $xoopsUser, $xoopsModuleConfig, $isAdmin, $xoopsTpl;
+    global $xoopsUser, $xoopsModuleConfig, $isAdmin, $xoopsTpl, $xoopsConfig, $xoTheme;
 
     Utility::get_jquery();
 
