@@ -643,8 +643,8 @@ function show_one_tad_cal_event($sn = '', $stamp = '')
     $show_function = count($edit_cate_arr) ? 1 : 0;
     $fun = ($show_function and ($isAdmin or $now_uid == $uid)) ? "
   <div style='text-align:right;margin-top:10px;'>
-  <a href='{$_SERVER['PHP_SELF']}?op=tad_cal_event_form&sn=$sn' class='link_button_r' style='padding:4px;font-size:12px;'><img src='" . XOOPS_URL . "/modules/tad_cal/images/edit.png' style='margin-right:4px;' align='absmiddle'>" . _TAD_EDIT . "</a>
-  <a href=\"javascript:delete_tad_cal_event_func($sn);\" class='link_button_r' style='padding:4px;font-size:12px;'><img src='" . XOOPS_URL . "/modules/tad_cal/images/delete.png' style='margin-right:4px;' align='absmiddle'>" . _TAD_DEL . '</a>
+  <a href='{$_SERVER['PHP_SELF']}?op=tad_cal_event_form&sn=$sn' class='link_button_r' style='padding:4px;font-size:0.75rem;'><img src='" . XOOPS_URL . "/modules/tad_cal/images/edit.png' style='margin-right:4px;' align='absmiddle'>" . _TAD_EDIT . "</a>
+  <a href=\"javascript:delete_tad_cal_event_func($sn);\" class='link_button_r' style='padding:4px;font-size:0.75rem;'><img src='" . XOOPS_URL . "/modules/tad_cal/images/delete.png' style='margin-right:4px;' align='absmiddle'>" . _TAD_DEL . '</a>
   </div>' : '';
 
     $facebook_comments = Utility::facebook_comments($xoopsModuleConfig['facebook_comments_width'], 'tad_cal', 'event.php', 'sn', $sn);
@@ -703,7 +703,7 @@ function show_simple_event($sn = '', $stamp = '')
     $details = nl2br($details);
 
     $show_location = empty($location) ? '' : "<tr>
-  <td nowrap style='font-size:13px;'><img src='" . XOOPS_URL . "/modules/tad_cal/images/location.png' alt='" . _MD_TADCAL_LOCATION . "' style='margin-right:4px;' align='absmiddle'>{$location}</td>
+  <td nowrap style='font-size:0.813rem;'><img src='" . XOOPS_URL . "/modules/tad_cal/images/location.png' alt='" . _MD_TADCAL_LOCATION . "' style='margin-right:4px;' align='absmiddle'>{$location}</td>
   </tr>";
 
     $details = empty($details) ? $title : $details;
@@ -715,13 +715,13 @@ function show_simple_event($sn = '', $stamp = '')
     $stamp = strtotime($start);
     $andStamp = !empty($recurrence) ? "&stamp={$stamp}" : '';
 
-    $page = "<a href='" . XOOPS_URL . "/modules/tad_cal/event.php?sn={$sn}{$andStamp}' class='link_button_r' style='padding:4px;font-size:12px;'><img src='" . XOOPS_URL . "/modules/tad_cal/images/event.png' style='margin-right:4px;' align='absmiddle'>" . _MD_TADCAL_EVENT_PAGE . '</a>';
+    $page = "<a href='" . XOOPS_URL . "/modules/tad_cal/event.php?sn={$sn}{$andStamp}' class='link_button_r' style='padding:4px;font-size:0.75rem;'><img src='" . XOOPS_URL . "/modules/tad_cal/images/event.png' style='margin-right:4px;' align='absmiddle'>" . _MD_TADCAL_EVENT_PAGE . '</a>';
 
     $fun = ($show_function and ($isAdmin or $now_uid == $uid)) ? "
   <div style='margin-top:5px;'>
- <a href='{$_SERVER['PHP_SELF']}?op=tad_cal_event_form&sn=$sn' class='link_button_r' style='padding:4px;font-size:12px;'><img src='" . XOOPS_URL . "/modules/tad_cal/images/edit.png' style='margin-right:4px;' align='absmiddle'>" . _TAD_EDIT . "</a>
+ <a href='{$_SERVER['PHP_SELF']}?op=tad_cal_event_form&sn=$sn' class='link_button_r' style='padding:4px;font-size:0.75rem;'><img src='" . XOOPS_URL . "/modules/tad_cal/images/edit.png' style='margin-right:4px;' align='absmiddle'>" . _TAD_EDIT . "</a>
  $page
- <a href=\"javascript:delete_tad_cal_event_func($sn);\" style='padding:4px;font-size:12px;'><img src='" . XOOPS_URL . "/modules/tad_cal/images/delete.png' style='margin-right:4px;' align='absmiddle'></a>
+ <a href=\"javascript:delete_tad_cal_event_func($sn);\" style='padding:4px;font-size:0.75rem;'><img src='" . XOOPS_URL . "/modules/tad_cal/images/delete.png' style='margin-right:4px;' align='absmiddle'></a>
   </div>" : "<div style='margin-top:5px;'>$page</div>";
 
     $data = "
@@ -734,13 +734,13 @@ function show_simple_event($sn = '', $stamp = '')
   </script>
   <table id='tbl' summary='list_table'>
   <tr>
-  <td nowrap style='font-family:Arial;font-size:13px;'><img src='" . XOOPS_URL . "/modules/tad_cal/images/date.png' alt='" . _MD_TADCAL_TIME . "' style='margin-right:4px;' align='absmiddle'> {$date}</td>
+  <td nowrap style='font-family:Arial;font-size:0.813rem;'><img src='" . XOOPS_URL . "/modules/tad_cal/images/date.png' alt='" . _MD_TADCAL_TIME . "' style='margin-right:4px;' align='absmiddle'> {$date}</td>
   </tr>
 
   {$show_location}
 
-  <tr><td style='background-color:#FFFFEE;'><div style='margin:15px;font-size:12px;line-height:1.5;color:#202020;'>{$details}</div></td></tr>
-  <tr><td><div style='text-align:right;font-size:12px;color:gray;'>{$cate[$cate_sn]['cate_title']} / Posted by {$uid_name}</div></td></tr>
+  <tr><td style='background-color:#FFFFEE;'><div style='margin:15px;font-size:0.75rem;line-height:1.5;color:#202020;'>{$details}</div></td></tr>
+  <tr><td><div style='text-align:right;font-size:0.75rem;color:gray;'>{$cate[$cate_sn]['cate_title']} / Posted by {$uid_name}</div></td></tr>
   <tr><td style='background-color:transparent;border-bottom:none;'>$fun</td></tr>
   </table>
   ";

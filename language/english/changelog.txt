@@ -1,3 +1,14 @@
+Tad Cal 3.2 (released on 2021-07-31)
+================================
+1. Comply with the new version 2021/07 AA accessibility standard
+2. Combined with BootStrap3 and 4 templates
+
+Tad Cal 3.1 (Released 2020-06-16)
+================================
+1. Use Xmf\Request to filter variables
+2. adjust the logo display
+
+
 Tad Cal 3.0 (2020-03-14 released)
 ================================
 1. Correction for accessibility 2.0 AA standard
