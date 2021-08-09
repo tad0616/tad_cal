@@ -187,7 +187,7 @@
         <{$smarty.const._MD_TADCAL_TITLE}>
       </label>
       <div class="col-sm-10">
-        <input type="text" name="title" value="<{$title}>" id="title" class="validate[required] form-control">
+        <input type="text" name="title" title="title" value="<{$title}>" id="title" class="validate[required] form-control">
       </div>
     </div>
 
@@ -199,16 +199,16 @@
 
       <!--開始時間-->
       <div class="col-sm-3">
-        <input type="text" name="start" value="<{$start_allday}>" id="start_allday" class="validate[required] form-control" onClick="WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d'})" onChange="check_end();month_repeat_chk();">
+        <input type="text" name="start" title="start_allday" value="<{$start_allday}>" id="start_allday" class="validate[required] form-control" onClick="WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d'})" onChange="check_end();month_repeat_chk();">
 
-        <input type="text" name="start" value="<{$start}>" id="start" class="validate[required] form-control" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm' , startDate:'%y-%M-%d %H:%m'})" onChange="$('#bymonthday').text($('#start').val().substr(8,2));check_end();">
+        <input type="text" name="start" title="start" value="<{$start}>" id="start" class="validate[required] form-control" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm' , startDate:'%y-%M-%d %H:%m'})" onChange="$('#bymonthday').text($('#start').val().substr(8,2));check_end();">
       </div>
 
       <!--結束時間-->
       <div class="col-sm-3">
-        <input type="text" name="end" value="<{$end_allday}>" id="end_allday" onClick="WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d'})" onChange="update_long();" class="form-control">
+        <input type="text" name="end" title="end_allday" value="<{$end_allday}>" id="end_allday" onClick="WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d'})" onChange="update_long();" class="form-control">
 
-        <input type="text" name="end" value="<{$end}>" id="end" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm' , startDate:'%y-%M-%d %H:%m'})" onChange="update_long();" class="form-control">
+        <input type="text" name="end" title="end" value="<{$end}>" id="end" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm' , startDate:'%y-%M-%d %H:%m'})" onChange="update_long();" class="form-control">
       </div>
       <div class="col-sm-4">
         <!--全日事件-->
@@ -236,7 +236,7 @@
               <{$smarty.const._MD_TADCAL_REPEAT}><{$smarty.const._TAD_FOR}>
             </label>
             <div class="col-sm-8">
-              <select name="FREQ" id="freq_select" class="form-control">
+              <select name="FREQ" title='FREQ' id="freq_select" class="form-control">
                 <option value="DAILY" <{$chk_DAILY}>><{$smarty.const._MD_TADCAL_REPEAT_DAILY}></option>
                 <option value="WEEKLY" <{$chk_WEEKLY}>><{$smarty.const._MD_TADCAL_REPEAT_WEEKLY}></option>
                 <option value="MONTHLY" <{$chk_MONTHLY}>><{$smarty.const._MD_TADCAL_REPEAT_MONTHLY}></option>
@@ -250,7 +250,7 @@
               <{$smarty.const._MD_TADCAL_INTERVAL}><{$smarty.const._TAD_FOR}>
             </label>
             <div class="col-sm-7">
-              <select name="INTERVAL" class="form-control">
+              <select name="INTERVAL" title='INTERVAL' class="form-control">
                 <{$INTERVAL_OPT}>
               </select>
             </div>
@@ -307,7 +307,7 @@
                 </div>
             </div>
             <div class="col-sm-5">
-              <input type="text" name="COUNT" class="form-control" value="<{$RRULE_COUNT}>" onChange="$('#count').attr('checked','checked'); if(this.value=="")this.value=10;">
+              <input type="text" name="COUNT" title="COUNT" class="form-control" value="<{$RRULE_COUNT}>" onChange="$('#count').attr('checked','checked'); if(this.value=="")this.value=10;">
             </div>
             <div class="col-sm-4">
               <{$smarty.const._MD_TADCAL_END_COUNT2}>
@@ -323,7 +323,7 @@
                 </div>
             </div>
             <div class="col-sm-5">
-              <input type="text" name="UNTIL" class="form-control"  value="<{$UNTIL}>" onClick="$('#until').attr('checked' , 'checked');WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d'})">
+              <input type="text" name="UNTIL" title="UNTIL" class="form-control"  value="<{$UNTIL}>" onClick="$('#until').attr('checked' , 'checked');WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d'})">
             </div>
             <div class="col-sm-4">
               <{$smarty.const._MD_TADCAL_END_UNTIL2}>
@@ -348,7 +348,7 @@
         <{$smarty.const._MD_TADCAL_LOCATION}>
       </label>
       <div class="col-sm-4">
-        <input type="text" name="location" class="form-control" value="<{$location}>" id="location" >
+        <input type="text" name="location" title="location" class="form-control" value="<{$location}>" id="location" >
       </div>
     </div>
 

@@ -48,9 +48,9 @@ function tad_cal_full_calendar($options)
         $get_tad_cal_cate_menu_options = get_tad_cal_cate_menu_options($cate_sn);
         if ($isAdmin) {
             if (empty($get_tad_cal_cate_menu_options)) {
-                $cate = _MB_TADCAL_NEW_CATE . ": <input name='new_cate_title' id='new_cate_title' value='" . _MB_TADCAL_NEW_CALENDAR . "'>";
+                $cate = _MB_TADCAL_NEW_CATE . ": <input name='new_cate_title' title='new_cate_title' id='new_cate_title' value='" . _MB_TADCAL_NEW_CALENDAR . "'>";
             } else {
-                $cate = _MB_TADCAL_CATE_SN . ": <select name='cate_sn' id='cate_sn' size=1 >{$get_tad_cal_cate_menu_options}</select>";
+                $cate = _MB_TADCAL_CATE_SN . ": <select name='cate_sn' title='cate_sn' id='cate_sn' size=1 >{$get_tad_cal_cate_menu_options}</select>";
             }
 
             //快速新增功能

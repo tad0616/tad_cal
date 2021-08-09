@@ -17,7 +17,7 @@
           <{$smarty.const._MA_TADCAL_CATE_TITLE}>
         </label>
         <div class="col-sm-4">
-          <input type="text" name="cate_title" class="form-control" value="<{$cate_title}>" id="cate_title" class="validate[required]">
+          <input type="text" title="cate_title" name="cate_title" class="form-control" value="<{$cate_title}>" id="cate_title" class="validate[required]">
         </div>
         <!--是否啟用-->
         <label class="col-sm-2 col-form-label text-sm-right control-label">
@@ -41,14 +41,14 @@
           <{$smarty.const._MA_TADCAL_CATE_BGCOLOR}>
         </label>
         <div class="col-sm-4">
-          <input type="text" name="cate_bgcolor" id="cate_bgcolor" class="form-control" value="<{$cate_bgcolor}>" data-text="hidden" data-hex="true">
+          <input type="text" name="cate_bgcolor" title="cate_bgcolor" id="cate_bgcolor" class="form-control" value="<{$cate_bgcolor}>" data-text="hidden" data-hex="true">
         </div>
         <!--文字色-->
         <label class="col-sm-2 col-form-label text-sm-right control-label">
           <{$smarty.const._MA_TADCAL_CATE_COLOR}>
         </label>
         <div class="col-sm-4">
-          <input type="text" name="cate_color" id="cate_color" class="form-control" value="<{$cate_color}>" data-text="hidden" data-hex="true">
+          <input type="text" name="cate_color" title="cate_color" id="cate_color" class="form-control" value="<{$cate_color}>" data-text="hidden" data-hex="true">
         </div>
       </div>
 
@@ -125,7 +125,7 @@
           <{else}>
             <tr>
               <td class="c"><input type="checkbox" name="handle[<{$cal.j}>]" value="<{$cal.handle}>"></td>
-              <td><input type="text" name="title[<{$cal.j}>]" value="<{$cal.cal_title}>" size=30></td>
+              <td><input type="text" title="title" name="title[<{$cal.j}>]" value="<{$cal.cal_title}>" size=30></td>
               <td style="text-align:right;"><{$cal.totalResults}></td>
             </tr>
           <{/if}>
@@ -146,7 +146,7 @@
         <table>
           <!--google帳號-->
           <tr><td><{$smarty.const._MA_TADCAL_GOOGLE_ID}></td>
-          <td><input type="text" name="google_id" size="30" id="google_id" ><{$smarty.const._MA_TADCAL_GOOGLE_ID_NOTE}></td></tr>
+          <td><input type="text" name="google_id" title="google_id" size="30" id="google_id" ><{$smarty.const._MA_TADCAL_GOOGLE_ID_NOTE}></td></tr>
 
           <!--google密碼-->
           <tr><td><{$smarty.const._MA_TADCAL_GOOGLE_PASS}></td>
