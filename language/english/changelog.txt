@@ -1,3 +1,7 @@
+Tad Cal 3.3 (released on 2021-08-22)
+====================================
+1.Revised for the new version of AA Accessibility Standard 2021/07
+
 Tad Cal 3.2 (released on 2021-07-31)
 ================================
 1. Comply with the new version 2021/07 AA accessibility standard
