@@ -11,7 +11,7 @@
     </script>
 
     <form action="main.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
-      <div class="form-group row">
+      <div class="form-group row mb-3">
         <!--行事曆標題-->
         <label class="col-sm-2 col-form-label text-sm-right control-label">
           <{$smarty.const._MA_TADCAL_CATE_TITLE}>
@@ -35,7 +35,7 @@
         </div>
       </div>
 
-      <div class="form-group row">
+      <div class="form-group row mb-3">
         <!--背景色-->
         <label class="col-sm-2 col-form-label text-sm-right control-label">
           <{$smarty.const._MA_TADCAL_CATE_BGCOLOR}>
@@ -54,7 +54,7 @@
 
 
 
-      <div class="form-group row">
+      <div class="form-group row mb-3">
         <!--可讀群組-->
         <label class="col-sm-2 col-form-label text-sm-right control-label">
           <{$smarty.const._MA_TADCAL_ENABLE_GROUP}>
@@ -74,7 +74,7 @@
 
       <{if $cate_handle}>
 
-        <div class="form-group row">
+        <div class="form-group row mb-3">
           <!--google帳號-->
           <label class="col-sm-2 col-form-label text-sm-right control-label">
             <{$smarty.const._MA_TADCAL_GOOGLE_ID}>

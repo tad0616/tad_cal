@@ -11,6 +11,6 @@
     <{/foreach}>
 </ul>
 
-<div class="text-right;">
+<div class="text-right text-end;">
     <a href="<{$xoops_url}>/modules/tad_cal" class="badge badge-info"><{$smarty.const._MB_TADCAL_TO_INDEX}></a>
 </div>

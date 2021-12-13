@@ -182,7 +182,7 @@
 
   <form action="<{$xoops_url}>/modules/tad_cal/event.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
     <!--事件標題-->
-    <div class="form-group row">
+    <div class="form-group row mb-3">
       <label class="col-sm-2 col-form-label text-sm-right control-label">
         <{$smarty.const._MD_TADCAL_TITLE}>
       </label>
@@ -192,7 +192,7 @@
     </div>
 
     <!--事件起始時間-->
-    <div class="form-group row">
+    <div class="form-group row mb-3">
       <label class="col-sm-2 col-form-label text-sm-right control-label">
         <{$smarty.const._MD_TADCAL_TIME}>
       </label>
@@ -231,7 +231,7 @@
       <div  class="row">
         <div class="col-sm-7">
 
-          <div class="form-group row">
+          <div class="form-group row mb-3">
             <label class="col-sm-3 col-form-label text-sm-right control-label">
               <{$smarty.const._MD_TADCAL_REPEAT}><{$smarty.const._TAD_FOR}>
             </label>
@@ -245,7 +245,7 @@
             </div>
           </div>
 
-          <div class="form-group row">
+          <div class="form-group row mb-3">
             <label class="col-sm-3 col-form-label text-sm-right control-label">
               <{$smarty.const._MD_TADCAL_INTERVAL}><{$smarty.const._TAD_FOR}>
             </label>
@@ -260,7 +260,7 @@
           </div>
 
 
-          <div id="week_repeat" class="form-group row">
+          <div id="week_repeat" class="form-group row mb-3">
             <label class="col-sm-3 col-form-label text-sm-right control-label">
               <{$smarty.const._MD_TADCAL_WEEK_REPEAT}><{$smarty.const._TAD_FOR}>
             </label>
@@ -270,7 +270,7 @@
           </div>
 
 
-          <div id="month_repeat" class="form-group row">
+          <div id="month_repeat" class="form-group row mb-3">
             <label class="col-sm-3 col-form-label text-sm-right control-label">
               <{$smarty.const._MD_TADCAL_MONTH_REPEAT}><{$smarty.const._TAD_FOR}>
             </label>
@@ -290,7 +290,7 @@
         <div class="col-sm-5">
 
 
-          <div class="form-group row">
+          <div class="form-group row mb-3">
             <div class="col-sm-12">
                 <div class="form-check form-check-inline">
                   <input class="form-check-input" type="radio" name="END" id="none" value="none" <{$ENDType_none}>>
@@ -299,7 +299,7 @@
             </div>
           </div>
 
-          <div class="form-group row">
+          <div class="form-group row mb-3">
             <div class="col-sm-3">
                 <div class="form-check form-check-inline">
                   <input class="form-check-input" type="radio" name="END" id="count" value="count" <{$ENDType_count}>>
@@ -315,7 +315,7 @@
           </div>
 
 
-          <div class="form-group row">
+          <div class="form-group row mb-3">
             <div class="col-sm-3">
                 <div class="form-check form-check-inline">
                   <input class="form-check-input" type="radio" name="END" id="until" value="until" <{$ENDType_until}>>
@@ -335,7 +335,7 @@
     </div>
 
 
-    <div class="form-group row">
+    <div class="form-group row mb-3">
       <!--所屬行事曆-->
       <label class="col-sm-2 col-form-label text-sm-right control-label">
         <{$of_cate_title}>
@@ -354,7 +354,7 @@
 
 
     <!--事件內容-->
-    <div class="form-group row">
+    <div class="form-group row mb-3">
       <label class="col-sm-2 col-form-label text-sm-right control-label">
         <{$smarty.const._MD_TADCAL_DETAILS}>
       </label>

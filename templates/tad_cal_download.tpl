@@ -1,11 +1,11 @@
 <{$toolbar}>
-<h2 class="sr-only">Calendar word</h2>
+<h2 class="sr-only visually-hidden">Calendar word</h2>
 
 <script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/My97DatePicker/WdatePicker.js"></script>
 
 <form action="word.php" method="post" id="myForm" class="form-horizontal" role="form">
 
-  <div class="form-group row">
+  <div class="form-group row mb-3">
     <!--事件起始時間-->
     <label class="col-sm-2 col-form-label text-sm-right control-label">
       <{$smarty.const._MD_TADCAL_TIME}>
@@ -35,7 +35,7 @@
     </div>
   </div>
 
-  <div class="form-group row">
+  <div class="form-group row mb-3">
     <label class="col-sm-2 col-form-label text-sm-right control-label">
       <{$smarty.const._MD_TADCAL_CATE_SN}>
     </label>
