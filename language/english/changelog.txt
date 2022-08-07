@@ -1,6 +1,7 @@
-Tad Cal 3.4 (released on 2021-12-13)
+Tad Cal 3.4 (released on 2022-02-03)
 ====================================
 1.Support BootStrap5
+2.Let the block without content not appear
 
 Tad Cal 3.3 (released on 2021-08-22)
 ====================================
