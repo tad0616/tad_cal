@@ -5,8 +5,9 @@ use XoopsModules\Tadtools\Utility;
 require_once __DIR__ . '/header.php';
 
 /* 連資料庫檢查 */
-header('Content-type: application/json');
-echo get_event();
+header('HTTP/1.1 200 OK');
+// header('Content-type: application/json');
+get_event();
 
 //取得事件
 function get_event()
@@ -38,6 +39,7 @@ function get_event()
 
     $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     $i = 0;
+    $myEvents = [];
     while (false !== ($all = $xoopsDB->fetchArray($result))) {
         //以下會產生這些變數： $sn , $title , $start , $end , $recurrence , $location , $kind , $details , $etag , $id , $sequence , $uid , $cate_sn
         foreach ($all as $k => $v) {
@@ -71,12 +73,11 @@ function get_event()
         $event_title = xoops_substr(strip_tags($title), 0, $title_num);
 
         $myEvents[$i]['id'] = $sn;
-        $myEvents[$i]['title'] = ($event_title);
-        $myEvents[$i]['url'] = XOOPS_URL . "/modules/tad_cal/event.php?sn=$sn";
+        $myEvents[$i]['title'] = $event_title;
         $myEvents[$i]['rel'] = XOOPS_URL . "/modules/tad_cal/event.php?op=view&sn=$sn";
-        $myEvents[$i]['start'] = $start;
+        $myEvents[$i]['start'] = date('c', strtotime($start));
         if (!empty($end)) {
-            $myEvents[$i]['end'] = $end;
+            $myEvents[$i]['end'] = date('c', strtotime($end));
         }
 
         $myEvents[$i]['allDay'] = $allDay;
@@ -133,7 +134,7 @@ function get_event()
 
         $myEvents[$i]['id'] = $sn;
         $myEvents[$i]['title'] = "* {$event_title}";
-        //$myEvents[$i]['url']="event.php?sn=$sn&stamp=$startTime";
+        // $myEvents[$i]['url'] = XOOPS_URL . "/modules/tad_cal/event.php?op=view&sn=$sn&stamp=$DBstartTime";
         $myEvents[$i]['rel'] = XOOPS_URL . "/modules/tad_cal/event.php?op=view&sn=$sn&stamp=$DBstartTime";
         $myEvents[$i]['start'] = $start;
         if (!empty($end)) {
@@ -148,5 +149,6 @@ function get_event()
         $i++;
     }
 
-    return json_encode($myEvents, JSON_UNESCAPED_UNICODE);
+    Utility::dd($myEvents);
+    // return json_encode($myEvents, JSON_UNESCAPED_UNICODE);
 }

@@ -9,7 +9,7 @@ require_once XOOPS_ROOT_PATH . '/header.php';
 
 function tad_cal_download()
 {
-    global $xoopsUser, $xoopsModuleConfig, $isAdmin, $xoopsTpl;
+    global $xoopsTpl;
 
     //先抓分類下拉選單
     $get_tad_cal_cate_menu_options = get_tad_cal_cate_menu_options();
@@ -34,6 +34,6 @@ switch ($op) {
 
 /*-----------秀出結果區--------------*/
 $xoopsTpl->assign('toolbar', Utility::toolbar_bootstrap($interface_menu));
-$xoopsTpl->assign('isAdmin', $isAdmin);
+$xoopsTpl->assign('now_op', $op);
 
 require_once XOOPS_ROOT_PATH . '/footer.php';

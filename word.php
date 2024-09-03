@@ -65,6 +65,7 @@ if ('all_week' === $dl_type) {
 
 $filename = iconv('UTF-8', 'Big5', $filename);
 $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
+header('HTTP/1.1 200 OK');
 header('Cache-Control: max-age=0');
 header('Content-Type: application/vnd.ms-word');
 header("Content-Disposition: attachment;filename={$filename}.docx");
@@ -300,89 +301,4 @@ function word_by_date()
             }
         }
     }
-}
-
-//抓出事件陣列
-function get_events($even_start, $even_end, $cate_sn_arr, $show_type, $dl_type)
-{
-    global $xoopsDB;
-
-    //取得目前使用者可讀的群組
-    $ok_cate_arr = chk_tad_cal_cate_power('enable_group');
-
-    if (!empty($cate_sn_arr)) {
-        foreach ($cate_sn_arr as $cate_sn) {
-            if (in_array($cate_sn, $ok_cate_arr)) {
-                $ok_arr[] = $cate_sn;
-            }
-        }
-    } else {
-        $ok_arr = $ok_cate_arr;
-    }
-
-    //可讀類別判別
-    $all_ok_cate = implode(',', $ok_arr);
-    $and_ok_cate = empty($all_ok_cate) ? "and cate_sn='0'" : "and cate_sn in($all_ok_cate)";
-    $and_ok_cate2 = empty($all_ok_cate) ? "and a.sn='0'" : "and b.cate_sn in($all_ok_cate)";
-
-    //抓出事件
-    $sql = 'select * from ' . $xoopsDB->prefix('tad_cal_event') . " where `start` >= '$even_start' and `end` <= '$even_end' $and_ok_cate  order by `start` , `sequence`";
-
-    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-    $i = 0;
-    while (false !== ($all = $xoopsDB->fetchArray($result))) {
-        //以下會產生這些變數： $sn , $title , $start , $end , $recurrence , $location , $kind , $details , $etag , $id , $sequence , $uid , $cate_sn
-        foreach ($all as $k => $v) {
-            $$k = $v;
-        }
-        if (!empty($recurrence)) {
-            continue;
-        }
-
-        $start = mb_substr($start, 0, 10);
-        if ('all_week' === $dl_type) {
-            list($y, $m, $d) = explode('-', $start);
-            if ('separate' === $show_type) {
-                $all_event[$m][$cate_sn][$sn] = "{$d}){$title}";
-            } else {
-                $all_event[$m][$sn] = "{$d}){$title}";
-            }
-        } else {
-            if ('separate' === $show_type) {
-                $all_event[$start][$cate_sn][$sn] = $title;
-            } else {
-                $all_event[$start][$sn] = $title;
-            }
-        }
-    }
-
-    //抓出重複事件
-    $sql = 'select a.*,b.title,b.cate_sn from ' . $xoopsDB->prefix('tad_cal_repeat') . ' as a join ' . $xoopsDB->prefix('tad_cal_event') . " as b on a.sn=b.sn where a.`start` >= '$even_start' and a.`end` <= '$even_end' $and_ok_cate2  order by a.`start`";
-    //die($sql);
-    $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-
-    while (false !== ($all = $xoopsDB->fetchArray($result))) {
-        //以下會產生這些變數： $sn , $title , $start , $end , $recurrence , $location , $kind , $details , $etag , $id , $sequence , $uid , $cate_sn
-        foreach ($all as $k => $v) {
-            $$k = $v;
-        }
-
-        $start = mb_substr($start, 0, 10);
-        if ('all_week' === $dl_type) {
-            list($y, $m, $d) = explode('-', $start);
-            if ('separate' === $show_type) {
-                $all_event[$m][$cate_sn][$sn] = "{$d}){$title}";
-            } else {
-                $all_event[$m][$sn] = "{$d}){$title}";
-            }
-        } else {
-            if ('separate' === $show_type) {
-                $all_event[$start][$cate_sn][$sn] = $title;
-            } else {
-                $all_event[$start][$sn] = $title;
-            }
-        }
-    }
-
-    return $all_event;
 }

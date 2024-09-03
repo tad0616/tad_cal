@@ -1,13 +1,17 @@
 <?php
 xoops_loadLanguage('main', 'tadtools');
-define('_TAD_NEED_TADTOOLS', '需要 tadtools 模組，可至<a href="http://www.tad0616.net/modules/tad_uploader/index.php?of_cat_sn=50" target="_blank">Tad教材網</a>下載。');
+
 define('_MD_TADCAL_SMNAME2', '新增事件');
 define('_MD_TADCAL_SMNAME3', '下載簡曆');
+define('_MD_TADCAL_TODOLIST', '待辦清單');
+define('_MD_TADCAL_TODOLIST_DONE', '已完成之待辦清單');
+define('_MD_TADCAL_SMNAME5', '已完成清單');
 define('_MD_TADCAL_TITLE', '事件標題');
 define('_MD_TADCAL_START', '事件起始時間');
 define('_MD_TADCAL_RECURRENCE', '重複事件');
 define('_MD_TADCAL_LOCATION', '事件地點');
 define('_MD_TADCAL_DETAILS', '事件內容');
+define('_MD_TADCAL_TODO_LIST', '此為待辦事項');
 define('_MD_TADCAL_CATE_SN', '所屬行事曆');
 define('_MD_TADCAL_EVENT_FORM', '設定事件');
 define('_MD_TADCAL_TIME', '時間起訖');
@@ -69,3 +73,7 @@ define('_MD_TADCAL_SEPARATE', '分開呈現');
 define('_MD_TADCAL_MERGE', '合併呈現');
 
 define('_MD_TADCAL_MONTH_STR', '一月,二月,三月,四月,五月,六月,七月,八月,九月,十月,十一月,十二月');
+
+define('_MD_TADCAL_EXCEL', '下載所有待辦事項 Excel 檔');
+define('_MD_TADCAL_EXCEL_DONE', '下載所有已完成待辦事項 Excel 檔');
+define('_MD_TADCAL_EMPTY_TODO_EVENT', '尚無待辦清單事項');

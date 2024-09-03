@@ -5,7 +5,8 @@ global $xoopsConfig;
 
 //---模組基本資訊---//
 $modversion['name'] = _MI_TADCAL_NAME;
-$modversion['version'] = 3.4;
+// $modversion['version'] = 3.5;
+$modversion['version'] = $_SESSION['xoops_version'] >= 20511 ? '4.0.0-Stable' : '4.0';
 $modversion['description'] = _MI_TADCAL_DESC;
 $modversion['author'] = _MI_TADCAL_AUTHOR;
 $modversion['credits'] = _MI_TADCAL_CREDITS;
@@ -16,7 +17,7 @@ $modversion['image'] = $xoopsConfig['language'] == 'tchinese_utf8' ? 'images/log
 $modversion['dirname'] = basename(__DIR__);
 
 //---模組狀態資訊---//
-$modversion['release_date'] = '2022-02-03';
+$modversion['release_date'] = '2023-09-21';
 $modversion['module_website_url'] = 'https://tad0616.net/';
 $modversion['module_website_name'] = _MI_TAD_WEB;
 $modversion['module_status'] = 'release';
@@ -127,24 +128,17 @@ $modversion['config'][4]['formtype'] = 'textbox';
 $modversion['config'][4]['valuetype'] = 'int';
 $modversion['config'][4]['default'] = '100';
 
-$modversion['config'][5]['name'] = 'facebook_comments_width';
-$modversion['config'][5]['title'] = '_MI_FBCOMMENT_TITLE';
-$modversion['config'][5]['description'] = '_MI_FBCOMMENT_TITLE_DESC';
+$modversion['config'][5]['name'] = 'use_social_tools';
+$modversion['config'][5]['title'] = '_MI_SOCIALTOOLS_TITLE';
+$modversion['config'][5]['description'] = '_MI_SOCIALTOOLS_TITLE_DESC';
 $modversion['config'][5]['formtype'] = 'yesno';
 $modversion['config'][5]['valuetype'] = 'int';
 $modversion['config'][5]['default'] = '1';
 
-$modversion['config'][6]['name'] = 'use_social_tools';
-$modversion['config'][6]['title'] = '_MI_SOCIALTOOLS_TITLE';
-$modversion['config'][6]['description'] = '_MI_SOCIALTOOLS_TITLE_DESC';
-$modversion['config'][6]['formtype'] = 'yesno';
+$modversion['config'][6]['name'] = 'cal_start';
+$modversion['config'][6]['title'] = '_MI_CAL_START';
+$modversion['config'][6]['description'] = '_MI_CAL_START_DESC';
+$modversion['config'][6]['formtype'] = 'select';
 $modversion['config'][6]['valuetype'] = 'int';
 $modversion['config'][6]['default'] = '1';
-
-$modversion['config'][7]['name'] = 'cal_start';
-$modversion['config'][7]['title'] = '_MI_CAL_START';
-$modversion['config'][7]['description'] = '_MI_CAL_START_DESC';
-$modversion['config'][7]['formtype'] = 'select';
-$modversion['config'][7]['valuetype'] = 'int';
-$modversion['config'][7]['default'] = '1';
-$modversion['config'][7]['options'] = [_MI_TADCAL_SU => '0', _MI_TADCAL_MO => '1'];
+$modversion['config'][6]['options'] = [_MI_TADCAL_SU => '0', _MI_TADCAL_MO => '1'];

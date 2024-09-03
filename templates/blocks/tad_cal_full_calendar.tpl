@@ -2,13 +2,12 @@
 $(document).ready(function(){
   var calendar = $("#full_calendar_block").fullCalendar({
     theme: true,
-    locale: navigator.language,
     firstDay:<{$block.firstDay}>,
+    locale: navigator.language,
     locale: window.navigator.userLanguage || window.navigator.language,
     buttonText:{today:"<{$smarty.const._MB_TADCAL_TODAY}>"},
     header: {
       left: "prev,today,next",
-      center: "",
       right: "title"
     },
     <{$block.eventAdd}>
@@ -16,9 +15,14 @@ $(document).ready(function(){
     events: function(start, end, timezone ,callback) {
       $.getJSON("<{$xoops_url}>/modules/tad_cal/get_event.php",
       {
+        <{if $block.cate_sn}>
         start: start.format(),
         end: end.format(),
         cate_sn: <{$block.cate_sn}>
+        <{else}>
+        start: start.format(),
+        end: end.format()
+        <{/if}>
       },
       function(result) {
         callback(result);

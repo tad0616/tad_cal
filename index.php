@@ -10,7 +10,7 @@ require_once XOOPS_ROOT_PATH . '/header.php';
 
 function fullcalendar($cate_sn = 0)
 {
-    global $xoopsUser, $xoopsModuleConfig, $isAdmin, $xoopsTpl, $xoopsConfig, $xoTheme;
+    global $xoopsUser, $xoopsModuleConfig, $xoopsTpl;
 
     Utility::get_jquery();
 
@@ -32,7 +32,7 @@ function fullcalendar($cate_sn = 0)
     if ($xoopsUser) {
         //先抓分類下拉選單
         $get_tad_cal_cate_menu_options = get_tad_cal_cate_menu_options($cate_sn);
-        if ($isAdmin) {
+        if ($_SESSION['tad_cal_adm']) {
             if (empty($get_tad_cal_cate_menu_options)) {
                 $cate = _MD_TADCAL_NEW_CATE . _TAD_FOR . "<input name='new_cate_title' title='new_cate_title' id='new_cate_title' value='" . _MD_TADCAL_NEW_CALENDAR . "'>";
             } else {
@@ -43,7 +43,7 @@ function fullcalendar($cate_sn = 0)
             $eventAdd = 'selectable: true,
             selectHelper: true,
             select: function(start, end) {
-              var promptBox = "' . _MD_TADCAL_TITLE . _TAD_FOR . "<input type='text' id='eventTitle' name='eventTitle' value=''><br>$cate\";
+              var promptBox = "' . _MD_TADCAL_TITLE . _TAD_FOR . "<input type='text' id='eventTitle' name='eventTitle' value=''><br>$cate<br><input type='checkbox' id='eventTag' name='eventTag' value='todo'>" . _MD_TADCAL_TODO_LIST . "\";
 
               function mycallbackform(e,v,m,f){
                 if(v != undefined){
@@ -59,8 +59,8 @@ function fullcalendar($cate_sn = 0)
                   );
 
 
-                  $.post('event.php', {op: 'insert_tad_cal_event', start: start.format(), end: end.format(), allday: start.hasTime() ? '0' : '1', fc: '1', title: f.eventTitle, cate_sn: f.cate_sn, new_cate_title: f.new_cate_title},function(data){
-                    console.log(data);
+                  $.post('event.php', {op: 'insert_tad_cal_event', start: start.format(), end: end.format(), allday: start.hasTime() ? '0' : '1', fc: '1', title: f.eventTitle, cate_sn: f.cate_sn, tag: f.eventTag, new_cate_title: f.new_cate_title},function(data){
+                    console.log(start.format()+'-'+end.format());
                     calendar.fullCalendar('refetchEvents');
                   });
                 }
@@ -94,7 +94,9 @@ function fullcalendar($cate_sn = 0)
             ";
 
             //拖曳搬移功能
-            $eventDrop = "editable:true,
+            $eventDrop = "
+            //editable:true,
+            editable:false,
             eventDrop: function(event,delta,revertFunc) {
               $.post('event.php', {op: 'ajax_update_date', delta: delta.asSeconds(), sn: event.id },function(data){
                 alert(data);
@@ -130,7 +132,18 @@ switch ($op) {
 }
 
 /*-----------秀出結果區--------------*/
+$xoopsTpl->assign('now_op', $op);
 $xoopsTpl->assign('toolbar', Utility::toolbar_bootstrap($interface_menu));
-$xoopsTpl->assign('isAdmin', $isAdmin);
+$xoTheme->addStylesheet('modules/tad_cal/css/module.css');
+$xoTheme->addStylesheet('modules/tadtools/fullcalendar/redmond/theme.css');
+$xoTheme->addStylesheet('modules/tadtools/fullcalendar/fullcalendar.css');
+$xoTheme->addStylesheet('modules/tadtools/jquery.qtip_2/jquery.qtip.min.css');
+
+$xoTheme->addScript('modules/tadtools/moment/moment-with-locales.min.js');
+$xoTheme->addScript('modules/tad_cal/class/jquery-impromptu.6.2.3.min.js');
+$xoTheme->addScript('modules/tadtools/fullcalendar/fullcalendar.js');
+$xoTheme->addScript('modules/tadtools/fullcalendar/gcal.js');
+$xoTheme->addScript('modules/tadtools/jquery.qtip_2/jquery.qtip.min.js');
+$xoTheme->addScript('modules/tadtools/My97DatePicker/WdatePicker.js');
 
 require_once XOOPS_ROOT_PATH . '/footer.php';

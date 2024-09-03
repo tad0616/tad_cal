@@ -105,10 +105,9 @@ function insert_tad_cal_cate()
 {
     global $xoopsDB, $xoopsUser;
 
-    $myts = \MyTextSanitizer::getInstance();
-    $_POST['cate_title'] = $myts->addSlashes($_POST['cate_title']);
-    $_POST['google_id'] = $myts->addSlashes($_POST['google_id']);
-    $_POST['google_pass'] = $myts->addSlashes($_POST['google_pass']);
+    $_POST['cate_title'] = $xoopsDB->escape($_POST['cate_title']);
+    $_POST['google_id'] = $xoopsDB->escape($_POST['google_id']);
+    $_POST['google_pass'] = $xoopsDB->escape($_POST['google_pass']);
 
     if (empty($_POST['enable_group']) or in_array('', $_POST['enable_group'])) {
         $enable_group = '';
@@ -145,10 +144,9 @@ function update_tad_cal_cate($cate_sn = '')
 {
     global $xoopsDB, $xoopsUser;
 
-    $myts = \MyTextSanitizer::getInstance();
-    $_POST['cate_title'] = $myts->addSlashes($_POST['cate_title']);
-    $_POST['google_id'] = $myts->addSlashes($_POST['google_id']);
-    $_POST['google_pass'] = $myts->addSlashes($_POST['google_pass']);
+    $_POST['cate_title'] = $xoopsDB->escape($_POST['cate_title']);
+    $_POST['google_id'] = $xoopsDB->escape($_POST['google_id']);
+    $_POST['google_pass'] = $xoopsDB->escape($_POST['google_pass']);
 
     if (empty($_POST['enable_group']) or in_array('', $_POST['enable_group'])) {
         $enable_group = '';
@@ -309,12 +307,11 @@ function save_google()
         $cate_sn_arr[$cate_handle] = $cate_sn;
     }
 
-    $myts = \MyTextSanitizer::getInstance();
-    $_POST['google_id'] = $myts->addSlashes($_POST['google_id']);
-    $_POST['google_pass'] = $myts->addSlashes($_POST['google_pass']);
+    $_POST['google_id'] = $xoopsDB->escape($_POST['google_id']);
+    $_POST['google_pass'] = $xoopsDB->escape($_POST['google_pass']);
 
     foreach ($_POST['handle'] as $i => $handle) {
-        $title = $myts->addSlashes($_POST['title'][$i]);
+        $title = $xoopsDB->escape($_POST['title'][$i]);
         $enable_group = '';
         $enable_upload_group = '1';
         $sort = tad_cal_cate_max_sort();

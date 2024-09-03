@@ -75,7 +75,6 @@ function import_google($cate_sn = '')
             $$k = $v;
         }
 
-        $myts = \MyTextSanitizer::getInstance();
         $now = date('Y-m-d H:i:s', time());
 
         date_default_timezone_set('Asia/Taipei');
@@ -84,21 +83,21 @@ function import_google($cate_sn = '')
 
         while (true) {
             foreach ($events->getItems() as $event) {
-                $title = $myts->addSlashes($event->summary);
+                $title = $xoopsDB->escape($event->summary);
                 $start = $event->start->dateTime;
                 $end = $event->end->dateTime;
-                $recurrence = is_array($event->recurrence) ? $myts->addSlashes(implode('', $event->recurrence)) : '';
-                $location = $myts->addSlashes($event->location);
-                $kind = $myts->addSlashes($event->kind);
-                $details = $myts->addSlashes($event->description);
-                $etag = $myts->addSlashes($event->etag);
-                $id = $myts->addSlashes($event->id);
-                $sequence = $myts->addSlashes($event->sequence);
+                $recurrence = is_array($event->recurrence) ? $xoopsDB->escape(implode('', $event->recurrence)) : '';
+                $location = $xoopsDB->escape($event->location);
+                $kind = $xoopsDB->escape($event->kind);
+                $details = $xoopsDB->escape($event->description);
+                $etag = $xoopsDB->escape($event->etag);
+                $id = $xoopsDB->escape($event->id);
+                $sequence = $xoopsDB->escape($event->sequence);
                 $allday = isAllDay($start, $end);
 
                 $sql = 'insert into ' . $xoopsDB->prefix('tad_cal_event') . "
-        (`title` , `start` , `end` , `recurrence` , `location` , `kind` , `details` , `etag` , `id` , `sequence` , `uid` , `cate_sn` , `allday` , `tag` , `last_update`)
-        values('{$title}' , '{$start}' , '{$end}' , '{$recurrence}' , '{$location}' , '{$kind}' , '{$details}' , '{$etag}' , '{$id}' , '{$sequence}' , '{$uid}' , '{$cate_sn}' , '{$allday}' , '{$tag}' , '{$now}') ON DUPLICATE KEY UPDATE `title`='{$title}' , `start`='{$start}' , `end`='{$end}' , `recurrence`='{$recurrence}' , `location`='{$location}' , `kind`='{$kind}' , `details`='{$details}' , `etag`='{$etag}' , `id`='{$id}' , `sequence`='{$sequence}' , `uid`= '{$uid}' , `cate_sn`='{$cate_sn}' , `allday`='{$allday}' , `tag`='{$tag}' , `last_update`='{$now}'";
+                (`title` , `start` , `end` , `recurrence` , `location` , `kind` , `details` , `etag` , `id` , `sequence` , `uid` , `cate_sn` , `allday` , `tag` , `last_update`)
+                values('{$title}' , '{$start}' , '{$end}' , '{$recurrence}' , '{$location}' , '{$kind}' , '{$details}' , '{$etag}' , '{$id}' , '{$sequence}' , '{$uid}' , '{$cate_sn}' , '{$allday}' , '{$tag}' , '{$now}') ON DUPLICATE KEY UPDATE `title`='{$title}' , `start`='{$start}' , `end`='{$end}' , `recurrence`='{$recurrence}' , `location`='{$location}' , `kind`='{$kind}' , `details`='{$details}' , `etag`='{$etag}' , `id`='{$id}' , `sequence`='{$sequence}' , `uid`= '{$uid}' , `cate_sn`='{$cate_sn}' , `allday`='{$allday}' , `tag`='{$tag}' , `last_update`='{$now}'";
                 $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
                 //取得最後新增資料的流水編號

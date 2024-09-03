@@ -16,12 +16,6 @@ function tad_cal_full_calendar($options)
     $module_id = $xoopsModule->getVar('mid');
     $xoopsModuleConfig = $configHandler->getConfigsByCat(0, $module_id);
 
-    if ($xoopsUser) {
-        $isAdmin = $xoopsUser->isAdmin($module_id);
-    } else {
-        $isAdmin = false;
-    }
-
     require_once XOOPS_ROOT_PATH . '/modules/tad_cal/function_block.php';
 
     $jquery_path = Utility::get_jquery(true); //一般只要此行即可
@@ -46,7 +40,7 @@ function tad_cal_full_calendar($options)
     if ($xoopsUser) {
         //先抓分類下拉選單
         $get_tad_cal_cate_menu_options = get_tad_cal_cate_menu_options($cate_sn);
-        if ($isAdmin) {
+        if ($_SESSION['tad_cal_adm']) {
             if (empty($get_tad_cal_cate_menu_options)) {
                 $cate = _MB_TADCAL_NEW_CATE . ": <input name='new_cate_title' title='new_cate_title' id='new_cate_title' value='" . _MB_TADCAL_NEW_CALENDAR . "'>";
             } else {
@@ -57,23 +51,26 @@ function tad_cal_full_calendar($options)
             $eventAdd = 'selectable: true,
             selectHelper: true,
             select: function(start, end) {
-                var promptBox = "' . _MB_TADCAL_TITLE . ": <input type='text' id='eventTitle' name='eventTitle' value=''><br>$cate\";
+                var promptBox = "' . _MB_TADCAL_TITLE . ": <input type='text' id='eventTitle' name='eventTitle' value=''><br>{$cate}<br><input type='checkbox' id='eventTag' name='eventTag' value='todo'>" . _MB_TADCAL_TODO_LIST . "\";
 
                 function mycallbackform(e,v,m,f){
-                if(v != undefined){
-                    calendar.fullCalendar('renderEvent',
-                    {
-                        title: f.eventTitle,
-                        start: start,
-                        end: end,
-                        allDay: !start.hasTime()
-                    },
-                    false // make the event 'stick'
-                    );
-                    $.post('" . XOOPS_URL . "/modules/tad_cal/event.php', {op: 'insert_tad_cal_event', start: start.format(), end: end.format(), fc: '1', allday: start.hasTime() ? '0' : '1', title: f.eventTitle, cate_sn: f.cate_sn, new_cate_title: f.new_cate_title},function(){
-                    calendar.fullCalendar('refetchEvents');
-                    });
-                }
+                    if(v != undefined){
+                        calendar.fullCalendar('renderEvent',
+                        {
+                            title: f.eventTitle,
+                            start: start,
+                            end: end,
+                            allDay: !start.hasTime()
+                        },
+                        false // make the event 'stick'
+                        );
+
+                        $.post('" . XOOPS_URL . "/modules/tad_cal/event.php', {op: 'insert_tad_cal_event', start: start.format(), end: end.format(), allday: start.hasTime() ? '0' : '1', fc: '1', title: f.eventTitle, cate_sn: f.cate_sn, tag: f.eventTag, new_cate_title: f.new_cate_title},function(data){
+                            console.log(start.format()+'-'+end.format());
+                            calendar.fullCalendar('refetchEvents');
+                        });
+
+                    }
                 }
 
                 function mysubmitfunc(e,v,m,f){
@@ -88,9 +85,9 @@ function tad_cal_full_calendar($options)
                 }
 
                 $.prompt(promptBox,{
-                submit: mysubmitfunc,
-                zIndex: 99999,
-                buttons: { Ok:true }
+                    submit: mysubmitfunc,
+                    zIndex: 99999,
+                    buttons: { Ok:true }
                 });
                 $('#eventTitle').focus();
 
@@ -104,7 +101,9 @@ function tad_cal_full_calendar($options)
             ";
 
             //拖曳搬移功能
-            $eventDrop = "editable:true,
+            $eventDrop = "
+            //editable:true,
+            editable:false,
             eventDrop: function(event,delta,revertFunc) {
                 $.post('" . XOOPS_URL . "/modules/tad_cal/event.php', {op: 'ajax_update_date', delta: delta.asSeconds(), sn: event.id },function(data){
                 alert(data);

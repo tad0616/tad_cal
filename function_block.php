@@ -29,16 +29,15 @@ if (!function_exists('style_mark')) {
 if (!function_exists('chk_tad_cal_cate_power')) {
     function chk_tad_cal_cate_power($kind = 'enable_group')
     {
-        global $xoopsDB, $xoopsUser, $xoopsModule, $isAdmin;
+        global $xoopsDB, $xoopsUser;
         $ok_cat = [];
         if (!empty($xoopsUser)) {
-            if ($isAdmin) {
+            if ($_SESSION['tad_cal_adm']) {
                 //$ok_cat[]="0";
             }
             $user_array = $xoopsUser->getGroups();
         } else {
             $user_array = [3];
-            $isAdmin = 0;
         }
 
         $sql = "select `cate_sn`,`{$kind}`,`cate_enable` from " . $xoopsDB->prefix('tad_cal_cate') . '';
@@ -53,7 +52,7 @@ if (!function_exists('chk_tad_cal_cate_power')) {
                 continue;
             }
 
-            if ($isAdmin or empty($power)) {
+            if ($_SESSION['tad_cal_adm'] or empty($power)) {
                 $ok_cat[] = $cate_sn;
             } else {
                 $power_array = explode(',', $power);
@@ -74,7 +73,7 @@ if (!function_exists('chk_tad_cal_cate_power')) {
 if (!function_exists('get_tad_cal_cate_menu_options')) {
     function get_tad_cal_cate_menu_options($default_cate_sn = '0')
     {
-        global $xoopsDB, $xoopsModule;
+        global $xoopsDB;
 
         //取得目前使用者可編輯的行事曆
         $edit_cate_arr = chk_tad_cal_cate_power('enable_upload_group');
@@ -102,7 +101,7 @@ if (!function_exists('get_tad_cal_cate_menu_options')) {
 if (!function_exists('my_counter')) {
     function my_counter()
     {
-        global $xoopsModuleConfig, $isAdmin;
+        global $xoopsModuleConfig;
         if ('0' == $xoopsModuleConfig['sync_conut']) {
             return;
         } elseif (null === ($xoopsModuleConfig['sync_conut']) or '' == $xoopsModuleConfig['sync_conut']) {
@@ -132,7 +131,7 @@ if (!function_exists('my_counter')) {
         fwrite($fp, $new_count);
         fclose($fp);
 
-        $main = ($isAdmin) ? "<div class='sync_text'>" . sprintf(_MD_TADCAL_SYNC_COUNT, $show_times) . '</div>' : '';
+        // $main = ($_SESSION['tad_cal_adm']) ? "<div class='sync_text'>" . sprintf(_MD_TADCAL_SYNC_COUNT, $show_times) . '</div>' : '';
 
         return $main;
     }

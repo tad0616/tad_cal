@@ -1,16 +1,17 @@
 <?php
 xoops_loadLanguage('main', 'tadtools');
 
-if (!defined('_TAD_NEED_TADTOOLS')) {
-    define('_TAD_NEED_TADTOOLS', "This module needs TadTools module. You can download TadTools from <a href='http://www.tad0616.net/modules/tad_uploader/index.php?of_cat_sn=50' target='_blank'>Tad's web</a>.");
-}
 define('_MD_TADCAL_SMNAME2', 'Add Event');
 define('_MD_TADCAL_SMNAME3', 'Download events');
+define('_MD_TADCAL_TODOLIST', 'To-Do List');
+define('_MD_TADCAL_TODOLIST_DONE', 'Completed To-Do List');
+define('_MD_TADCAL_SMNAME5', 'Completed list');
 define('_MD_TADCAL_TITLE', 'Event title');
 define('_MD_TADCAL_START', 'Event start time');
 define('_MD_TADCAL_RECURRENCE', 'Repeating events');
 define('_MD_TADCAL_LOCATION', 'Event Venue');
 define('_MD_TADCAL_DETAILS', 'Event Content');
+define('_MD_TADCAL_TODO_LIST', 'This is a to-do list');
 define('_MD_TADCAL_CATE_SN', 'Calendar Category');
 define('_MD_TADCAL_EVENT_FORM', 'Event Settings');
 define('_MD_TADCAL_TIME', 'Time Start and End');
@@ -71,3 +72,7 @@ define('_MD_TADCAL_SEPARATE', 'Separate events ');
 define('_MD_TADCAL_MERGE', 'Merged view');
 
 define('_MD_TADCAL_MONTH_STR', 'Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec');
+
+define('_MD_TADCAL_EXCEL', 'Download all to-do Excel files');
+define('_MD_TADCAL_EXCEL_DONE', 'Download all completed to-do Excel files');
+define('_MD_TADCAL_EMPTY_TODO_EVENT', 'No content');

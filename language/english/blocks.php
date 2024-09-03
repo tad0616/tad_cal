@@ -7,3 +7,4 @@ define('_MB_TADCAL_NEW_CATE', 'Create a new calendar');
 define('_MB_TADCAL_NEW_CALENDAR', 'Website Calendar');
 define('_MB_TADCAL_CATE_SN', 'Calendar Category');
 define('_MB_TADCAL_TITLE', 'Event title');
+define('_MB_TADCAL_TODO_LIST', 'This is a to-do list');

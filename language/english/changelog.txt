@@ -1,3 +1,8 @@
+Tad Cal 3.5 (released 2023-09-21)
+====================================
+1. Remove the drag and drop function to solve the problem of not being able to click to edit and the date position is not correct.
+2. Fix the problem that the large calendar block cannot be added by clicking on it.
+
 Tad Cal 3.4 (released on 2022-02-03)
 ====================================
 1.Support BootStrap5
