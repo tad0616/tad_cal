@@ -113,7 +113,6 @@ function fullcalendar($cate_sn = 0)
     $xoopsTpl->assign('eventShowMode', $xoopsModuleConfig['eventShowMode']);
     $xoopsTpl->assign('eventTheme', $xoopsModuleConfig['eventTheme']);
     $xoopsTpl->assign('style_mark', $style_mark);
-    $xoopsTpl->assign('my_counter', my_counter());
 
     $xoopsTpl->assign('firstDay', $xoopsModuleConfig['cal_start']);
     $xoopsTpl->assign('cate', get_tad_cal_cate($cate_sn));

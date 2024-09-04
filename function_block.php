@@ -97,46 +97,6 @@ if (!function_exists('get_tad_cal_cate_menu_options')) {
     }
 }
 
-//自動更新
-if (!function_exists('my_counter')) {
-    function my_counter()
-    {
-        global $xoopsModuleConfig;
-        if ('0' == $xoopsModuleConfig['sync_conut']) {
-            return;
-        } elseif (null === ($xoopsModuleConfig['sync_conut']) or '' == $xoopsModuleConfig['sync_conut']) {
-            $sync_conut = 100;
-        } else {
-            $sync_conut = (int) $xoopsModuleConfig['sync_conut'];
-        }
-
-        $data = XOOPS_ROOT_PATH . '/uploads/tad_cal_count.txt';
-        if (file_exists($data)) {
-            $fp = fopen($data, 'rb');
-            $old_count = fread($fp, filesize($data));
-            $new_count = $old_count + 1;
-            fclose($fp);
-        } else {
-            $new_count = 1;
-        }
-
-        $times = $new_count % $sync_conut;
-        if (0 == $times) {
-            //tad_cal_all_sync();
-        }
-
-        $show_times = $sync_conut - $times;
-
-        $fp = fopen($data, 'wb');
-        fwrite($fp, $new_count);
-        fclose($fp);
-
-        // $main = ($_SESSION['tad_cal_adm']) ? "<div class='sync_text'>" . sprintf(_MD_TADCAL_SYNC_COUNT, $show_times) . '</div>' : '';
-
-        return $main;
-    }
-}
-
 //判斷是否全天事件
 if (!function_exists('isAllDay')) {
     function isAllDay($start = '', $end = '')

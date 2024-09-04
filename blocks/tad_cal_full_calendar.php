@@ -119,7 +119,6 @@ function tad_cal_full_calendar($options)
     $block['eventShowMode'] = $xoopsModuleConfig['eventShowMode'];
     $block['eventTheme'] = $xoopsModuleConfig['eventTheme'];
     $block['style_mark'] = $style_mark;
-    $block['my_counter'] = my_counter();
     $block['firstDay'] = $xoopsModuleConfig['cal_start'];
 
     Utility::add_migrate();

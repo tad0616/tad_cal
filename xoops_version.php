@@ -121,24 +121,17 @@ $modversion['config'][3]['formtype'] = 'yesno';
 $modversion['config'][3]['valuetype'] = 'int';
 $modversion['config'][3]['default'] = '1';
 
-$modversion['config'][4]['name'] = 'sync_conut';
-$modversion['config'][4]['title'] = '_MI_TADCAL_SYNC_CONUT';
-$modversion['config'][4]['description'] = '_MI_TADCAL_SYNC_CONUT_DESC';
-$modversion['config'][4]['formtype'] = 'textbox';
+$modversion['config'][4]['name'] = 'use_social_tools';
+$modversion['config'][4]['title'] = '_MI_SOCIALTOOLS_TITLE';
+$modversion['config'][4]['description'] = '_MI_SOCIALTOOLS_TITLE_DESC';
+$modversion['config'][4]['formtype'] = 'yesno';
 $modversion['config'][4]['valuetype'] = 'int';
-$modversion['config'][4]['default'] = '100';
+$modversion['config'][4]['default'] = '1';
 
-$modversion['config'][5]['name'] = 'use_social_tools';
-$modversion['config'][5]['title'] = '_MI_SOCIALTOOLS_TITLE';
-$modversion['config'][5]['description'] = '_MI_SOCIALTOOLS_TITLE_DESC';
-$modversion['config'][5]['formtype'] = 'yesno';
+$modversion['config'][5]['name'] = 'cal_start';
+$modversion['config'][5]['title'] = '_MI_CAL_START';
+$modversion['config'][5]['description'] = '_MI_CAL_START_DESC';
+$modversion['config'][5]['formtype'] = 'select';
 $modversion['config'][5]['valuetype'] = 'int';
 $modversion['config'][5]['default'] = '1';
-
-$modversion['config'][6]['name'] = 'cal_start';
-$modversion['config'][6]['title'] = '_MI_CAL_START';
-$modversion['config'][6]['description'] = '_MI_CAL_START_DESC';
-$modversion['config'][6]['formtype'] = 'select';
-$modversion['config'][6]['valuetype'] = 'int';
-$modversion['config'][6]['default'] = '1';
-$modversion['config'][6]['options'] = [_MI_TADCAL_SU => '0', _MI_TADCAL_MO => '1'];
+$modversion['config'][5]['options'] = [_MI_TADCAL_SU => '0', _MI_TADCAL_MO => '1'];

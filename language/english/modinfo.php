@@ -28,8 +28,6 @@ define('_MI_TADCAL_TITLE_NUM', 'Event title words');
 define('_MI_TADCAL_TITLE_NUM_DESC', 'Presented in the calendar title Limit');
 define('_MI_TADCAL_QUICK_ADD', 'Whether to open quickly add events function?');
 define('_MI_TADCAL_QUICK_ADD_DESC', 'If you choose "Yes", then when you click on the calendar date, there will be a new events menu.');
-define('_MI_TADCAL_SYNC_CONUT', 'Is executed several times per calendar automatically synchronize remote calendar');
-define('_MI_TADCAL_SYNC_CONUT_DESC', 'To replace the troublesome scheduling capabilities, built-in counter, the number of calendar page is executed calculations, each to a certain number of times to automatically perform remote calendar synchronization. (setting of 0 indicates this feature is not enabled ) <br> smaller the number, the more often synchronization sync, it will take a few seconds. ');
 
 define('_MI_CAL_START', 'Calendar start week');
 define('_MI_CAL_START_DESC', 'Chosen to start the day before or on Monday as the first day of the week');

@@ -82,4 +82,3 @@ function delete_tad_cal_event_func(sn){
 <div style="text-align:right;">
     <a href="<{$xoops_url}>/modules/tad_cal" class="btn btn-sm btn-xs btn-info"><{$smarty.const._MB_TADCAL_TO_INDEX}></a>
 </div>
-<{$block.my_counter}>
