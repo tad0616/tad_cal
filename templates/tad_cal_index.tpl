@@ -77,6 +77,6 @@ function delete_tad_cal_event_func(sn){
   location.href="index.php?op=delete_tad_cal_event&sn=" + sn;
 }
 </script>
-<{if $cate.cate_title}><h1><{$cate.cate_title}></h1><{/if}>
+<{if $cate.cate_title|default:false}><h1><{$cate.cate_title}></h1><{/if}>
 <div id="calendar" style="margin-top:20px;"></div>
 <div style="margin:10px auto;width:auto;"><{$style_mark}></div>

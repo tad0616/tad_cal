@@ -1,4 +1,4 @@
-<{if $block.content}>
+<{if $block.content|default:false}>
     <ul class="vertical_menu">
         <{foreach from=$block.content item=cal}>
             <li class="selected"><{$cal.start}></li>

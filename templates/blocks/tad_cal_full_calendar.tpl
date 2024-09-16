@@ -15,7 +15,7 @@ $(document).ready(function(){
     events: function(start, end, timezone ,callback) {
       $.getJSON("<{$xoops_url}>/modules/tad_cal/get_event.php",
       {
-        <{if $block.cate_sn}>
+        <{if $block.cate_sn|default:false}>
         start: start.format(),
         end: end.format(),
         cate_sn: <{$block.cate_sn}>

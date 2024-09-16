@@ -72,7 +72,7 @@
       </div>
 
 
-      <{if $cate_handle}>
+      <{if $cate_handle|default:false}>
 
         <div class="form-group row mb-3">
           <!--google帳號-->
@@ -109,14 +109,14 @@
   <{elseif $op=="link_to_google"}>
 
     <h1><{$smarty.const._MA_TADCAL_CATE_GFORM}></h1>
-    <{if $all}>
+    <{if $all|default:false}>
       <form action="main.php" method="post" id="myForm" enctype="multipart/form-data">
         <table class="table table-striped table-hover">
         <tr>
         <th colspan=2><{$smarty.const._MA_TADCAL_CATE_GTITLE}></th><th><{$smarty.const._MA_TADCAL_CATE_GNUM}></th></tr>
 
         <{foreach item=cal from=$all}>
-          <{if $cal.in_array}>
+          <{if $cal.in_array|default:false}>
             <tr>
               <td class="c"><{$smarty.const._MA_TADCAL_GOOGLE_EXIST}></td>
               <td><img src="../images/google.png" title="<{$cal.cate_handle}>" alt="<{$cal.cate_handle}>" style="margin-right:4px;" align="absmiddle"><{$cal.cate_title}></td>
