@@ -17,7 +17,7 @@
           <{$smarty.const._MA_TADCAL_CATE_TITLE}>
         </label>
         <div class="col-sm-4">
-          <input type="text" title="cate_title" name="cate_title" class="form-control" value="<{$cate_title}>" id="cate_title" class="validate[required]">
+          <input type="text" title="cate_title" name="cate_title" class="form-control" value="<{$cate_title|default:''}>" id="cate_title" class="validate[required]">
         </div>
         <!--是否啟用-->
         <label class="col-sm-2 col-form-label text-sm-right control-label">
@@ -25,11 +25,11 @@
         </label>
         <div class="col-sm-4">
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="cate_enable" id="cate_enable1" value="1" <{$cate_enable1}>>
+              <input class="form-check-input" type="radio" name="cate_enable" id="cate_enable1" value="1" <{$cate_enable1|default:''}>>
               <label class="form-check-label" for="cate_enable1"><{$smarty.const._YES}></label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="cate_enable" id="cate_enable1" value="0" <{$cate_enable0}>>
+              <input class="form-check-input" type="radio" name="cate_enable" id="cate_enable1" value="0" <{$cate_enable0|default:''}>>
               <label class="form-check-label" for="cate_enable0"><{$smarty.const._NO}></label>
             </div>
         </div>
@@ -41,14 +41,14 @@
           <{$smarty.const._MA_TADCAL_CATE_BGCOLOR}>
         </label>
         <div class="col-sm-4">
-          <input type="text" name="cate_bgcolor" title="cate_bgcolor" id="cate_bgcolor" class="form-control" value="<{$cate_bgcolor}>" data-text="hidden" data-hex="true">
+          <input type="text" name="cate_bgcolor" title="cate_bgcolor" id="cate_bgcolor" class="form-control" value="<{$cate_bgcolor|default:''}>" data-text="hidden" data-hex="true">
         </div>
         <!--文字色-->
         <label class="col-sm-2 col-form-label text-sm-right control-label">
           <{$smarty.const._MA_TADCAL_CATE_COLOR}>
         </label>
         <div class="col-sm-4">
-          <input type="text" name="cate_color" title="cate_color" id="cate_color" class="form-control" value="<{$cate_color}>" data-text="hidden" data-hex="true">
+          <input type="text" name="cate_color" title="cate_color" id="cate_color" class="form-control" value="<{$cate_color|default:''}>" data-text="hidden" data-hex="true">
         </div>
       </div>
 
@@ -60,14 +60,14 @@
           <{$smarty.const._MA_TADCAL_ENABLE_GROUP}>
         </label>
         <div class="col-sm-4">
-          <{$enable_group}>
+          <{$enable_group|default:''}>
         </div>
         <!--可寫群組-->
         <label class="col-sm-2 col-form-label text-sm-right control-label">
           <{$smarty.const._MA_TADCAL_ENABLE_UPLOAD_GROUP}>
         </label>
         <div class="col-sm-4">
-          <{$enable_upload_group}>
+          <{$enable_upload_group|default:''}>
         </div>
       </div>
 
@@ -80,14 +80,14 @@
             <{$smarty.const._MA_TADCAL_GOOGLE_ID}>
           </label>
           <div class="col-sm-4">
-            <input type="text" name="google_id" value="<{$google_id}>" class="form-control" id="google_id" ><{$smarty.const._MA_TADCAL_GOOGLE_ID_NOTE}>
+            <input type="text" name="google_id" value="<{$google_id|default:''}>" class="form-control" id="google_id" ><{$smarty.const._MA_TADCAL_GOOGLE_ID_NOTE}>
           </div>
           <!--google密碼-->
           <label class="col-sm-2 col-form-label text-sm-right control-label">
             <{$smarty.const._MA_TADCAL_GOOGLE_PASS}>
           </label>
           <div class="col-sm-4">
-            <input type="password" name="google_pass" value="<{$google_pass}>" class="form-control" id="google_pass" >
+            <input type="password" name="google_pass" value="<{$google_pass|default:''}>" class="form-control" id="google_pass" >
           </div>
         </div>
       <{/if}>
@@ -96,12 +96,12 @@
 
       <div class="text-center">
         <!--遠端行事曆-->
-        <input type="hidden" name="cate_handle" value="<{$cate_handle}>">
+        <input type="hidden" name="cate_handle" value="<{$cate_handle|default:''}>">
         <!--行事曆排序-->
-        <input type="hidden" name="cate_sort" value="<{$cate_sort}>" id="cate_sort">
+        <input type="hidden" name="cate_sort" value="<{$cate_sort|default:''}>" id="cate_sort">
         <!--行事曆編號-->
-        <input type="hidden" name="cate_sn" value="<{$cate_sn}>">
-        <input type="hidden" name="op" value="<{$next_op}>">
+        <input type="hidden" name="cate_sn" value="<{$cate_sn|default:''}>">
+        <input type="hidden" name="op" value="<{$next_op|default:''}>">
         <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
       </div>
     </form>
@@ -131,8 +131,8 @@
           <{/if}>
         <{/foreach}>
       <tr><td class="bar" colspan="3">
-      <input type="hidden" name="google_id" value="<{$id}>">
-      <input type="hidden" name="google_pass" value="<{$pass}>">
+      <input type="hidden" name="google_id" value="<{$id|default:''}>">
+      <input type="hidden" name="google_pass" value="<{$pass|default:''}>">
       <input type="hidden" name="op" value="save_google">
       <input type="submit" value="<{$smarty.const._MA_TADCAL_NEXT}>"></td></tr>
       </table>
@@ -167,7 +167,7 @@
 
     <{else}>
 
-      <{$jquery}>
+      <{$jquery|default:''}>
 
       <script language="JavaScript">
         $().ready(function(){
@@ -234,7 +234,7 @@
 
       <!--a href="main.php?op=tad_cal_add_gcal_form"  class="btn btn-sm btn-info"><img src="../images/google.png" title="<{$smarty.const._TAD_ADD_GOOGLE}>" alt="<{$smarty.const._TAD_ADD_GOOGLE}>" style="margin-right:4px;" align="absmiddle"><{$smarty.const._TAD_ADD_GOOGLE}></a-->
 
-      <{$bar}>
+      <{$bar|default:''}>
       </td></tr>
       </tbody>
       </table>

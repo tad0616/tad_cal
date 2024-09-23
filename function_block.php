@@ -32,7 +32,7 @@ if (!function_exists('chk_tad_cal_cate_power')) {
         global $xoopsDB, $xoopsUser;
         $ok_cat = [];
         if (!empty($xoopsUser)) {
-            if ($_SESSION['tad_cal_adm']) {
+            if (isset($_SESSION['tad_cal_adm']) && $_SESSION['tad_cal_adm']) {
                 //$ok_cat[]="0";
             }
             $user_array = $xoopsUser->getGroups();
@@ -52,7 +52,7 @@ if (!function_exists('chk_tad_cal_cate_power')) {
                 continue;
             }
 
-            if ($_SESSION['tad_cal_adm'] or empty($power)) {
+            if (isset($_SESSION['tad_cal_adm']) && $_SESSION['tad_cal_adm'] or empty($power)) {
                 $ok_cat[] = $cate_sn;
             } else {
                 $power_array = explode(',', $power);

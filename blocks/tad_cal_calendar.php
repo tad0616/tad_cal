@@ -8,8 +8,10 @@ if (!class_exists('XoopsModules\Tadtools\Utility')) {
 //區塊主函式 (小行事曆(tad_cal_calendar))
 function tad_cal_calendar($options)
 {
-    global $xoTheme;
+    global $xoTheme, $xoopsLogger;
 
+    // error_reporting(0);
+    // $xoopsLogger->activated = false;
     $moduleHandler = xoops_getHandler('module');
     $xoopsModule = $moduleHandler->getByDirname('tad_cal');
     $configHandler = xoops_getHandler('config');

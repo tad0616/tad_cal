@@ -751,7 +751,6 @@ function show_one_tad_cal_event($sn = '', $stamp = '')
     <a href=\"javascript:delete_tad_cal_event_func($sn);\" class='link_button_r' style='padding:4px;font-size:0.75rem;'><img src='" . XOOPS_URL . "/modules/tad_cal/images/delete.png' style='margin-right:4px;' align='absmiddle'>" . _TAD_DEL . '</a>
     </div>' : '';
 
-    $facebook_comments = Utility::facebook_comments($xoopsModuleConfig['facebook_comments_width'], 'tad_cal', 'event.php', 'sn', $sn);
     $push_url = Utility::push_url($xoopsModuleConfig['use_social_tools']);
 
     $xoopsTpl->assign('date', $date);
@@ -763,7 +762,6 @@ function show_one_tad_cal_event($sn = '', $stamp = '')
 
     $xoopsTpl->assign('title', $title);
     $xoopsTpl->assign('push_url', $push_url);
-    $xoopsTpl->assign('facebook_comments', $facebook_comments);
     $xoopsTpl->assign('fun', $fun);
     $xoopsTpl->assign('tag', $tag);
 }

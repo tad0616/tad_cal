@@ -8,7 +8,10 @@ if (!class_exists('XoopsModules\Tadtools\Utility')) {
 //區塊主函式 (大行事曆(tad_cal_full_calendar))
 function tad_cal_full_calendar($options)
 {
-    global $xoopsUser, $xoopsTpl, $xoTheme;
+    global $xoopsUser, $xoopsLogger, $xoTheme;
+
+    // error_reporting(0);
+    // $xoopsLogger->activated = false;
 
     $moduleHandler = xoops_getHandler('module');
     $xoopsModule = $moduleHandler->getByDirname('tad_cal');

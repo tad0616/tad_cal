@@ -28,4 +28,4 @@ function delete_tad_cal_event_func(sn){
 </tbody>
 </table>
 <a href='<{$xoops_url}>/modules/tad_cal/event.php?op=tad_cal_event_form'  class='btn btn-info'><{$smarty.const._TAD_ADD_EVENT}></a>
-<{$bar}>
+<{$bar|default:''}>

@@ -20,7 +20,7 @@
             firstDay:<{$block.firstDay}>,
             locale: window.navigator.userLanguage || window.navigator.language,
             buttonText:{today:"<{$smarty.const._MB_TADCAL_TODAY}>"},
-            timezone: '<{$block.timezone}>',
+            timezone: "<{$block.timezone|default:'local'}>",
             height: 'auto',
             header: {
                 left: "prev,today,next",

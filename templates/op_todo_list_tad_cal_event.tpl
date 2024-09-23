@@ -42,4 +42,4 @@ function delete_tad_cal_event_func(sn){
 <{else}>
     <a href='<{$xoops_url}>/modules/tad_cal/excel.php?tag=todo'  class='btn btn-success'><{$smarty.const._MD_TADCAL_EXCEL}></a>
 <{/if}>
-<{$bar}>
+<{$bar|default:''}>

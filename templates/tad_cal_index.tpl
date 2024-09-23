@@ -1,4 +1,4 @@
-<{$toolbar}>
+<{$toolbar|default:''}>
 <h2 class="sr-only visually-hidden">Calendar</h2>
 
 
@@ -9,7 +9,7 @@ $(document).ready(function(){
 
   var calendar = $("#calendar").fullCalendar({
     theme: true,
-    firstDay:<{$firstDay}>,
+    firstDay:<{$firstDay|default:''}>,
     locale: window.navigator.userLanguage || window.navigator.language,
     buttonText:{today:"<{$smarty.const._MD_TADCAL_TODAY}>"},
     header: {
@@ -17,20 +17,20 @@ $(document).ready(function(){
       right: "title"
       // right: 'month,agendaWeek,agendaDay,listWeek'
     },
-    <{$eventAdd}>
-    <{$eventDrop}>
+    <{$eventAdd|default:''}>
+    <{$eventDrop|default:''}>
     events: function(start, end, timezone, callback) {
       $.getJSON("<{$xoops_url}>/modules/tad_cal/get_event.php",
       {
         start: start.format(),
         end: end.format(),
-        cate_sn: <{$cate_sn}>
+        cate_sn: <{$cate_sn|default:''}>
       },
       function(result) {
         callback(result);
       });
     },
-      <{$eventShowMode}>: function(event) {
+      <{$eventShowMode|default:''}>: function(event) {
         if (event.rel) {
           $(this).qtip({
            content: {
@@ -79,4 +79,4 @@ function delete_tad_cal_event_func(sn){
 </script>
 <{if $cate.cate_title|default:false}><h1><{$cate.cate_title}></h1><{/if}>
 <div id="calendar" style="margin-top:20px;"></div>
-<div style="margin:10px auto;width:auto;"><{$style_mark}></div>
+<div style="margin:10px auto;width:auto;"><{$style_mark|default:''}></div>

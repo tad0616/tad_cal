@@ -5,8 +5,8 @@
 
 <script type="text/javascript">
 $().ready(function() {
-<{$show_week_repeat}>
-<{$show_month_repeat}>
+<{$show_week_repeat|default:''}>
+<{$show_month_repeat|default:''}>
 month_repeat_chk();
 
 $("#freq_select").change(function(){
@@ -32,7 +32,7 @@ $("#freq_select").change(function(){
 });
 
 
-<{$show_repeat_box}>
+<{$show_repeat_box|default:''}>
 $("#repeat_checkbox").change(function(){
     if($("input#repeat_checkbox:checked").length){
     $("#repeat_box").show();
@@ -44,7 +44,7 @@ $("#repeat_checkbox").change(function(){
 //切換全日事件時要處理的相關動作
 var bymonthday_start=$("#start").val();
 $("#bymonthday").text(bymonthday_start.substr(8,2));
-<{$show_allday_date}>
+<{$show_allday_date|default:''}>
 $("#allday").change(function(){
     if($("input#allday:checked").length){
     var bymonthday_start=$("#start_allday").val();
@@ -117,7 +117,7 @@ $("#long").val(strtotime(chk_end)*1 - strtotime(chk_start)*1);
         <{$smarty.const._MD_TADCAL_TITLE}>
         </label>
         <div class="col-sm-10">
-        <input type="text" name="title" title="title" value="<{$title}>" id="title" class="validate[required] form-control">
+        <input type="text" name="title" title="title" value="<{$title|default:''}>" id="title" class="validate[required] form-control">
         </div>
     </div>
 
@@ -129,27 +129,27 @@ $("#long").val(strtotime(chk_end)*1 - strtotime(chk_start)*1);
 
         <!--開始時間-->
         <div class="col-sm-3">
-        <input type="text" name="start" title="start_allday" value="<{$start_allday}>" id="start_allday" class="validate[required] form-control" onClick="WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d'})" onChange="check_end();month_repeat_chk();">
+        <input type="text" name="start" title="start_allday" value="<{$start_allday|default:''}>" id="start_allday" class="validate[required] form-control" onClick="WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d'})" onChange="check_end();month_repeat_chk();">
 
-        <input type="text" name="start" title="start" value="<{$start}>" id="start" class="validate[required] form-control" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm' , startDate:'%y-%M-%d %H:%m'})" onChange="$('#bymonthday').text($('#start').val().substr(8,2));check_end();">
+        <input type="text" name="start" title="start" value="<{$start|default:''}>" id="start" class="validate[required] form-control" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm' , startDate:'%y-%M-%d %H:%m'})" onChange="$('#bymonthday').text($('#start').val().substr(8,2));check_end();">
         </div>
 
         <!--結束時間-->
         <div class="col-sm-3">
-        <input type="text" name="end" title="end_allday" value="<{$end_allday}>" id="end_allday" onClick="WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d'})" onChange="update_long();" class="form-control">
+        <input type="text" name="end" title="end_allday" value="<{$end_allday|default:''}>" id="end_allday" onClick="WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d'})" onChange="update_long();" class="form-control">
 
-        <input type="text" name="end" title="end" value="<{$end}>" id="end" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm' , startDate:'%y-%M-%d %H:%m'})" onChange="update_long();" class="form-control">
+        <input type="text" name="end" title="end" value="<{$end|default:''}>" id="end" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm' , startDate:'%y-%M-%d %H:%m'})" onChange="update_long();" class="form-control">
         </div>
         <div class="col-sm-4">
         <!--全日事件-->
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" name="allday" id="allday" value="1" <{$chk_allday_1}>>
+            <input class="form-check-input" type="checkbox" name="allday" id="allday" value="1" <{$chk_allday_1|default:''}>>
             <label class="form-check-label" for="allday"><{$smarty.const._MD_TADCAL_ALLDAY}></label>
         </div>
 
         <!--重複事件選項-->
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" name="repeat" id="repeat_checkbox" value="1" <{$repeat_1}>>
+            <input class="form-check-input" type="checkbox" name="repeat" id="repeat_checkbox" value="1" <{$repeat_1|default:''}>>
             <label class="form-check-label" for="repeat_checkbox"><{$smarty.const._MD_TADCAL_RECURRENCE}></label>
         </div>
         </div>
@@ -167,10 +167,10 @@ $("#long").val(strtotime(chk_end)*1 - strtotime(chk_start)*1);
             </label>
             <div class="col-sm-8">
                 <select name="FREQ" title='FREQ' id="freq_select" class="form-control">
-                <option value="DAILY" <{$chk_DAILY}>><{$smarty.const._MD_TADCAL_REPEAT_DAILY}></option>
-                <option value="WEEKLY" <{$chk_WEEKLY}>><{$smarty.const._MD_TADCAL_REPEAT_WEEKLY}></option>
-                <option value="MONTHLY" <{$chk_MONTHLY}>><{$smarty.const._MD_TADCAL_REPEAT_MONTHLY}></option>
-                <option value="YEARLY" <{$chk_YEARLY}>><{$smarty.const._MD_TADCAL_REPEAT_YEARLY}></option>
+                <option value="DAILY" <{$chk_DAILY|default:''}>><{$smarty.const._MD_TADCAL_REPEAT_DAILY}></option>
+                <option value="WEEKLY" <{$chk_WEEKLY|default:''}>><{$smarty.const._MD_TADCAL_REPEAT_WEEKLY}></option>
+                <option value="MONTHLY" <{$chk_MONTHLY|default:''}>><{$smarty.const._MD_TADCAL_REPEAT_MONTHLY}></option>
+                <option value="YEARLY" <{$chk_YEARLY|default:''}>><{$smarty.const._MD_TADCAL_REPEAT_YEARLY}></option>
                 </select>
             </div>
             </div>
@@ -181,11 +181,11 @@ $("#long").val(strtotime(chk_end)*1 - strtotime(chk_start)*1);
             </label>
             <div class="col-sm-7">
                 <select name="INTERVAL" title='INTERVAL' class="form-control">
-                <{$INTERVAL_OPT}>
+                <{$INTERVAL_OPT|default:''}>
                 </select>
             </div>
             <div class="col-sm-1">
-                <span id="interval_unit"><{$repeat_unit}></span>
+                <span id="interval_unit"><{$repeat_unit|default:''}></span>
             </div>
             </div>
 
@@ -195,7 +195,7 @@ $("#long").val(strtotime(chk_end)*1 - strtotime(chk_start)*1);
                 <{$smarty.const._MD_TADCAL_WEEK_REPEAT}><{$smarty.const._TAD_FOR}>
             </label>
             <div class="col-sm-9">
-                <{$week_repeat_col}>
+                <{$week_repeat_col|default:''}>
             </div>
             </div>
 
@@ -206,8 +206,8 @@ $("#long").val(strtotime(chk_end)*1 - strtotime(chk_start)*1);
             </label>
             <div class="col-sm-9">
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="month_repeat" id="BYMONTHDAY" value="BYMONTHDAY" <{$RRULE_BYDAY}>>
-                    <label class="form-check-label" for="BYMONTHDAY"><{$bymonthday}></label>
+                    <input class="form-check-input" type="radio" name="month_repeat" id="BYMONTHDAY" value="BYMONTHDAY" <{$RRULE_BYDAY|default:''}>>
+                    <label class="form-check-label" for="BYMONTHDAY"><{$bymonthday|default:''}></label>
                 </div>
                 <div class="form-check form-check-inline">
                     <input class="form-check-input" type="radio" name="month_repeat" id="BYDAY" value="BYDAY">
@@ -223,7 +223,7 @@ $("#long").val(strtotime(chk_end)*1 - strtotime(chk_start)*1);
             <div class="form-group row mb-3">
             <div class="col-sm-12">
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="END" id="none" value="none" <{$ENDType_none}>>
+                    <input class="form-check-input" type="radio" name="END" id="none" value="none" <{$ENDType_none|default:''}>>
                     <label class="form-check-label" for="none"><{$smarty.const._MD_TADCAL_NEVER_END}></label>
                 </div>
             </div>
@@ -232,12 +232,12 @@ $("#long").val(strtotime(chk_end)*1 - strtotime(chk_start)*1);
             <div class="form-group row mb-3">
             <div class="col-sm-3">
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="END" id="count" value="count" <{$ENDType_count}>>
+                    <input class="form-check-input" type="radio" name="END" id="count" value="count" <{$ENDType_count|default:''}>>
                     <label class="form-check-label" for="count"><{$smarty.const._MD_TADCAL_END_COUNT1}></label>
                 </div>
             </div>
             <div class="col-sm-5">
-                <input type="text" name="COUNT" title="COUNT" class="form-control" value="<{$RRULE_COUNT}>" onChange="$('#count').attr('checked','checked'); if(this.value=="")this.value=10;">
+                <input type="text" name="COUNT" title="COUNT" class="form-control" value="<{$RRULE_COUNT|default:''}>" onChange="$('#count').attr('checked','checked'); if(this.value=="")this.value=10;">
             </div>
             <div class="col-sm-4">
                 <{$smarty.const._MD_TADCAL_END_COUNT2}>
@@ -248,12 +248,12 @@ $("#long").val(strtotime(chk_end)*1 - strtotime(chk_start)*1);
             <div class="form-group row mb-3">
             <div class="col-sm-3">
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="END" id="until" value="until" <{$ENDType_until}>>
+                    <input class="form-check-input" type="radio" name="END" id="until" value="until" <{$ENDType_until|default:''}>>
                     <label class="form-check-label" for="until"><{$smarty.const._MD_TADCAL_END_UNTIL1}></label>
                 </div>
             </div>
             <div class="col-sm-5">
-                <input type="text" name="UNTIL" title="UNTIL" class="form-control"  value="<{$UNTIL}>" onClick="$('#until').attr('checked' , 'checked');WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d'})">
+                <input type="text" name="UNTIL" title="UNTIL" class="form-control"  value="<{$UNTIL|default:''}>" onClick="$('#until').attr('checked' , 'checked');WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d'})">
             </div>
             <div class="col-sm-4">
                 <{$smarty.const._MD_TADCAL_END_UNTIL2}>
@@ -268,17 +268,17 @@ $("#long").val(strtotime(chk_end)*1 - strtotime(chk_start)*1);
     <div class="form-group row mb-3">
         <!--所屬行事曆-->
         <label class="col-sm-2 col-form-label text-sm-right control-label">
-        <{$of_cate_title}>
+        <{$of_cate_title|default:''}>
         </label>
         <div class="col-sm-4">
-        <{$cate_col}>
+        <{$cate_col|default:''}>
         </div>
         <!--事件地點-->
         <label class="col-sm-2 col-form-label text-sm-right control-label">
         <{$smarty.const._MD_TADCAL_LOCATION}>
         </label>
         <div class="col-sm-4">
-        <input type="text" name="location" title="location" class="form-control" value="<{$location}>" id="location" >
+        <input type="text" name="location" title="location" class="form-control" value="<{$location|default:''}>" id="location" >
         </div>
     </div>
 
@@ -289,7 +289,7 @@ $("#long").val(strtotime(chk_end)*1 - strtotime(chk_start)*1);
         <{$smarty.const._MD_TADCAL_DETAILS}>
         </label>
         <div class="col-sm-10">
-        <textarea name="details" class="form-control" rows=4 id="details"><{$details}></textarea>
+        <textarea name="details" class="form-control" rows=4 id="details"><{$details|default:''}></textarea>
         </div>
     </div>
 
@@ -302,19 +302,19 @@ $("#long").val(strtotime(chk_end)*1 - strtotime(chk_start)*1);
 
 
     <div class="text-center">
-        <input type="hidden" id="long" value="<{$long}>">
+        <input type="hidden" id="long" value="<{$long|default:''}>">
         <!--事件etag-->
-        <input type="hidden" name="etag" value="<{$etag}>">
+        <input type="hidden" name="etag" value="<{$etag|default:''}>">
 
         <!--事件id-->
-        <input type="hidden" name="id" value="<{$id}>">
+        <input type="hidden" name="id" value="<{$id|default:''}>">
 
         <!--事件編號-->
-        <input type="hidden" name="sn" value="<{$sn}>">
+        <input type="hidden" name="sn" value="<{$sn|default:''}>">
 
         <!--事件排序-->
-        <input type="hidden" name="sequence" size="2" value="<{$sequence}>" id="sequence">
-        <input type="hidden" name="op" value="<{$next_op}>">
+        <input type="hidden" name="sequence" size="2" value="<{$sequence|default:''}>" id="sequence">
+        <input type="hidden" name="op" value="<{$next_op|default:''}>">
         <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
     </div>
 </form>
