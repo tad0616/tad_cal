@@ -1,6 +1,7 @@
 <?php
 use Xmf\Request;
 use XoopsModules\Tadtools\Utility;
+use XoopsModules\Tad_cal\Tools;
 
 require_once __DIR__ . '/header.php';
 
@@ -12,21 +13,20 @@ get_event();
 //取得事件
 function get_event()
 {
-    global $xoopsDB, $xoopsUser, $xoopsModuleConfig;
+    global $xoopsDB, $xoopsModuleConfig;
 
     $start = Request::getString('start');
     $end = Request::getString('end');
     $cate_sn = Request::getInt('cate_sn');
 
     //取得目前使用者可讀的群組
-    $ok_cate_arr = chk_tad_cal_cate_power('enable_group');
+    $ok_cate_arr = Tools::chk_tad_cal_cate_power('enable_group');
     $all_ok_cate = implode(',', $ok_cate_arr);
     $and_ok_cate = empty($all_ok_cate) ? "and a.`cate_sn`='0'" : "and a.`cate_sn` in($all_ok_cate)";
     $and_ok_cate2 = empty($all_ok_cate) ? "and a.sn='0'" : "and b.cate_sn in($all_ok_cate)";
 
     $even_start = $start ? date('Y-m-d', strtotime($start)) : date('Y-m-d H:i:s');
     $even_end = $end ? date('Y-m-d', strtotime($end)) : date('Y-m-t H:i:s');
-    // $even_end   = ($end == "0000-00-00 00:00") ? date("Y-m-t H:i:s") : $end;
 
     $and_cate_sn = empty($cate_sn) ? '' : "and a.`cate_sn` = '$cate_sn'";
     $and_cate_sn2 = empty($cate_sn) ? '' : "and b.`cate_sn` = '$cate_sn'";
@@ -95,11 +95,9 @@ function get_event()
     join ' . $xoopsDB->prefix('tad_cal_cate') . " as c on b.`cate_sn` = c.`cate_sn`
     where a.`start` >= '$even_start' and a.`end` <= '$even_end' $and_ok_cate2 $and_cate_sn2
     order by a.`start`";
-    // die($sql);
     $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
     while (false !== ($all = $xoopsDB->fetchArray($result))) {
-        //以下會產生這些變數： $sn , $title , $start , $end , $recurrence , $location , $kind , $details , $etag , $id , $sequence , $uid , $cate_sn
         foreach ($all as $k => $v) {
             $$k = $v;
         }
@@ -128,13 +126,10 @@ function get_event()
 
         //避免截掉半個中文字
         $title_num = $xoopsModuleConfig['title_num'] * 3 * $day;
-        //if(empty($title_num))$title_num=21;
-
         $event_title = xoops_substr(strip_tags($title), 0, $title_num);
 
         $myEvents[$i]['id'] = $sn;
         $myEvents[$i]['title'] = "* {$event_title}";
-        // $myEvents[$i]['url'] = XOOPS_URL . "/modules/tad_cal/event.php?op=view&sn=$sn&stamp=$DBstartTime";
         $myEvents[$i]['rel'] = XOOPS_URL . "/modules/tad_cal/event.php?op=view&sn=$sn&stamp=$DBstartTime";
         $myEvents[$i]['start'] = $start;
         if (!empty($end)) {
@@ -150,5 +145,4 @@ function get_event()
     }
 
     Utility::dd($myEvents);
-    // return json_encode($myEvents, JSON_UNESCAPED_UNICODE);
 }

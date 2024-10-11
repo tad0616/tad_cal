@@ -1,6 +1,7 @@
 <?php
 use Xmf\Request;
 use XoopsModules\Tadtools\Utility;
+use XoopsModules\Tad_cal\Tools;
 
 /*-----------引入檔案區--------------*/
 require_once __DIR__ . '/header.php';
@@ -64,10 +65,10 @@ function import_google($cate_sn = '')
 
     if ($client->getAccessToken()) {
         //取得使用者編號
-        $uid = ($xoopsUser) ? $xoopsUser->getVar('uid') : '';
+        $uid = ($xoopsUser) ? $xoopsUser->uid() : '';
 
-        $sql = 'select * from ' . $xoopsDB->prefix('tad_cal_cate') . " where cate_sn='$cate_sn'";
-        $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tad_cal_cate') . '` WHERE `cate_sn`=?';
+        $result = Utility::query($sql, 'i', [$cate_sn]) or Utility::web_error($sql, __FILE__, __LINE__);
         $all = $xoopsDB->fetchArray($result);
 
         //以下會產生這些變數： $cate_sn , $cate_title , $cate_sort , $cate_enable , $cate_handle , $enable_group , $enable_upload_group , $google_id , $google_pass
@@ -83,27 +84,27 @@ function import_google($cate_sn = '')
 
         while (true) {
             foreach ($events->getItems() as $event) {
-                $title = $xoopsDB->escape($event->summary);
+                $title = $event->summary;
                 $start = $event->start->dateTime;
                 $end = $event->end->dateTime;
-                $recurrence = is_array($event->recurrence) ? $xoopsDB->escape(implode('', $event->recurrence)) : '';
-                $location = $xoopsDB->escape($event->location);
-                $kind = $xoopsDB->escape($event->kind);
-                $details = $xoopsDB->escape($event->description);
-                $etag = $xoopsDB->escape($event->etag);
-                $id = $xoopsDB->escape($event->id);
-                $sequence = $xoopsDB->escape($event->sequence);
-                $allday = isAllDay($start, $end);
-
-                $sql = 'insert into ' . $xoopsDB->prefix('tad_cal_event') . "
-                (`title` , `start` , `end` , `recurrence` , `location` , `kind` , `details` , `etag` , `id` , `sequence` , `uid` , `cate_sn` , `allday` , `tag` , `last_update`)
-                values('{$title}' , '{$start}' , '{$end}' , '{$recurrence}' , '{$location}' , '{$kind}' , '{$details}' , '{$etag}' , '{$id}' , '{$sequence}' , '{$uid}' , '{$cate_sn}' , '{$allday}' , '{$tag}' , '{$now}') ON DUPLICATE KEY UPDATE `title`='{$title}' , `start`='{$start}' , `end`='{$end}' , `recurrence`='{$recurrence}' , `location`='{$location}' , `kind`='{$kind}' , `details`='{$details}' , `etag`='{$etag}' , `id`='{$id}' , `sequence`='{$sequence}' , `uid`= '{$uid}' , `cate_sn`='{$cate_sn}' , `allday`='{$allday}' , `tag`='{$tag}' , `last_update`='{$now}'";
-                $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+                $recurrence = is_array($event->recurrence) ? implode('', $event->recurrence) : '';
+                $location = $event->location;
+                $kind = $event->kind;
+                $details = $event->description;
+                $etag = $event->etag;
+                $id = $event->id;
+                $sequence = $event->sequence;
+                $allday = Tools::isAllDay($start, $end);
+                $sql = 'INSERT INTO `' . $xoopsDB->prefix('tad_cal_event') . '`
+                (`title`, `start`, `end`, `recurrence`, `location`, `kind`, `details`, `etag`, `id`, `sequence`, `uid`, `cate_sn`, `allday`, `tag`, `last_update`)
+                VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ON DUPLICATE KEY UPDATE `title`=?, `start`=?, `end`=?, `recurrence`=?, `location`=?, `kind`=?, `details`=?, `etag`=?, `id`=?, `sequence`=?, `uid`=?, `cate_sn`=?, `allday`=?, `tag`=?, `last_update`=?';
+                Utility::query($sql, 'sssssssssiiissssssssssssiiisss', [$title, $start, $end, $recurrence, $location, $kind, $details, $etag, $id, $sequence, $uid, $cate_sn, $allday, $tag, $now, $title, $start, $end, $recurrence, $location, $kind, $details, $etag, $id, $sequence, $uid, $cate_sn, $allday, $tag, $now]) or Utility::web_error($sql, __FILE__, __LINE__);
 
                 //取得最後新增資料的流水編號
                 $sn = $xoopsDB->getInsertId();
                 //重複事件
-                rrule($sn, $recurrence, $allday);
+                Tools::rrule($sn, $recurrence, $allday);
             }
             // $pageToken = $events->getNextPageToken();
             // if ($pageToken) {
@@ -114,8 +115,9 @@ function import_google($cate_sn = '')
             // }
         }
         $now = date('Y-m-d H:i:s');
-        $sql = 'delete from ' . $xoopsDB->prefix('tad_cal_event') . " where cate_sn='{$cate_sn}' and `last_update` < '{$now}'";
-        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $sql = 'DELETE FROM `' . $xoopsDB->prefix('tad_cal_event') . '` WHERE `cate_sn` = ? AND `last_update` < ?';
+        Utility::query($sql, 'is', [$cate_sn, $now]) or Utility::web_error($sql, __FILE__, __LINE__);
+
         if (isset($_SESSION['import_google'])) {
             unset($_SESSION['import_google']);
         }

@@ -1,7 +1,7 @@
 <?php
 require_once dirname(dirname(__DIR__)) . '/mainfile.php';
 
-$start = $_POST['day'];
+$start = (string) $_POST['day'];
 $week = getWeekOfTheMonth(strtotime($start));
 $wk = date('w', strtotime($start));
 

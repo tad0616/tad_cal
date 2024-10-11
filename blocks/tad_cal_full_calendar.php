@@ -1,5 +1,6 @@
 <?php
 use XoopsModules\Tadtools\Utility;
+use XoopsModules\Tad_cal\Tools;
 
 if (!class_exists('XoopsModules\Tadtools\Utility')) {
     require XOOPS_ROOT_PATH . '/modules/tadtools/preloads/autoloader.php';
@@ -19,8 +20,6 @@ function tad_cal_full_calendar($options)
     $module_id = $xoopsModule->getVar('mid');
     $xoopsModuleConfig = $configHandler->getConfigsByCat(0, $module_id);
 
-    require_once XOOPS_ROOT_PATH . '/modules/tad_cal/function_block.php';
-
     $jquery_path = Utility::get_jquery(true); //一般只要此行即可
 
     $block['jquery_path'] = $jquery_path;
@@ -33,17 +32,17 @@ function tad_cal_full_calendar($options)
         $xoopsModuleConfig['eventTheme'] = 'ui-tooltip-blue';
     }
 
-    $style_mark = style_mark();
+    $style_mark = Tools::style_mark();
 
     if (empty($cate_sn)) {
         $cate_sn = 0;
     }
 
-    $eventDrop = $del_js = '';
+    $eventDrop = '';
     if ($xoopsUser) {
         //先抓分類下拉選單
-        $get_tad_cal_cate_menu_options = get_tad_cal_cate_menu_options($cate_sn);
-        if ($_SESSION['tad_cal_adm']) {
+        $get_tad_cal_cate_menu_options = Tools::get_tad_cal_cate_menu_options($cate_sn);
+        if (isset($_SESSION['tad_cal_adm']) && $_SESSION['tad_cal_adm']) {
             if (empty($get_tad_cal_cate_menu_options)) {
                 $cate = _MB_TADCAL_NEW_CATE . ": <input name='new_cate_title' title='new_cate_title' id='new_cate_title' value='" . _MB_TADCAL_NEW_CALENDAR . "'>";
             } else {

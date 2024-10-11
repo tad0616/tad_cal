@@ -1,15 +1,6 @@
-<link href="<{$xoops_url}>/modules/tadtools/css/font-awesome/css/font-awesome.css" rel="stylesheet">
 <div class="container-fluid">
   <{if $op=="tad_cal_cate_form"}>
     <h1><{$smarty.const._MA_TADCAL_CATE_FORM}></h1>
-
-    <script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/mColorPicker/javascripts/mColorPicker.js" charset="UTF-8"></script>
-    <script type="text/javascript">
-      $("#color").mColorPicker({
-        imageFolder: "<{$xoops_url}>/modules/tadtools/mColorPicker/images/"
-      });
-    </script>
-
     <form action="main.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
       <div class="form-group row mb-3">
         <!--行事曆標題-->
@@ -41,14 +32,18 @@
           <{$smarty.const._MA_TADCAL_CATE_BGCOLOR}>
         </label>
         <div class="col-sm-4">
-          <input type="text" name="cate_bgcolor" title="cate_bgcolor" id="cate_bgcolor" class="form-control" value="<{$cate_bgcolor|default:''}>" data-text="hidden" data-hex="true">
+          <div class="input-group">
+            <input type="text" name="cate_bgcolor" title="cate_bgcolor" id="cate_bgcolor" class="form-control color-picker" value="<{$cate_bgcolor|default:''}>" data-hex="true">
+          </div>
         </div>
         <!--文字色-->
         <label class="col-sm-2 col-form-label text-sm-right control-label">
           <{$smarty.const._MA_TADCAL_CATE_COLOR}>
         </label>
         <div class="col-sm-4">
-          <input type="text" name="cate_color" title="cate_color" id="cate_color" class="form-control" value="<{$cate_color|default:''}>" data-text="hidden" data-hex="true">
+          <div class="input-group">
+            <input type="text" name="cate_color" title="cate_color" id="cate_color" class="form-control color-picker" value="<{$cate_color|default:''}>" data-hex="true">
+          </div>
         </div>
       </div>
 

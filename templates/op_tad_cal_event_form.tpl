@@ -106,9 +106,7 @@ if($("input#allday:checked").length){
 $("#long").val(strtotime(chk_end)*1 - strtotime(chk_start)*1);
 }
 </script>
-<script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/My97DatePicker/WdatePicker.js"></script>
-<script type="text/javascript" src="<{$xoops_url}>/modules/tad_cal/class/date.js"></script>
-<script type="text/javascript" src="<{$xoops_url}>/modules/tad_cal/class/strtotime.js"></script>
+
 
 <form action="<{$xoops_url}>/modules/tad_cal/event.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
     <!--事件標題-->

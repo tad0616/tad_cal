@@ -2,6 +2,7 @@
 use Xmf\Request;
 use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\Utility;
+use XoopsModules\Tad_cal\Tools;
 
 /*-----------引入檔案區--------------*/
 require_once __DIR__ . '/header.php';
@@ -85,7 +86,7 @@ switch ($op) {
 }
 
 /*-----------秀出結果區--------------*/
-$xoopsTpl->assign('toolbar', Utility::toolbar_bootstrap($interface_menu));
+$xoopsTpl->assign('toolbar', Utility::toolbar_bootstrap($interface_menu, false, $interface_icon));
 $xoopsTpl->assign('now_op', $op);
 
 require_once XOOPS_ROOT_PATH . '/footer.php';
@@ -108,7 +109,7 @@ function toServerTime($time)
 //tad_cal_event編輯表單 $mode=ajax
 function tad_cal_event_form($sn = '', $mode = '', $def_tag = '')
 {
-    global $xoopsDB, $xoopsUser, $xoopsTpl;
+    global $xoTheme, $xoopsUser, $xoopsTpl;
     require_once XOOPS_ROOT_PATH . '/modules/tad_cal/class/Ical.php';
     if (!$xoopsUser) {
         redirect_header(XOOPS_URL . '/modules/tad_cal/index.php', 3, _MD_TADCAL_NEED_LOGIN);
@@ -174,7 +175,7 @@ function tad_cal_event_form($sn = '', $mode = '', $def_tag = '')
     $op = (empty($sn)) ? 'insert_tad_cal_event' : 'update_tad_cal_event';
     //$op="replace_tad_cal_event";
 
-    $get_tad_cal_cate_menu_options = get_tad_cal_cate_menu_options($cate_sn);
+    $get_tad_cal_cate_menu_options = Tools::get_tad_cal_cate_menu_options($cate_sn);
     if (empty($get_tad_cal_cate_menu_options)) {
         if ($_SESSION['tad_cal_adm']) {
             $of_cate_title = _MD_TADCAL_NEW_CATE;
@@ -330,14 +331,20 @@ function tad_cal_event_form($sn = '', $mode = '', $def_tag = '')
     $xoopsTpl->assign('op', 'tad_cal_event_form');
     $xoopsTpl->assign('sn', $sn);
     $xoopsTpl->assign('tag', $tag);
+
+    $xoTheme->addScript('modules/tadtools/My97DatePicker/WdatePicker.js');
+    $xoTheme->addScript('modules/tad_cal/class/date.js');
+    $xoTheme->addScript('modules/tad_cal/class/strtotime.js');
+
 }
 
 //自動取得tad_cal_event的最新排序
 function tad_cal_event_max_sort()
 {
     global $xoopsDB;
-    $sql = 'select max(`sequence`) from ' . $xoopsDB->prefix('tad_cal_event');
-    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+    $sql = 'SELECT MAX(`sequence`) FROM `' . $xoopsDB->prefix('tad_cal_event') . '`';
+    $result = Utility::query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+
     list($sort) = $xoopsDB->fetchRow($result);
 
     return ++$sort;
@@ -351,17 +358,17 @@ function insert_tad_cal_event()
     $cate_sn = (int) $_POST['cate_sn'];
 
     //取得使用者編號
-    $uid = ($xoopsUser) ? $xoopsUser->getVar('uid') : 0;
+    $uid = ($xoopsUser) ? $xoopsUser->uid() : 0;
 
-    $title = $xoopsDB->escape($_POST['title']);
-    $location = $xoopsDB->escape($_POST['location']);
-    $kind = $xoopsDB->escape($_POST['kind']);
-    $details = $xoopsDB->escape($_POST['details']);
-    $etag = $xoopsDB->escape($_POST['etag']);
-    $tag = $xoopsDB->escape($_POST['tag']);
-    $id = $xoopsDB->escape($_POST['id']);
+    $title = (string) $_POST['title'];
+    $location = (string) $_POST['location'];
+    $kind = (string) $_POST['kind'];
+    $details = (string) $_POST['details'];
+    $etag = (string) $_POST['etag'];
+    $tag = (string) $_POST['tag'];
+    $id = (string) $_POST['id'];
     $sequence = (int) $_POST['sequence'];
-    $new_cate_title = $xoopsDB->escape($_POST['new_cate_title']);
+    $new_cate_title = (string) $_POST['new_cate_title'];
 
     //若無分類編號，那就是要新增行事曆
     if (empty($cate_sn)) {
@@ -377,7 +384,7 @@ function insert_tad_cal_event()
     if ('1' == $allDay) {
         $start = date('Y-m-d', strtotime($_POST['start']));
         if (empty($_POST['end'])) {
-            $_POST['end'] = $_POST['start'];
+            $_POST['end'] = (string) $_POST['start'];
         }
 
         $end = strtotime($_POST['end']) + (empty($_POST['fc']) ? 86400 : 0);
@@ -388,7 +395,7 @@ function insert_tad_cal_event()
     } else {
         $start = date('Y-m-d H:i', strtotime($_POST['start']));
         if (empty($_POST['end'])) {
-            $_POST['end'] = $_POST['start'];
+            $_POST['end'] = (string) $_POST['start'];
         }
 
         $end = date('Y-m-d H:i', strtotime($_POST['end']));
@@ -446,21 +453,20 @@ function insert_tad_cal_event()
 
     $last_update = date('Y-m-d H:i:s');
 
-    $sql = 'insert into ' . $xoopsDB->prefix('tad_cal_event') . "
-    (`title` , `start` , `end` , `recurrence` , `location` , `kind` , `details` , `etag` , `id` , `sequence` , `uid` , `cate_sn` , `allday` , `tag` ,`last_update`)
-    values('{$title}' , '{$start}' , '{$end}' , '{$recurrence}' , '{$location}' , '{$kind}' , '{$details}' , '{$etag}' , '{$id}' , '{$sequence}' , '{$uid}' , '{$cate_sn}' , '{$allDay}', '{$tag}' , '{$last_update}')";
-
-    $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+    $sql = 'INSERT INTO `' . $xoopsDB->prefix('tad_cal_event') . '`
+    (`title`, `start`, `end`, `recurrence`, `location`, `kind`, `details`, `etag`, `id`, `sequence`, `uid`, `cate_sn`, `allday`, `tag`, `last_update`)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    Utility::query($sql, 'sssssssssiiisss', [$title, $start, $end, $recurrence, $location, $kind, $details, $etag, $id, $sequence, $uid, $cate_sn, $allDay, $tag, $last_update]) or Utility::web_error($sql, __FILE__, __LINE__);
 
     //取得最後新增資料的流水編號
     $sn = $xoopsDB->getInsertId();
 
     //更新 id
-    $sql = 'update ' . $xoopsDB->prefix('tad_cal_event') . " set `id` = '{$sn}' where sn='$sn'";
-    $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+    $sql = 'UPDATE `' . $xoopsDB->prefix('tad_cal_event') . '` SET `id` = ? WHERE `sn` = ?';
+    Utility::query($sql, 'ii', [$sn, $sn]) or Utility::web_error($sql, __FILE__, __LINE__);
 
     //重複事件
-    rrule($sn, $recurrence, $allDay);
+    Tools::rrule($sn, $recurrence, $allDay);
 
     return $sn;
 }
@@ -468,18 +474,16 @@ function insert_tad_cal_event()
 //更新tad_cal_event某一筆資料
 function update_tad_cal_todo_event($sn = '', $todo = null)
 {
-    global $xoopsDB, $xoopsUser;
+    global $xoopsDB;
 
     if (!is_null($todo)) {
-        $tag = $xoopsDB->escape($todo);
+        $tag = $todo;
     } else {
         $tag = '';
     }
 
-    $sql = 'update ' . $xoopsDB->prefix('tad_cal_event') . " set
-    `tag` = '{$tag}'
-    where sn='$sn'";
-    $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+    $sql = 'UPDATE `' . $xoopsDB->prefix('tad_cal_event') . '` SET `tag` = ? WHERE `sn` = ?';
+    Utility::query($sql, 'si', [$tag, $sn]) or Utility::web_error($sql, __FILE__, __LINE__);
 
     return $sn;
 }
@@ -490,19 +494,15 @@ function update_tad_cal_event($sn = '')
     global $xoopsDB, $xoopsUser;
     //die(var_export($_POST));
     //取得使用者編號
-    $uid = ($xoopsUser) ? $xoopsUser->getVar('uid') : '';
-
-    $_POST['title'] = $xoopsDB->escape($_POST['title']);
-    $_POST['location'] = $xoopsDB->escape($_POST['location']);
-    $_POST['details'] = $xoopsDB->escape($_POST['details']);
-    $tag = $xoopsDB->escape($_POST['tag']);
+    $uid = ($xoopsUser) ? $xoopsUser->uid() : '';
+    $tag = (string) $_POST['tag'];
 
     $allDay = !empty($_POST['fc_start']) ? 1 : $_POST['allday'];
 
     if ('1' == $allDay) {
         $start = date('Y-m-d', strtotime($_POST['start']));
         if (empty($_POST['end'])) {
-            $_POST['end'] = $_POST['start'];
+            $_POST['end'] = (string) $_POST['start'];
         }
 
         $end = strtotime($_POST['end']) + (empty($_POST['fc']) ? 86400 : 0);
@@ -513,7 +513,7 @@ function update_tad_cal_event($sn = '')
     } else {
         $start = date('Y-m-d H:i', strtotime($_POST['start']));
         if (empty($_POST['end'])) {
-            $_POST['end'] = $_POST['start'];
+            $_POST['end'] = (string) $_POST['start'];
         }
 
         $end = date('Y-m-d H:i', strtotime($_POST['end']));
@@ -570,27 +570,28 @@ function update_tad_cal_event($sn = '')
     }
 
     $last_update = date('Y-m-d H:i:s');
-    $sql = 'update ' . $xoopsDB->prefix('tad_cal_event') . " set
-    `title` = '{$_POST['title']}' ,
-    `start` = '{$start}' ,
-    `end` = '{$end}' ,
-    `recurrence` = '{$recurrence}' ,
-    `location` = '{$_POST['location']}' ,
-    `kind` = '{$_POST['kind']}' ,
-    `details` = '{$_POST['details']}' ,
-    `etag` = '{$_POST['etag']}' ,
-    `id` = '{$_POST['id']}' ,
-    `sequence` = '{$_POST['sequence']}' ,
-    `uid` = '{$uid}' ,
-    `cate_sn` = '{$_POST['cate_sn']}',
-    `allday` = '{$allDay}' ,
-    `tag` = '{$tag}' ,
-    `last_update` = '{$last_update}'
-    where sn='$sn'";
-    $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+    $sql = 'UPDATE `' . $xoopsDB->prefix('tad_cal_event') . '` SET `title`=?, `start`=?, `end`=?, `recurrence`=?, `location`=?, `kind`=?, `details`=?, `etag`=?, `id`=?, `sequence`=?, `uid`=?, `cate_sn`=?, `allday`=?, `tag`=?, `last_update`=? WHERE `sn`=?';
+    Utility::query($sql, 'sssssssssiiisssi', [
+        $_POST['title'],
+        $start,
+        $end,
+        $recurrence,
+        $_POST['location'],
+        $_POST['kind'],
+        $_POST['details'],
+        $_POST['etag'],
+        $_POST['id'],
+        $_POST['sequence'],
+        $uid,
+        $_POST['cate_sn'],
+        $allDay,
+        $tag,
+        $last_update,
+        $sn,
+    ]) or Utility::web_error($sql, __FILE__, __LINE__);
 
     //重複事件
-    rrule($sn, $recurrence, $allDay);
+    Tools::rrule($sn, $recurrence, $allDay);
 
     return $sn;
 }
@@ -605,13 +606,13 @@ function list_tad_cal_event($tag = "")
     $now_uid = ($xoopsUser) ? $xoopsUser->uid() : 0;
 
     //取得目前使用者可讀的群組
-    $ok_cate_arr = chk_tad_cal_cate_power('enable_group');
+    $ok_cate_arr = Tools::chk_tad_cal_cate_power('enable_group');
     $all_ok_cate = implode(',', $ok_cate_arr);
     $and_ok_cate = empty($all_ok_cate) ? "cate_sn='0'" : "a.cate_sn in($all_ok_cate)";
     $and_tag = $tag != "" ? "and a.`tag`='$tag'" : "";
 
     //可編輯的行事曆
-    $edit_cate_arr = chk_tad_cal_cate_power('enable_upload_group');
+    $edit_cate_arr = Tools::chk_tad_cal_cate_power('enable_upload_group');
 
     $show_function = count($edit_cate_arr) ? 1 : 0;
 
@@ -677,8 +678,9 @@ function get_tad_cal_event($sn = '')
         return;
     }
 
-    $sql = 'select * from ' . $xoopsDB->prefix('tad_cal_event') . " where sn='$sn'";
-    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+    $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tad_cal_event') . '` WHERE `sn`=?';
+    $result = Utility::query($sql, 'i', [$sn]) or Utility::web_error($sql, __FILE__, __LINE__);
+
     $data = $xoopsDB->fetchArray($result);
 
     return $data;
@@ -689,11 +691,14 @@ function delete_tad_cal_event($sn = '')
 {
     global $xoopsDB, $xoopsUser;
     $uid = $xoopsUser->uid();
-    $andUID = ($_SESSION['tad_cal_adm']) ? '' : "and uid='$uid'";
-    $sql = 'delete from ' . $xoopsDB->prefix('tad_cal_event') . " where sn='$sn' $andUID";
-    if ($xoopsDB->queryF($sql)) {
-        $sql = 'delete from ' . $xoopsDB->prefix('tad_cal_repeat') . " where sn='$sn'";
-        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+    $andUID = ($_SESSION['tad_cal_adm']) ? '' : 'AND `uid` = ?';
+    $sql = 'DELETE FROM `' . $xoopsDB->prefix('tad_cal_event') . '` WHERE `sn` = ? ' . $andUID;
+    $params = ($_SESSION['tad_cal_adm']) ? [$sn] : [$sn, $uid];
+
+    if (Utility::query($sql, 'i' . (($_SESSION['tad_cal_adm']) ? '' : 'i'), $params)) {
+        $sql = 'DELETE FROM `' . $xoopsDB->prefix('tad_cal_repeat') . '` WHERE `sn` = ?';
+        Utility::query($sql, 'i', [$sn]) or Utility::web_error($sql, __FILE__, __LINE__);
+
     } else {
         Utility::web_error($sql, __FILE__, __LINE__);
     }
@@ -716,11 +721,14 @@ function show_one_tad_cal_event($sn = '', $stamp = '')
     $cate = get_tad_cal_cate_all();
     if (!empty($stamp)) {
         $date = date('Y-m-d H:i', $stamp);
-        $sql = 'select a.*, b.`title`, b.`recurrence`, b.`location`, b.`kind`, b.`details`, b.`etag`, b.`id`, b.`sequence`, b.`uid`, b.`cate_sn`, b.`tag`, b.`last_update` from ' . $xoopsDB->prefix('tad_cal_repeat') . ' as a join ' . $xoopsDB->prefix('tad_cal_event') . " as b on a.`sn`=b.`sn` where a.`sn`='{$sn}' and a.`start`='{$date}'";
+        $sql = 'SELECT a.*, b.`title`, b.`recurrence`, b.`location`, b.`kind`, b.`details`, b.`etag`, b.`id`, b.`sequence`, b.`uid`, b.`cate_sn`, b.`tag`, b.`last_update` FROM `' . $xoopsDB->prefix('tad_cal_repeat') . '` AS a JOIN `' . $xoopsDB->prefix('tad_cal_event') . '` AS b ON a.`sn`=b.`sn` WHERE a.`sn`=? AND a.`start`=?';
+        $result = Utility::query($sql, 'is', [$sn, $date]) or Utility::web_error($sql, __FILE__, __LINE__);
+
     } else {
-        $sql = 'select * from ' . $xoopsDB->prefix('tad_cal_event') . " where sn='{$sn}'";
+        $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tad_cal_event') . '` WHERE `sn` = ?';
+        $result = Utility::query($sql, 'i', [$sn]) or Utility::web_error($sql, __FILE__, __LINE__);
+
     }
-    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     $all = $xoopsDB->fetchArray($result);
 
     //以下會產生這些變數： $sn , $title , $start , $end , $recurrence , $location , $kind , $details , $etag , $id , $sequence , $uid , $cate_sn
@@ -743,7 +751,7 @@ function show_one_tad_cal_event($sn = '', $stamp = '')
     $details = empty($details) ? $title : $details;
 
     //可編輯的行事曆
-    $edit_cate_arr = chk_tad_cal_cate_power('enable_upload_group');
+    $edit_cate_arr = Tools::chk_tad_cal_cate_power('enable_upload_group');
     $show_function = count($edit_cate_arr) ? 1 : 0;
     $fun = ($show_function and ($_SESSION['tad_cal_adm'] or $now_uid == $uid)) ? "
     <div style='text-align:right;margin-top:10px;'>
@@ -782,13 +790,13 @@ function show_simple_event($sn = '', $stamp = '')
 
     if (!empty($stamp)) {
         $date = date('Y-m-d H:i', $stamp);
-        $sql = 'select a.*, b.`title`, b.`recurrence`, b.`location`, b.`kind`, b.`details`, b.`etag`, b.`id`, b.`sequence`, b.`uid`, b.`cate_sn`, b.`tag`, b.`last_update` from ' . $xoopsDB->prefix('tad_cal_repeat') . ' as a join ' . $xoopsDB->prefix('tad_cal_event') . " as b on a.`sn`=b.`sn` where a.`sn`='{$sn}' and a.`start`='{$date}'";
+        $sql = 'SELECT a.*, b.`title`, b.`recurrence`, b.`location`, b.`kind`, b.`details`, b.`etag`, b.`id`, b.`sequence`, b.`uid`, b.`cate_sn`, b.`tag`, b.`last_update` FROM `' . $xoopsDB->prefix('tad_cal_repeat') . '` AS a JOIN `' . $xoopsDB->prefix('tad_cal_event') . '` AS b ON a.`sn`=b.`sn` WHERE a.`sn`=? AND a.`start`=?';
+        $result = Utility::query($sql, 'is', [$sn, $date]) or Utility::web_error($sql, __FILE__, __LINE__);
     } else {
-        $sql = 'select * from ' . $xoopsDB->prefix('tad_cal_event') . " where sn='{$sn}'";
+        $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tad_cal_event') . '` WHERE `sn`=?';
+        $result = Utility::query($sql, 'i', [$sn]) or Utility::web_error($sql, __FILE__, __LINE__);
     }
-    //die($sql);
 
-    $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     $all = $xoopsDB->fetchArray($result);
 
     //以下會產生這些變數： $sn , $title , $start , $end , $recurrence , $location , $kind , $details , $etag , $id , $sequence , $uid , $cate_sn
@@ -812,7 +820,7 @@ function show_simple_event($sn = '', $stamp = '')
     $details = empty($details) ? $title : $details;
 
     //可編輯的行事曆
-    $edit_cate_arr = chk_tad_cal_cate_power('enable_upload_group');
+    $edit_cate_arr = Tools::chk_tad_cal_cate_power('enable_upload_group');
     $show_function = count($edit_cate_arr) ? 1 : 0;
 
     $stamp = strtotime($start);
@@ -888,13 +896,14 @@ function show_date($start = null, $end = null, $allday = '0', $mark = '<br>')
 //搬移時，更新日期
 function ajax_update_date($sn = '')
 {
-    global $xoopsDB, $xoopsUser;
+    global $xoopsDB;
     //新增或減少的秒數
-    $delta = $_POST['delta'];
+    $delta = (int) $_POST['delta'];
 
     //抓出事件原有資料
-    $sql = 'select * from ' . $xoopsDB->prefix('tad_cal_event') . " where sn='$sn'";
-    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+    $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tad_cal_event') . '` WHERE `sn`=?';
+    $result = Utility::query($sql, 'i', [$sn]) or Utility::web_error($sql, __FILE__, __LINE__);
+
     if (!$result) {
         sprintf(_MD_TADCAL_MOVE_ERROR, $xoopsDB->error());
     }
@@ -947,14 +956,8 @@ function ajax_update_date($sn = '')
         $start = $end = '0000-00-00 00:00:00';
     }
 
-    $sql = 'update ' . $xoopsDB->prefix('tad_cal_event') . " set
-   `start` = '{$start}' ,
-   `end` = '{$end}' ,
-   recurrence='{$recurrence}'
-  where sn='$sn'";
-    if (!$xoopsDB->queryF($sql)) {
-        sprintf(_MD_TADCAL_MOVE_ERROR, $xoopsDB->error());
-    }
+    $sql = 'UPDATE `' . $xoopsDB->prefix('tad_cal_event') . '` SET `start` =?, `end` =?, `recurrence`=? WHERE `sn` =?';
+    Utility::query($sql, 'sssi', [$start, $end, $recurrence, $sn]) or Utility::web_error($sql, __FILE__, __LINE__);
 
     //重複事件
     //rrule($sn,$recurrence);

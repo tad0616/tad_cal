@@ -1,6 +1,7 @@
 <?php
 use Xmf\Request;
 use XoopsModules\Tadtools\Utility;
+use XoopsModules\Tad_cal\Tools;
 
 /*-----------引入檔案區--------------*/
 require_once __DIR__ . '/header.php';
@@ -22,7 +23,7 @@ function fullcalendar($cate_sn = 0)
         $xoopsModuleConfig['eventTheme'] = 'ui-tooltip-blue';
     }
 
-    $style_mark = style_mark();
+    $style_mark = Tools::style_mark();
 
     if (empty($cate_sn)) {
         $cate_sn = 0;
@@ -31,7 +32,7 @@ function fullcalendar($cate_sn = 0)
     $eventDrop = $del_js = $eventAdd = '';
     if ($xoopsUser) {
         //先抓分類下拉選單
-        $get_tad_cal_cate_menu_options = get_tad_cal_cate_menu_options($cate_sn);
+        $get_tad_cal_cate_menu_options = Tools::get_tad_cal_cate_menu_options($cate_sn);
         if ($_SESSION['tad_cal_adm']) {
             if (empty($get_tad_cal_cate_menu_options)) {
                 $cate = _MD_TADCAL_NEW_CATE . _TAD_FOR . "<input name='new_cate_title' title='new_cate_title' id='new_cate_title' value='" . _MD_TADCAL_NEW_CALENDAR . "'>";
@@ -132,7 +133,7 @@ switch ($op) {
 
 /*-----------秀出結果區--------------*/
 $xoopsTpl->assign('now_op', $op);
-$xoopsTpl->assign('toolbar', Utility::toolbar_bootstrap($interface_menu));
+$xoopsTpl->assign('toolbar', Utility::toolbar_bootstrap($interface_menu, false, $interface_icon));
 $xoTheme->addStylesheet('modules/tad_cal/css/module.css');
 $xoTheme->addStylesheet('modules/tadtools/fullcalendar/redmond/theme.css');
 $xoTheme->addStylesheet('modules/tadtools/fullcalendar/fullcalendar.css');

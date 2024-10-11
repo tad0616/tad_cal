@@ -1,5 +1,6 @@
 <?php
 $modversion = [];
+global $xoopsConfig;
 
 global $xoopsConfig;
 
@@ -27,11 +28,12 @@ $modversion['min_php'] = 5.4;
 $modversion['min_xoops'] = '2.5';
 
 //---paypal資訊---//
-$modversion['paypal'] = [];
-$modversion['paypal']['business'] = 'tad0616@gmail.com';
-$modversion['paypal']['item_name'] = 'Donation : ' . _MI_TAD_WEB;
-$modversion['paypal']['amount'] = 0;
-$modversion['paypal']['currency_code'] = 'USD';
+$modversion['paypal'] = [
+    'business' => 'tad0616@gmail.com',
+    'item_name' => 'Donation : ' . _MI_TAD_WEB,
+    'amount' => 0,
+    'currency_code' => 'USD',
+];
 
 //---啟動後台管理界面選單---//
 $modversion['system_menu'] = 1; //---資料表架構---//
@@ -54,84 +56,98 @@ $modversion['adminmenu'] = 'admin/menu.php';
 $modversion['hasMain'] = 1;
 
 //---樣板設定---//
-$i = 1;
-$modversion['templates'][$i]['file'] = 'tad_cal_index.tpl';
-$modversion['templates'][$i]['description'] = 'tad_cal_index.tpl';
-
-$i++;
-$modversion['templates'][$i]['file'] = 'tad_cal_event.tpl';
-$modversion['templates'][$i]['description'] = 'tad_cal_event.tpl';
-
-$i++;
-$modversion['templates'][$i]['file'] = 'tad_cal_adm_main.tpl';
-$modversion['templates'][$i]['description'] = 'tad_cal_adm_main.tpl';
-
-$i++;
-$modversion['templates'][$i]['file'] = 'tad_cal_download.tpl';
-$modversion['templates'][$i]['description'] = 'tad_cal_download.tpl';
+$modversion['templates'] = [
+    ['file' => 'tad_cal_index.tpl', 'description' => 'tad_cal_index.tpl'],
+    ['file' => 'tad_cal_event.tpl', 'description' => 'tad_cal_event.tpl'],
+    ['file' => 'tad_cal_adm_main.tpl', 'description' => 'tad_cal_adm_main.tpl'],
+    ['file' => 'tad_cal_download.tpl', 'description' => 'tad_cal_download.tpl'],
+];
 
 //---區塊設定---//
-$modversion['blocks'][1]['file'] = 'tad_cal_calendar.php';
-$modversion['blocks'][1]['name'] = _MI_TADCAL_BNAME1;
-$modversion['blocks'][1]['description'] = _MI_TADCAL_BDESC1;
-$modversion['blocks'][1]['show_func'] = 'tad_cal_calendar';
-$modversion['blocks'][1]['template'] = 'tad_cal_calendar.tpl';
+$modversion['blocks'] = [
+    [
+        'file' => 'tad_cal_calendar.php',
+        'name' => _MI_TADCAL_BNAME1,
+        'description' => _MI_TADCAL_BDESC1,
+        'show_func' => 'tad_cal_calendar',
+        'template' => 'tad_cal_calendar.tpl',
+    ],
+    [
+        'file' => 'tad_cal_list.php',
+        'name' => _MI_TADCAL_BNAME2,
+        'description' => _MI_TADCAL_BDESC2,
+        'show_func' => 'tad_cal_list',
+        'template' => 'tad_cal_list.tpl',
+        'edit_func' => 'tad_cal_list_edit',
+        'options' => '7',
+    ],
+    [
+        'file' => 'tad_cal_full_calendar.php',
+        'name' => _MI_TADCAL_BNAME3,
+        'description' => _MI_TADCAL_BDESC3,
+        'show_func' => 'tad_cal_full_calendar',
+        'template' => 'tad_cal_full_calendar.tpl',
+    ],
+];
 
-$modversion['blocks'][2]['file'] = 'tad_cal_list.php';
-$modversion['blocks'][2]['name'] = _MI_TADCAL_BNAME2;
-$modversion['blocks'][2]['description'] = _MI_TADCAL_BDESC2;
-$modversion['blocks'][2]['show_func'] = 'tad_cal_list';
-$modversion['blocks'][2]['template'] = 'tad_cal_list.tpl';
-$modversion['blocks'][2]['edit_func'] = 'tad_cal_list_edit';
-$modversion['blocks'][2]['options'] = '7';
-
-$modversion['blocks'][3]['file'] = 'tad_cal_full_calendar.php';
-$modversion['blocks'][3]['name'] = _MI_TADCAL_BNAME3;
-$modversion['blocks'][3]['description'] = _MI_TADCAL_BDESC3;
-$modversion['blocks'][3]['show_func'] = 'tad_cal_full_calendar';
-$modversion['blocks'][3]['template'] = 'tad_cal_full_calendar.tpl';
-
-$modversion['config'][0]['name'] = 'eventShowMode';
-$modversion['config'][0]['title'] = '_MI_TADCAL_EVENTSHOWMODE';
-$modversion['config'][0]['description'] = '_MI_TADCAL_EVENTSHOWMODE_DESC';
-$modversion['config'][0]['formtype'] = 'select';
-$modversion['config'][0]['valuetype'] = 'text';
-$modversion['config'][0]['default'] = 'eventClick';
-$modversion['config'][0]['options'] = [_MI_TADCAL_CONF0_OPT1 => 'eventClick', _MI_TADCAL_CONF0_OPT2 => 'eventMouseover'];
-
-$modversion['config'][1]['name'] = 'eventTheme';
-$modversion['config'][1]['title'] = '_MI_TADCAL_EVENTTHEME';
-$modversion['config'][1]['description'] = '_MI_TADCAL_EVENTTHEME_DESC';
-$modversion['config'][1]['formtype'] = 'select';
-$modversion['config'][1]['valuetype'] = 'text';
-$modversion['config'][1]['default'] = 'ui-tooltip-blue';
-$modversion['config'][1]['options'] = [_MI_TADCAL_CONF1_OPT1 => 'ui-tooltip', _MI_TADCAL_CONF1_OPT2 => 'ui-tooltip-light', _MI_TADCAL_CONF1_OPT3 => 'ui-tooltip-dark', _MI_TADCAL_CONF1_OPT4 => 'ui-tooltip-red', _MI_TADCAL_CONF1_OPT5 => 'ui-tooltip-blue', _MI_TADCAL_CONF1_OPT6 => 'ui-tooltip-green'];
-
-$modversion['config'][2]['name'] = 'title_num';
-$modversion['config'][2]['title'] = '_MI_TADCAL_TITLE_NUM';
-$modversion['config'][2]['description'] = '_MI_TADCAL_TITLE_NUM_DESC';
-$modversion['config'][2]['formtype'] = 'textbox';
-$modversion['config'][2]['valuetype'] = 'int';
-$modversion['config'][2]['default'] = '7';
-
-$modversion['config'][3]['name'] = 'quick_add';
-$modversion['config'][3]['title'] = '_MI_TADCAL_QUICK_ADD';
-$modversion['config'][3]['description'] = '_MI_TADCAL_QUICK_ADD_DESC';
-$modversion['config'][3]['formtype'] = 'yesno';
-$modversion['config'][3]['valuetype'] = 'int';
-$modversion['config'][3]['default'] = '1';
-
-$modversion['config'][4]['name'] = 'use_social_tools';
-$modversion['config'][4]['title'] = '_MI_SOCIALTOOLS_TITLE';
-$modversion['config'][4]['description'] = '_MI_SOCIALTOOLS_TITLE_DESC';
-$modversion['config'][4]['formtype'] = 'yesno';
-$modversion['config'][4]['valuetype'] = 'int';
-$modversion['config'][4]['default'] = '1';
-
-$modversion['config'][5]['name'] = 'cal_start';
-$modversion['config'][5]['title'] = '_MI_CAL_START';
-$modversion['config'][5]['description'] = '_MI_CAL_START_DESC';
-$modversion['config'][5]['formtype'] = 'select';
-$modversion['config'][5]['valuetype'] = 'int';
-$modversion['config'][5]['default'] = '1';
-$modversion['config'][5]['options'] = [_MI_TADCAL_SU => '0', _MI_TADCAL_MO => '1'];
+//---偏好設定---//
+$modversion['config'] = [
+    [
+        'name' => 'eventShowMode',
+        'title' => '_MI_TADCAL_EVENTSHOWMODE',
+        'description' => '_MI_TADCAL_EVENTSHOWMODE_DESC',
+        'formtype' => 'select',
+        'valuetype' => 'text',
+        'default' => 'eventClick',
+        'options' => [_MI_TADCAL_CONF0_OPT1 => 'eventClick', _MI_TADCAL_CONF0_OPT2 => 'eventMouseover'],
+    ],
+    [
+        'name' => 'eventTheme',
+        'title' => '_MI_TADCAL_EVENTTHEME',
+        'description' => '_MI_TADCAL_EVENTTHEME_DESC',
+        'formtype' => 'select',
+        'valuetype' => 'text',
+        'default' => 'ui-tooltip-blue',
+        'options' => [
+            _MI_TADCAL_CONF1_OPT1 => 'ui-tooltip',
+            _MI_TADCAL_CONF1_OPT2 => 'ui-tooltip-light',
+            _MI_TADCAL_CONF1_OPT3 => 'ui-tooltip-dark',
+            _MI_TADCAL_CONF1_OPT4 => 'ui-tooltip-red',
+            _MI_TADCAL_CONF1_OPT5 => 'ui-tooltip-blue',
+            _MI_TADCAL_CONF1_OPT6 => 'ui-tooltip-green',
+        ],
+    ],
+    [
+        'name' => 'title_num',
+        'title' => '_MI_TADCAL_TITLE_NUM',
+        'description' => '_MI_TADCAL_TITLE_NUM_DESC',
+        'formtype' => 'textbox',
+        'valuetype' => 'int',
+        'default' => '7',
+    ],
+    [
+        'name' => 'quick_add',
+        'title' => '_MI_TADCAL_QUICK_ADD',
+        'description' => '_MI_TADCAL_QUICK_ADD_DESC',
+        'formtype' => 'yesno',
+        'valuetype' => 'int',
+        'default' => '1',
+    ],
+    [
+        'name' => 'use_social_tools',
+        'title' => '_MI_SOCIALTOOLS_TITLE',
+        'description' => '_MI_SOCIALTOOLS_TITLE_DESC',
+        'formtype' => 'yesno',
+        'valuetype' => 'int',
+        'default' => '1',
+    ],
+    [
+        'name' => 'cal_start',
+        'title' => '_MI_CAL_START',
+        'description' => '_MI_CAL_START_DESC',
+        'formtype' => 'select',
+        'valuetype' => 'int',
+        'default' => '1',
+        'options' => [_MI_TADCAL_SU => '0', _MI_TADCAL_MO => '1'],
+    ],
+];

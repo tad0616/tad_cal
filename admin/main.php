@@ -1,6 +1,7 @@
 <?php
 use Xmf\Request;
 use XoopsModules\Tadtools\FormValidator;
+use XoopsModules\Tadtools\MColorPicker;
 use XoopsModules\Tadtools\Utility;
 
 /*-----------引入檔案區--------------*/
@@ -12,9 +13,8 @@ require_once dirname(__DIR__) . '/function.php';
 //tad_cal_cate編輯表單
 function tad_cal_cate_form($cate_sn = '')
 {
-    global $xoopsDB, $xoopsUser, $xoopsTpl;
+    global $xoopsTpl;
     require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
-    //include_once(XOOPS_ROOT_PATH."/class/xoopseditor/xoopseditor.php");
 
     //抓取預設值
     if (!empty($cate_sn)) {
@@ -74,6 +74,8 @@ function tad_cal_cate_form($cate_sn = '')
 
     $FormValidator = new FormValidator('#myForm', true);
     $FormValidator->render();
+    $MColorPicker = new MColorPicker('.color-picker');
+    $MColorPicker->render('bootstrap');
 
     $xoopsTpl->assign('next_op', $op);
     $xoopsTpl->assign('cate_sn', $cate_sn);
@@ -94,7 +96,7 @@ function tad_cal_cate_form($cate_sn = '')
 //匯入Google行事曆
 function tad_cal_add_gcal_form()
 {
-    global $xoopsDB, $xoopsUser, $xoopsTpl;
+    global $xoopsTpl;
 
     $xoopsTpl->assign('op', 'tad_cal_add_gcal_form');
     $xoopsTpl->assign('curl_init', function_exists('curl_init'));
@@ -103,11 +105,7 @@ function tad_cal_add_gcal_form()
 //新增資料到tad_cal_cate中
 function insert_tad_cal_cate()
 {
-    global $xoopsDB, $xoopsUser;
-
-    $_POST['cate_title'] = $xoopsDB->escape($_POST['cate_title']);
-    $_POST['google_id'] = $xoopsDB->escape($_POST['google_id']);
-    $_POST['google_pass'] = $xoopsDB->escape($_POST['google_pass']);
+    global $xoopsDB;
 
     if (empty($_POST['enable_group']) or in_array('', $_POST['enable_group'])) {
         $enable_group = '';
@@ -128,10 +126,8 @@ function insert_tad_cal_cate()
         $_POST['cate_color'] = '#ffffff';
     }
 
-    $sql = 'insert into ' . $xoopsDB->prefix('tad_cal_cate') . "
-  (`cate_title` , `cate_sort` , `cate_enable` , `cate_handle` , `enable_group` , `enable_upload_group` , `google_id` , `google_pass`,`cate_bgcolor`,`cate_color`)
-  values('{$_POST['cate_title']}' , '{$_POST['cate_sort']}' , '{$_POST['cate_enable']}' , '{$_POST['cate_handle']}' , '{$enable_group}' , '{$enable_upload_group}' , '{$_POST['google_id']}' , '{$_POST['google_pass']}', '{$_POST['cate_bgcolor']}', '{$_POST['cate_color']}')";
-    $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+    $sql = 'INSERT INTO `' . $xoopsDB->prefix('tad_cal_cate') . '` (`cate_title`, `cate_sort`, `cate_enable`, `cate_handle`, `enable_group`, `enable_upload_group`, `google_id`, `google_pass`, `cate_bgcolor`, `cate_color`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    Utility::query($sql, 'sissssssss', [$_POST['cate_title'], $_POST['cate_sort'], $_POST['cate_enable'], $_POST['cate_handle'], $enable_group, $enable_upload_group, $_POST['google_id'], $_POST['google_pass'], $_POST['cate_bgcolor'], $_POST['cate_color']]) or Utility::web_error($sql, __FILE__, __LINE__);
 
     //取得最後新增資料的流水編號
     $cate_sn = $xoopsDB->getInsertId();
@@ -142,11 +138,7 @@ function insert_tad_cal_cate()
 //更新tad_cal_cate某一筆資料
 function update_tad_cal_cate($cate_sn = '')
 {
-    global $xoopsDB, $xoopsUser;
-
-    $_POST['cate_title'] = $xoopsDB->escape($_POST['cate_title']);
-    $_POST['google_id'] = $xoopsDB->escape($_POST['google_id']);
-    $_POST['google_pass'] = $xoopsDB->escape($_POST['google_pass']);
+    global $xoopsDB;
 
     if (empty($_POST['enable_group']) or in_array('', $_POST['enable_group'])) {
         $enable_group = '';
@@ -159,20 +151,32 @@ function update_tad_cal_cate($cate_sn = '')
     } else {
         $enable_upload_group = implode(',', $_POST['enable_upload_group']);
     }
+    $sql = 'UPDATE `' . $xoopsDB->prefix('tad_cal_cate') . '` SET
+    `cate_title` = ?,
+    `cate_sort` = ?,
+    `cate_enable` = ?,
+    `cate_handle` = ?,
+    `enable_group` = ?,
+    `enable_upload_group` = ?,
+    `google_id` = ?,
+    `google_pass` = ?,
+    `cate_bgcolor` = ?,
+    `cate_color` = ?
+     WHERE `cate_sn` = ?';
 
-    $sql = 'update ' . $xoopsDB->prefix('tad_cal_cate') . " set
-   `cate_title` = '{$_POST['cate_title']}' ,
-   `cate_sort` = '{$_POST['cate_sort']}' ,
-   `cate_enable` = '{$_POST['cate_enable']}' ,
-   `cate_handle` = '{$_POST['cate_handle']}' ,
-   `enable_group` = '{$enable_group}' ,
-   `enable_upload_group` = '{$enable_upload_group}' ,
-   `google_id` = '{$_POST['google_id']}' ,
-   `google_pass` = '{$_POST['google_pass']}',
-   `cate_bgcolor` = '{$_POST['cate_bgcolor']}',
-   `cate_color` = '{$_POST['cate_color']}'
-    where cate_sn='$cate_sn'";
-    $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+    Utility::query($sql, 'sisssssissi', [
+        $_POST['cate_title'],
+        $_POST['cate_sort'],
+        $_POST['cate_enable'],
+        $_POST['cate_handle'],
+        $enable_group,
+        $enable_upload_group,
+        $_POST['google_id'],
+        $_POST['google_pass'],
+        $_POST['cate_bgcolor'],
+        $_POST['cate_color'],
+        $cate_sn,
+    ]) or Utility::web_error($sql, __FILE__, __LINE__);
 
     return $cate_sn;
 }
@@ -180,21 +184,19 @@ function update_tad_cal_cate($cate_sn = '')
 //列出所有tad_cal_cate資料
 function list_tad_cal_cate($show_function = 1)
 {
-    global $xoopsDB, $xoopsModule, $xoopsTpl;
+    global $xoopsDB, $xoopsTpl;
 
     //取得資料數
-    $sql = 'select count(*),cate_sn,max(`last_update`) from ' . $xoopsDB->prefix('tad_cal_event') . ' group by cate_sn';
-    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+    $sql = 'SELECT COUNT(*), `cate_sn`, MAX(`last_update`) FROM `' . $xoopsDB->prefix('tad_cal_event') . '` GROUP BY `cate_sn`';
+    $result = Utility::query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+
     while (list($count, $cate_sn, $last_update) = $xoopsDB->fetchRow($result)) {
         $counter[$cate_sn] = $count;
         $last[$cate_sn] = $last_update;
     }
 
-    $sql = 'select * from ' . $xoopsDB->prefix('tad_cal_cate') . ' order by cate_sort';
-
-    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-
-    $function_title = ($show_function) ? '<th>' . _TAD_FUNCTION . '</th>' : '';
+    $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tad_cal_cate') . '` ORDER BY `cate_sort`';
+    $result = Utility::query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
     $all_content = [];
     $i = 0;
@@ -241,11 +243,12 @@ function list_tad_cal_cate($show_function = 1)
 function delete_tad_cal_cate($cate_sn = '')
 {
     global $xoopsDB;
-    $sql = 'delete from ' . $xoopsDB->prefix('tad_cal_cate') . " where cate_sn='$cate_sn'";
-    $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+    $sql = 'DELETE FROM `' . $xoopsDB->prefix('tad_cal_cate') . '` WHERE `cate_sn`=?';
+    Utility::query($sql, 'i', [$cate_sn]) or Utility::web_error($sql, __FILE__, __LINE__);
 
-    $sql = 'delete from ' . $xoopsDB->prefix('tad_cal_event') . " where cate_sn='$cate_sn'";
-    $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+    $sql = 'DELETE FROM `' . $xoopsDB->prefix('tad_cal_event') . '` WHERE `cate_sn`=?';
+    Utility::query($sql, 'i', [$cate_sn]) or Utility::web_error($sql, __FILE__, __LINE__);
+
 }
 
 //連到Google行事曆
@@ -255,8 +258,9 @@ function link_to_google($id = '', $pass = '')
 
     $cate_title_arr = [];
     //抓出現有google行事曆
-    $sql = 'select `cate_title`,`cate_handle` from ' . $xoopsDB->prefix('tad_cal_cate') . " where `cate_handle`!=''";
-    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+    $sql = 'SELECT `cate_title`, `cate_handle` FROM `' . $xoopsDB->prefix('tad_cal_cate') . '` WHERE `cate_handle` != ?';
+    $result = Utility::query($sql, 's', ['']) or Utility::web_error($sql, __FILE__, __LINE__);
+
     while (list($cate_title, $cate_handle) = $xoopsDB->fetchRow($result)) {
         $all_handle[] = $cate_handle;
         $cate_title_arr[$cate_handle] = $cate_title;
@@ -300,18 +304,16 @@ function save_google()
     global $xoopsDB, $xoopsUser;
 
     //抓出現有google行事曆
-    $sql = 'select `cate_sn`,`cate_handle` from ' . $xoopsDB->prefix('tad_cal_cate') . " where `cate_handle`!=''";
-    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+    $sql = 'SELECT `cate_sn`,`cate_handle` FROM `' . $xoopsDB->prefix('tad_cal_cate') . '` WHERE `cate_handle`!=?';
+    $result = Utility::query($sql, 's', ['']) or Utility::web_error($sql, __FILE__, __LINE__);
+
     while (list($cate_sn, $cate_handle) = $xoopsDB->fetchRow($result)) {
         $all_handle[] = $cate_handle;
         $cate_sn_arr[$cate_handle] = $cate_sn;
     }
 
-    $_POST['google_id'] = $xoopsDB->escape($_POST['google_id']);
-    $_POST['google_pass'] = $xoopsDB->escape($_POST['google_pass']);
-
     foreach ($_POST['handle'] as $i => $handle) {
-        $title = $xoopsDB->escape($_POST['title'][$i]);
+        $title = (string) $_POST['title'][$i];
         $enable_group = '';
         $enable_upload_group = '1';
         $sort = tad_cal_cate_max_sort();
@@ -319,8 +321,9 @@ function save_google()
         if (!in_array($handle, $all_handle)) {
             $cate_sn = create_cate($title, $sort, $handle, $enable_group, $enable_upload_group, $_POST['google_id'], $_POST['google_pass']);
         } else {
-            $sql = 'update ' . $xoopsDB->prefix('tad_cal_cate') . " set `cate_title`='{$title}' , `google_id`='{$_POST['google_id']}' , `google_pass`='{$_POST['google_pass']}' where `cate_handle`='{$handle}'";
-            $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+            $sql = 'UPDATE `' . $xoopsDB->prefix('tad_cal_cate') . '` SET `cate_title`=?, `google_id`=?, `google_pass`=? WHERE `cate_handle`=?';
+            Utility::query($sql, 'ssss', [$title, $_POST['google_id'], $_POST['google_pass'], $handle]) or Utility::web_error($sql, __FILE__, __LINE__);
+
             $cate_sn = $cate_sn_arr[$handle];
         }
         import_google($cate_sn);
@@ -330,10 +333,10 @@ function save_google()
 //全部同步
 function tad_cal_all_sync()
 {
-    global $xoopsDB, $xoopsModule;
+    global $xoopsDB;
 
-    $sql = 'select cate_sn from ' . $xoopsDB->prefix('tad_cal_cate') . " where `cate_handle`!=''";
-    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+    $sql = 'SELECT `cate_sn` FROM `' . $xoopsDB->prefix('tad_cal_cate') . '` WHERE `cate_handle`!=?';
+    $result = Utility::query($sql, 's', ['']) or Utility::web_error($sql, __FILE__, __LINE__);
 
     while (list($cate_sn) = $xoopsDB->fetchRow($result)) {
         import_google($cate_sn);

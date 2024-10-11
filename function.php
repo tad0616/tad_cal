@@ -1,9 +1,8 @@
 <?php
 use XoopsModules\Tadtools\Utility;
+use XoopsModules\Tad_cal\Tools;
 
 xoops_loadLanguage('main', 'tadtools');
-
-require_once XOOPS_ROOT_PATH . '/modules/tad_cal/function_block.php';
 
 /********************* 自訂函數 ********************
  * @param string $title
@@ -20,22 +19,22 @@ function create_cate($title = '', $sort = '', $handle = '', $enable_group = '', 
 {
     global $xoopsDB;
 
-    $title = $xoopsDB->escape($title);
     if (empty($sort)) {
         $sort = tad_cal_cate_max_sort();
     }
 
-    $sql = 'insert into ' . $xoopsDB->prefix('tad_cal_cate') . "
-    (`cate_title` , `cate_sort` , `cate_enable` , `cate_handle` , `enable_group` , `enable_upload_group` , `google_id` , `google_pass`, `cate_color`)
-    values('{$title}' , '{$sort}' , '1' , '{$handle}' , '{$enable_group}' , '{$enable_upload_group}' , '{$google_id}' , '{$google_pass}','rgb(0,0,0)')";
-    $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+    $sql = 'INSERT INTO `' . $xoopsDB->prefix('tad_cal_cate') . '`
+    (`cate_title`, `cate_sort`, `cate_enable`, `cate_handle`, `enable_group`, `enable_upload_group`, `google_id`, `google_pass`, `cate_color`)
+    VALUES (?, ?, 1, ?, ?, ?, ?, ?, ?)';
+    Utility::query($sql, 'sisssssss', [$title, $sort, $handle, $enable_group, $enable_upload_group, $google_id, $google_pass, 'rgb(0,0,0)']) or Utility::web_error($sql, __FILE__, __LINE__);
+
     //取得最後新增資料的流水編號
     $cate_sn = $xoopsDB->getInsertId();
 
     //自動給顏色碼
     $color = num2color($cate_sn);
-    $sql = 'update ' . $xoopsDB->prefix('tad_cal_cate') . " set `cate_bgcolor`='{$color}' where `cate_sn`='$cate_sn'";
-    $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+    $sql = 'UPDATE `' . $xoopsDB->prefix('tad_cal_cate') . '` SET `cate_bgcolor`=? WHERE `cate_sn`=?';
+    Utility::query($sql, 'si', [$color, $cate_sn]) or Utility::web_error($sql, __FILE__, __LINE__);
 
     return $cate_sn;
 }
@@ -44,8 +43,9 @@ function create_cate($title = '', $sort = '', $handle = '', $enable_group = '', 
 function tad_cal_cate_max_sort()
 {
     global $xoopsDB;
-    $sql = 'select max(`cate_sort`) from ' . $xoopsDB->prefix('tad_cal_cate');
-    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+    $sql = 'SELECT MAX(`cate_sort`) FROM `' . $xoopsDB->prefix('tad_cal_cate') . '`';
+    $result = Utility::query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+
     list($sort) = $xoopsDB->fetchRow($result);
 
     return ++$sort;
@@ -59,8 +59,9 @@ function get_tad_cal_cate($cate_sn = '')
         return;
     }
 
-    $sql = 'select * from ' . $xoopsDB->prefix('tad_cal_cate') . " where cate_sn='$cate_sn'";
-    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+    $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tad_cal_cate') . '` WHERE `cate_sn` =?';
+    $result = Utility::query($sql, 'i', [$cate_sn]) or Utility::web_error($sql, __FILE__, __LINE__);
+
     $data = $xoopsDB->fetchArray($result);
 
     return $data;
@@ -108,8 +109,9 @@ function setTimezoneByOffset($offset)
 function get_tad_cal_cate_all()
 {
     global $xoopsDB;
-    $sql = 'select * from ' . $xoopsDB->prefix('tad_cal_cate');
-    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+    $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tad_cal_cate') . '`';
+    $result = Utility::query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+
     while (false !== ($data = $xoopsDB->fetchArray($result))) {
         $cate_sn = $data['cate_sn'];
         $data_arr[$cate_sn] = $data;
@@ -122,8 +124,9 @@ function get_tad_cal_cate_all()
 function get_cal_array()
 {
     global $xoopsDB;
-    $sql = 'select cate_sn,cate_title from ' . $xoopsDB->prefix('tad_cal_cate') . '';
-    $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+    $sql = 'SELECT `cate_sn`, `cate_title` FROM `' . $xoopsDB->prefix('tad_cal_cate') . '`';
+    $result = Utility::query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+
     while (list($cate_sn, $cate_title) = $xoopsDB->fetchRow($result)) {
         $arr[$cate_sn] = $cate_title;
     }
@@ -137,7 +140,7 @@ function get_events($even_start = '', $even_end = '', $cate_sn_arr = [], $show_t
     global $xoopsDB;
 
     //取得目前使用者可讀的群組
-    $ok_cate_arr = chk_tad_cal_cate_power('enable_group');
+    $ok_cate_arr = Tools::chk_tad_cal_cate_power('enable_group');
 
     if (!empty($cate_sn_arr)) {
         foreach ($cate_sn_arr as $cate_sn) {
@@ -149,17 +152,37 @@ function get_events($even_start = '', $even_end = '', $cate_sn_arr = [], $show_t
         $ok_arr = $ok_cate_arr;
     }
 
-    //可讀類別判別
-    $all_ok_cate = implode(',', $ok_arr);
-    $and_ok_cate = empty($all_ok_cate) ? "and cate_sn='0'" : "and cate_sn in($all_ok_cate)";
-    $and_start = !empty($even_start) ? "and `start` >= '$even_start'" : "";
-    $and_end = !empty($even_end) ? "and `end` <= '$even_end'" : "";
-    $and_tag = !empty($todo_tag) ? "and `tag` = '$todo_tag'" : "";
+    $params = [];
+    $conditions = ["1"]; // 基本條件
 
-    //抓出事件
-    $sql = 'select * from ' . $xoopsDB->prefix('tad_cal_event') . " where  1 $and_start $and_end $and_ok_cate $and_tag order by `start` , `sequence`";
+    // 可讀類別判別
+    if (!empty($ok_arr)) {
+        $all_ok_cate = implode(',', array_map('intval', $ok_arr)); // 確保類別為整數
+        $conditions[] = "cate_sn IN ($all_ok_cate)";
+    } else {
+        $conditions[] = "cate_sn = '0'";
+    }
 
-    $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+    if (!empty($even_start)) {
+        $conditions[] = "`start` >= ?";
+        $params[] = $even_start;
+    }
+
+    if (!empty($even_end)) {
+        $conditions[] = "`end` <= ?";
+        $params[] = $even_end;
+    }
+
+    if (!empty($todo_tag)) {
+        $conditions[] = "`tag` = ?";
+        $params[] = $todo_tag;
+    }
+
+    // 抓出事件
+    $sql = 'SELECT * FROM `' . $xoopsDB->prefix('tad_cal_event') . '` WHERE ' . implode(' AND ', $conditions) . ' ORDER BY `start`, `sequence`';
+
+    $result = Utility::query($sql, str_repeat('s', count($params)), $params) or Utility::web_error($sql, __FILE__, __LINE__);
+
     $i = 0;
     while (false !== ($all = $xoopsDB->fetchArray($result))) {
         //以下會產生這些變數： $sn , $title , $start , $end , $recurrence , $location , $kind , $details , $etag , $id , $sequence , $uid , $cate_sn
@@ -186,15 +209,28 @@ function get_events($even_start = '', $even_end = '', $cate_sn_arr = [], $show_t
             }
         }
     }
+    $params = [];
+    $conditions = ["1"]; // 基本條件
 
-    $and_start = !empty($even_start) ? "and a.`start` >= '$even_start'" : "";
-    $and_end = !empty($even_end) ? "and a.`end` <= '$even_end'" : "";
-    $and_tag = !empty($todo_tag) ? "and b.`tag` = '$todo_tag'" : "";
+    if (!empty($even_start)) {
+        $conditions[] = "a.`start` >= ?";
+        $params[] = $even_start;
+    }
 
-    //抓出重複事件
-    $sql = 'select a.*,b.title,b.cate_sn from ' . $xoopsDB->prefix('tad_cal_repeat') . ' as a join ' . $xoopsDB->prefix('tad_cal_event') . " as b on a.sn=b.sn where 1 $and_start $and_end $and_tag $and_ok_cate2  order by a.`start`";
-    //die($sql);
-    $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+    if (!empty($even_end)) {
+        $conditions[] = "a.`end` <= ?";
+        $params[] = $even_end;
+    }
+
+    if (!empty($todo_tag)) {
+        $conditions[] = "b.`tag` = ?";
+        $params[] = $todo_tag;
+    }
+
+    // 抓出重複事件
+    $sql = 'SELECT a.*, b.title, b.cate_sn FROM `' . $xoopsDB->prefix('tad_cal_repeat') . '` AS a JOIN `' . $xoopsDB->prefix('tad_cal_event') . "` AS b ON a.sn = b.sn WHERE " . implode(' AND ', $conditions) . " $and_ok_cate2 ORDER BY a.`start`";
+
+    $result = Utility::query($sql, str_repeat('s', count($params)), $params) or Utility::web_error($sql, __FILE__, __LINE__);
 
     while (false !== ($all = $xoopsDB->fetchArray($result))) {
         //以下會產生這些變數： $sn , $title , $start , $end , $recurrence , $location , $kind , $details , $etag , $id , $sequence , $uid , $cate_sn

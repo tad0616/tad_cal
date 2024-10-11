@@ -1,8 +1,6 @@
 <{$toolbar|default:''}>
 <h2 class="sr-only visually-hidden">Calendar word</h2>
 
-<script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/My97DatePicker/WdatePicker.js"></script>
-
 <form action="word.php" method="post" id="myForm" class="form-horizontal" role="form">
 
   <div class="form-group row mb-3">
