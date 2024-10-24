@@ -1,12 +1,13 @@
 <?php
 use Xmf\Request;
 use XoopsModules\Tadtools\FormValidator;
+use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
 use XoopsModules\Tad_cal\Tools;
 
 /*-----------引入檔案區--------------*/
 require_once __DIR__ . '/header.php';
-$xoopsOption['template_main'] = 'tad_cal_event.tpl';
+$xoopsOption['template_main'] = 'tad_cal_index.tpl';
 require_once XOOPS_ROOT_PATH . '/header.php';
 
 /*-----------執行動作判斷區----------*/
@@ -86,6 +87,8 @@ switch ($op) {
 }
 
 /*-----------秀出結果區--------------*/
+$SweetAlert = new SweetAlert();
+$SweetAlert->render("delete_tad_cal_event_func", "event.php?op=delete_tad_cal_event&sn=", 'sn');
 $xoopsTpl->assign('toolbar', Utility::toolbar_bootstrap($interface_menu, false, $interface_icon));
 $xoopsTpl->assign('now_op', $op);
 
@@ -777,7 +780,7 @@ function show_one_tad_cal_event($sn = '', $stamp = '')
 //以流水號秀出某筆tad_cal_event資料內容
 function show_simple_event($sn = '', $stamp = '')
 {
-    global $xoopsDB, $xoopsUser;
+    global $xoopsDB, $xoopsUser, $xoopsLogger;
 
     if (empty($sn)) {
         return;
@@ -836,13 +839,6 @@ function show_simple_event($sn = '', $stamp = '')
     </div>" : "<div style='margin-top:5px;'>$page</div>";
 
     $data = "
-  <script>
-  function delete_tad_cal_event_func(sn){
-    var sure = window.confirm('" . _TAD_DEL_CONFIRM . "');
-    if (!sure)  return;
-    location.href=\"{$_SERVER['PHP_SELF']}?op=delete_tad_cal_event&sn=\" + sn;
-  }
-  </script>
   <table id='tbl' summary='list_table'>
   <tr>
   <td nowrap style='font-family:Arial;font-size:0.813rem;'><img src='" . XOOPS_URL . "/modules/tad_cal/images/date.png' alt='" . _MD_TADCAL_TIME . "' style='margin-right:4px;' align='absmiddle'> {$date}</td>
@@ -855,7 +851,7 @@ function show_simple_event($sn = '', $stamp = '')
   <tr><td style='background-color:transparent;border-bottom:none;'>$fun</td></tr>
   </table>
   ";
-
+    $xoopsLogger->activated = false;
     header('HTTP/1.1 200 OK');
     die($data);
 }

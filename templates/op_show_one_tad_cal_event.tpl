@@ -1,12 +1,4 @@
 
-<script>
-function delete_tad_cal_event_func(sn){
-    var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
-    if (!sure)  return;
-    location.href="<{$xoops_url}>/modules/tad_cal/event.php?op=delete_tad_cal_event&sn=" + sn;
-}
-</script>
-
 <h1>
 <{include file="$xoops_rootpath/modules/tad_cal/templates/sub_todo.tpl"}>
 <{$title|default:''}>

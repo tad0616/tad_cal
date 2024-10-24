@@ -58,7 +58,6 @@ define('_MD_TADCAL_REPEAT_CANT_MOVE', 'Couldn not crete Repeating event, edit to
 define('_MD_TADCAL_NEED_LOGIN', 'You need to login to use this feature.');
 define('_MD_TADCAL_NO_POWER', 'Sorry, you have no permission to publish');
 define('_MD_TADCAL_SYNC_COUNT', '%s once again will be the next sync!');
-define('_MD_TADCAL_GOOGLE_EMPTY_EVENT', 'No event to import');
 
 //download.php,word.php
 define('_MD_TADCAL_SIMPLE_CAL', 'Calendar');

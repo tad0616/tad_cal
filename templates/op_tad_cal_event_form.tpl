@@ -111,7 +111,7 @@ $("#long").val(strtotime(chk_end)*1 - strtotime(chk_start)*1);
 <form action="<{$xoops_url}>/modules/tad_cal/event.php" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal" role="form">
     <!--事件標題-->
     <div class="form-group row mb-3">
-        <label class="col-sm-2 col-form-label text-sm-right control-label">
+        <label class="col-sm-2 col-form-label text-sm-right text-sm-end control-label">
         <{$smarty.const._MD_TADCAL_TITLE}>
         </label>
         <div class="col-sm-10">
@@ -121,7 +121,7 @@ $("#long").val(strtotime(chk_end)*1 - strtotime(chk_start)*1);
 
     <!--事件起始時間-->
     <div class="form-group row mb-3">
-        <label class="col-sm-2 col-form-label text-sm-right control-label">
+        <label class="col-sm-2 col-form-label text-sm-right text-sm-end control-label">
         <{$smarty.const._MD_TADCAL_TIME}>
         </label>
 
@@ -160,7 +160,7 @@ $("#long").val(strtotime(chk_end)*1 - strtotime(chk_start)*1);
         <div class="col-sm-7">
 
             <div class="form-group row mb-3">
-            <label class="col-sm-3 col-form-label text-sm-right control-label">
+            <label class="col-sm-3 col-form-label text-sm-right text-sm-end control-label">
                 <{$smarty.const._MD_TADCAL_REPEAT}><{$smarty.const._TAD_FOR}>
             </label>
             <div class="col-sm-8">
@@ -174,7 +174,7 @@ $("#long").val(strtotime(chk_end)*1 - strtotime(chk_start)*1);
             </div>
 
             <div class="form-group row mb-3">
-            <label class="col-sm-3 col-form-label text-sm-right control-label">
+            <label class="col-sm-3 col-form-label text-sm-right text-sm-end control-label">
                 <{$smarty.const._MD_TADCAL_INTERVAL}><{$smarty.const._TAD_FOR}>
             </label>
             <div class="col-sm-7">
@@ -189,7 +189,7 @@ $("#long").val(strtotime(chk_end)*1 - strtotime(chk_start)*1);
 
 
             <div id="week_repeat" class="form-group row mb-3">
-            <label class="col-sm-3 col-form-label text-sm-right control-label">
+            <label class="col-sm-3 col-form-label text-sm-right text-sm-end control-label">
                 <{$smarty.const._MD_TADCAL_WEEK_REPEAT}><{$smarty.const._TAD_FOR}>
             </label>
             <div class="col-sm-9">
@@ -199,7 +199,7 @@ $("#long").val(strtotime(chk_end)*1 - strtotime(chk_start)*1);
 
 
             <div id="month_repeat" class="form-group row mb-3">
-            <label class="col-sm-3 col-form-label text-sm-right control-label">
+            <label class="col-sm-3 col-form-label text-sm-right text-sm-end control-label">
                 <{$smarty.const._MD_TADCAL_MONTH_REPEAT}><{$smarty.const._TAD_FOR}>
             </label>
             <div class="col-sm-9">
@@ -265,14 +265,14 @@ $("#long").val(strtotime(chk_end)*1 - strtotime(chk_start)*1);
 
     <div class="form-group row mb-3">
         <!--所屬行事曆-->
-        <label class="col-sm-2 col-form-label text-sm-right control-label">
+        <label class="col-sm-2 col-form-label text-sm-right text-sm-end control-label">
         <{$of_cate_title|default:''}>
         </label>
         <div class="col-sm-4">
         <{$cate_col|default:''}>
         </div>
         <!--事件地點-->
-        <label class="col-sm-2 col-form-label text-sm-right control-label">
+        <label class="col-sm-2 col-form-label text-sm-right text-sm-end control-label">
         <{$smarty.const._MD_TADCAL_LOCATION}>
         </label>
         <div class="col-sm-4">
@@ -283,7 +283,7 @@ $("#long").val(strtotime(chk_end)*1 - strtotime(chk_start)*1);
 
     <!--事件內容-->
     <div class="form-group row mb-3">
-        <label class="col-sm-2 col-form-label text-sm-right control-label">
+        <label class="col-sm-2 col-form-label text-sm-right text-sm-end control-label">
         <{$smarty.const._MD_TADCAL_DETAILS}>
         </label>
         <div class="col-sm-10">
@@ -313,6 +313,6 @@ $("#long").val(strtotime(chk_end)*1 - strtotime(chk_start)*1);
         <!--事件排序-->
         <input type="hidden" name="sequence" size="2" value="<{$sequence|default:''}>" id="sequence">
         <input type="hidden" name="op" value="<{$next_op|default:''}>">
-        <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
+        <button type="submit" class="btn btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i>  <{$smarty.const._TAD_SAVE}></button>
     </div>
 </form>

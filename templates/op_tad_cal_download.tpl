@@ -1,11 +1,10 @@
-<{$toolbar|default:''}>
 <h2 class="sr-only visually-hidden">Calendar word</h2>
 
 <form action="word.php" method="post" id="myForm" class="form-horizontal" role="form">
 
   <div class="form-group row mb-3">
     <!--事件起始時間-->
-    <label class="col-sm-2 col-form-label text-sm-right control-label">
+    <label class="col-sm-2 col-form-label text-sm-right text-sm-end control-label">
       <{$smarty.const._MD_TADCAL_TIME}>
     </label>
     <!--開始時間-->
@@ -17,7 +16,7 @@
       <input type="text" name="end" title="end" value="<{$end|default:''}>" id="end_allday" onClick="WdatePicker({dateFmt:'yyyy-MM-dd' , startDate:'%y-%M-%d'})"  class="form-control">
     </div>
     <!--列出類型-->
-    <label class="col-sm-2 col-form-label text-sm-right control-label">
+    <label class="col-sm-2 col-form-label text-sm-right text-sm-end control-label">
       <{$smarty.const._MD_TADCAL_DL_TYPE}>
     </label>
     <div class="col-sm-4">
@@ -34,7 +33,7 @@
   </div>
 
   <div class="form-group row mb-3">
-    <label class="col-sm-2 col-form-label text-sm-right control-label">
+    <label class="col-sm-2 col-form-label text-sm-right text-sm-end control-label">
       <{$smarty.const._MD_TADCAL_CATE_SN}>
     </label>
     <div class="col-sm-4">
@@ -43,7 +42,7 @@
       </select>
     </div>
     <!--列出類型-->
-    <label class="col-sm-2 col-form-label text-sm-right control-label">
+    <label class="col-sm-2 col-form-label text-sm-right text-sm-end control-label">
       <{$smarty.const._MD_TADCAL_SHOW_TYPE}>
     </label>
     <div class="col-sm-4">

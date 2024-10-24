@@ -10,7 +10,9 @@ $op = Request::getString('op');
 $start = Request::getString('start');
 $end = Request::getString('end');
 
+$xoopsLogger->activated = false;
 header('HTTP/1.1 200 OK');
+
 if ('title' === $op) {
     echo get_event_title($start);
 } else {
@@ -74,8 +76,8 @@ function get_event_num()
         $myEvents[$i]['show_date'] = date('Y-m-d', $Time_arr[$start]);
         $i++;
     }
+    Utility::dd($myEvents);
 
-    return json_encode($myEvents, JSON_UNESCAPED_UNICODE);
 }
 
 //取得事件標題即連結

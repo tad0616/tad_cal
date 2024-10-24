@@ -1,12 +1,4 @@
 
-<script>
-function delete_tad_cal_event_func(sn){
-    var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
-    if (!sure)  return;
-    location.href="<{$xoops_url}>/modules/tad_cal/event.php?op=delete_tad_cal_event&sn=" + sn;
-}
-</script>
-
 <table class="table table-striped table-hover">
 <tr>
   <th><{$smarty.const._MD_TADCAL_START}></th>

@@ -58,7 +58,6 @@ define('_MD_TADCAL_REPEAT_CANT_MOVE', '重複事件無法直接搬移，請編�
 define('_MD_TADCAL_NEED_LOGIN', '登入後才能使用此功能。');
 define('_MD_TADCAL_NO_POWER', '您沒有任何發布權限喔！');
 define('_MD_TADCAL_SYNC_COUNT', '再 %s 次會進行下一次同步！');
-define('_MD_TADCAL_GOOGLE_EMPTY_EVENT', '無事件可匯入');
 
 //download.php,word.php
 define('_MD_TADCAL_SIMPLE_CAL', '簡曆');

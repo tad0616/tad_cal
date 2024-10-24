@@ -1,5 +1,6 @@
 <?php
 use Xmf\Request;
+use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
 use XoopsModules\Tad_cal\Tools;
 
@@ -7,6 +8,38 @@ use XoopsModules\Tad_cal\Tools;
 require_once __DIR__ . '/header.php';
 $xoopsOption['template_main'] = 'tad_cal_index.tpl';
 require_once XOOPS_ROOT_PATH . '/header.php';
+
+/*-----------執行動作判斷區----------*/
+$op = Request::getString('op');
+$cate_sn = Request::getInt('cate_sn');
+$sn = Request::getInt('sn');
+
+switch ($op) {
+    default:
+        fullcalendar($cate_sn);
+        $op = 'fullcalendar';
+        break;
+}
+
+/*-----------秀出結果區--------------*/
+$xoopsTpl->assign('now_op', $op);
+$xoopsTpl->assign('toolbar', Utility::toolbar_bootstrap($interface_menu, false, $interface_icon));
+$xoTheme->addStylesheet('modules/tad_cal/css/module.css');
+$xoTheme->addStylesheet('modules/tadtools/fullcalendar/redmond/theme.css');
+$xoTheme->addStylesheet('modules/tadtools/fullcalendar/fullcalendar.css');
+$xoTheme->addStylesheet('modules/tadtools/jquery.qtip_2/jquery.qtip.min.css');
+
+$xoTheme->addScript('modules/tadtools/moment/moment-with-locales.min.js');
+$xoTheme->addScript('modules/tad_cal/class/jquery-impromptu.6.2.3.min.js');
+$xoTheme->addScript('modules/tadtools/fullcalendar/fullcalendar.js');
+$xoTheme->addScript('modules/tadtools/fullcalendar/gcal.js');
+$xoTheme->addScript('modules/tadtools/jquery.qtip_2/jquery.qtip.min.js');
+$xoTheme->addScript('modules/tadtools/My97DatePicker/WdatePicker.js');
+
+$SweetAlert = new SweetAlert();
+$SweetAlert->render("delete_tad_cal_event_func", "index.php?op=delete_tad_cal_event&sn=", 'sn');
+require_once XOOPS_ROOT_PATH . '/footer.php';
+
 /*-----------function區--------------*/
 
 function fullcalendar($cate_sn = 0)
@@ -119,31 +152,3 @@ function fullcalendar($cate_sn = 0)
     $xoopsTpl->assign('cate', get_tad_cal_cate($cate_sn));
     Utility::add_migrate();
 }
-
-/*-----------執行動作判斷區----------*/
-$op = Request::getString('op');
-$cate_sn = Request::getInt('cate_sn');
-$sn = Request::getInt('sn');
-
-switch ($op) {
-    default:
-        fullcalendar($cate_sn);
-        break;
-}
-
-/*-----------秀出結果區--------------*/
-$xoopsTpl->assign('now_op', $op);
-$xoopsTpl->assign('toolbar', Utility::toolbar_bootstrap($interface_menu, false, $interface_icon));
-$xoTheme->addStylesheet('modules/tad_cal/css/module.css');
-$xoTheme->addStylesheet('modules/tadtools/fullcalendar/redmond/theme.css');
-$xoTheme->addStylesheet('modules/tadtools/fullcalendar/fullcalendar.css');
-$xoTheme->addStylesheet('modules/tadtools/jquery.qtip_2/jquery.qtip.min.css');
-
-$xoTheme->addScript('modules/tadtools/moment/moment-with-locales.min.js');
-$xoTheme->addScript('modules/tad_cal/class/jquery-impromptu.6.2.3.min.js');
-$xoTheme->addScript('modules/tadtools/fullcalendar/fullcalendar.js');
-$xoTheme->addScript('modules/tadtools/fullcalendar/gcal.js');
-$xoTheme->addScript('modules/tadtools/jquery.qtip_2/jquery.qtip.min.js');
-$xoTheme->addScript('modules/tadtools/My97DatePicker/WdatePicker.js');
-
-require_once XOOPS_ROOT_PATH . '/footer.php';

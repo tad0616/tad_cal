@@ -1,11 +1,4 @@
 
-<script>
-function delete_tad_cal_event_func(sn){
-    var sure = window.confirm("<{$smarty.const._TAD_DEL_CONFIRM}>");
-    if (!sure)  return;
-    location.href="<{$xoops_url}>/modules/tad_cal/event.php?op=delete_tad_cal_event&sn=" + sn;
-}
-</script>
 <{if $smarty.get.op=="todo_list_ok"}>
     <h2><{$smarty.const._MD_TADCAL_TODOLIST_DONE}></h2>
 <{else}>

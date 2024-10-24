@@ -1,4 +1,5 @@
 <?php
+use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
 use XoopsModules\Tad_cal\Tools;
 
@@ -9,10 +10,7 @@ if (!class_exists('XoopsModules\Tadtools\Utility')) {
 //區塊主函式 (大行事曆(tad_cal_full_calendar))
 function tad_cal_full_calendar($options)
 {
-    global $xoopsUser, $xoopsLogger, $xoTheme;
-
-    // error_reporting(0);
-    // $xoopsLogger->activated = false;
+    global $xoopsUser, $xoTheme;
 
     $moduleHandler = xoops_getHandler('module');
     $xoopsModule = $moduleHandler->getByDirname('tad_cal');
@@ -38,7 +36,7 @@ function tad_cal_full_calendar($options)
         $cate_sn = 0;
     }
 
-    $eventDrop = '';
+    $eventDrop = $eventAdd = '';
     if ($xoopsUser) {
         //先抓分類下拉選單
         $get_tad_cal_cate_menu_options = Tools::get_tad_cal_cate_menu_options($cate_sn);
@@ -136,5 +134,7 @@ function tad_cal_full_calendar($options)
     $xoTheme->addScript('modules/tadtools/fullcalendar/gcal.js');
     $xoTheme->addScript('modules/tadtools/jquery.qtip_2/jquery.qtip.min.js');
 
+    $SweetAlert = new SweetAlert();
+    $SweetAlert->render("delete_tad_cal_event_func", XOOPS_URL . "/modules/tad_cal/index.php?op=delete_tad_cal_event&sn=", 'sn');
     return $block;
 }

@@ -58,9 +58,8 @@ $modversion['hasMain'] = 1;
 //---樣板設定---//
 $modversion['templates'] = [
     ['file' => 'tad_cal_index.tpl', 'description' => 'tad_cal_index.tpl'],
+    ['file' => 'tad_cal_admin.tpl', 'description' => 'tad_cal_admin.tpl'],
     ['file' => 'tad_cal_event.tpl', 'description' => 'tad_cal_event.tpl'],
-    ['file' => 'tad_cal_adm_main.tpl', 'description' => 'tad_cal_adm_main.tpl'],
-    ['file' => 'tad_cal_download.tpl', 'description' => 'tad_cal_download.tpl'],
 ];
 
 //---區塊設定---//

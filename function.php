@@ -4,18 +4,8 @@ use XoopsModules\Tad_cal\Tools;
 
 xoops_loadLanguage('main', 'tadtools');
 
-/********************* 自訂函數 ********************
- * @param string $title
- * @param string $sort
- * @param string $handle
- * @param string $enable_group
- * @param string $enable_upload_group
- * @param string $google_id
- * @param string $google_pass
- * @return int
- */
 //自動新增分類
-function create_cate($title = '', $sort = '', $handle = '', $enable_group = '', $enable_upload_group = '1', $google_id = '', $google_pass = '')
+function create_cate($title = '', $sort = '', $handle = '', $enable_group = '', $enable_upload_group = '1')
 {
     global $xoopsDB;
 
@@ -25,8 +15,8 @@ function create_cate($title = '', $sort = '', $handle = '', $enable_group = '', 
 
     $sql = 'INSERT INTO `' . $xoopsDB->prefix('tad_cal_cate') . '`
     (`cate_title`, `cate_sort`, `cate_enable`, `cate_handle`, `enable_group`, `enable_upload_group`, `google_id`, `google_pass`, `cate_color`)
-    VALUES (?, ?, 1, ?, ?, ?, ?, ?, ?)';
-    Utility::query($sql, 'sisssssss', [$title, $sort, $handle, $enable_group, $enable_upload_group, $google_id, $google_pass, 'rgb(0,0,0)']) or Utility::web_error($sql, __FILE__, __LINE__);
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    Utility::query($sql, 'sisssssss', [$title, $sort, '', '', $enable_group, $enable_upload_group, '', '', 'rgb(0,0,0)']) or Utility::web_error($sql, __FILE__, __LINE__);
 
     //取得最後新增資料的流水編號
     $cate_sn = $xoopsDB->getInsertId();
