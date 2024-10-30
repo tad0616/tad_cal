@@ -164,7 +164,7 @@ $("#long").val(strtotime(chk_end)*1 - strtotime(chk_start)*1);
                 <{$smarty.const._MD_TADCAL_REPEAT}><{$smarty.const._TAD_FOR}>
             </label>
             <div class="col-sm-8">
-                <select name="FREQ" title='FREQ' id="freq_select" class="form-control">
+                <select name="FREQ" title='FREQ' id="freq_select" class="form-select">
                 <option value="DAILY" <{$chk_DAILY|default:''}>><{$smarty.const._MD_TADCAL_REPEAT_DAILY}></option>
                 <option value="WEEKLY" <{$chk_WEEKLY|default:''}>><{$smarty.const._MD_TADCAL_REPEAT_WEEKLY}></option>
                 <option value="MONTHLY" <{$chk_MONTHLY|default:''}>><{$smarty.const._MD_TADCAL_REPEAT_MONTHLY}></option>
@@ -178,7 +178,7 @@ $("#long").val(strtotime(chk_end)*1 - strtotime(chk_start)*1);
                 <{$smarty.const._MD_TADCAL_INTERVAL}><{$smarty.const._TAD_FOR}>
             </label>
             <div class="col-sm-7">
-                <select name="INTERVAL" title='INTERVAL' class="form-control">
+                <select name="INTERVAL" title='INTERVAL' class="form-select">
                 <{$INTERVAL_OPT|default:''}>
                 </select>
             </div>

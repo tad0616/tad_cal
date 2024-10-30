@@ -1,5 +1,4 @@
 <?php
-use XoopsModules\Tadtools\Utility;
 
 require_once __DIR__ . '/header.php';
 $myts = \MyTextSanitizer::getInstance();

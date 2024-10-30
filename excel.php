@@ -1,6 +1,5 @@
 <?php
 use Xmf\Request;
-use XoopsModules\Tadtools\Utility;
 
 require_once __DIR__ . '/header.php';
 
