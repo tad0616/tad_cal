@@ -1,3 +1,12 @@
+Tad Cal 4.0 (released on 2024-11-11)
+====================================
+1.Support XOOPS 2.5.11
+2.Support PHP8.1.x
+3. Remove the settings and related interfaces of FaceBook messages
+4. Use $xoopsDB->escape() instead of $myts->addSlashes()
+5. Remove automatic synchronization settings
+6. Database syntax parameterization
+
 Tad Cal 3.5 (released 2023-09-21)
 ====================================
 1. Remove the drag and drop function to solve the problem of not being able to click to edit and the date position is not correct.

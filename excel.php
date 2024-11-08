@@ -169,7 +169,7 @@ if ($excel_data_arr) {
     $objActSheet->getStyleByColumnAndRow(0, 2, 0, 2)->applyFromArray($head_style2);
 }
 // $excel_title = (_CHARSET === 'UTF-8') ? iconv('UTF-8', 'Big5', $excel_title) : $excel_title;
-header('HTTP/1.1 200 OK');
+
 header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 header("Content-Disposition: attachment;filename={$excel_title}.xlsx");
 header('Cache-Control: max-age=0');

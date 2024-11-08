@@ -6,7 +6,7 @@ $week = getWeekOfTheMonth(strtotime($start));
 $wk = date('w', strtotime($start));
 
 $xoopsLogger->activated = false;
-header('HTTP/1.1 200 OK');
+
 echo sprintf(_MD_TADCAL_MONTH_REPEATDAY, $week, $wk);
 
 //算一下該日是該月的第幾週

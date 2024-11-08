@@ -8,7 +8,6 @@ use XoopsModules\Tadtools\Utility;
  */
 class Tools
 {
-
     //取得session
     public static function get_session($force = false)
     {
@@ -17,7 +16,7 @@ class Tools
 
             //判斷是否對該模組有管理權限
             if (!isset($_SESSION['tad_cal_adm']) or $force) {
-                $_SESSION['tad_cal_adm'] = ($xoopsUser) ? $xoopsUser->isAdmin() : false;
+                $_SESSION['tad_cal_adm'] = isset($xoopsUser) && \is_object($xoopsUser) ? $xoopsUser->isAdmin() : false;
             }
 
             //目前登入者

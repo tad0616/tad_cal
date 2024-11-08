@@ -1,10 +1,14 @@
 <?php
 use XoopsModules\Tad_cal\Tools;
+if (!class_exists('XoopsModules\Tad_cal\Tools')) {
+    require XOOPS_ROOT_PATH . '/modules/tad_cal/preloads/autoloader.php';
+}
+
 Tools::get_session();
 $interface_menu[_MD_TADCAL_NEW_CALENDAR] = 'index.php';
 $interface_icon[_MD_TADCAL_NEW_CALENDAR] = "fa-calendar";
 
-if ($xoopsUser) {
+if (isset($xoopsUser)) {
     $interface_menu[_MD_TADCAL_SMNAME2] = 'event.php';
     $interface_icon[_MD_TADCAL_SMNAME2] = "fa-calendar-plus-o";
 

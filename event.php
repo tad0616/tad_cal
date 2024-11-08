@@ -30,7 +30,7 @@ switch ($op) {
 
     //ajax_update_date
     case 'ajax_update_date':
-        header('HTTP/1.1 200 OK');
+
         die(ajax_update_date($sn));
 
     //新增資料
@@ -852,7 +852,7 @@ function show_simple_event($sn = '', $stamp = '')
   </table>
   ";
     $xoopsLogger->activated = false;
-    header('HTTP/1.1 200 OK');
+
     die($data);
 }
 

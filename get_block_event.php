@@ -11,7 +11,6 @@ $start = Request::getString('start');
 $end = Request::getString('end');
 
 $xoopsLogger->activated = false;
-header('HTTP/1.1 200 OK');
 
 if ('title' === $op) {
     echo get_event_title($start);

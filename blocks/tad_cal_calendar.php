@@ -10,16 +10,12 @@ function tad_cal_calendar($options)
 {
     global $xoTheme;
 
-    $moduleHandler = xoops_getHandler('module');
-    $xoopsModule = $moduleHandler->getByDirname('tad_cal');
-    $configHandler = xoops_getHandler('config');
-    $module_id = $xoopsModule->getVar('mid');
-    $xoopsModuleConfig = $configHandler->getConfigsByCat(0, $module_id);
+    $TadCalModuleConfig = Utility::getXoopsModuleConfig('tad_cal');
 
     Utility::get_jquery(true); //一般只要此行即可
     Utility::add_migrate();
 
-    $block['firstDay'] = $xoopsModuleConfig['cal_start'];
+    $block['firstDay'] = $TadCalModuleConfig['cal_start'];
 
     $xoTheme->addStylesheet('modules/tad_cal/css/module.css');
     $xoTheme->addStylesheet('modules/tadtools/fullcalendar/redmond/theme.css');

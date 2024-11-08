@@ -12,22 +12,18 @@ function tad_cal_full_calendar($options)
 {
     global $xoopsUser, $xoTheme;
 
-    $moduleHandler = xoops_getHandler('module');
-    $xoopsModule = $moduleHandler->getByDirname('tad_cal');
-    $configHandler = xoops_getHandler('config');
-    $module_id = $xoopsModule->getVar('mid');
-    $xoopsModuleConfig = $configHandler->getConfigsByCat(0, $module_id);
+    $TadCalModuleConfig = Utility::getXoopsModuleConfig('tad_cal');
 
     $jquery_path = Utility::get_jquery(true); //一般只要此行即可
 
     $block['jquery_path'] = $jquery_path;
 
-    if (empty($xoopsModuleConfig['eventShowMode'])) {
-        $xoopsModuleConfig['eventShowMode'] = 'eventClick';
+    if (empty($TadCalModuleConfig['eventShowMode'])) {
+        $TadCalModuleConfig['eventShowMode'] = 'eventClick';
     }
 
-    if (empty($xoopsModuleConfig['eventTheme'])) {
-        $xoopsModuleConfig['eventTheme'] = 'ui-tooltip-blue';
+    if (empty($TadCalModuleConfig['eventTheme'])) {
+        $TadCalModuleConfig['eventTheme'] = 'ui-tooltip-blue';
     }
 
     $style_mark = Tools::style_mark();
@@ -116,10 +112,10 @@ function tad_cal_full_calendar($options)
     $block['eventDrop'] = $eventDrop;
     $block['eventAdd'] = $eventAdd;
     $block['cate_sn'] = $cate_sn;
-    $block['eventShowMode'] = $xoopsModuleConfig['eventShowMode'];
-    $block['eventTheme'] = $xoopsModuleConfig['eventTheme'];
+    $block['eventShowMode'] = $TadCalModuleConfig['eventShowMode'];
+    $block['eventTheme'] = $TadCalModuleConfig['eventTheme'];
     $block['style_mark'] = $style_mark;
-    $block['firstDay'] = $xoopsModuleConfig['cal_start'];
+    $block['firstDay'] = $TadCalModuleConfig['cal_start'];
 
     Utility::add_migrate();
 

@@ -64,7 +64,7 @@ if ('all_week' === $dl_type) {
 
 $filename = iconv('UTF-8', 'Big5', $filename);
 $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
-header('HTTP/1.1 200 OK');
+
 header('Cache-Control: max-age=0');
 header('Content-Type: application/vnd.ms-word');
 header("Content-Disposition: attachment;filename={$filename}.docx");
