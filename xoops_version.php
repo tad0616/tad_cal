@@ -2,8 +2,6 @@
 $modversion = [];
 global $xoopsConfig;
 
-global $xoopsConfig;
-
 //---模組基本資訊---//
 $modversion['name'] = _MI_TADCAL_NAME;
 // $modversion['version'] = 3.5;
@@ -62,16 +60,16 @@ $modversion['templates'] = [
     ['file' => 'tad_cal_event.tpl', 'description' => 'tad_cal_event.tpl'],
 ];
 
-//---區塊設定---//
+//---區塊設定 (索引為固定值，若欲刪除區塊記得補上索引，避免區塊重複)---//
 $modversion['blocks'] = [
-    [
+    1 => [
         'file' => 'tad_cal_calendar.php',
         'name' => _MI_TADCAL_BNAME1,
         'description' => _MI_TADCAL_BDESC1,
         'show_func' => 'tad_cal_calendar',
         'template' => 'tad_cal_calendar.tpl',
     ],
-    [
+    2 => [
         'file' => 'tad_cal_list.php',
         'name' => _MI_TADCAL_BNAME2,
         'description' => _MI_TADCAL_BDESC2,
@@ -80,7 +78,7 @@ $modversion['blocks'] = [
         'edit_func' => 'tad_cal_list_edit',
         'options' => '7',
     ],
-    [
+    3 => [
         'file' => 'tad_cal_full_calendar.php',
         'name' => _MI_TADCAL_BNAME3,
         'description' => _MI_TADCAL_BDESC3,
