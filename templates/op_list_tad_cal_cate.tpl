@@ -24,7 +24,7 @@
                     <td class="c"><{$cal.last}></td>
                     <td>
                         <a href="javascript:delete_tad_cal_cate_func(<{$cal.cate_sn}>);" class="btn btn-sm btn-danger"><i class="fa fa-times" aria-hidden="true"></i></a>
-                        <a href="main.php?op=tad_cal_cate_form&cate_sn=<{$cal.cate_sn}>" class="btn btn-sm btn-warning"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> <{$smarty.const._TAD_EDIT}></a>
+                        <a href="main.php?op=tad_cal_cate_form&cate_sn=<{$cal.cate_sn}>" class="btn btn-sm btn-warning"><i class="fa fa-pencil" aria-hidden="true"></i> <{$smarty.const._TAD_EDIT}></a>
                     </td>
                 </tr>
             <{/foreach}>
@@ -34,7 +34,7 @@
     <div class="bar">
         <{$bar|default:''}>
 
-        <a href="main.php?op=tad_cal_cate_form" class="btn btn-lg btn-primary"><i class="fa fa-plus-square" aria-hidden="true"></i> <{$smarty.const._TAD_ADD_CAL}></a>
+        <a href="main.php?op=tad_cal_cate_form" class="btn btn-lg btn-primary"><i class="fa fa-square-plus" aria-hidden="true"></i> <{$smarty.const._TAD_ADD_CAL}></a>
     </div>
 
 
@@ -51,6 +51,6 @@
     </script>
 <{else}>
     <div class="bar">
-        <a href="main.php?op=tad_cal_cate_form" class="btn btn-lg btn-primary"><i class="fa fa-plus-square" aria-hidden="true"></i> <{$smarty.const._TAD_ADD_CAL}></a>
+        <a href="main.php?op=tad_cal_cate_form" class="btn btn-lg btn-primary"><i class="fa fa-square-plus" aria-hidden="true"></i> <{$smarty.const._TAD_ADD_CAL}></a>
     </div>
 <{/if}>

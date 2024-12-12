@@ -1,6 +1,12 @@
 <?php
 use XoopsModules\Tadtools\Utility;
+if (!class_exists('XoopsModules\Tadtools\Utility')) {
+    require XOOPS_ROOT_PATH . '/modules/tadtools/preloads/autoloader.php';
+}
 use XoopsModules\Tad_cal\Tools;
+if (!class_exists('XoopsModules\Tad_cal\Tools')) {
+    require XOOPS_ROOT_PATH . '/modules/tad_cal/preloads/autoloader.php';
+}
 
 //區塊主函式 (待辦事項(tad_cal_list))
 function tad_cal_list($options)

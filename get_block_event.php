@@ -10,6 +10,7 @@ $op = Request::getString('op');
 $start = Request::getString('start');
 $end = Request::getString('end');
 
+header('HTTP/1.1 200 OK');
 $xoopsLogger->activated = false;
 
 if ('title' === $op) {

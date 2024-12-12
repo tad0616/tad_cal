@@ -190,7 +190,7 @@ function tad_cal_event_form($sn = '', $mode = '', $def_tag = '')
     } else {
         $of_cate_title = _MD_TADCAL_CATE_SN;
         $cate_col = "
-        <select name='cate_sn' title='cate_sn' size=1 class='form-select'>
+        <select name='cate_sn' title='cate_sn' size=1 class='form-control form-select'>
         {$get_tad_cal_cate_menu_options}
         </select>";
     }
@@ -851,6 +851,7 @@ function show_simple_event($sn = '', $stamp = '')
   <tr><td style='background-color:transparent;border-bottom:none;'>$fun</td></tr>
   </table>
   ";
+    header('HTTP/1.1 200 OK');
     $xoopsLogger->activated = false;
 
     die($data);

@@ -5,6 +5,7 @@ $start = (string) $_POST['day'];
 $week = getWeekOfTheMonth(strtotime($start));
 $wk = date('w', strtotime($start));
 
+header('HTTP/1.1 200 OK');
 $xoopsLogger->activated = false;
 
 echo sprintf(_MD_TADCAL_MONTH_REPEATDAY, $week, $wk);

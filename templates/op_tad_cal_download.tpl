@@ -37,7 +37,7 @@
       <{$smarty.const._MD_TADCAL_CATE_SN}>
     </label>
     <div class="col-sm-4">
-      <select name='cate_sn[]' title='cate_sn' id='cate_sn' size=5 class="form-select" multiple>
+      <select name='cate_sn[]' title='cate_sn' id='cate_sn' size=5 class="form-control form-select" multiple>
         <{$get_tad_cal_cate_menu_options|default:''}>
       </select>
     </div>

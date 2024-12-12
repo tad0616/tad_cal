@@ -9,7 +9,7 @@ $().ready(function() {
 <{$show_month_repeat|default:''}>
 month_repeat_chk();
 
-$("#freq_select").change(function(){
+$("#freq_select").on('change', function(){
     var freq_select_val=$("#freq_select").val();
     if(freq_select_val=="DAILY"){
     $("#week_repeat").hide();
@@ -33,7 +33,7 @@ $("#freq_select").change(function(){
 
 
 <{$show_repeat_box|default:''}>
-$("#repeat_checkbox").change(function(){
+$("#repeat_checkbox").on('change', function(){
     if($("input#repeat_checkbox:checked").length){
     $("#repeat_box").show();
     }else{
@@ -45,7 +45,7 @@ $("#repeat_checkbox").change(function(){
 var bymonthday_start=$("#start").val();
 $("#bymonthday").text(bymonthday_start.substr(8,2));
 <{$show_allday_date|default:''}>
-$("#allday").change(function(){
+$("#allday").on('change', function(){
     if($("input#allday:checked").length){
     var bymonthday_start=$("#start_allday").val();
     $("#start_allday").val($("#start").val().substr(0,10));
@@ -164,7 +164,7 @@ $("#long").val(strtotime(chk_end)*1 - strtotime(chk_start)*1);
                 <{$smarty.const._MD_TADCAL_REPEAT}><{$smarty.const._TAD_FOR}>
             </label>
             <div class="col-sm-8">
-                <select name="FREQ" title='FREQ' id="freq_select" class="form-select">
+                <select name="FREQ" title='FREQ' id="freq_select" class="form-control form-select">
                 <option value="DAILY" <{$chk_DAILY|default:''}>><{$smarty.const._MD_TADCAL_REPEAT_DAILY}></option>
                 <option value="WEEKLY" <{$chk_WEEKLY|default:''}>><{$smarty.const._MD_TADCAL_REPEAT_WEEKLY}></option>
                 <option value="MONTHLY" <{$chk_MONTHLY|default:''}>><{$smarty.const._MD_TADCAL_REPEAT_MONTHLY}></option>
@@ -178,7 +178,7 @@ $("#long").val(strtotime(chk_end)*1 - strtotime(chk_start)*1);
                 <{$smarty.const._MD_TADCAL_INTERVAL}><{$smarty.const._TAD_FOR}>
             </label>
             <div class="col-sm-7">
-                <select name="INTERVAL" title='INTERVAL' class="form-select">
+                <select name="INTERVAL" title='INTERVAL' class="form-control form-select">
                 <{$INTERVAL_OPT|default:''}>
                 </select>
             </div>
@@ -313,6 +313,6 @@ $("#long").val(strtotime(chk_end)*1 - strtotime(chk_start)*1);
         <!--事件排序-->
         <input type="hidden" name="sequence" size="2" value="<{$sequence|default:''}>" id="sequence">
         <input type="hidden" name="op" value="<{$next_op|default:''}>">
-        <button type="submit" class="btn btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i>  <{$smarty.const._TAD_SAVE}></button>
+        <button type="submit" class="btn btn-primary"><i class="fa fa-floppy-disk" aria-hidden="true"></i>  <{$smarty.const._TAD_SAVE}></button>
     </div>
 </form>

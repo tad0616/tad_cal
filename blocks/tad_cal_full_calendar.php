@@ -1,10 +1,12 @@
 <?php
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
-use XoopsModules\Tad_cal\Tools;
-
 if (!class_exists('XoopsModules\Tadtools\Utility')) {
     require XOOPS_ROOT_PATH . '/modules/tadtools/preloads/autoloader.php';
+}
+use XoopsModules\Tad_cal\Tools;
+if (!class_exists('XoopsModules\Tad_cal\Tools')) {
+    require XOOPS_ROOT_PATH . '/modules/tad_cal/preloads/autoloader.php';
 }
 
 //區塊主函式 (大行事曆(tad_cal_full_calendar))

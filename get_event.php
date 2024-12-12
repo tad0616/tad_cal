@@ -6,6 +6,7 @@ use XoopsModules\Tad_cal\Tools;
 require_once __DIR__ . '/header.php';
 
 /* 連資料庫檢查 */
+header('HTTP/1.1 200 OK');
 $xoopsLogger->activated = false;
 
 // header('Content-type: application/json');
