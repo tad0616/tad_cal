@@ -11,7 +11,7 @@ $cate_sn = Request::getInt('cate_sn');
 $tag = Request::getString('tag', 'todo');
 
 $myts = \MyTextSanitizer::getInstance();
-$sitename = $myts->addSlashes($xoopsConfig['sitename']);
+$sitename = addslashes($xoopsConfig['sitename']);
 
 $todo_title = $tag == "todo-ok" ? _MD_TADCAL_TODOLIST_DONE : _MD_TADCAL_TODOLIST;
 

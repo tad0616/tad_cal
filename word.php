@@ -1,23 +1,25 @@
 <?php
+use XoopsModules\Tadtools\Utility;
 
 require_once __DIR__ . '/header.php';
 $myts = \MyTextSanitizer::getInstance();
 
-$show_type = $myts->addSlashes($_POST['show_type']);
-$dl_type = $myts->addSlashes($_POST['dl_type']);
-$sitename = $myts->addSlashes($xoopsConfig['sitename']);
+$show_type = addslashes($_POST['show_type']);
+$dl_type   = addslashes($_POST['dl_type']);
+$sitename  = addslashes($xoopsConfig['sitename']);
 
 $page_width = 14400;
 if ('all_week' === $dl_type) {
-    $week_width = 400;
+    $week_width  = 400;
     $other_width = $page_width - ($week_width) * 8;
 } else {
-    $date_width = 1400;
-    $week_width = 700;
+    $date_width  = 1400;
+    $week_width  = 700;
     $other_width = $page_width - $date_width - $week_width;
 }
 
 $page_title = "{$sitename} {$_POST['start']}~{$_POST['end']}" . _MD_TADCAL_SIMPLE_CAL;
+
 $filename = str_replace(' ', '', $page_title);
 
 require_once XOOPS_ROOT_PATH . '/modules/tadtools/vendor/autoload.php';
@@ -25,49 +27,49 @@ $phpWord = new \PhpOffice\PhpWord\PhpWord();
 
 $phpWord->setDefaultFontName('標楷體'); //設定預設字型
 $phpWord->setDefaultFontSize(9); //設定預設字型大小
-$section = $phpWord->addSection(); //建立一個區域
+$section      = $phpWord->addSection(); //建立一個區域
 $sectionStyle = $section->getStyle();
 $sectionStyle->setMarginTop(\PhpOffice\PhpWord\Shared\Converter::cmToTwip(2.5));
 $sectionStyle->setMarginLeft(\PhpOffice\PhpWord\Shared\Converter::cmToTwip(2.2));
 $sectionStyle->setMarginRight(\PhpOffice\PhpWord\Shared\Converter::cmToTwip(2.2));
 
 $TitleStyle = ['color' => '000000', 'size' => 16, 'bold' => true];
-$cellStyle = ['valign' => 'center'];
-$fontStyle = ['color' => '000000', 'size' => 10, 'bold' => false];
-$headStyle = ['bold' => true];
+$cellStyle  = ['valign' => 'center'];
+$fontStyle  = ['color' => '000000', 'size' => 10, 'bold' => false];
+$headStyle  = ['bold' => true];
 
-$paraStyle = ['align' => 'center', 'valign' => 'center'];
-$left_paraStyle = ['align' => 'left', 'valign' => 'center'];
+$paraStyle       = ['align' => 'center', 'valign' => 'center'];
+$left_paraStyle  = ['align' => 'left', 'valign' => 'center'];
 $right_paraStyle = ['align' => 'right', 'valign' => 'center'];
 
 $phpWord->addTitleStyle(1, $TitleStyle, $paraStyle);
 $section->addTitle($page_title, 1);
 
-$styleTable = ['borderColor' => '000000', 'borderSize' => 6, 'cellMargin' => 80];
+$styleTable    = ['borderColor' => '000000', 'borderSize' => 6, 'cellMargin' => 80];
 $styleFirstRow = ['bgColor' => 'CFCFCF']; //首行樣式
 $phpWord->addTableStyle('myTable', $styleTable, $styleFirstRow); //建立表格樣式
 $table = $section->addTable('myTable'); //建立表格
 
-$cw = [_MD_TADCAL_SU, _MD_TADCAL_MO, _MD_TADCAL_TU, _MD_TADCAL_WE, _MD_TADCAL_TH, _MD_TADCAL_FR, _MD_TADCAL_SA];
+$cw     = [_MD_TADCAL_SU, _MD_TADCAL_MO, _MD_TADCAL_TU, _MD_TADCAL_WE, _MD_TADCAL_TH, _MD_TADCAL_FR, _MD_TADCAL_SA];
 $cm_arr = explode(',', _MD_TADCAL_MONTH_STR);
-$i = 1;
+$i      = 1;
 foreach ($cm_arr as $month) {
     $cm[$i] = $month;
     $i++;
 }
-// die(var_export($cm));
+
 if ('all_week' === $dl_type) {
     word_by_month();
 } else {
     word_by_date();
 }
 
-$filename = iconv('UTF-8', 'Big5', $filename);
 $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
-
 header('Cache-Control: max-age=0');
 header('Content-Type: application/vnd.ms-word');
-header("Content-Disposition: attachment;filename={$filename}.docx");
+header('HTTP/1.1 200 OK');
+header("Content-Disposition: attachment; filename=\"{$filename}.docx\"");
+
 $objWriter->save('php://output');
 
 //日期範圍中有多少日期
@@ -75,10 +77,10 @@ function dates_range($date1, $date2)
 {
     if ($date1 < $date2) {
         $dates_range[] = $date1;
-        $date1 = strtotime($date1);
-        $date2 = strtotime($date2);
+        $date1         = strtotime($date1);
+        $date2         = strtotime($date2);
         while ($date1 != $date2) {
-            $date1 = mktime(0, 0, 0, date('m', $date1), date('d', $date1) + 1, date('Y', $date1));
+            $date1         = mktime(0, 0, 0, date('m', $date1), date('d', $date1) + 1, date('Y', $date1));
             $dates_range[] = date('Y-m-d', $date1);
         }
     }
@@ -90,11 +92,11 @@ function dates_range($date1, $date2)
 function months_range($date1, $date2)
 {
     $months_range = [];
-    $start = $month = strtotime($date1);
-    $end = strtotime($date2);
+    $start        = $month        = strtotime($date1);
+    $end          = strtotime($date2);
     while ($month < $end) {
         $months_range[] = date('Y-m', $month);
-        $month = strtotime('+1 month', $month);
+        $month          = strtotime('+1 month', $month);
     }
     // die(var_export($months_range));
     return $months_range;
@@ -105,7 +107,7 @@ function mk_month_cell($year, $month, $events, $cates)
 {
     global $xoopsDB, $dl_type, $cm, $cw, $table, $paraStyle, $headStyle, $cellStyle, $show_type, $week_width, $other_width;
     //垂直合併
-    $cellRowSpan = ['vMerge' => 'restart', 'valign' => 'center'];
+    $cellRowSpan    = ['vMerge' => 'restart', 'valign' => 'center'];
     $cellRowSpanTop = ['vMerge' => 'restart', 'valign' => 'top'];
     //不顯示表格
     $cellRowContinue = ['vMerge' => 'continue'];
@@ -139,8 +141,8 @@ function mk_month_cell($year, $month, $events, $cates)
 
     $line = 1;
     for ($i = 1; $i <= $t; $i++) {
-        $w = date('w', strtotime("{$year}-{$month}-{$i}"));
-        $color = (0 == $w or 6 == $w) ? 'FEE9E7' : 'FFFFFF';
+        $w         = date('w', strtotime("{$year}-{$month}-{$i}"));
+        $color     = (0 == $w or 6 == $w) ? 'FEE9E7' : 'FFFFFF';
         $cellStyle = ['bgColor' => $color];
 
         if (0 == $w and $i > 1) {
@@ -154,8 +156,8 @@ function mk_month_cell($year, $month, $events, $cates)
         if (1 == $line and 6 == $w) {
             if ('separate' === $show_type) {
                 $cellStyle = ['bgColor' => $color];
-                $cal_num = count($cates);
-                $width = round($other_width / $cal_num);
+                $cal_num   = count($cates);
+                $width     = round($other_width / $cal_num);
                 foreach ($cates as $cate_sn => $cate_title) {
                     $tableCell = $table->addCell($width, $cellRowSpanTop);
                     foreach ($events[$cate_sn] as $sn => $item) {
@@ -222,7 +224,7 @@ function word_by_month()
 
     if ('separate' === $show_type) {
         $cal_num = count($cates);
-        $width = round($other_width / $cal_num);
+        $width   = round($other_width / $cal_num);
         foreach ($cates as $cate_sn => $cate_title) {
             $table->addCell($width, $cellStyle)->addText($cates[$cate_sn], $headStyle, $paraStyle);
         }
@@ -255,9 +257,9 @@ function word_by_date()
     $table->addCell($week_width, $cellStyle)->addText(_MD_TADCAL_WEEK, $headStyle, $paraStyle);
 
     if ('separate' === $show_type) {
-        $cates = get_cal_array();
+        $cates   = get_cal_array();
         $cal_num = count($cates);
-        $width = round($other_width / $cal_num);
+        $width   = round($other_width / $cal_num);
         foreach ($cates as $cate_sn => $care_title) {
             $table->addCell($width, $cellStyle)->addText($cates[$cate_sn], $headStyle, $paraStyle);
         }

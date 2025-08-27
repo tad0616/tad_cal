@@ -10,11 +10,18 @@ $xoopsOption['template_main'] = 'tad_cal_index.tpl';
 require_once XOOPS_ROOT_PATH . '/header.php';
 
 /*-----------執行動作判斷區----------*/
-$op = Request::getString('op');
+$op      = Request::getString('op');
 $cate_sn = Request::getInt('cate_sn');
-$sn = Request::getInt('sn');
+$sn      = Request::getInt('sn');
 
 switch ($op) {
+
+    //刪除資料
+    case 'delete_tad_cal_event':
+        delete_tad_cal_event($sn);
+        header('location: ' . XOOPS_URL . '/modules/tad_cal/index.php');
+        exit;
+
     default:
         fullcalendar($cate_sn);
         $op = 'fullcalendar';
@@ -37,7 +44,7 @@ $xoTheme->addScript('modules/tadtools/jquery.qtip_2/jquery.qtip.min.js');
 $xoTheme->addScript('modules/tadtools/My97DatePicker/WdatePicker.js');
 
 $SweetAlert = new SweetAlert();
-$SweetAlert->render("delete_tad_cal_event_func", "index.php?op=delete_tad_cal_event&sn=", 'sn');
+$SweetAlert->render("delete_tad_cal_event_func", "event.php?op=delete_tad_cal_event&sn=", 'sn');
 require_once XOOPS_ROOT_PATH . '/footer.php';
 
 /*-----------function區--------------*/

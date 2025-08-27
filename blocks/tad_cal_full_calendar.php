@@ -1,11 +1,11 @@
 <?php
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
-if (!class_exists('XoopsModules\Tadtools\Utility')) {
+if (! class_exists('XoopsModules\Tadtools\Utility')) {
     require XOOPS_ROOT_PATH . '/modules/tadtools/preloads/autoloader.php';
 }
 use XoopsModules\Tad_cal\Tools;
-if (!class_exists('XoopsModules\Tad_cal\Tools')) {
+if (! class_exists('XoopsModules\Tad_cal\Tools')) {
     require XOOPS_ROOT_PATH . '/modules/tad_cal/preloads/autoloader.php';
 }
 
@@ -111,13 +111,13 @@ function tad_cal_full_calendar($options)
         }
     }
 
-    $block['eventDrop'] = $eventDrop;
-    $block['eventAdd'] = $eventAdd;
-    $block['cate_sn'] = $cate_sn;
+    $block['eventDrop']     = $eventDrop;
+    $block['eventAdd']      = $eventAdd;
+    $block['cate_sn']       = $cate_sn;
     $block['eventShowMode'] = $TadCalModuleConfig['eventShowMode'];
-    $block['eventTheme'] = $TadCalModuleConfig['eventTheme'];
-    $block['style_mark'] = $style_mark;
-    $block['firstDay'] = $TadCalModuleConfig['cal_start'];
+    $block['eventTheme']    = $TadCalModuleConfig['eventTheme'];
+    $block['style_mark']    = $style_mark;
+    $block['firstDay']      = $TadCalModuleConfig['cal_start'];
 
     Utility::add_migrate();
 
@@ -133,6 +133,6 @@ function tad_cal_full_calendar($options)
     $xoTheme->addScript('modules/tadtools/jquery.qtip_2/jquery.qtip.min.js');
 
     $SweetAlert = new SweetAlert();
-    $SweetAlert->render("delete_tad_cal_event_func", XOOPS_URL . "/modules/tad_cal/index.php?op=delete_tad_cal_event&sn=", 'sn');
+    $SweetAlert->render("delete_tad_cal_event_func", XOOPS_URL . "/modules/tad_cal/event.php?op=delete_tad_cal_event&sn=", 'sn');
     return $block;
 }
