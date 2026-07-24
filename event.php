@@ -698,7 +698,7 @@ function delete_tad_cal_event($sn = '')
     $sql    = 'DELETE FROM `' . $xoopsDB->prefix('tad_cal_event') . '` WHERE `sn` = ? ' . $andUID;
     $params = ($_SESSION['tad_cal_adm']) ? [$sn] : [$sn, $uid];
 
-    if (Utility::query($sql, 'i' . (($_SESSION['tad_cal_adm']) ? '' : 'i'), $params)) {
+    if (Utility::query($sql, 'i' . (($_SESSION['tad_cal_adm']) ? '' : 'i'), $params, true, false, null, true)) {
         $sql = 'DELETE FROM `' . $xoopsDB->prefix('tad_cal_repeat') . '` WHERE `sn` = ?';
         Utility::query($sql, 'i', [$sn]) or Utility::web_error($sql, __FILE__, __LINE__);
 
