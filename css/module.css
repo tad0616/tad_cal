@@ -184,3 +184,35 @@ div.jqi .jqimessage .field input.error {
     -webkit-border-radius: 0 0 5px 5px;
     border-radius: 0 0 5px 5px;
 }
+
+/* 迷你行事曆：縮小上方標題與月份切換按鈕 */
+#block_calendar .fc-toolbar-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+#block_calendar .fc-toolbar .fc-button {
+    font-size: 0.75rem;
+    padding: 0.25em 0.45em;
+}
+
+/* 迷你行事曆：壓低日期格並將事件置中 */
+#block_calendar .fc-daygrid-day-frame {
+    min-height: 2.5rem;
+}
+
+#block_calendar .fc-daygrid-day-events {
+    margin-top: 0;
+    text-align: center;
+    margin-bottom: 0px;
+}
+
+#block_calendar .fc-daygrid-day-number {
+    font-size: 0.9rem;
+}
+
+#block_calendar .fc-daygrid-event {
+    justify-content: center;
+    margin-left: 2px;
+    margin-right: 2px;
+}

@@ -7,3 +7,4 @@ define('_MB_TADCAL_NEW_CALENDAR', '本站行事曆');
 define('_MB_TADCAL_CATE_SN', '所屬行事曆');
 define('_MB_TADCAL_TITLE', '事件標題');
 define('_MB_TADCAL_TODO_LIST', '此為待辦事項');
+define('_MB_TADCAL_WEEK', '"日", "一", "二", "三", "四", "五", "六"');

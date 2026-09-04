@@ -1,3 +1,8 @@
+Tad Cal 4.2 (Released 2026-09-04)
+====================================
+1. The calendar now uses FullCalendar6
+2. Replaced jquery-impromptu.js with a Bootstrap 5 modal
+
 Tad Cal 4.1 (Released 2025-10-31)
 ====================================
 1. Fixed an issue where some hosts couldn't download calendar Word files

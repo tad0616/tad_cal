@@ -17,16 +17,11 @@ function tad_cal_calendar($options)
 
     $block['firstDay'] = $TadCalModuleConfig['cal_start'];
 
-    $xoTheme->addStylesheet('modules/tad_cal/css/module.css');
-    $xoTheme->addStylesheet('modules/tadtools/fullcalendar/redmond/theme.css');
-    $xoTheme->addStylesheet('modules/tadtools/fullcalendar/fullcalendar.css');
+    $xoTheme->addStylesheet('modules/tad_cal/css/module.css?t=20260904');
     $xoTheme->addStylesheet('modules/tadtools/jquery.qtip_2/jquery.qtip.min.css');
 
     $xoTheme->addScript('modules/tadtools/moment/moment-with-locales.min.js');
-    $xoTheme->addScript('modules/tad_cal/class/jquery-impromptu.6.2.3.min.js');
-    $xoTheme->addScript('modules/tadtools/fullcalendar/fullcalendar.js');
-    $xoTheme->addScript('modules/tadtools/fullcalendar/gcal.js');
+    $xoTheme->addScript('modules/tadtools/fullcalendar6/index.global.js');
     $xoTheme->addScript('modules/tadtools/jquery.qtip_2/jquery.qtip.min.js');
-
     return $block;
 }

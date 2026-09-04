@@ -1,79 +1,68 @@
 <script type="text/javascript">
-$(document).ready(function(){
-  var calendar = $("#full_calendar_block").fullCalendar({
-    theme: true,
-    firstDay:<{$block.firstDay}>,
-    locale: navigator.language,
-    locale: window.navigator.userLanguage || window.navigator.language,
-    buttonText:{today:"<{$smarty.const._MB_TADCAL_TODAY}>"},
-    header: {
-      left: "prev,today,next",
-      right: "title"
+function showCalendarQtip(target, title, url) {
+  var element = target && target.nodeType ? target : target && target[0];
+  if (!element) return;
+  $(element).qtip({
+    content: {
+      text: "<img class=\"throbber\" src=\"images/loading.gif\" alt=\"Loading...\">",
+      ajax: {url: url},
+      title: {text: title, button: true}
     },
+    position: {my: "bottom center", at: "top center"},
+    show: {event: false, ready: true, solo: true},
+    hide: "unfocus",
+    style: {classes: "ui-tooltip-shadow ui-tooltip-rounded"}
+  });
+}
+</script><script type="text/javascript">
+$(document).ready(function() {
+  var calendar = new FullCalendar.Calendar(document.getElementById("full_calendar_block"), {
+    initialView: "dayGridMonth",
+    firstDay: <{$block.firstDay}>,
+    locale: window.navigator.userLanguage || window.navigator.language,
+    buttonText: {today: "<{$smarty.const._MB_TADCAL_TODAY}>"},
+    headerToolbar: {left: "prev,today,next", center: "title", right: ""},
     <{$block.eventAdd}>
     <{$block.eventDrop}>
-    events: function(start, end, timezone ,callback) {
-      $.getJSON("<{$xoops_url}>/modules/tad_cal/get_event.php",
-      {
-        <{if $block.cate_sn|default:false}>
-        start: start.format(),
-        end: end.format(),
-        cate_sn: <{$block.cate_sn}>
-        <{else}>
-        start: start.format(),
-        end: end.format()
-        <{/if}>
-      },
-      function(result) {
-        callback(result);
-      });
+    events: function(fetchInfo, successCallback, failureCallback) {
+      $.getJSON("<{$xoops_url}>/modules/tad_cal/get_event.php", {
+        start: fetchInfo.startStr,
+        end: fetchInfo.endStr
+        <{if $block.cate_sn|default:false}>, cate_sn: <{$block.cate_sn}><{/if}>
+      }, successCallback).fail(failureCallback);
     },
-      <{$block.eventShowMode}>: function(event) {
-        if (event.rel) {
-          $(this).qtip({
-           content: {
-            // 設定載入中圖片
-            text: "<img class='throbber' src='<{$xoops_url}>/modules/tad_cal/images/loading.gif' alt='Loading...'>",
-            ajax: {
-              url: event.rel //載入指定之連結
-            },
-            title: {
-             text: event.title, //給予標題文字
-             button: true
-            }
-           },
-           position: {
-              at: "top center", // 提示位置
-              my: "bottom center",
-              viewport: $(window), //確保提示在畫面上
-              effect: false, // 取消動畫
-              adjust: {
-               target: $(document),
-               resize: true // Can be ommited (e.g. default behaviour)
-              }
-           },
-           show: {
-            event: "false",
-            ready: true, // ... but show the tooltip when ready
-            solo: true // 一次只秀出一個提示
-           },
-           hide: "unfocus",
-           style: {
-            classes: "ui-tooltip-shadow ui-tooltip-rounded"
-           }
-          })
-          return false;
-        }
+    <{$block.eventShowMode}>: function(clickInfo) {
+      var event = clickInfo.event;
+      var eventUrl = event.extendedProps.rel;
+      if (eventUrl) {
+        clickInfo.jsEvent.preventDefault();
+        showCalendarQtip(clickInfo.el, event.title, eventUrl);
+        return false;
+      }
     }
   });
+  calendar.render();
 });
-
-
-</script>
-
-<div id="full_calendar_block" style="margin-top:20px;"></div>
+</script><div id="full_calendar_block" style="margin-top:20px;"></div>
 <div style="margin:10px auto;width:auto;"><{$block.style_mark}></div>
 
 <div style="text-align:right;">
     <a href="<{$xoops_url}>/modules/tad_cal" class="btn btn-sm btn-xs btn-info"><{$smarty.const._MB_TADCAL_TO_INDEX}></a>
 </div>
+<{if $block.eventAdd|default:''}>
+<div class="modal fade" id="tadCalBlockEventModal" tabindex="-1" aria-labelledby="tadCalBlockEventModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="tadCalBlockEventModalLabel"><{$smarty.const._MB_TADCAL_TITLE}></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><{$smarty.const._CANCEL}></button>
+        <button type="submit" class="btn btn-primary"><{$smarty.const._SUBMIT}></button>
+      </div>
+    </form>
+  </div>
+</div>
+<{/if}>

@@ -30,6 +30,6 @@ xoops_cp_header();
 // Define Stylesheet and JScript
 $xoTheme->addStylesheet('modules/tadtools/css/iconize.css');
 $xoTheme->addStylesheet(XOOPS_URL . "/modules/tadtools/css/xoops_adm{$_SESSION['bootstrap']}.css");
-$xoTheme->addStylesheet('modules/' . $xoopsModule->getVar('dirname') . '/css/module.css');
+$xoTheme->addStylesheet('modules/' . $xoopsModule->getVar('dirname') . '/css/module.css?t=20260904');
 $xoTheme->addStylesheet('modules/' . $xoopsModule->getVar('dirname') . '/css/admin.css');
 $_SESSION['tad_cal_adm'] = true;
