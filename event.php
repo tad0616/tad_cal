@@ -4,6 +4,7 @@ use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
 use XoopsModules\Tad_cal\Tools;
+use XoopsModules\Tad_cal\GoogleCalendarSync;
 
 /*-----------引入檔案區--------------*/
 require_once __DIR__ . '/header.php';
@@ -470,6 +471,7 @@ function insert_tad_cal_event()
 
     //重複事件
     Tools::rrule($sn, $recurrence, $allDay);
+    GoogleCalendarSync::syncLocalEvent($sn);
 
     return $sn;
 }
@@ -496,6 +498,11 @@ function update_tad_cal_event($sn = '')
 {
     global $xoopsDB, $xoopsUser;
     //die(var_export($_POST));
+    $currentEvent = get_tad_cal_event($sn);
+    if ($currentEvent && (int) $currentEvent['cate_sn'] !== (int) $_POST['cate_sn']) {
+        GoogleCalendarSync::deleteLocalEvent($sn);
+    }
+
     //取得使用者編號
     $uid = ($xoopsUser) ? $xoopsUser->uid() : '';
     $tag = (string) $_POST['tag'];
@@ -595,6 +602,7 @@ function update_tad_cal_event($sn = '')
 
     //重複事件
     Tools::rrule($sn, $recurrence, $allDay);
+    GoogleCalendarSync::syncLocalEvent($sn);
 
     return $sn;
 }
@@ -693,12 +701,27 @@ function get_tad_cal_event($sn = '')
 function delete_tad_cal_event($sn = '')
 {
     global $xoopsDB, $xoopsUser;
-    $uid    = $xoopsUser->uid();
-    $andUID = ($_SESSION['tad_cal_adm']) ? '' : 'AND `uid` = ?';
-    $sql    = 'DELETE FROM `' . $xoopsDB->prefix('tad_cal_event') . '` WHERE `sn` = ? ' . $andUID;
-    $params = ($_SESSION['tad_cal_adm']) ? [$sn] : [$sn, $uid];
+    $uid = $xoopsUser ? $xoopsUser->uid() : 0;
+    $moduleId = isset($GLOBALS['xoopsModule']) && is_object($GLOBALS['xoopsModule']) ? $GLOBALS['xoopsModule']->getVar('mid') : 0;
+    $isAdmin = $xoopsUser && $moduleId && $xoopsUser->isAdmin($moduleId);
+    if (!$xoopsUser && !$isAdmin) {
+        Utility::web_error('', __FILE__, __LINE__);
+    }
 
-    if (Utility::query($sql, 'i' . (($_SESSION['tad_cal_adm']) ? '' : 'i'), $params, true, false, null, true)) {
+    $checkSql = 'SELECT `uid` FROM `' . $xoopsDB->prefix('tad_cal_event') . '` WHERE `sn`=?';
+    $checkResult = Utility::query($checkSql, 'i', [$sn]) or Utility::web_error($checkSql, __FILE__, __LINE__);
+    $event = $xoopsDB->fetchArray($checkResult);
+    if (!$event || (!$isAdmin && (int) $event['uid'] !== (int) $uid)) {
+        Utility::web_error($checkSql, __FILE__, __LINE__);
+    }
+
+    GoogleCalendarSync::deleteLocalEvent($sn);
+
+    $andUID = $isAdmin ? '' : 'AND `uid` = ?';
+    $sql    = 'DELETE FROM `' . $xoopsDB->prefix('tad_cal_event') . '` WHERE `sn` = ? ' . $andUID;
+    $params = $isAdmin ? [$sn] : [$sn, $uid];
+
+    if (Utility::query($sql, 'i' . ($isAdmin ? '' : 'i'), $params, true, false, null, true)) {
         $sql = 'DELETE FROM `' . $xoopsDB->prefix('tad_cal_repeat') . '` WHERE `sn` = ?';
         Utility::query($sql, 'i', [$sn]) or Utility::web_error($sql, __FILE__, __LINE__);
 
@@ -953,8 +976,10 @@ function ajax_update_date($sn = '')
         $start          = $end          = '0000-00-00 00:00:00';
     }
 
-    $sql = 'UPDATE `' . $xoopsDB->prefix('tad_cal_event') . '` SET `start` =?, `end` =?, `recurrence`=? WHERE `sn` =?';
-    Utility::query($sql, 'sssi', [$start, $end, $recurrence, $sn]) or Utility::web_error($sql, __FILE__, __LINE__);
+    $lastUpdate = date('Y-m-d H:i:s');
+    $sql = 'UPDATE `' . $xoopsDB->prefix('tad_cal_event') . '` SET `start` =?, `end` =?, `recurrence`=?, `last_update`=? WHERE `sn` =?';
+    Utility::query($sql, 'ssssi', [$start, $end, $recurrence, $lastUpdate, $sn]) or Utility::web_error($sql, __FILE__, __LINE__);
+    GoogleCalendarSync::syncLocalEvent($sn);
 
     //重複事件
     //rrule($sn,$recurrence);

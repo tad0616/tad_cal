@@ -127,6 +127,7 @@ class Ical
     public function parse($text)
     {
         $this->cal = []; // new empty array
+        $type = '';
 
         $this->event_count = -1;
 

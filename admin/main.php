@@ -4,6 +4,7 @@ use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\MColorPicker;
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
+use XoopsModules\Tad_cal\GoogleCalendarSync;
 /*-----------引入檔案區--------------*/
 $xoopsOption['template_main'] = 'tad_cal_admin.tpl';
 require_once __DIR__ . '/header.php';
@@ -98,6 +99,19 @@ function tad_cal_cate_form($cate_sn = '')
 
     //設定「cate_color」欄位預設值
     $cate_color = (!isset($DBV['cate_color'])) ? 'rgb(255,255,255)' : $DBV['cate_color'];
+    $googleStatus = $cate_sn ? GoogleCalendarSync::getCalendarStatus($cate_sn) : [
+        'calendar_id' => 'primary',
+        'initial_sync' => 'keep_local_only',
+        'connected' => false,
+        'last_sync' => '',
+    ];
+
+    if (session_status() !== PHP_SESSION_ACTIVE) {
+        session_start();
+    }
+    if (empty($_SESSION['tad_cal_google_admin_token'])) {
+        $_SESSION['tad_cal_google_admin_token'] = bin2hex(random_bytes(24));
+    }
 
     $op = (empty($cate_sn)) ? 'insert_tad_cal_cate' : 'update_tad_cal_cate';
 
@@ -127,6 +141,15 @@ function tad_cal_cate_form($cate_sn = '')
     $xoopsTpl->assign('cate_color', $cate_color);
     $xoopsTpl->assign('cate_bgcolor', $cate_bgcolor);
     $xoopsTpl->assign('cate_title', $cate_title);
+    $xoopsTpl->assign('google_initial_sync', $googleStatus['initial_sync']);
+    $xoopsTpl->assign('google_connected', $googleStatus['connected']);
+    $xoopsTpl->assign('google_last_sync', $googleStatus['last_sync']);
+    $xoopsTpl->assign(
+        'google_confirm_replace',
+        $googleStatus['connected'] && empty($googleStatus['last_sync']) && 'replace_with_google' === $googleStatus['initial_sync']
+    );
+    $xoopsTpl->assign('google_calendar_id', htmlspecialchars($googleStatus['calendar_id'], ENT_QUOTES, 'UTF-8'));
+    $xoopsTpl->assign('google_admin_token', $_SESSION['tad_cal_google_admin_token']);
 }
 
 //新增資料到tad_cal_cate中
@@ -158,6 +181,11 @@ function insert_tad_cal_cate()
 
     //取得最後新增資料的流水編號
     $cate_sn = $xoopsDB->getInsertId();
+    GoogleCalendarSync::saveCalendarSettings(
+        $cate_sn,
+        isset($_POST['google_calendar_id']) ? (string) $_POST['google_calendar_id'] : 'primary',
+        isset($_POST['google_initial_sync']) ? (string) $_POST['google_initial_sync'] : 'keep_local_only'
+    );
 
     return $cate_sn;
 }
@@ -198,6 +226,12 @@ function update_tad_cal_cate($cate_sn = '')
         $_POST['cate_color'],
         $cate_sn,
     ]) or Utility::web_error($sql, __FILE__, __LINE__);
+
+    GoogleCalendarSync::saveCalendarSettings(
+        $cate_sn,
+        isset($_POST['google_calendar_id']) ? (string) $_POST['google_calendar_id'] : 'primary',
+        isset($_POST['google_initial_sync']) ? (string) $_POST['google_initial_sync'] : 'keep_local_only'
+    );
 
     return $cate_sn;
 }
@@ -257,6 +291,9 @@ function list_tad_cal_cate()
 function delete_tad_cal_cate($cate_sn = '')
 {
     global $xoopsDB;
+    GoogleCalendarSync::deleteCategory($cate_sn);
+    $sql = 'DELETE FROM `' . $xoopsDB->prefix('tad_cal_repeat') . '` WHERE `sn` IN (SELECT `sn` FROM `' . $xoopsDB->prefix('tad_cal_event') . '` WHERE `cate_sn`=?)';
+    Utility::query($sql, 'i', [$cate_sn]) or Utility::web_error($sql, __FILE__, __LINE__);
     $sql = 'DELETE FROM `' . $xoopsDB->prefix('tad_cal_cate') . '` WHERE `cate_sn`=?';
     Utility::query($sql, 'i', [$cate_sn]) or Utility::web_error($sql, __FILE__, __LINE__);
 

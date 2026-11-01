@@ -1,11 +1,12 @@
 <?php
 $modversion = [];
+
 global $xoopsConfig;
 
 //---模組基本資訊---//
 $modversion['name'] = _MI_TADCAL_NAME;
 // $modversion['version'] = 3.5;
-$modversion['version']     = $_SESSION['xoops_version'] >= 20511 ? '4.2.0-Stable' : '4.2';
+$modversion['version']     = $_SESSION['xoops_version'] >= 20511 ? '4.3.0-Stable' : '4.3';
 $modversion['description'] = _MI_TADCAL_DESC;
 $modversion['author']      = _MI_TADCAL_AUTHOR;
 $modversion['credits']     = _MI_TADCAL_CREDITS;
@@ -16,7 +17,7 @@ $modversion['image']       = $xoopsConfig['language'] == 'tchinese_utf8' ? 'imag
 $modversion['dirname']     = basename(__DIR__);
 
 //---模組狀態資訊---//
-$modversion['release_date']        = '2026-09-04';
+$modversion['release_date']        = '2026-11-01';
 $modversion['module_website_url']  = 'https://tad0616.net/';
 $modversion['module_website_name'] = _MI_TAD_WEB;
 $modversion['module_status']       = 'release';
@@ -39,6 +40,8 @@ $modversion['sqlfile']['mysql'] = 'sql/mysql.sql';
 $modversion['tables'][1]        = 'tad_cal_cate';
 $modversion['tables'][2]        = 'tad_cal_event';
 $modversion['tables'][3]        = 'tad_cal_repeat';
+$modversion['tables'][4]        = 'tad_cal_google_calendar';
+$modversion['tables'][5]        = 'tad_cal_google_event';
 
 //---安裝設定---//
 $modversion['onInstall']   = 'include/onInstall.php';
@@ -89,6 +92,22 @@ $modversion['blocks'] = [
 
 //---偏好設定---//
 $modversion['config'] = [
+    [
+        'name'        => 'google_client_id',
+        'title'       => '_MI_TADCAL_GOOGLE_CLIENT_ID',
+        'description' => '_MI_TADCAL_GOOGLE_CLIENT_ID_DESC',
+        'formtype'    => 'textbox',
+        'valuetype'   => 'text',
+        'default'     => '',
+    ],
+    [
+        'name'        => 'google_client_secret',
+        'title'       => '_MI_TADCAL_GOOGLE_CLIENT_SECRET',
+        'description' => '_MI_TADCAL_GOOGLE_CLIENT_SECRET_DESC',
+        'formtype'    => 'textbox',
+        'valuetype'   => 'text',
+        'default'     => '',
+    ],
     [
         'name'        => 'eventShowMode',
         'title'       => '_MI_TADCAL_EVENTSHOWMODE',

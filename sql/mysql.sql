@@ -42,3 +42,24 @@ CREATE TABLE `tad_cal_repeat` (
   `allday` ENUM( '0', '1' ) NOT NULL COMMENT '整天事件',
   UNIQUE KEY `start` (`sn`,`start`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `tad_cal_google_calendar` (
+  `cate_sn` smallint(6) unsigned NOT NULL COMMENT '行事曆分類編號',
+  `calendar_id` varchar(255) NOT NULL COMMENT 'Google 行事曆 ID',
+  `refresh_token` text NOT NULL COMMENT '加密後的 Google OAuth refresh token',
+  `sync_token` text NOT NULL COMMENT 'Google 增量同步 token',
+  `initial_sync` varchar(32) NOT NULL COMMENT '首次同步策略',
+  `last_sync` datetime DEFAULT NULL COMMENT '最後同步時間',
+  PRIMARY KEY (`cate_sn`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `tad_cal_google_event` (
+  `cate_sn` smallint(6) unsigned NOT NULL COMMENT '行事曆分類編號',
+  `local_sn` smallint(6) unsigned DEFAULT NULL COMMENT '本地事件編號',
+  `google_event_id` varchar(255) DEFAULT NULL COMMENT 'Google 事件 ID',
+  `google_updated` datetime DEFAULT NULL COMMENT 'Google 事件更新時間',
+  `local_baseline` datetime DEFAULT NULL COMMENT '本地事件同步基準時間',
+  `sync_pending` tinyint(1) NOT NULL DEFAULT 0 COMMENT '本地待同步狀態',
+  UNIQUE KEY `google_event` (`cate_sn`,`google_event_id`),
+  UNIQUE KEY `local_event` (`cate_sn`,`local_sn`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;

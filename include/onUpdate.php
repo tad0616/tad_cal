@@ -14,6 +14,7 @@ function xoops_module_update_tad_cal(&$module, $old_version)
     }
 
     Update::chk_tad_cal_block();
+    Update::chk_google_sync_tables();
 
     return true;
 }

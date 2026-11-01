@@ -64,6 +64,21 @@
         </div>
     </div>
 
+    <div class="form-group row mb-3">
+        <label class="col-sm-2 col-form-label"><{$smarty.const._MA_TADCAL_GOOGLE_CALENDAR_ID}></label>
+        <div class="col-sm-4">
+            <input type="text" name="google_calendar_id" title="google_calendar_id" class="form-control" value="<{$google_calendar_id|default:'primary'}>">
+            <small class="form-text text-muted"><{$smarty.const._MA_TADCAL_GOOGLE_CALENDAR_ID_DESC}></small>
+        </div>
+        <label class="col-sm-2 col-form-label"><{$smarty.const._MA_TADCAL_GOOGLE_INITIAL_SYNC}></label>
+        <div class="col-sm-4">
+            <select name="google_initial_sync" title="google_initial_sync" class="form-control form-select">
+                <option value="keep_local_only" <{if $google_initial_sync|default:'keep_local_only' eq 'keep_local_only'}>selected<{/if}>><{$smarty.const._MA_TADCAL_GOOGLE_KEEP_LOCAL}></option>
+                <option value="replace_with_google" <{if $google_initial_sync|default:'keep_local_only' eq 'replace_with_google'}>selected<{/if}>><{$smarty.const._MA_TADCAL_GOOGLE_REPLACE_LOCAL}></option>
+                <option value="merge_and_upload" <{if $google_initial_sync|default:'keep_local_only' eq 'merge_and_upload'}>selected<{/if}>><{$smarty.const._MA_TADCAL_GOOGLE_MERGE}></option>
+            </select>
+        </div>
+    </div>
 
     <div class="text-center">
         <!--行事曆排序-->
@@ -74,3 +89,36 @@
         <button type="submit" class="btn btn-primary"><i class="fa fa-floppy-disk" aria-hidden="true"></i>  <{$smarty.const._TAD_SAVE}></button>
     </div>
 </form>
+
+<{if $cate_sn|default:false}>
+    <div class="card mt-3">
+        <div class="card-body">
+            <h4><{$smarty.const._MA_TADCAL_GOOGLE_SYNC}></h4>
+            <p><{$smarty.const._MA_TADCAL_GOOGLE_STATUS}>：
+                <{if $google_connected|default:false}><{$smarty.const._MA_TADCAL_GOOGLE_CONNECTED}><{else}><{$smarty.const._MA_TADCAL_GOOGLE_DISCONNECTED}><{/if}>
+                <{if $google_last_sync|default:false}>（<{$smarty.const._MA_TADCAL_LAST_UPDATE}>：<{$google_last_sync}>）<{/if}>
+            </p>
+            <a class="btn btn-primary" href="<{$xoops_url}>/modules/tad_cal/google_sync.php?op=connect&amp;cate_sn=<{$cate_sn}>"><{$smarty.const._MA_TADCAL_GOOGLE_CONNECT}></a>
+            <{if $google_connected|default:false}>
+                <form action="<{$xoops_url}>/modules/tad_cal/google_sync.php" method="post" class="d-inline">
+                    <input type="hidden" name="op" value="sync">
+                    <input type="hidden" name="cate_sn" value="<{$cate_sn}>">
+                    <input type="hidden" name="csrf" value="<{$google_admin_token}>">
+                    <{if $google_confirm_replace|default:false}>
+                        <label class="text-danger">
+                            <input type="checkbox" name="confirm_replace" value="1" required>
+                            <{$smarty.const._MA_TADCAL_GOOGLE_CONFIRM_REPLACE}>
+                        </label>
+                    <{/if}>
+                    <button type="submit" class="btn btn-success"><{$smarty.const._MA_TADCAL_GOOGLE_SYNC_NOW}></button>
+                </form>
+                <form action="<{$xoops_url}>/modules/tad_cal/google_sync.php" method="post" class="d-inline">
+                    <input type="hidden" name="op" value="disconnect">
+                    <input type="hidden" name="cate_sn" value="<{$cate_sn}>">
+                    <input type="hidden" name="csrf" value="<{$google_admin_token}>">
+                    <button type="submit" class="btn btn-outline-danger"><{$smarty.const._MA_TADCAL_GOOGLE_DISCONNECT}></button>
+                </form>
+            <{/if}>
+        </div>
+    </div>
+<{/if}>
