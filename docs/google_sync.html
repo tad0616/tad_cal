@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="tad_cal 與 Google 行事曆雙向同步設定教學">
+    <title>tad_cal 與 Google 行事曆雙向同步設定教學</title>
+    <style>
+        :root {
+            color-scheme: light;
+            --ink: #243247;
+            --muted: #596579;
+            --line: #dce3ed;
+            --blue: #1769aa;
+            --pale-blue: #eef6ff;
+            --pale-yellow: #fff8df;
+            --pale-red: #fff0ed;
+            --surface: #fff;
+            --page: #f3f6fa;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: var(--page);
+            color: var(--ink);
+            font: 16px/1.75 system-ui, -apple-system, "Segoe UI", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+        }
+
+        a {
+            color: var(--blue);
+            overflow-wrap: anywhere;
+        }
+
+        .page {
+            width: min(1080px, calc(100% - 32px));
+            margin: 36px auto;
+        }
+
+        header,
+        main,
+        nav {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            box-shadow: 0 4px 18px rgb(35 54 80 / 5%);
+        }
+
+        header {
+            padding: 32px clamp(20px, 5vw, 48px);
+            border-top: 5px solid var(--blue);
+        }
+
+        h1 {
+            margin: 0 0 12px;
+            font-size: clamp(1.7rem, 4vw, 2.4rem);
+            line-height: 1.3;
+        }
+
+        h2 {
+            margin: 0 0 18px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--line);
+            font-size: 1.5rem;
+        }
+
+        h3 {
+            margin: 24px 0 8px;
+            font-size: 1.12rem;
+        }
+
+        p {
+            margin: 10px 0;
+        }
+
+        .lead,
+        .muted {
+            color: var(--muted);
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: minmax(220px, 270px) minmax(0, 1fr);
+            align-items: start;
+            gap: 22px;
+            margin-top: 22px;
+        }
+
+        nav {
+            position: sticky;
+            top: 16px;
+            padding: 20px;
+        }
+
+        nav h2 {
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        nav ol {
+            margin: 0;
+            padding-left: 22px;
+        }
+
+        nav li {
+            margin: 6px 0;
+        }
+
+        main {
+            min-width: 0;
+            padding: clamp(20px, 4vw, 40px);
+        }
+
+        section {
+            scroll-margin-top: 20px;
+        }
+
+        section + section {
+            margin-top: 42px;
+        }
+
+        ul,
+        ol {
+            padding-left: 26px;
+        }
+
+        li {
+            padding-left: 3px;
+            margin: 5px 0;
+        }
+
+        .callout {
+            margin: 18px 0;
+            padding: 14px 18px;
+            border-left: 4px solid #d59a00;
+            border-radius: 6px;
+            background: var(--pale-yellow);
+        }
+
+        .danger {
+            border-left-color: #bf3d2c;
+            background: var(--pale-red);
+        }
+
+        .info {
+            border-left-color: var(--blue);
+            background: var(--pale-blue);
+        }
+
+        code,
+        pre {
+            font-family: Consolas, "SFMono-Regular", Menlo, monospace;
+            font-size: .92em;
+        }
+
+        code {
+            padding: 2px 5px;
+            border-radius: 4px;
+            background: #edf1f6;
+            overflow-wrap: anywhere;
+        }
+
+        pre {
+            margin: 12px 0;
+            padding: 14px 16px;
+            overflow-x: auto;
+            border: 1px solid var(--line);
+            border-radius: 7px;
+            background: #f7f9fc;
+            line-height: 1.55;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        .step-list li {
+            margin: 9px 0;
+        }
+
+        footer {
+            padding: 20px 8px;
+            color: var(--muted);
+            text-align: center;
+            font-size: .9rem;
+        }
+
+        @media (max-width: 760px) {
+            .page {
+                width: min(100% - 20px, 680px);
+                margin: 12px auto;
+            }
+
+            .layout {
+                grid-template-columns: 1fr;
+                gap: 12px;
+                margin-top: 12px;
+            }
+
+            nav {
+                position: static;
+            }
+
+            nav ol {
+                columns: 2;
+                column-gap: 24px;
+            }
+        }
+
+        @media (max-width: 420px) {
+            nav ol {
+                columns: 1;
+            }
+        }
+
+        @media print {
+            body {
+                background: #fff;
+                font-size: 11pt;
+            }
+
+            .page {
+                width: 100%;
+                margin: 0;
+            }
+
+            header,
+            main,
+            nav {
+                box-shadow: none;
+            }
+
+            nav {
+                position: static;
+                break-inside: avoid;
+            }
+
+            .layout {
+                display: block;
+            }
+
+            main {
+                margin-top: 16px;
+            }
+
+            a {
+                color: inherit;
+                text-decoration: none;
+            }
+
+            section {
+                break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="page">
+    <header>
+        <h1>tad_cal 與 Google 行事曆雙向同步設定教學</h1>
+        <p class="lead">依照以下步驟設定 Google OAuth、連結行事曆分類，並安排定期同步。</p>
+        <div class="callout info">
+            本功能以「一個 tad_cal 分類對應一個 Google 行事曆」。本站事件新增、修改或刪除時會立即嘗試同步到 Google；Google 端變更則由伺服器排程定期同步回本站。
+        </div>
+    </header>
+
+    <div class="layout">
+        <nav aria-label="文件目錄">
+            <h2>快速目錄</h2>
+            <ol>
+                <li><a href="#requirements">開始前請確認</a></li>
+                <li><a href="#google-oauth">建立 Google OAuth 用戶端</a></li>
+                <li><a href="#xoops-settings">在 XOOPS 輸入 OAuth 資訊</a></li>
+                <li><a href="#connect-calendar">設定分類並授權</a></li>
+                <li><a href="#initial-sync">選擇首次同步方式</a></li>
+                <li><a href="#scheduler">設定定期同步排程</a></li>
+                <li><a href="#verify">確認同步運作</a></li>
+                <li><a href="#troubleshooting">常見問題與注意事項</a></li>
+            </ol>
+        </nav>
+
+        <main>
+            <section id="requirements">
+                <h2>開始前請確認</h2>
+                <ul>
+                    <li>XOOPS 網站有固定網址，並建議使用 HTTPS。</li>
+                    <li>執行網站及排程的 PHP 均啟用 cURL 與 OpenSSL。若網站 PHP 與命令列 PHP 使用不同設定，請分別確認。</li>
+                    <li>XOOPS 資料庫可正常連線，且已備份資料庫。</li>
+                    <li>要連結的 Google 帳號對目標行事曆具有編輯權限。若使用共用行事曆，請先在 Google 行事曆分享設定中授予該帳號變更活動的權限。</li>
+                </ul>
+            </section>
+
+            <section id="google-oauth">
+                <h2>一、建立 Google OAuth 用戶端</h2>
+                <ol class="step-list">
+                    <li>登入 <a href="https://console.cloud.google.com/" target="_blank" rel="noopener noreferrer">Google Cloud Console</a>。</li>
+                    <li>建立或選取一個專供此網站使用的 Google Cloud 專案。</li>
+                    <li>在「API 和服務」的 API 程式庫中搜尋並啟用「Google Calendar API」。</li>
+                    <li>開始設定 OAuth 同意畫面（部分帳戶會顯示 Google Auth Platform 設定）：
+                        <ul>
+                            <li>填寫應用程式名稱及支援電子郵件。</li>
+                            <li>依使用對象設定應用程式對象／使用者類型，並填妥要求的聯絡資訊。</li>
+                            <li>若應用程式仍處於測試狀態，將要進行授權的 Google 帳號加入測試使用者。</li>
+                            <li>不需要自行新增行事曆 scope；授權時 tad_cal 會要求 Google 行事曆事件的讀取與編輯權限。</li>
+                        </ul>
+                    </li>
+                    <li>在「用戶端」或「憑證」中建立 OAuth 用戶端 ID，應用程式類型選「網頁應用程式」。</li>
+                    <li>在「已授權的重新導向 URI」新增以下網址，並換成實際 XOOPS 網站的完整網址：
+                        <pre><code>https://你的網域/modules/tad_cal/google_sync.php</code></pre>
+                        例如 XOOPS 網址是 <code>https://calendar.example.org</code>，URI 就是
+                        <code>https://calendar.example.org/modules/tad_cal/google_sync.php</code>。
+                        網址、網域、通訊協定及路徑都必須與 XOOPS 設定一致；不要加上 <code>op</code> 或 <code>cate_sn</code> 參數。
+                    </li>
+                    <li>建立後複製「用戶端 ID」及「用戶端密碼」。請勿公開密碼或提交到版本控制。</li>
+                </ol>
+                <div class="callout">
+                    正式提供給多位使用者使用時，請依 Google Cloud 顯示的發布狀態及驗證要求完成必要設定。測試中的應用程式只能由已加入的測試使用者授權；Google 也可能因使用者或應用程式政策撤銷 refresh token。
+                </div>
+            </section>
+
+            <section id="xoops-settings">
+                <h2>二、在 XOOPS 輸入 OAuth 資訊</h2>
+                <ol class="step-list">
+                    <li>登入 XOOPS 管理後台，進入「模組」管理。</li>
+                    <li>找到 tad_cal；若剛安裝或更新模組，先執行模組更新，讓雙向同步所需資料表建立完成。</li>
+                    <li>開啟 tad_cal 的「偏好設定」。</li>
+                    <li>將 Google Cloud 提供的「用戶端 ID」及「用戶端密碼」分別貼入「Google OAuth 用戶端 ID」及「Google OAuth 用戶端密鑰」。</li>
+                    <li>儲存設定。</li>
+                </ol>
+            </section>
+
+            <section id="connect-calendar">
+                <h2>三、設定分類並授權 Google 行事曆</h2>
+                <ol class="step-list">
+                    <li>在 XOOPS 管理後台開啟 tad_cal 的「行事曆管理」，新增分類或編輯現有分類。</li>
+                    <li>在「Google 行事曆 ID」輸入目標行事曆 ID：
+                        <ul>
+                            <li>主行事曆可填 <code>primary</code>。</li>
+                            <li>其他行事曆可在 Google 行事曆網頁版的「設定及共用」&gt;「整合行事曆」中找到「行事曆 ID」。</li>
+                        </ul>
+                    </li>
+                    <li>選擇「首次同步方式」（詳見下一節），儲存分類。</li>
+                    <li>在該分類設定頁按「連結 Google」。</li>
+                    <li>選擇有權限存取該行事曆的 Google 帳號，檢查授權帳號後同意 tad_cal 存取。授權成功後會返回該分類設定頁，狀態應顯示「已連結」。</li>
+                    <li>在分類設定頁按「立即同步」完成首次同步。若頁面沒有返回或顯示錯誤，請先按錯誤訊息檢查 OAuth URI、用戶端資訊、Google 帳號權限及 PHP 擴充設定。</li>
+                </ol>
+            </section>
+
+            <section id="initial-sync">
+                <h2>四、選擇首次同步方式</h2>
+                <p>首次同步方式會影響分類中既有的本站事件。選擇前請先備份，並與分類使用者確認。</p>
+                <ul>
+                    <li><strong>匯入 Google 事件；既有本站事件不推送：</strong>Google 事件會匯入本站，既有本站事件不會在首次同步上傳，之後編輯該事件才會開始同步。若兩邊原本已有相同事件，可能出現重複資料。</li>
+                    <li><strong>以 Google 為準：</strong>首次同步會刪除該分類既有的本站事件，再匯入 Google 事件。此操作不可復原，執行前頁面會要求勾選確認；建議先備份。</li>
+                    <li><strong>合併雙方事件並上傳本站既有事件：</strong>本站既有事件會上傳至 Google，再匯入 Google 事件。若兩端原有相同事件，可能產生重複資料。</li>
+                </ul>
+                <div class="callout danger"><strong>重要：</strong>「以 Google 為準」會刪除該分類既有的本站事件。若不確定該選哪一項，先備份並選擇不會刪除既有事件的策略。</div>
+            </section>
+
+            <section id="scheduler">
+                <h2>五、設定定期同步排程</h2>
+                <p>本站的事件變更會即時推送；Google 端的變更需要執行 <code>cron_sync.php</code> 才會拉回。請在伺服器設定每五分鐘執行一次。此程式只允許命令列執行，請勿以瀏覽器開啟。</p>
+
+                <h3>Linux / Unix（crontab）</h3>
+                <pre><code>*/5 * * * * /usr/bin/php /完整路徑/xoops/modules/tad_cal/cron_sync.php &gt;&gt; /完整路徑/tad_cal_google_sync.log 2&gt;&amp;1</code></pre>
+                <p>請將 <code>/usr/bin/php</code> 及 XOOPS 路徑替換成伺服器實際位置。可用 <code>crontab -e</code> 編輯排程；若伺服器的 PHP 不在 <code>/usr/bin/php</code>，請使用主機商提供的 PHP CLI 路徑。</p>
+
+                <h3>Windows 工作排程器</h3>
+                <ol>
+                    <li>建立基本工作，觸發程序設為每天，並設定每 5 分鐘重複、持續時間選「無限期」。</li>
+                    <li>動作選「啟動程式」：
+                        <ul>
+                            <li>程式或指令碼：PHP CLI 的完整路徑，例如 <code>C:\php\php.exe</code></li>
+                            <li>新增引數：<code>C:\完整路徑\xoops\modules\tad_cal\cron_sync.php</code></li>
+                            <li>開始位置：XOOPS 網站根目錄（如有需要）</li>
+                        </ul>
+                    </li>
+                    <li>儲存後檢查工作歷程及上一個執行結果。請確認排程使用的 PHP CLI 已啟用 cURL、OpenSSL，且可以連接 Google API。</li>
+                </ol>
+
+                <h3>先手動測試排程命令</h3>
+                <p>先在命令列執行一次，確認路徑與 PHP 環境正確：</p>
+                <pre><code>php /完整路徑/xoops/modules/tad_cal/cron_sync.php</code></pre>
+                <p>同步完成時會逐一顯示已同步的分類；若有錯誤，錯誤分類會輸出原因且程式以非零狀態結束。排程可將輸出導向記錄檔，方便管理員排查。</p>
+            </section>
+
+            <section id="verify">
+                <h2>六、確認同步運作</h2>
+                <ol class="step-list">
+                    <li>在已連結的 tad_cal 分類新增一筆測試事件，確認 Google 行事曆出現該事件。</li>
+                    <li>在 Google 行事曆修改或新增另一筆測試事件，等待下一次排程執行，再確認本站有同步更新。</li>
+                    <li>測試刪除前請注意：配對事件在任一端刪除，刪除會傳遞到另一端。</li>
+                    <li>同步衝突以較新版本為準。排程間隔期間的 Google 端更新，會在下一次排程處理。</li>
+                </ol>
+            </section>
+
+            <section id="troubleshooting">
+                <h2>常見問題與注意事項</h2>
+                <ul>
+                    <li><strong><code>redirect_uri_mismatch</code>：</strong>確認 Google Cloud 的已授權重新導向 URI 與 XOOPS 網址完全一致，包含 http/https、網域及路徑。</li>
+                    <li><strong>Google 帳號看不到目標行事曆：</strong>確認該帳號已有該行事曆的編輯權限，並重新授權。</li>
+                    <li><strong>沒有取得 refresh token：</strong>在 Google 帳戶的第三方應用程式／安全性設定中移除 tad_cal 授權，再回到分類頁重新連結。</li>
+                    <li><strong>排程執行失敗：</strong>確認命令列 PHP 的 cURL、OpenSSL、XOOPS 路徑及資料庫設定；網頁 PHP 正常不代表 PHP CLI 使用相同設定。</li>
+                    <li><strong>更換 XOOPS 資料庫密碼後：</strong>refresh token 使用資料庫密碼衍生的金鑰加密，請重新連結 Google 行事曆。</li>
+                    <li><strong>解除連結：</strong>會移除本站的授權及事件對應資料，但不會刪除任一端的事件；解除後雙向同步即停止。</li>
+                    <li><strong>重複事件：</strong>支援 tad_cal 可處理的重複規則。Google 重複事件的單次例外（例如只修改或取消其中一天）目前不支援，排程會回報同步錯誤。</li>
+                    <li><strong>時區：</strong>重複事件時間會依 PHP 伺服器時區正規化；請確認伺服器時區設定正確。</li>
+                </ul>
+            </section>
+        </main>
+    </div>
+
+    <footer>tad_cal Google 行事曆雙向同步設定說明</footer>
+</div>
+</body>
+</html>
