@@ -5,7 +5,7 @@
             <{foreach from=$cal.event item=event}>
                 <li>
                     <a href="<{$xoops_url}>/modules/tad_cal/event.php?sn=<{$event.sn}>">
-                        <{$event.title}>
+                        <{$event.title|escape:'html'}>
                     </a>
                 </li>
             <{/foreach}>

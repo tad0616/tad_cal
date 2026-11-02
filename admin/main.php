@@ -2,7 +2,6 @@
 use Xmf\Request;
 use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\MColorPicker;
-use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
 use XoopsModules\Tad_cal\GoogleCalendarSync;
 /*-----------引入檔案區--------------*/
@@ -35,6 +34,14 @@ switch ($op) {
 
     //刪除資料
     case 'delete_tad_cal_cate':
+        $token = isset($_POST['XOOPS_TOKEN_REQUEST']) ? (string) $_POST['XOOPS_TOKEN_REQUEST'] : '';
+        if ('POST' !== $_SERVER['REQUEST_METHOD'] || !$xoopsUser ||
+            !isset($xoopsModule) || !is_object($xoopsModule) ||
+            !$xoopsUser->isAdmin($xoopsModule->getVar('mid')) ||
+            !$GLOBALS['xoopsSecurity']->check(true, $token)) {
+            http_response_code(403);
+            exit('Forbidden');
+        }
         delete_tad_cal_cate($cate_sn);
         header("location: {$_SERVER['PHP_SELF']}");
         exit;
@@ -241,8 +248,7 @@ function list_tad_cal_cate()
 {
     global $xoopsDB, $xoopsTpl;
 
-    $SweetAlert = new SweetAlert();
-    $SweetAlert->render("delete_tad_cal_cate_func", "main.php?op=delete_tad_cal_cate&cate_sn=", 'cate_sn');
+    $xoopsTpl->assign('delete_token_html', $GLOBALS['xoopsSecurity']->getTokenHTML());
 
     //取得資料數
     $sql = 'SELECT COUNT(*), `cate_sn`, MAX(`last_update`) FROM `' . $xoopsDB->prefix('tad_cal_event') . '` GROUP BY `cate_sn`';

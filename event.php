@@ -123,6 +123,7 @@ function tad_cal_event_form($sn = '', $mode = '', $def_tag = '')
     //抓取預設值
     if (! empty($sn)) {
         $DBV = get_tad_cal_event($sn);
+        tad_cal_require_event_write_access($DBV);
     } else {
         $DBV = [];
     }
@@ -181,7 +182,7 @@ function tad_cal_event_form($sn = '', $mode = '', $def_tag = '')
 
     $get_tad_cal_cate_menu_options = Tools::get_tad_cal_cate_menu_options($cate_sn);
     if (empty($get_tad_cal_cate_menu_options)) {
-        if ($_SESSION['tad_cal_adm']) {
+        if (tad_cal_is_module_admin()) {
             $of_cate_title = _MD_TADCAL_NEW_CATE;
             $cate_col      = "<input name='new_cate_title' id='new_cate_title' value='" . _MD_TADCAL_NEW_CALENDAR . "' class='span4'>";
         } else {
@@ -354,12 +355,100 @@ function tad_cal_event_max_sort()
     return ++$sort;
 }
 
+function tad_cal_is_module_admin()
+{
+    global $xoopsModule, $xoopsUser;
+
+    return $xoopsUser && $xoopsModule && $xoopsUser->isAdmin($xoopsModule->getVar('mid'));
+}
+
+function tad_cal_deny_access($status = 403)
+{
+    http_response_code($status);
+    exit(403 === $status ? 'Forbidden' : 'Not found');
+}
+
+function tad_cal_require_cate_write_access($cateSn)
+{
+    global $xoopsUser;
+
+    if (!$xoopsUser) {
+        tad_cal_deny_access();
+    }
+
+    if (tad_cal_is_module_admin()) {
+        return;
+    }
+
+    $writeCategories = array_map('intval', Tools::chk_tad_cal_cate_power('enable_upload_group'));
+    if (!in_array((int) $cateSn, $writeCategories, true)) {
+        tad_cal_deny_access();
+    }
+}
+
+function tad_cal_require_event_write_access($event)
+{
+    if (!is_array($event)) {
+        tad_cal_deny_access(404);
+    }
+
+    if (!tad_cal_can_write_event($event)) {
+        tad_cal_deny_access();
+    }
+}
+
+function tad_cal_can_write_event($event, $writeCategories = null)
+{
+    global $xoopsUser;
+
+    if (!is_array($event) || !isset($event['uid'], $event['cate_sn']) || !$xoopsUser) {
+        return false;
+    }
+
+    if (tad_cal_is_module_admin()) {
+        return true;
+    }
+
+    if ((int) $event['uid'] !== (int) $xoopsUser->uid()) {
+        return false;
+    }
+
+    if (null === $writeCategories) {
+        $writeCategories = Tools::chk_tad_cal_cate_power('enable_upload_group');
+    }
+
+    return in_array((int) $event['cate_sn'], array_map('intval', $writeCategories), true);
+}
+
+function tad_cal_require_event_read_access($event)
+{
+    if (!is_array($event)) {
+        tad_cal_deny_access(404);
+    }
+
+    if (tad_cal_is_module_admin()) {
+        return;
+    }
+
+    $readableCategories = array_map('intval', Tools::chk_tad_cal_cate_power('enable_group'));
+    if (!in_array((int) $event['cate_sn'], $readableCategories, true)) {
+        tad_cal_deny_access(404);
+    }
+}
+
 //新增資料到tad_cal_event中
 function insert_tad_cal_event()
 {
     global $xoopsDB, $xoopsUser;
 
     $cate_sn = (int) $_POST['cate_sn'];
+    if (empty($cate_sn)) {
+        if (!tad_cal_is_module_admin()) {
+            tad_cal_deny_access();
+        }
+    } else {
+        tad_cal_require_cate_write_access($cate_sn);
+    }
 
     //取得使用者編號
     $uid = ($xoopsUser) ? $xoopsUser->uid() : 0;
@@ -480,6 +569,7 @@ function insert_tad_cal_event()
 function update_tad_cal_todo_event($sn = '', $todo = null)
 {
     global $xoopsDB;
+    tad_cal_require_event_write_access(get_tad_cal_event($sn));
 
     if (! is_null($todo)) {
         $tag = $todo;
@@ -499,12 +589,20 @@ function update_tad_cal_event($sn = '')
     global $xoopsDB, $xoopsUser;
     //die(var_export($_POST));
     $currentEvent = get_tad_cal_event($sn);
-    if ($currentEvent && (int) $currentEvent['cate_sn'] !== (int) $_POST['cate_sn']) {
+    tad_cal_require_event_write_access($currentEvent);
+    $newCateSn = (int) $_POST['cate_sn'];
+    if ($newCateSn < 1 || !get_tad_cal_cate($newCateSn)) {
+        tad_cal_deny_access();
+    }
+    if (!tad_cal_is_module_admin() && $newCateSn !== (int) $currentEvent['cate_sn']) {
+        tad_cal_require_cate_write_access($newCateSn);
+    }
+    if ((int) $currentEvent['cate_sn'] !== $newCateSn) {
         GoogleCalendarSync::deleteLocalEvent($sn);
     }
 
     //取得使用者編號
-    $uid = ($xoopsUser) ? $xoopsUser->uid() : '';
+    $uid = (int) $currentEvent['uid'];
     $tag = (string) $_POST['tag'];
 
     $allDay = ! empty($_POST['fc_start']) ? 1 : $_POST['allday'];
@@ -593,7 +691,7 @@ function update_tad_cal_event($sn = '')
         $_POST['id'],
         $_POST['sequence'],
         $uid,
-        $_POST['cate_sn'],
+        $newCateSn,
         $allDay,
         $tag,
         $last_update,
@@ -614,8 +712,6 @@ function list_tad_cal_event($tag = "")
 
     $cate = get_tad_cal_cate_all();
 
-    $now_uid = ($xoopsUser) ? $xoopsUser->uid() : 0;
-
     //取得目前使用者可讀的群組
     $ok_cate_arr = Tools::chk_tad_cal_cate_power('enable_group');
     $all_ok_cate = implode(',', $ok_cate_arr);
@@ -624,8 +720,6 @@ function list_tad_cal_event($tag = "")
 
     //可編輯的行事曆
     $edit_cate_arr = Tools::chk_tad_cal_cate_power('enable_upload_group');
-
-    $show_function = count($edit_cate_arr) ? 1 : 0;
 
     //$sql = "select * from ".$xoopsDB->prefix("tad_cal_event")."  where $and_ok_cate order by start desc , sequence";
 
@@ -651,7 +745,7 @@ function list_tad_cal_event($tag = "")
         //避免截掉半個中文字
         $details = xoops_substr(strip_tags($details), 0, 60);
 
-        $fun = ($show_function and ($_SESSION['tad_cal_adm'] or $now_uid == $uid)) ? "
+        $fun = tad_cal_can_write_event($all, $edit_cate_arr) ? "
         <td>
         <a href='{$_SERVER['PHP_SELF']}?op=tad_cal_event_form&sn=$sn' class='btn btn-sm btn-warning'>" . _TAD_EDIT . "</a>
         <a href=\"javascript:delete_tad_cal_event_func($sn);\" class='btn btn-sm btn-danger'>" . _TAD_DEL . '</a>
@@ -702,18 +796,9 @@ function delete_tad_cal_event($sn = '')
 {
     global $xoopsDB, $xoopsUser;
     $uid = $xoopsUser ? $xoopsUser->uid() : 0;
-    $moduleId = isset($GLOBALS['xoopsModule']) && is_object($GLOBALS['xoopsModule']) ? $GLOBALS['xoopsModule']->getVar('mid') : 0;
-    $isAdmin = $xoopsUser && $moduleId && $xoopsUser->isAdmin($moduleId);
-    if (!$xoopsUser && !$isAdmin) {
-        Utility::web_error('', __FILE__, __LINE__);
-    }
-
-    $checkSql = 'SELECT `uid` FROM `' . $xoopsDB->prefix('tad_cal_event') . '` WHERE `sn`=?';
-    $checkResult = Utility::query($checkSql, 'i', [$sn]) or Utility::web_error($checkSql, __FILE__, __LINE__);
-    $event = $xoopsDB->fetchArray($checkResult);
-    if (!$event || (!$isAdmin && (int) $event['uid'] !== (int) $uid)) {
-        Utility::web_error($checkSql, __FILE__, __LINE__);
-    }
+    $event = get_tad_cal_event($sn);
+    tad_cal_require_event_write_access($event);
+    $isAdmin = tad_cal_is_module_admin();
 
     GoogleCalendarSync::deleteLocalEvent($sn);
 
@@ -742,8 +827,6 @@ function show_one_tad_cal_event($sn = '', $stamp = '')
     }
     $sn = (int) $sn;
 
-    $now_uid = ($xoopsUser) ? $xoopsUser->uid() : 0;
-
     $cate = get_tad_cal_cate_all();
     if (! empty($stamp)) {
         $date   = date('Y-m-d H:i', $stamp);
@@ -756,6 +839,7 @@ function show_one_tad_cal_event($sn = '', $stamp = '')
 
     }
     $all = $xoopsDB->fetchArray($result);
+    tad_cal_require_event_read_access($all);
 
     //以下會產生這些變數： $sn , $title , $start , $end , $recurrence , $location , $kind , $details , $etag , $id , $sequence , $uid , $cate_sn
     foreach ($all as $k => $v) {
@@ -770,18 +854,19 @@ function show_one_tad_cal_event($sn = '', $stamp = '')
         $uid_name = \XoopsUser::getUnameFromId($uid, 0);
     }
 
-    $details = nl2br($details);
+
 
     $location_img = empty($location) ? '' : "<img src='" . XOOPS_URL . "/modules/tad_cal/images/location.png' alt='" . _MD_TADCAL_LOCATION . "'>";
 
     $details = empty($details) ? $title : $details;
+    $details = nl2br(htmlspecialchars($details, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'));
 
     //可編輯的行事曆
     $edit_cate_arr = Tools::chk_tad_cal_cate_power('enable_upload_group');
-    $show_function = count($edit_cate_arr) ? 1 : 0;
-    $fun           = ($show_function and ($_SESSION['tad_cal_adm'] or $now_uid == $uid)) ? "
+    $phpSelf = htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+    $fun = tad_cal_can_write_event($all, $edit_cate_arr) ? "
     <div style='text-align:right;margin-top:10px;'>
-    <a href='{$_SERVER['PHP_SELF']}?op=tad_cal_event_form&sn=$sn' class='link_button_r' style='padding:4px;font-size:0.75rem;'><img src='" . XOOPS_URL . "/modules/tad_cal/images/edit.png' style='margin-right:4px;' align='absmiddle'>" . _TAD_EDIT . "</a>
+    <a href='{$phpSelf}?op=tad_cal_event_form&sn=$sn' class='link_button_r' style='padding:4px;font-size:0.75rem;'><img src='" . XOOPS_URL . "/modules/tad_cal/images/edit.png' style='margin-right:4px;' align='absmiddle'>" . _TAD_EDIT . "</a>
     <a href=\"javascript:delete_tad_cal_event_func($sn);\" class='link_button_r' style='padding:4px;font-size:0.75rem;'><img src='" . XOOPS_URL . "/modules/tad_cal/images/delete.png' style='margin-right:4px;' align='absmiddle'>" . _TAD_DEL . '</a>
     </div>' : '';
 
@@ -810,8 +895,6 @@ function show_simple_event($sn = '', $stamp = '')
     }
     $sn = (int) $sn;
 
-    $now_uid = ($xoopsUser) ? $xoopsUser->uid() : 0;
-
     $cate = get_tad_cal_cate_all();
 
     if (! empty($stamp)) {
@@ -824,6 +907,7 @@ function show_simple_event($sn = '', $stamp = '')
     }
 
     $all = $xoopsDB->fetchArray($result);
+    tad_cal_require_event_read_access($all);
 
     //以下會產生這些變數： $sn , $title , $start , $end , $recurrence , $location , $kind , $details , $etag , $id , $sequence , $uid , $cate_sn
     foreach ($all as $k => $v) {
@@ -837,26 +921,28 @@ function show_simple_event($sn = '', $stamp = '')
         $uid_name = \XoopsUser::getUnameFromId($uid, 0);
     }
 
-    $details = nl2br($details);
+    $details = empty($details) ? $title : $details;
+    $details = nl2br(htmlspecialchars($details, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'));
+    $title = htmlspecialchars($title, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+    $location = htmlspecialchars($location, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+    $categoryTitle = htmlspecialchars($cate[$cate_sn]['cate_title'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+    $uid_name = htmlspecialchars($uid_name, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 
     $show_location = empty($location) ? '' : "<tr>
   <td nowrap style='font-size:0.813rem;'><img src='" . XOOPS_URL . "/modules/tad_cal/images/location.png' alt='" . _MD_TADCAL_LOCATION . "' style='margin-right:4px;' align='absmiddle'>{$location}</td>
   </tr>";
 
-    $details = empty($details) ? $title : $details;
-
     //可編輯的行事曆
     $edit_cate_arr = Tools::chk_tad_cal_cate_power('enable_upload_group');
-    $show_function = count($edit_cate_arr) ? 1 : 0;
-
     $stamp    = strtotime($start);
     $andStamp = ! empty($recurrence) ? "&stamp={$stamp}" : '';
 
     $page = "<a href='" . XOOPS_URL . "/modules/tad_cal/event.php?sn={$sn}{$andStamp}' class='link_button_r' style='padding:4px;font-size:0.75rem;'><img src='" . XOOPS_URL . "/modules/tad_cal/images/event.png' style='margin-right:4px;' align='absmiddle'>" . _MD_TADCAL_EVENT_PAGE . '</a>';
 
-    $fun = ($show_function and ($_SESSION['tad_cal_adm'] or $now_uid == $uid)) ? "
+    $phpSelf = htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+    $fun = tad_cal_can_write_event($all, $edit_cate_arr) ? "
     <div style='margin-top:5px;'>
-    <a href='{$_SERVER['PHP_SELF']}?op=tad_cal_event_form&sn=$sn' class='link_button_r' style='padding:4px;font-size:0.75rem;'><img src='" . XOOPS_URL . "/modules/tad_cal/images/edit.png' style='margin-right:4px;' align='absmiddle'>" . _TAD_EDIT . "</a>
+    <a href='{$phpSelf}?op=tad_cal_event_form&sn=$sn' class='link_button_r' style='padding:4px;font-size:0.75rem;'><img src='" . XOOPS_URL . "/modules/tad_cal/images/edit.png' style='margin-right:4px;' align='absmiddle'>" . _TAD_EDIT . "</a>
     $page
     <a href=\"javascript:delete_tad_cal_event_func($sn);\" style='padding:4px;font-size:0.75rem;'><img src='" . XOOPS_URL . "/modules/tad_cal/images/delete.png' style='margin-right:4px;' align='absmiddle'></a>
     </div>" : "<div style='margin-top:5px;'>$page</div>";
@@ -870,7 +956,7 @@ function show_simple_event($sn = '', $stamp = '')
   {$show_location}
 
   <tr><td style='background-color:#FFFFEE;'><div style='margin:15px;font-size:0.75rem;line-height:1.5;color:#202020;'>{$details}</div></td></tr>
-  <tr><td><div style='text-align:right;font-size:0.75rem;color:gray;'>{$cate[$cate_sn]['cate_title']} / Posted by {$uid_name}</div></td></tr>
+  <tr><td><div style='text-align:right;font-size:0.75rem;color:gray;'>{$categoryTitle} / Posted by {$uid_name}</div></td></tr>
   <tr><td style='background-color:transparent;border-bottom:none;'>$fun</td></tr>
   </table>
   ";
@@ -929,6 +1015,7 @@ function ajax_update_date($sn = '')
     }
     $i   = 0;
     $all = $xoopsDB->fetchArray($result);
+    tad_cal_require_event_write_access($all);
     //以下會產生這些變數： $sn , $title , $start , $end , $recurrence , $location , $kind , $details , $etag , $id , $sequence , $uid , $cate_sn
     foreach ($all as $k => $v) {
         $$k = $v;

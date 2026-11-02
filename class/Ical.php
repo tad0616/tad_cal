@@ -43,6 +43,13 @@ namespace XoopsModules\Tad_cal;
 class Ical
 {
     /**
+     * File path passed to read_file()
+     *
+     * @var string
+     */
+    public $file;
+
+    /**
      * Text in file
      *
      * @var string

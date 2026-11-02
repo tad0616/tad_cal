@@ -1,7 +1,7 @@
 
 <h1>
 <{include file="$xoops_rootpath/modules/tad_cal/templates/sub_todo.tpl"}>
-<{$title|default:''}>
+<{$title|default:''|escape:'html'}>
 </h1>
 
 <div class="row">
@@ -12,14 +12,14 @@
 
     <div class="col-sm-6">
     <{$location_img|default:''}>
-    <{$location|default:''}>
+    <{$location|default:''|escape:'html'}>
     </div>
 </div>
 
 <div class="alert alert-info">
   <{$details|default:''}>
 </div>
-<div style='text-align:right;font-size:0.75rem;color:gray;'><{$cate_title|default:''}> / Posted by <{$uid_name|default:''}></div>
+<div style='text-align:right;font-size:0.75rem;color:gray;'><{$cate_title|default:''|escape:'html'}> / Posted by <{$uid_name|default:''|escape:'html'}></div>
 
 <{$fun|default:''}>
 

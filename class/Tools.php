@@ -121,7 +121,8 @@ class Tools
         $option = '';
         while (list($cate_sn, $cate_title) = $xoopsDB->fetchRow($result)) {
             $selected = ($cate_sn == $default_cate_sn) ? 'selected=selected' : '';
-            $option .= "<option value=$cate_sn $selected>{$cate_title}</option>";
+            $option .= '<option value="' . (int) $cate_sn . "\" {$selected}>" .
+                htmlspecialchars($cate_title, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '</option>';
         }
 
         return $option;

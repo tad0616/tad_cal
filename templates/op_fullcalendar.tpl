@@ -43,7 +43,7 @@ $(document).ready(function() {
   });
   calendar.render();
 });
-</script><{if $cate.cate_title|default:false}><h1><{$cate.cate_title}></h1><{/if}>
+</script><{if $cate.cate_title|default:false}><h1><{$cate.cate_title|escape:'html'}></h1><{/if}>
 <div id="calendar" style="margin-top:20px;"></div>
 <div style="margin:10px auto;width:auto;"><{$style_mark|default:''}></div>
 

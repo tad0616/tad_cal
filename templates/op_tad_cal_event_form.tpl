@@ -115,7 +115,7 @@ $("#long").val(strtotime(chk_end)*1 - strtotime(chk_start)*1);
         <{$smarty.const._MD_TADCAL_TITLE}>
         </label>
         <div class="col-sm-10">
-        <input type="text" name="title" title="title" value="<{$title|default:''}>" id="title" class="validate[required] form-control">
+        <input type="text" name="title" title="title" value="<{$title|default:''|escape:'html'}>" id="title" class="validate[required] form-control">
         </div>
     </div>
 
@@ -276,7 +276,7 @@ $("#long").val(strtotime(chk_end)*1 - strtotime(chk_start)*1);
         <{$smarty.const._MD_TADCAL_LOCATION}>
         </label>
         <div class="col-sm-4">
-        <input type="text" name="location" title="location" class="form-control" value="<{$location|default:''}>" id="location" >
+        <input type="text" name="location" title="location" class="form-control" value="<{$location|default:''|escape:'html'}>" id="location" >
         </div>
     </div>
 
@@ -287,7 +287,7 @@ $("#long").val(strtotime(chk_end)*1 - strtotime(chk_start)*1);
         <{$smarty.const._MD_TADCAL_DETAILS}>
         </label>
         <div class="col-sm-10">
-        <textarea name="details" class="form-control" rows=4 id="details"><{$details|default:''}></textarea>
+        <textarea name="details" class="form-control" rows=4 id="details"><{$details|default:''|escape:'html'}></textarea>
         </div>
     </div>
 
@@ -302,10 +302,10 @@ $("#long").val(strtotime(chk_end)*1 - strtotime(chk_start)*1);
     <div class="text-center">
         <input type="hidden" id="long" value="<{$long|default:''}>">
         <!--事件etag-->
-        <input type="hidden" name="etag" value="<{$etag|default:''}>">
+        <input type="hidden" name="etag" value="<{$etag|default:''|escape:'html'}>">
 
         <!--事件id-->
-        <input type="hidden" name="id" value="<{$id|default:''}>">
+        <input type="hidden" name="id" value="<{$id|default:''|escape:'html'}>">
 
         <!--事件編號-->
         <input type="hidden" name="sn" value="<{$sn|default:''}>">

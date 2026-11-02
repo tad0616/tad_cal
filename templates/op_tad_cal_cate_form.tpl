@@ -6,7 +6,7 @@
         <{$smarty.const._MA_TADCAL_CATE_TITLE}>
     </label>
     <div class="col-sm-4">
-        <input type="text" title="cate_title" name="cate_title" class="form-control" value="<{$cate_title|default:''}>" id="cate_title" class="validate[required]">
+        <input type="text" title="cate_title" name="cate_title" class="form-control" value="<{$cate_title|default:''|escape:'html'}>" id="cate_title" class="validate[required]">
     </div>
     <!--是否啟用-->
     <label class="col-sm-2 col-form-label text-sm-right text-sm-end control-label">

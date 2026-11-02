@@ -11,9 +11,9 @@
 <{foreach from=$all_content item=cal}>
     <tr>
         <td style='font-size:0.75rem;font-family:arial;'><{$cal.date}></td>
-        <td><a href='<{$xoops_url}>/modules/tad_cal/event.php?sn=<{$cal.sn}>'><{$cal.re}><{$cal.title}></a><div style='color:gray;font-size:0.75rem;'><{$cal.details}></div></td>
-        <td><{$cal.location}></td>
-        <td><{$cal.cate_title}></td>
+        <td><a href='<{$xoops_url}>/modules/tad_cal/event.php?sn=<{$cal.sn}>'><{$cal.re}><{$cal.title|escape:'html'}></a><div style='color:gray;font-size:0.75rem;'><{$cal.details|escape:'html'}></div></td>
+        <td><{$cal.location|escape:'html'}></td>
+        <td><{$cal.cate_title|escape:'html'}></td>
         <{$cal.fun}>
     </tr>
 <{/foreach}>

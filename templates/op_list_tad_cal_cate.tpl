@@ -13,9 +13,9 @@
         <tbody id="sort">
             <{foreach from=$all_cal item=cal}>
                 <tr id="tr_<{$cal.cate_sn}>">
-                    <td style="background-color:<{$cal.cate_bgcolor}>; color:<{$cal.cate_color}>;">
-                    <img src="../images/date.png" title="<{$cal.cate_title}>" alt="<{$cal.cate_title}>" style="margin-right:4px;" align="absmiddle">
-                    <{$cal.cate_title}>
+                    <td style="background-color:<{$cal.cate_bgcolor|escape:'html'}>; color:<{$cal.cate_color|escape:'html'}>;">
+                    <img src="../images/date.png" title="<{$cal.cate_title|escape:'html'}>" alt="<{$cal.cate_title|escape:'html'}>" style="margin-right:4px;" align="absmiddle">
+                    <{$cal.cate_title|escape:'html'}>
                     </td>
                     <td class="c"><{$cal.counter}></td>
                     <td class="c"><{$cal.enable}></td>
@@ -23,7 +23,12 @@
                     <td class="c"><{$cal.gu_txt}></td>
                     <td class="c"><{$cal.last}></td>
                     <td>
-                        <a href="javascript:delete_tad_cal_cate_func(<{$cal.cate_sn}>);" class="btn btn-sm btn-danger"><i class="fa fa-times" aria-hidden="true"></i></a>
+                        <form action="main.php" method="post" class="d-inline" onsubmit="return confirm('<{$smarty.const._TAD_DEL|escape:'javascript'}>?');">
+                            <input type="hidden" name="op" value="delete_tad_cal_cate">
+                            <input type="hidden" name="cate_sn" value="<{$cal.cate_sn}>">
+                            <{$delete_token_html|default:''}>
+                            <button type="submit" class="btn btn-sm btn-danger" aria-label="<{$smarty.const._TAD_DEL|escape:'html'}>"><i class="fa fa-times" aria-hidden="true"></i></button>
+                        </form>
                         <a href="main.php?op=tad_cal_cate_form&cate_sn=<{$cal.cate_sn}>" class="btn btn-sm btn-warning"><i class="fa fa-pencil" aria-hidden="true"></i> <{$smarty.const._TAD_EDIT}></a>
                     </td>
                 </tr>

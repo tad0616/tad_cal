@@ -130,7 +130,8 @@ function get_event_title($start = '')
     $all = "
     <ul style='font-size: 0.875rem; line-height:1.5;'>";
     foreach ($title_arr as $sn => $title) {
-        $all .= "<li><a href='" . XOOPS_URL . "/modules/tad_cal/event.php?sn=$sn' style='text-decoration:none;color:#202020;'>{$title}</a></li>";
+        $all .= "<li><a href='" . XOOPS_URL . '/modules/tad_cal/event.php?sn=' . (int) $sn . "' style='text-decoration:none;color:#202020;'>" .
+            htmlspecialchars($title, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '</a></li>';
     }
     $all .= '</ul>';
 
