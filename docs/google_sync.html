@@ -306,10 +306,9 @@
                         </ul>
                     </li>
                     <li>在「用戶端」或「憑證」中建立 OAuth 用戶端 ID，應用程式類型選「網頁應用程式」。</li>
-                    <li>在「已授權的重新導向 URI」新增以下網址，並換成實際 XOOPS 網站的完整網址：
-                        <pre><code>https://你的網域/modules/tad_cal/google_sync.php</code></pre>
-                        例如 XOOPS 網址是 <code>https://calendar.example.org</code>，URI 就是
-                        <code>https://calendar.example.org/modules/tad_cal/google_sync.php</code>。
+                    <li>在「已授權的重新導向 URI」新增以下網址。從後台開啟本教學時，網址會自動帶入目前 XOOPS 網站的網址，請直接複製：
+                        <pre><code id="google-redirect-uri">https://你的網域/modules/tad_cal/google_sync.php</code></pre>
+                        若直接開啟此文件，請將示意網址換成實際 XOOPS 網站的完整網址。
                         網址、網域、通訊協定及路徑都必須與 XOOPS 設定一致；不要加上 <code>op</code> 或 <code>cate_sn</code> 參數。
                     </li>
                     <li>建立後複製「用戶端 ID」及「用戶端密碼」。請勿公開密碼或提交到版本控制。</li>
@@ -413,5 +412,11 @@
 
     <footer>tad_cal Google 行事曆雙向同步設定說明</footer>
 </div>
+<script>
+    var redirectUri = new URLSearchParams(window.location.search).get('redirect_uri');
+    if (redirectUri) {
+        document.getElementById('google-redirect-uri').textContent = redirectUri;
+    }
+</script>
 </body>
 </html>

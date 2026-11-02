@@ -9,6 +9,7 @@ define('_MI_TADCAL_GOOGLE_CLIENT_ID_DESC', 'Create an OAuth client in Google Clo
 define('_MI_TADCAL_GOOGLE_CLIENT_SECRET', 'Google OAuth client secret');
 define('_MI_TADCAL_GOOGLE_CLIENT_SECRET_DESC', 'OAuth client secret from Google Cloud Console. Do not put it in source code or public version control.');
 define('_MI_TADCAL_ADMENU1', 'Calendar Mgmt');
+define('_MI_TADCAL_ADMENU2', 'Google Calendar Sync Guide');
 define('_MI_TADCAL_BNAME1', 'Small calendar');
 define('_MI_TADCAL_BDESC1', 'Small calendar (tad_cal_calendar)');
 define('_MI_TADCAL_BNAME2', 'Recent events');

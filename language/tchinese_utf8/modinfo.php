@@ -10,6 +10,7 @@ define('_MI_TADCAL_GOOGLE_CLIENT_ID_DESC', '從 Google Cloud Console 建立 OAut
 define('_MI_TADCAL_GOOGLE_CLIENT_SECRET', 'Google OAuth 用戶端密鑰');
 define('_MI_TADCAL_GOOGLE_CLIENT_SECRET_DESC', 'Google Cloud Console 提供的 OAuth 用戶端密鑰。請勿放入程式碼或公開版本控制。');
 define('_MI_TADCAL_ADMENU1', '行事曆管理');
+define('_MI_TADCAL_ADMENU2', 'Google行事曆同步教學');
 define('_MI_TADCAL_BNAME1', '小行事曆');
 define('_MI_TADCAL_BDESC1', '小行事曆(tad_cal_calendar)');
 define('_MI_TADCAL_BNAME2', '近期事項');
