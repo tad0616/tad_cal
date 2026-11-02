@@ -1,3 +1,11 @@
+Tad Cal 4.3 (Released 2026-11-01)
+====================================
+1. Added a feature to sync with Google Calendar
+2. Support for PHP 8.5 and XOOPS 2.7.4
+3. Enhanced security
+4. Fixed Google Calendar sync stopping at recurring-event exceptions and leaving the initial sync incomplete
+
+
 Tad Cal 4.2 (Released 2026-09-04)
 ====================================
 1. The calendar now uses FullCalendar6

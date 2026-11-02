@@ -170,6 +170,8 @@ class GoogleCalendarSync
         $pageToken = '';
         $nextSyncToken = $calendar['sync_token'];
         $initialEvents = [];
+        $skippedRecurringInstances = 0;
+        $ignoredRecurrenceRules = 0;
         do {
             $params = ['showDeleted' => 'true', 'maxResults' => 2500];
             if ($pageToken) {
@@ -194,9 +196,17 @@ class GoogleCalendarSync
             }
 
             foreach (isset($response['items']) ? $response['items'] : [] as $googleEvent) {
+                if (!empty($googleEvent['recurringEventId'])) {
+                    $skippedRecurringInstances++;
+                    continue;
+                }
+                if (self::hasUnsupportedRecurrenceRules($googleEvent)) {
+                    $ignoredRecurrenceRules++;
+                }
                 if ($replaceLocal) {
-                    self::validateGoogleEvent($googleEvent);
-                    $initialEvents[] = $googleEvent;
+                    if (self::validateGoogleEvent($googleEvent)) {
+                        $initialEvents[] = $googleEvent;
+                    }
                 } else {
                     self::applyGoogleEvent($cateSn, $googleEvent);
                 }
@@ -226,6 +236,11 @@ class GoogleCalendarSync
             $calendar['initial_sync'],
             date('Y-m-d H:i:s')
         );
+
+        return [
+            'skipped_recurring_instances' => $skippedRecurringInstances,
+            'ignored_recurrence_rules' => $ignoredRecurrenceRules,
+        ];
     }
 
     public static function syncLocalEvent($sn)
@@ -326,19 +341,15 @@ class GoogleCalendarSync
             return;
         }
         $mapping = self::mappingByGoogle($cateSn, $googleEvent['id']);
+        if (!self::validateGoogleEvent($googleEvent)) {
+            return;
+        }
         if (isset($googleEvent['status']) && 'cancelled' === $googleEvent['status']) {
-            if (!empty($googleEvent['recurringEventId'])) {
-                throw new RuntimeException('Google 重複事件的單次例外目前無法同步；請先還原該例外或改為單一事件。');
-            }
             if ($mapping && !empty($mapping['local_sn'])) {
                 self::deleteLocalFromGoogle($cateSn, $mapping['local_sn']);
             }
             self::deleteMapping($cateSn, $googleEvent['id']);
             return;
-        }
-
-        if (!empty($googleEvent['recurringEventId'])) {
-            throw new RuntimeException('Google 重複事件的單次例外目前無法同步；請先還原該例外或改為單一事件。');
         }
 
         if ($mapping && !empty($mapping['local_sn'])) {
@@ -375,11 +386,31 @@ class GoogleCalendarSync
     private static function validateGoogleEvent($googleEvent)
     {
         if (!empty($googleEvent['recurringEventId'])) {
-            throw new RuntimeException('Google 重複事件的單次例外目前無法同步；請先還原該例外或改為單一事件。');
+            return false;
         }
         if (!isset($googleEvent['status']) || 'cancelled' !== $googleEvent['status']) {
             self::localFieldsFromGoogle($googleEvent);
         }
+
+        return true;
+    }
+
+    private static function hasUnsupportedRecurrenceRules($googleEvent)
+    {
+        if (empty($googleEvent['recurrence'])) {
+            return false;
+        }
+        if (!is_array($googleEvent['recurrence'])) {
+            return true;
+        }
+
+        foreach ($googleEvent['recurrence'] as $rule) {
+            if (0 !== strpos($rule, 'RRULE:')) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private static function pushUnmappedLocalEvents($cateSn, $includeBaselined)
@@ -571,8 +602,6 @@ class GoogleCalendarSync
             foreach ($googleEvent['recurrence'] as $rule) {
                 if (0 === strpos($rule, 'RRULE:')) {
                     $rules[] = $rule;
-                } else {
-                    throw new RuntimeException('Google 重複事件包含 tad_cal 尚不支援的 recurrence 規則：' . $rule);
                 }
             }
             if ($rules) {

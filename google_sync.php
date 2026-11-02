@@ -61,11 +61,17 @@ try {
             (!isset($_POST['confirm_replace']) || '1' !== $_POST['confirm_replace'])) {
             throw new RuntimeException('首次同步會刪除本分類既有 tad_cal 事件。請勾選確認後再執行。');
         }
-        GoogleCalendarSync::syncCategory(
+        $syncResult = GoogleCalendarSync::syncCategory(
             $cateSn,
             isset($_POST['confirm_replace']) && '1' === $_POST['confirm_replace']
         );
         $message = '雙向同步完成。';
+        if ($syncResult['skipped_recurring_instances'] > 0) {
+            $message .= ' 有 ' . $syncResult['skipped_recurring_instances'] . ' 筆重複事件例外未匯入；目前只同步整個重複事件系列。';
+        }
+        if ($syncResult['ignored_recurrence_rules'] > 0) {
+            $message .= ' 有 ' . $syncResult['ignored_recurrence_rules'] . ' 筆重複事件含不支援的例外日期規則，匯入時未套用這些日期規則。';
+        }
     } elseif ('disconnect' === $op) {
         GoogleCalendarSync::disconnect($cateSn);
         $message = 'Google 行事曆已解除連結；兩邊事件均保留。';

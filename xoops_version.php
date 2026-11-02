@@ -4,8 +4,7 @@ $modversion = [];
 global $xoopsConfig;
 
 //---模組基本資訊---//
-$modversion['name'] = _MI_TADCAL_NAME;
-// $modversion['version'] = 3.5;
+$modversion['name']        = _MI_TADCAL_NAME;
 $modversion['version']     = $_SESSION['xoops_version'] >= 20511 ? '4.3.0-Stable' : '4.3';
 $modversion['description'] = _MI_TADCAL_DESC;
 $modversion['author']      = _MI_TADCAL_AUTHOR;

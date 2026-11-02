@@ -31,8 +31,15 @@ if (!$result) {
 $hasErrors = false;
 while (list($cateSn) = $xoopsDB->fetchRow($result)) {
     try {
-        \XoopsModules\Tad_cal\GoogleCalendarSync::syncCategory((int) $cateSn);
-        fwrite(STDOUT, "Calendar {$cateSn}: synchronized.\n");
+        $syncResult = \XoopsModules\Tad_cal\GoogleCalendarSync::syncCategory((int) $cateSn);
+        $message = "Calendar {$cateSn}: synchronized.";
+        if ($syncResult['skipped_recurring_instances'] > 0) {
+            $message .= " Skipped {$syncResult['skipped_recurring_instances']} recurring exception(s); only the recurring series was synchronized.";
+        }
+        if ($syncResult['ignored_recurrence_rules'] > 0) {
+            $message .= " Ignored unsupported exception-date rules in {$syncResult['ignored_recurrence_rules']} recurring event(s).";
+        }
+        fwrite(STDOUT, $message . "\n");
     } catch (RuntimeException $error) {
         $hasErrors = true;
         fwrite(STDERR, "Calendar {$cateSn}: {$error->getMessage()}\n");
