@@ -125,12 +125,12 @@ function tad_cal_cate_form($cate_sn = '')
     //可見群組
     $SelectGroup_name = new \XoopsFormSelectGroup('', 'enable_group', false, $enable_group, 3, true);
     $SelectGroup_name->addOption('', _MA_TADCAL_ALL_OK, false);
-    $SelectGroup_name->setExtra('class="span12 form-control"');
+    $SelectGroup_name->setExtra('class="span12 form-control" id="enable_group"');
     $enable_group = $SelectGroup_name->render();
 
     //可上傳群組
     $SelectGroup_name = new \XoopsFormSelectGroup('', 'enable_upload_group', false, $enable_upload_group, 3, true);
-    $SelectGroup_name->setExtra('class="span12 form-control"');
+    $SelectGroup_name->setExtra('class="span12 form-control" id="enable_upload_group"');
     $enable_upload_group = $SelectGroup_name->render();
 
     $FormValidator = new FormValidator('#myForm', true);

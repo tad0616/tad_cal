@@ -1,4 +1,4 @@
-Tad Cal 4.3 (Released 2026-11-02)
+Tad Cal 4.3 (Released 2026-11-03)
 ====================================
 1. Added a feature to sync with Google Calendar
 2. Support for PHP 8.5 and XOOPS 2.7.4

@@ -16,7 +16,7 @@ $modversion['image']       = $xoopsConfig['language'] == 'tchinese_utf8' ? 'imag
 $modversion['dirname']     = basename(__DIR__);
 
 //---模組狀態資訊---//
-$modversion['release_date']        = '2026-11-02';
+$modversion['release_date']        = '2026-11-03';
 $modversion['module_website_url']  = 'https://tad0616.net/';
 $modversion['module_website_name'] = _MI_TAD_WEB;
 $modversion['module_status']       = 'release';
